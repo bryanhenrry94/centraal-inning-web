@@ -14,3 +14,5 @@ export const UserSchema = z.object({
 export const UserStatusSchema = z.object({
   status: z.enum(["active", "inactive", "pending", "cancelled"]),
 });
+
+export type User = z.infer<typeof UserSchema>;

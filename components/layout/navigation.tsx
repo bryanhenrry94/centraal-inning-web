@@ -31,8 +31,8 @@ const menuConfig: MenuConfig = {
       icon: <ReceiptOutlinedIcon fontSize="small" />,
     },
     {
-      label: "Reports",
-      href: "/dashboard/reports",
+      label: "Vonnis",
+      href: "/dashboard/verdicts",
       icon: <BarChartOutlinedIcon fontSize="small" />,
     },
   ],

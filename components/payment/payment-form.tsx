@@ -7,9 +7,9 @@ import { TextField, Button, MenuItem, Box, Autocomplete } from "@mui/material";
 import { notifyError, notifyInfo } from "@/lib/notifications";
 
 import {
-    PaymentMethodEnum,
-    PaymentCreateSchema,
-    PaymentCreate,
+  PaymentMethodEnum,
+  PaymentCreateSchema,
+  PaymentCreate,
 } from "@/lib/validations/payment";
 import { CollectionCase } from "@/lib/validations/collection";
 import { registerPayment } from "@/app/actions/payment";
@@ -38,9 +38,15 @@ const PaymentForm = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<PaymentCreate>({
+  } = useForm({
     resolver: zodResolver(PaymentCreateSchema),
-    defaultValues: {},
+    defaultValues: {
+      collectionCaseId: "",
+      amount: 0,
+      method: "CASH",
+      referenceNumber: "",
+      paymentDate: new Date().toISOString().slice(0, 16), // Format for datetime-local input
+    },
   });
 
   const handleSavePayment = async (data: PaymentCreate) => {
