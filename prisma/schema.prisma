@@ -1,0 +1,538 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id                String                @id @default(uuid())
+  subdomain         String                @unique
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  contactEmail      String
+  countryCode       String
+  name              String
+  planStatus        String                @default("pending")
+  termsAccepted     Boolean               @default(false)
+  address           String?
+  city              String?
+  logoUrl           String?
+  numberOfEmployees Int?
+  phone             String?
+  website           String?
+  isActive          Boolean               @default(false)
+  billingInvoice    BillingInvoice[]
+  subscription      BillingSubscription[]
+  collectionCases   CollectionCase[]
+  debtors           Debtor[]
+  memberships       Membership[]
+  tenantInvitations TenantInvitation[]
+  registry          TenantRegistry?
+  verdicts          Verdict[]
+
+  @@map("tenant")
+}
+
+model TenantRegistry {
+  id        String   @id @default(uuid())
+  tenantId  String   @unique
+  kvk       String?
+  crib      String?
+  taxId     String?
+  vatNumber String?
+  legalName String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@map("tenant_registry")
+}
+
+model TenantInvitation {
+  id        String   @id @default(uuid())
+  tenantId  String
+  email     String
+  status    String   @default("PENDING")
+  invitedBy String
+  createdAt DateTime @default(now())
+  userId    String?
+  role      roleEnum @default(VIEWER)
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
+
+  @@map("tenant_invitation")
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String             @db.VarChar(80)
+  passwordHash      String?            @db.VarChar(120)
+  fullname          String?            @db.VarChar(80)
+  phone             String?            @db.VarChar(25)
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  debtors           Debtor[]
+  memberships       Membership[]
+  tenantInvitations TenantInvitation[]
+  verdictBailiffs   Verdict[]          @relation("UserToVerdictBailiff")
+
+  @@map("user")
+}
+
+model Membership {
+  id       String           @id @default(uuid())
+  userId   String
+  tenantId String
+  status   MembershipStatus @default(PENDING)
+  joinedAt DateTime         @default(now())
+  role     roleEnum         @default(MANAGER)
+  tenant   Tenant           @relation(fields: [tenantId], references: [id])
+  user     User             @relation(fields: [userId], references: [id])
+
+  @@unique([userId, tenantId])
+  @@map("memberships")
+}
+
+model GlobalParameter {
+  id                            String   @id @default(uuid())
+  porcCobranza                  Float    @default(0)
+  porcAbb                       Float    @default(0)
+  diasPlazoEmpresaAanmaning     Int      @default(0)
+  diasPlazoConsumidorAanmaning  Int      @default(0)
+  diasPlazoEmpresaSommatie      Int      @default(0)
+  diasPlazoConsumidorSommatie   Int      @default(0)
+  precioEmpresaPequena          Float    @default(0)
+  contribucionEmpresaPequenaPfc Float    @default(0)
+  precioEmpresaGrande           Float    @default(0)
+  contribucionEmpresaGrandePfc  Float    @default(0)
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+  multaAanmaningEmpresa         Float    @default(0)
+  multaAanmaningNatural         Float    @default(0)
+  multaSommatieEmpresa          Float    @default(0)
+  multaSommatieNatural          Float    @default(0)
+  limiteDiasReaccionEmpresa     Int      @default(0)
+  multaNoReaccionEmpresa        Float    @default(0)
+  multaNoReaccionNatural        Float    @default(0)
+  multaAcuerdoPagoEmpresa       Float    @default(0)
+  multaAcuerdoPagoNatural       Float    @default(0)
+  invoiceNumberLength           Int      @default(8)
+  invoicePrefix                 String   @default("")
+  invoiceSecuence               Int      @default(0)
+  bankAccount                   String   @default("")
+  bankName                      String   @default("")
+
+  @@map("global_parameters")
+}
+
+model Verdict {
+  id                 String                   @id @default(uuid())
+  invoiceNumber      String                   @db.VarChar(100)
+  creditorName       String                   @db.VarChar(100)
+  debtorId           String
+  registrationNumber String                   @db.VarChar(100)
+  sentenceAmount     Float
+  sentenceDate       DateTime
+  status             VerdictStatus            @default(DRAFT)
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  procesalCost       Float?                   @default(0)
+  tenantId           String
+  notes              String?
+  bailiffId          String?
+  bailiff            User?                    @relation("UserToVerdictBailiff", fields: [bailiffId], references: [id])
+  debtor             Debtor                   @relation(fields: [debtorId], references: [id])
+  tenant             Tenant                   @relation(fields: [tenantId], references: [id])
+  attachments        VerdictAttachment[]
+  bailiffServices    VerdictBailiffServices[]
+  verdictEmbargo     VerdictEmbargo[]
+  verdictInterest    VerdictInterest[]
+
+  @@map("verdict")
+}
+
+model VerdictInterest {
+  id                 String                   @id @default(uuid())
+  interestType       Int
+  baseAmount         Float
+  calculatedInterest Float?
+  calculationStart   DateTime
+  calculationEnd     DateTime
+  totalInterest      Float
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  verdictId          String?
+  verdict            Verdict?                 @relation(fields: [verdictId], references: [id])
+  details            VerdictInterestDetails[]
+
+  @@map("verdict_interest")
+}
+
+model VerdictInterestDetails {
+  id                String          @id @default(uuid())
+  period            String
+  periodStart       DateTime
+  periodEnd         DateTime
+  days              Int
+  annualRate        Float
+  proportionalRate  Float
+  baseAmount        Float
+  interest          Float
+  total             Float
+  verdictInterestId String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  verdictInterest   VerdictInterest @relation(fields: [verdictInterestId], references: [id])
+
+  @@map("verdict_interest_details")
+}
+
+model VerdictEmbargo {
+  id             String   @id @default(uuid())
+  verdictId      String
+  companyName    String
+  companyPhone   String
+  companyEmail   String
+  companyAddress String
+  embargoType    String
+  embargoDate    DateTime
+  embargoAmount  Float
+  totalAmount    Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  verdict        Verdict  @relation(fields: [verdictId], references: [id])
+
+  @@map("verdict_embargo")
+}
+
+model VerdictBailiffServices {
+  id          String   @id @default(uuid())
+  verdictId   String
+  serviceType String
+  serviceCost Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  verdict     Verdict  @relation(fields: [verdictId], references: [id])
+
+  @@map("verdict_bailiff_services")
+}
+
+model VerdictAttachment {
+  id        String   @id @default(uuid())
+  verdictId String
+  filePath  String
+  fileSize  BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fileName  String
+  verdict   Verdict  @relation(fields: [verdictId], references: [id])
+
+  @@map("verdict_attachment")
+}
+
+model InterestType {
+  id              Int                 @id @default(autoincrement())
+  name            String
+  calculationType CalculationTypeEnum
+  details         InterestDetail[]
+
+  @@map("interest_type")
+}
+
+model InterestDetail {
+  id             Int          @id @default(autoincrement())
+  date           String
+  rate           Float
+  interestTypeId Int
+  interestType   InterestType @relation(fields: [interestTypeId], references: [id])
+
+  @@map("interest_detail")
+}
+
+model BillingInvoice {
+  id            String                 @id @default(uuid())
+  tenantId      String
+  invoiceNumber String                 @unique
+  amount        Float
+  currency      String                 @default("USD")
+  issueDate     DateTime
+  dueDate       DateTime
+  description   String?
+  status        String                 @default("unpaid")
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  tenant        Tenant                 @relation(fields: [tenantId], references: [id])
+  details       BillingInvoiceDetail[]
+  payments      BillingPayment[]
+  subscription  BillingSubscription[]
+
+  @@map("billing_invoice")
+}
+
+model BillingInvoiceDetail {
+  id               String          @id @default(uuid())
+  itemDescription  String
+  itemQuantity     Int
+  itemUnitPrice    Float
+  itemTotalPrice   Float
+  itemTaxRate      Float
+  itemTaxAmount    Float
+  itemTotalWithTax Float
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  billingInvoiceId String?
+  billingInvoice   BillingInvoice? @relation(fields: [billingInvoiceId], references: [id])
+
+  @@map("billing_invoice_detail")
+}
+
+model BillingPlan {
+  id            String                @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  currency      String                @default("USD")
+  billingCycle  String                @default("monthly")
+  features      Json?
+  isActive      Boolean               @default(true)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  subscriptions BillingSubscription[]
+
+  @@map("billing_plan")
+}
+
+model BillingSubscription {
+  id              String                    @id @default(uuid())
+  tenantId        String
+  planId          String
+  startDate       DateTime                  @default(now())
+  endDate         DateTime?
+  nextBillingDate DateTime?
+  billingCycle    String                    @default("monthly")
+  amount          Float
+  currency        String                    @default("USD")
+  lastInvoiceId   String?
+  trialEndsAt     DateTime?
+  canceledAt      DateTime?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+  status          BillingSubscriptionStatus @default(ACTIVE)
+  lastInvoice     BillingInvoice?           @relation(fields: [lastInvoiceId], references: [id])
+  plan            BillingPlan               @relation(fields: [planId], references: [id])
+  tenant          Tenant                    @relation(fields: [tenantId], references: [id])
+
+  @@map("billing_subscription")
+}
+
+model BillingPayment {
+  id               String          @id @default(uuid())
+  paymentDate      DateTime
+  amount           Float
+  paymentMethod    String
+  transactionId    String?
+  status           String
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  billingInvoiceId String?
+  BillingInvoice   BillingInvoice? @relation(fields: [billingInvoiceId], references: [id])
+
+  @@map("billing_payment")
+}
+
+model CollectionCase {
+  id              String             @id @default(cuid())
+  referenceNumber String?
+  issueDate       DateTime?
+  dueDate         DateTime?
+  tenantId        String
+  debtorId        String
+  amountOriginal  Decimal            @db.Decimal(10, 2)
+  amountDue       Decimal            @db.Decimal(10, 2)
+  amountToReceive Decimal            @db.Decimal(10, 2)
+  status          CollectionStatus   @default(PENDING)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  debtor          Debtor             @relation(fields: [debtorId], references: [id])
+  tenant          Tenant             @relation(fields: [tenantId], references: [id])
+  notifications   Notification[]
+  payments        Payment[]
+  agreements      PaymentAgreement[]
+  penalties       Penalty[]
+
+  @@map("collection_case")
+}
+
+model Penalty {
+  id               String         @id @default(cuid())
+  collectionCaseId String
+  description      String?
+  amount           Decimal        @db.Decimal(10, 2)
+  dateApplied      DateTime       @default(now())
+  isPaid           Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])
+
+  @@map("penalty")
+}
+
+model Notification {
+  id               String           @id @default(cuid())
+  collectionCaseId String
+  type             NotificationType
+  title            String
+  message          String
+  sentAt           DateTime         @default(now())
+  read             Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  collectionCase   CollectionCase   @relation(fields: [collectionCaseId], references: [id])
+
+  @@map("notification")
+}
+
+model Payment {
+  id               String         @id @default(cuid())
+  amount           Decimal        @db.Decimal(10, 2)
+  method           PaymentMethod
+  createdAt        DateTime       @default(now())
+  collectionCaseId String
+  paymentDate      DateTime
+  referenceNumber  String?
+  updatedAt        DateTime       @updatedAt
+  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])
+
+  @@map("payment")
+}
+
+model PaymentAgreement {
+  id                String          @id @default(cuid())
+  debtorId          String?
+  agreementDate     DateTime
+  status            AgreementStatus @default(ACTIVE)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  collectionCaseId  String
+  installmentAmount Decimal?        @db.Decimal(10, 2)
+  nextPaymentDate   DateTime?
+  notes             String?
+  totalInstallments Int?
+  collectionCase    CollectionCase  @relation(fields: [collectionCaseId], references: [id])
+  Debtor            Debtor?         @relation(fields: [debtorId], references: [id])
+
+  @@map("payment_agreement")
+}
+
+model Debtor {
+  id                 String              @id @default(uuid())
+  tenantId           String
+  userId             String?
+  fullname           String
+  email              String
+  phone              String?
+  address            String?
+  personType         String?
+  identificationType IdentificationType?
+  identification     String?
+  totalIncome        Float?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  collectionCases    CollectionCase[]
+  tenant             Tenant              @relation(fields: [tenantId], references: [id])
+  user               User?               @relation(fields: [userId], references: [id])
+  incomes            DebtorIncome[]
+  paymentAgreements  PaymentAgreement[]
+  verdicts           Verdict[]
+
+  @@unique([tenantId, email])
+  @@unique([tenantId, identification])
+  @@map("debtor")
+}
+
+model DebtorIncome {
+  id        String   @id @default(uuid())
+  debtorId  String
+  amount    Float
+  source    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  debtor    Debtor   @relation(fields: [debtorId], references: [id])
+
+  @@map("debtor_incomes")
+}
+
+enum CalculationTypeEnum {
+  FIXED
+  VARIABLE
+}
+
+enum VerdictStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  AANMANING
+  SOMMATIE
+  INGEBREKESTELLING
+  BLOKKADE
+}
+
+enum IdentificationType {
+  DNI
+  PASSPORT
+  NIE
+  CIF
+  KVK
+  OTHER
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum BillingSubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELED
+  EXPIRED
+}
+
+enum roleEnum {
+  ADMIN
+  MANAGER
+  ACCOUNTANT
+  BAILIFF
+  VIEWER
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+  CREDIT_CARD
+  CHECK
+  OTHER
+}
+
+enum AgreementStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum CollectionStatus {
+  PENDING
+  IN_PROGRESS
+  PAID
+  OVERDUE
+  CANCELLED
+}

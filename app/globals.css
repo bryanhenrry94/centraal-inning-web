@@ -12,12 +12,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Esto es para que el tema oscuro funcione correctamente, lo comento para que siempre tome el tema claro */
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #484848;
   }
-}
+} */
 
 body {
   background: var(--background);
