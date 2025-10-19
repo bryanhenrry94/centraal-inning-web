@@ -204,19 +204,19 @@ export const createCollectionCase = async (
 
   const tenant = await prisma.tenant.findUnique({
     where: { id: tenantId },
-    include: { subscription: true },
+    include: { plan: true },
   });
   if (!tenant) throw new Error("Tenant not found");
 
-  const firstSubscription = tenant.subscription?.[0];
+  const firstPlan = tenant.plan;
 
-  if (!firstSubscription)
+  if (!firstPlan)
     throw new Error("Tenant does not have an active subscription");
 
   // Envia la factura de la comisión al cliente
   await createCollectionInvoice({
     tenantId: tenant.id,
-    subscriptionId: firstSubscription.id,
+    planId: firstPlan.id,
     island: tenant.countryCode,
     address: tenant.address,
     amount: comision,

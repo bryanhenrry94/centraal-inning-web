@@ -200,16 +200,9 @@ export const createDebtorIfNotExists = async (
         email: debtor.email,
         fullname: debtor.fullname,
         phone: debtor.phone,
-        isActive: true,
-      },
-    });
-
-    const membership = await prisma.membership.create({
-      data: {
-        userId: newUser.id,
         tenantId: tenantId,
-        role: roleEnum.VIEWER,
-        status: "ACTIVE",
+        role: roleEnum.DEBTOR,
+        isActive: true,
       },
     });
 

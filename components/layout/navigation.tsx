@@ -12,42 +12,40 @@ type MenuItem = {
   label: string;
   href: string;
   icon?: React.ReactNode;
+  role?: string[];
 };
 
-type MenuConfig = {
-  [role: string]: MenuItem[];
-};
-
-const menuConfig: MenuConfig = {
-  MANAGER: [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <HomeOutlinedIcon fontSize="small" />,
-    },
-    {
-      label: "Collections",
-      href: "/dashboard/collections",
-      icon: <ReceiptOutlinedIcon fontSize="small" />,
-    },
-    {
-      label: "Vonnis",
-      href: "/dashboard/verdicts",
-      icon: <BarChartOutlinedIcon fontSize="small" />,
-    },
-  ],
-  USER: [
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "Collections", href: "/dashboard/collections" },
-    { label: "Clients", href: "/dashboard/clients" },
-    { label: "Reports", href: "/dashboard/reports" },
-  ],
-};
+const menus: MenuItem[] = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <HomeOutlinedIcon fontSize="small" />,
+    role: ["ADMIN", "SUPERADMIN"],
+  },
+  {
+    label: "Collections",
+    href: "/dashboard/collections",
+    icon: <ReceiptOutlinedIcon fontSize="small" />,
+    role: ["ADMIN"],
+  },
+  {
+    label: "Vonnis",
+    href: "/dashboard/verdicts",
+    icon: <BarChartOutlinedIcon fontSize="small" />,
+    role: ["ADMIN"],
+  },
+  {
+    label: "Invoices",
+    href: "/dashboard/invoices",
+    icon: <ReceiptOutlinedIcon fontSize="small" />,
+    role: ["SUPERADMIN"],
+  },
+];
 
 const Navigation = ({ role }: { role: string }) => {
   const theme = useTheme();
   const pathname = usePathname();
-  const items = menuConfig[role] ?? [];
+  const items = menus.filter((item) => item.role?.includes(role));
   const navValue = items.findIndex((item) => item.href === pathname);
 
   return (

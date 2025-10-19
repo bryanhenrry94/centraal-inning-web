@@ -72,7 +72,7 @@ export default function Home() {
             name="email"
             type="email"
             variant="outlined"
-            value={formData.email}
+            value={formData.email ?? ""}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }

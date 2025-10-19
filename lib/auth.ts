@@ -7,7 +7,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 declare module "next-auth" {
   interface User extends IdTokenInput {
     name?: string;
-    tenantId?: string;
+    phone?: string;
+    tenantId: string;
+    role: string;
     emailVerified?: boolean;
   }
   interface Session {
@@ -73,6 +75,7 @@ export const authOptions: AuthOptions = {
         token.role = user.role;
         token.id = user.id;
         token.name = user.name;
+        token.phone = user.phone;
         token.tenantId = user.tenantId;
         token.emailVerified = user.emailVerified;
         // Agrega aquí cualquier otra propiedad de iIdToken si es necesario
@@ -85,6 +88,7 @@ export const authOptions: AuthOptions = {
         session.user.role = token.role as string;
         session.user.id = token.id as string;
         session.user.name = token.name as string;
+        session.user.phone = token.phone as string;
         session.user.tenantId = token.tenantId as string;
         session.user.emailVerified = token.emailVerified as boolean;
         // Agrega aquí cualquier otra propiedad si es necesario

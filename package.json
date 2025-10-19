@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "prisma": {
+    "seed": "tsx ./prisma/seed.ts",
+    "schema": "./prisma/schema.prisma"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -46,6 +50,7 @@
     "eslint-config-next": "15.5.5",
     "prisma": "6.17.1",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }

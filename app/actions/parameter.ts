@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { IParamGeneral } from "@/lib/validations/parameter";
 
 export const getParameterById = async (id: string) => {
-  const parameter = await prisma.globalParameter.findUnique({
+  const parameter = await prisma.parameter.findUnique({
     where: {
       id: id,
     },
@@ -13,7 +13,7 @@ export const getParameterById = async (id: string) => {
 };
 
 export const createParameter = async (data: IParamGeneral) => {
-  const newParameter = await prisma.globalParameter.create({
+  const newParameter = await prisma.parameter.create({
     data: {
       porcCobranza: data.porcCobranza,
       porcAbb: data.porcAbb,
@@ -35,7 +35,7 @@ export const updateParameter = async (
   id: string,
   data: Partial<IParamGeneral>
 ) => {
-  const updatedParameter = await prisma.globalParameter.update({
+  const updatedParameter = await prisma.parameter.update({
     where: {
       id: id,
     },

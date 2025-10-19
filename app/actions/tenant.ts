@@ -11,13 +11,12 @@ export const getTenantByEmail = async (
 
   const tenants = await prisma.tenant.findMany({
     where: {
-      memberships: {
+      users: {
         some: {
-          user: {
-            email: email,
-          },
+          email: email,
         },
       },
+      isActive: true,
     },
   });
 
@@ -84,4 +83,32 @@ export const getAllTenants = async (): Promise<Tenant[]> => {
     countryCode: tenant.countryCode as "BQ" | "CW" | "AW",
     planStatus: tenant.planStatus as "pending" | "active" | "suspended",
   }));
+};
+
+export const validaSubdomain = async (subdomain: string) => {
+  const tenant = await prisma.tenant.findFirst({
+    where: { subdomain },
+  });
+
+  return tenant ? true : false;
+};
+
+export const generateUniqueSubdomain = async (
+  companyName: string
+): Promise<string> => {
+  let subdomain = companyName.toLowerCase().replace(/\s+/g, "-");
+  let exists = await prisma.tenant.findUnique({
+    where: { subdomain },
+  });
+
+  let suffix = 1;
+  while (exists) {
+    subdomain = `${companyName.toLowerCase().replace(/\s+/g, "-")}-${suffix}`;
+    exists = await prisma.tenant.findUnique({
+      where: { subdomain },
+    });
+    suffix++;
+  }
+
+  return subdomain;
 };

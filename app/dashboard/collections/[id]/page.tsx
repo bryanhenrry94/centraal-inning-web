@@ -31,15 +31,9 @@ import {
 } from "@/app/actions/notification";
 import { Notification } from "@/lib/validations/notification";
 import { useTenant } from "@/hooks/useTenant";
+import TabPanel from "@/components/ui/tab-panel";
 
 const CollectionViewPage: React.FC = () => {
-  interface TabPanelProps {
-    children?: React.ReactNode;
-    dir?: string;
-    index: number;
-    value: number;
-  }
-
   const router = useRouter();
   const { tenant } = useTenant();
   const [loading, setLoading] = React.useState(true);
@@ -156,22 +150,6 @@ const CollectionViewPage: React.FC = () => {
       setLoading(false);
     }
   };
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`full-width-tabpanel-${index}`}
-        aria-labelledby={`full-width-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-      </div>
-    );
-  }
 
   if (loading) {
     return <LoadingUI />;

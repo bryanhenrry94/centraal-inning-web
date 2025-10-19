@@ -1,7 +1,7 @@
 "use server";
+import prisma from "@/lib/prisma";
 import InvoiceService from "@/common/mail/services/invoiceService";
 import renderTemplate from "@/common/utils/templateRenderer";
-import prisma from "@/lib/prisma";
 import { addDays } from "date-fns";
 import path from "path";
 import puppeteer from "puppeteer";
@@ -15,19 +15,21 @@ import { getNameCountry } from "@/common/utils/general";
 
 interface ActivationInvoiceInput {
   tenantId: string;
-  subscriptionId?: string;
+  planId?: string;
   island: string;
   address?: string | null;
-  amount?: number;
+  amount: number;
 }
 
-export const createActivationInvoice = async ({
-  tenantId,
-}: ActivationInvoiceInput) => {
+export const createActivationInvoice = async (
+  params: ActivationInvoiceInput
+) => {
   // Definir valores base
   const issueDate = new Date();
   const dueDate = addDays(issueDate, 7);
-  const activationFee = 50.0; // Costo base de activación
+
+  // Costo base de activación
+  const activationFee = params.amount;
 
   // Generar número de factura único
   const invoiceNumber = await generateInvoiceNumber();
@@ -35,7 +37,7 @@ export const createActivationInvoice = async ({
   // Crear factura principal
   const invoice = await prisma.billingInvoice.create({
     data: {
-      tenantId,
+      tenantId: params.tenantId,
       invoiceNumber,
       amount: activationFee,
       currency: "USD",
@@ -67,14 +69,13 @@ export const createActivationInvoice = async ({
   return invoice;
 };
 
-export const createCollectionInvoice = async ({
-  tenantId,
-  amount,
-}: ActivationInvoiceInput) => {
+export const createCollectionInvoice = async (
+  params: ActivationInvoiceInput
+) => {
   // Definir valores base
   const issueDate = new Date();
   const dueDate = addDays(issueDate, 7);
-  const activationFee = amount || 50.0; // Costo base de activación
+  const activationFee = params.amount; // Costo base de activación
 
   // Generar número de factura único
   const invoiceNumber = await generateInvoiceNumber();
@@ -82,7 +83,7 @@ export const createCollectionInvoice = async ({
   // Crear factura principal
   const invoice = await prisma.billingInvoice.create({
     data: {
-      tenantId,
+      tenantId: params.tenantId,
       invoiceNumber,
       amount: activationFee,
       currency: "USD",

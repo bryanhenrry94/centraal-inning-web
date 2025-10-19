@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { planSchema } from "./plan";
 
 export const TenantSchema = z.object({
   id: z.string().uuid(), // Identificador único del tenant
@@ -14,7 +15,10 @@ export const TenantSchema = z.object({
   logoUrl: z.string().nullable().optional(), // URL del logo
   isActive: z.boolean().default(false), // Estado activo
   termsAccepted: z.boolean().default(false), // Términos aceptados
+  planId: z.string().uuid().nullable().optional(), // FK opcional
+  plan: planSchema.nullable().optional(), // Relación con Plan
   planStatus: z.enum(["pending", "active", "suspended"]).default("pending"), // Estado del plan
+  planExpiresAt: z.coerce.date().nullable().optional(), // Fecha de expiración del plan
   createdAt: z.coerce.date(), // Fecha de creación
   updatedAt: z.coerce.date(), // Fecha de última actualización
 });

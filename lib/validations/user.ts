@@ -1,3 +1,4 @@
+import { $Enums } from "@/prisma/generated/prisma";
 import { z } from "zod";
 
 export const UserSchema = z.object({
@@ -6,6 +7,13 @@ export const UserSchema = z.object({
   passwordHash: z.string().max(120).nullable().optional(),
   fullname: z.string().max(80).nullable().optional(),
   phone: z.string().max(25).nullable().optional(),
+  tenantId: z.string().uuid(),
+  role: z.enum([
+    $Enums.roleEnum.SUPERADMIN,
+    $Enums.roleEnum.ADMIN,
+    $Enums.roleEnum.DEBTOR,
+    $Enums.roleEnum.BAILIFF,
+  ]),
   isActive: z.boolean().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),

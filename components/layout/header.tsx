@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, Divider } from "@mui/material";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
@@ -74,6 +74,11 @@ const Header = () => {
             />
             {session?.user?.name}
           </MenuItem>
+          <Divider sx={{ my: 0.5 }} />
+          <MenuItem onClick={() => router.push("/dashboard/settings")}>
+            Configuración
+          </MenuItem>
+
           <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
         </Menu>
       </>

@@ -9,30 +9,33 @@ datasource db {
 }
 
 model Tenant {
-  id                String                @id @default(uuid())
-  subdomain         String                @unique
-  createdAt         DateTime              @default(now())
-  updatedAt         DateTime              @updatedAt
+  id                String    @id @default(uuid())
+  name              String
+  subdomain         String    @unique
   contactEmail      String
   countryCode       String
-  name              String
-  planStatus        String                @default("pending")
-  termsAccepted     Boolean               @default(false)
   address           String?
   city              String?
   logoUrl           String?
   numberOfEmployees Int?
   phone             String?
   website           String?
-  isActive          Boolean               @default(false)
-  billingInvoice    BillingInvoice[]
-  subscription      BillingSubscription[]
-  collectionCases   CollectionCase[]
-  debtors           Debtor[]
-  memberships       Membership[]
-  tenantInvitations TenantInvitation[]
-  registry          TenantRegistry?
-  verdicts          Verdict[]
+  planId            String? // FK opcional
+  plan              Plan?     @relation(fields: [planId], references: [id])
+  planStatus        String    @default("pending")
+  planExpiresAt     DateTime?
+  termsAccepted     Boolean   @default(false)
+  isActive          Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  billingInvoice  BillingInvoice[]
+  collectionCases CollectionCase[]
+  debtors         Debtor[]
+  registry        TenantRegistry?
+  verdicts        Verdict[]
+  users           User[]
 
   @@map("tenant")
 }
@@ -52,53 +55,25 @@ model TenantRegistry {
   @@map("tenant_registry")
 }
 
-model TenantInvitation {
-  id        String   @id @default(uuid())
-  tenantId  String
-  email     String
-  status    String   @default("PENDING")
-  invitedBy String
-  createdAt DateTime @default(now())
-  userId    String?
-  role      roleEnum @default(VIEWER)
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
-  User      User?    @relation(fields: [userId], references: [id])
-
-  @@map("tenant_invitation")
-}
-
 model User {
-  id                String             @id @default(uuid())
-  email             String             @db.VarChar(80)
-  passwordHash      String?            @db.VarChar(120)
-  fullname          String?            @db.VarChar(80)
-  phone             String?            @db.VarChar(25)
-  isActive          Boolean            @default(true)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  debtors           Debtor[]
-  memberships       Membership[]
-  tenantInvitations TenantInvitation[]
-  verdictBailiffs   Verdict[]          @relation("UserToVerdictBailiff")
+  id              String    @id @default(uuid())
+  email           String    @db.VarChar(80)
+  passwordHash    String?   @db.VarChar(120)
+  fullname        String?   @db.VarChar(80)
+  phone           String?   @db.VarChar(25)
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])
+  role            roleEnum  @default(ADMIN)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  debtors         Debtor[]
+  verdictBailiffs Verdict[] @relation("UserToVerdictBailiff")
 
   @@map("user")
 }
 
-model Membership {
-  id       String           @id @default(uuid())
-  userId   String
-  tenantId String
-  status   MembershipStatus @default(PENDING)
-  joinedAt DateTime         @default(now())
-  role     roleEnum         @default(MANAGER)
-  tenant   Tenant           @relation(fields: [tenantId], references: [id])
-  user     User             @relation(fields: [userId], references: [id])
-
-  @@unique([userId, tenantId])
-  @@map("memberships")
-}
-
-model GlobalParameter {
+model Parameter {
   id                            String   @id @default(uuid())
   porcCobranza                  Float    @default(0)
   porcAbb                       Float    @default(0)
@@ -127,7 +102,7 @@ model GlobalParameter {
   bankAccount                   String   @default("")
   bankName                      String   @default("")
 
-  @@map("global_parameters")
+  @@map("parameter")
 }
 
 model Verdict {
@@ -269,7 +244,6 @@ model BillingInvoice {
   tenant        Tenant                 @relation(fields: [tenantId], references: [id])
   details       BillingInvoiceDetail[]
   payments      BillingPayment[]
-  subscription  BillingSubscription[]
 
   @@map("billing_invoice")
 }
@@ -291,45 +265,6 @@ model BillingInvoiceDetail {
   @@map("billing_invoice_detail")
 }
 
-model BillingPlan {
-  id            String                @id @default(uuid())
-  name          String
-  description   String?
-  price         Float
-  currency      String                @default("USD")
-  billingCycle  String                @default("monthly")
-  features      Json?
-  isActive      Boolean               @default(true)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
-  subscriptions BillingSubscription[]
-
-  @@map("billing_plan")
-}
-
-model BillingSubscription {
-  id              String                    @id @default(uuid())
-  tenantId        String
-  planId          String
-  startDate       DateTime                  @default(now())
-  endDate         DateTime?
-  nextBillingDate DateTime?
-  billingCycle    String                    @default("monthly")
-  amount          Float
-  currency        String                    @default("USD")
-  lastInvoiceId   String?
-  trialEndsAt     DateTime?
-  canceledAt      DateTime?
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime                  @updatedAt
-  status          BillingSubscriptionStatus @default(ACTIVE)
-  lastInvoice     BillingInvoice?           @relation(fields: [lastInvoiceId], references: [id])
-  plan            BillingPlan               @relation(fields: [planId], references: [id])
-  tenant          Tenant                    @relation(fields: [tenantId], references: [id])
-
-  @@map("billing_subscription")
-}
-
 model BillingPayment {
   id               String          @id @default(uuid())
   paymentDate      DateTime
@@ -343,6 +278,18 @@ model BillingPayment {
   BillingInvoice   BillingInvoice? @relation(fields: [billingInvoiceId], references: [id])
 
   @@map("billing_payment")
+}
+
+model Plan {
+  id           String   @id @default(cuid())
+  name         String   @unique // free, basic, pro
+  price        Float
+  description  String?
+  durationDays Int // duración del plan en días
+  isActive     Boolean  @default(true)
+  tenants      Tenant[]
+
+  @@map("plan")
 }
 
 model CollectionCase {
@@ -494,25 +441,11 @@ enum IdentificationType {
   OTHER
 }
 
-enum MembershipStatus {
-  PENDING
-  ACTIVE
-  SUSPENDED
-}
-
-enum BillingSubscriptionStatus {
-  ACTIVE
-  PAUSED
-  CANCELED
-  EXPIRED
-}
-
 enum roleEnum {
+  SUPERADMIN
   ADMIN
-  MANAGER
-  ACCOUNTANT
+  DEBTOR
   BAILIFF
-  VIEWER
 }
 
 enum PaymentMethod {

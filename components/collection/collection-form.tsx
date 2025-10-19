@@ -17,15 +17,10 @@ import {
   useForm,
   SubmitHandler,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import SaveIcon from "@mui/icons-material/Save";
-import { GlobalParameter } from "@/prisma/generated/prisma";
-import {
-  CollectionCaseCreate,
-  CollectionCaseCreateSchema,
-} from "@/lib/validations/collection";
+import { CollectionCaseCreate } from "@/lib/validations/collection";
 import ModalSearchDebtor from "@/components/debtor/modal-debtor-search";
 import { ModalFormDebtor } from "@/components/debtor/modal-debtor-form";
 import { DebtorBase, DebtorCreate } from "@/lib/validations/debtor";
@@ -34,10 +29,11 @@ import { createCollectionCase } from "@/app/actions/collection";
 import { notifyError, notifySuccess } from "@/lib/notifications";
 import { useTenant } from "@/hooks/useTenant";
 import { getAllDebtorsByTenantId } from "@/app/actions/debtor";
+import { IParamGeneral } from "@/lib/validations/parameter";
 
 const RegisterInvoice: React.FC = () => {
   const { tenant } = useTenant();
-  const [_parameter, setParameters] = useState<GlobalParameter>();
+  const [_parameter, setParameters] = useState<IParamGeneral>();
   const [_ModalSearchDebtors, setModalSearchDebtors] = useState(false);
   const [_ModalFormDebtor, setModalFormDebtor] = useState({
     open: false,

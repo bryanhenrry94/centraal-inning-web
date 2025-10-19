@@ -122,21 +122,23 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.TenantScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   subdomain: 'subdomain',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   contactEmail: 'contactEmail',
   countryCode: 'countryCode',
-  name: 'name',
-  planStatus: 'planStatus',
-  termsAccepted: 'termsAccepted',
   address: 'address',
   city: 'city',
   logoUrl: 'logoUrl',
   numberOfEmployees: 'numberOfEmployees',
   phone: 'phone',
   website: 'website',
-  isActive: 'isActive'
+  planId: 'planId',
+  planStatus: 'planStatus',
+  planExpiresAt: 'planExpiresAt',
+  termsAccepted: 'termsAccepted',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.TenantRegistryScalarFieldEnum = {
@@ -151,38 +153,20 @@ exports.Prisma.TenantRegistryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TenantInvitationScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  email: 'email',
-  status: 'status',
-  invitedBy: 'invitedBy',
-  createdAt: 'createdAt',
-  userId: 'userId',
-  role: 'role'
-};
-
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   passwordHash: 'passwordHash',
   fullname: 'fullname',
   phone: 'phone',
+  tenantId: 'tenantId',
+  role: 'role',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.MembershipScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  tenantId: 'tenantId',
-  status: 'status',
-  joinedAt: 'joinedAt',
-  role: 'role'
-};
-
-exports.Prisma.GlobalParameterScalarFieldEnum = {
+exports.Prisma.ParameterScalarFieldEnum = {
   id: 'id',
   porcCobranza: 'porcCobranza',
   porcAbb: 'porcAbb',
@@ -333,37 +317,6 @@ exports.Prisma.BillingInvoiceDetailScalarFieldEnum = {
   billingInvoiceId: 'billingInvoiceId'
 };
 
-exports.Prisma.BillingPlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  price: 'price',
-  currency: 'currency',
-  billingCycle: 'billingCycle',
-  features: 'features',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.BillingSubscriptionScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  planId: 'planId',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  nextBillingDate: 'nextBillingDate',
-  billingCycle: 'billingCycle',
-  amount: 'amount',
-  currency: 'currency',
-  lastInvoiceId: 'lastInvoiceId',
-  trialEndsAt: 'trialEndsAt',
-  canceledAt: 'canceledAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  status: 'status'
-};
-
 exports.Prisma.BillingPaymentScalarFieldEnum = {
   id: 'id',
   paymentDate: 'paymentDate',
@@ -374,6 +327,15 @@ exports.Prisma.BillingPaymentScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   billingInvoiceId: 'billingInvoiceId'
+};
+
+exports.Prisma.PlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price',
+  description: 'description',
+  durationDays: 'durationDays',
+  isActive: 'isActive'
 };
 
 exports.Prisma.CollectionCaseScalarFieldEnum = {
@@ -468,11 +430,6 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -482,24 +439,11 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
 exports.roleEnum = exports.$Enums.roleEnum = {
+  SUPERADMIN: 'SUPERADMIN',
   ADMIN: 'ADMIN',
-  MANAGER: 'MANAGER',
-  ACCOUNTANT: 'ACCOUNTANT',
-  BAILIFF: 'BAILIFF',
-  VIEWER: 'VIEWER'
-};
-
-exports.MembershipStatus = exports.$Enums.MembershipStatus = {
-  PENDING: 'PENDING',
-  ACTIVE: 'ACTIVE',
-  SUSPENDED: 'SUSPENDED'
+  DEBTOR: 'DEBTOR',
+  BAILIFF: 'BAILIFF'
 };
 
 exports.VerdictStatus = exports.$Enums.VerdictStatus = {
@@ -512,13 +456,6 @@ exports.VerdictStatus = exports.$Enums.VerdictStatus = {
 exports.CalculationTypeEnum = exports.$Enums.CalculationTypeEnum = {
   FIXED: 'FIXED',
   VARIABLE: 'VARIABLE'
-};
-
-exports.BillingSubscriptionStatus = exports.$Enums.BillingSubscriptionStatus = {
-  ACTIVE: 'ACTIVE',
-  PAUSED: 'PAUSED',
-  CANCELED: 'CANCELED',
-  EXPIRED: 'EXPIRED'
 };
 
 exports.CollectionStatus = exports.$Enums.CollectionStatus = {
@@ -562,10 +499,8 @@ exports.IdentificationType = exports.$Enums.IdentificationType = {
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   TenantRegistry: 'TenantRegistry',
-  TenantInvitation: 'TenantInvitation',
   User: 'User',
-  Membership: 'Membership',
-  GlobalParameter: 'GlobalParameter',
+  Parameter: 'Parameter',
   Verdict: 'Verdict',
   VerdictInterest: 'VerdictInterest',
   VerdictInterestDetails: 'VerdictInterestDetails',
@@ -576,9 +511,8 @@ exports.Prisma.ModelName = {
   InterestDetail: 'InterestDetail',
   BillingInvoice: 'BillingInvoice',
   BillingInvoiceDetail: 'BillingInvoiceDetail',
-  BillingPlan: 'BillingPlan',
-  BillingSubscription: 'BillingSubscription',
   BillingPayment: 'BillingPayment',
+  Plan: 'Plan',
   CollectionCase: 'CollectionCase',
   Penalty: 'Penalty',
   Notification: 'Notification',

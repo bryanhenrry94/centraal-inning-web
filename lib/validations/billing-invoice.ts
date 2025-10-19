@@ -3,6 +3,7 @@ import {
   BillingInvoiceDetailBaseSchema,
   BillingInvoiceDetailCreateSchema,
 } from "@/lib/validations/billing-invoice-detail";
+import { TenantSchema } from "./tenant";
 
 export const BillingInvoiceBaseSchema = z.object({
   id: z.string().uuid(),
@@ -46,9 +47,17 @@ export const BillingInvoiceResponseSchema = BillingInvoiceBaseSchema.extend({
   payments: z.array(z.any()).optional(), // Replace z.any() with PaymentSchema if available
 });
 
+export const BillingInvoiceWithTenantSchema =
+  BillingInvoiceResponseSchema.extend({
+    tenant: TenantSchema,
+  });
+
 export type BillingInvoiceBase = z.infer<typeof BillingInvoiceBaseSchema>;
 export type BillingInvoiceCreate = z.infer<typeof BillingInvoiceCreateSchema>;
 export type BillingInvoiceUpdate = z.infer<typeof BillingInvoiceUpdateSchema>;
 export type BillingInvoiceResponse = z.infer<
   typeof BillingInvoiceResponseSchema
+>;
+export type BillingInvoiceWithTenant = z.infer<
+  typeof BillingInvoiceWithTenantSchema
 >;
