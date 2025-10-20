@@ -27,6 +27,8 @@ export default function Home() {
         ...formData,
       };
 
+      console.log("Submitting email:", payload.email);
+
       const result = await emailExists(payload.email);
       if (!result) {
         notifyWarning("We konden deze e-mail niet vinden.");

@@ -11,7 +11,7 @@ const renderTemplate = (
 
     const templatePath = path.join(
       projectRoot,
-      `src/common/Mail/templates/${templateName}.html`
+      `common/mail/templates/${templateName}.html`
     );
 
     const templateSource = fs.readFileSync(templatePath, "utf8");

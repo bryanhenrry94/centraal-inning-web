@@ -13,7 +13,7 @@ const eslintConfig = [
   {
     ignores: [
       "**/*.js", // Ignora todos los archivos .js
-      "src/prisma/generated/**/*" // Ignora todo lo que está dentro de src/prisma/generated/*
+      "prisma/generated/**/*" // Ignora todo lo que está dentro de prisma/generated/*
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),

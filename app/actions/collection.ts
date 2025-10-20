@@ -5,6 +5,7 @@ import { createCollectionInvoice } from "@/app/actions/billing-invoice";
 import {
   CollectionCase,
   CollectionCaseCreate,
+  CollectionCaseCreateSchema,
   CollectionCaseResponse,
   CollectionCaseSchema,
   CollectionCaseView,
@@ -180,7 +181,9 @@ export const createCollectionCase = async (
   data: Partial<CollectionCaseCreate>,
   tenantId: string
 ) => {
-  const amountOriginal = data.amountOriginal ?? 0;
+  const parsedData = CollectionCaseCreateSchema.parse(data);
+
+  const amountOriginal = parsedData.amountOriginal ?? 0;
   const comision = amountOriginal * 0.15; // 15% de comisión
   const abb = comision * 0.06; // 2.5% de gastos administrativos
   const amountDue = comision + abb;
@@ -188,15 +191,17 @@ export const createCollectionCase = async (
 
   const newCollectionCase = await prisma.collectionCase.create({
     data: {
-      debtorId: data.debtorId || "",
-      referenceNumber: data.referenceNumber || "",
-      issueDate: data.issueDate ? new Date(data.issueDate) : undefined,
-      dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
+      debtorId: parsedData.debtorId || "",
+      referenceNumber: parsedData.referenceNumber || "",
+      issueDate: parsedData.issueDate
+        ? new Date(parsedData.issueDate)
+        : undefined,
+      dueDate: parsedData.dueDate ? new Date(parsedData.dueDate) : undefined,
       amountOriginal: amountOriginal,
       amountDue: amountDue,
       amountToReceive: amountToReceive,
       status:
-        (data.status as $Enums.CollectionStatus) ||
+        (parsedData.status as $Enums.CollectionStatus) ||
         $Enums.CollectionStatus.PENDING,
       tenantId: tenantId,
     },

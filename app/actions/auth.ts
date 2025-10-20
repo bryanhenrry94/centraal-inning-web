@@ -120,7 +120,7 @@ export async function createAccount(
           subdomain,
           countryCode: validatedData.company.country,
           contactEmail: validatedData.company.contactEmail,
-          isActive: false,
+          isActive: true,
           address: validatedData.company.address,
           numberOfEmployees: validatedData.company.numberOfEmployees,
           termsAccepted: validatedData.company.termsAccepted,

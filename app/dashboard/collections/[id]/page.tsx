@@ -214,101 +214,108 @@ const CollectionViewPage: React.FC = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <Button
-            variant="contained"
-            sx={{ mb: 2 }}
-            onClick={handleOpenModalPayment}
-          >
-            Nieuwe betaling
-          </Button>
-          <Modal
-            open={openModalPayment}
-            onClose={handleCloseModalPayment}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "background.paper",
-                borderRadius: 2,
-                boxShadow: 24,
-                p: 4,
-              }}
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{ mb: 2 }}
+              onClick={handleOpenModalPayment}
             >
-              <PaymentForm />
-            </Box>
-          </Modal>
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Betalingsdatum</TableCell>
-                  <TableCell align="right">Bedrag</TableCell>
-                  <TableCell align="right">Betaalmethode</TableCell>
-                  <TableCell align="right">Referentienummer</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {payments?.map((payment) => (
-                  <TableRow
-                    key={payment.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {new Date(payment.paymentDate).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(payment.amount)}
-                    </TableCell>
-                    <TableCell align="right">{payment.method}</TableCell>
-                    <TableCell align="right">
-                      {payment.referenceNumber || "N/A"}
-                    </TableCell>
+              Nieuwe betaling
+            </Button>
+            <Modal
+              open={openModalPayment}
+              onClose={handleCloseModalPayment}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  borderRadius: 2,
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <PaymentForm />
+              </Box>
+            </Modal>
+
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Betalingsdatum</TableCell>
+                    <TableCell align="right">Bedrag</TableCell>
+                    <TableCell align="right">Betaalmethode</TableCell>
+                    <TableCell align="right">Referentienummer</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {payments?.map((payment) => (
+                    <TableRow
+                      key={payment.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {new Date(payment.paymentDate).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell align="right">
+                        {formatCurrency(payment.amount)}
+                      </TableCell>
+                      <TableCell align="right">{payment.method}</TableCell>
+                      <TableCell align="right">
+                        {payment.referenceNumber || "N/A"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </TabPanel>
-        <TabPanel value={value} index={1}></TabPanel>
+        <TabPanel value={value} index={1}>
+          <Box sx={{ mt: 2 }}></Box>
+        </TabPanel>
         <TabPanel value={value} index={2}>
-          <Button
-            variant="contained"
-            sx={{ mb: 2 }}
-            onClick={handleSendNotification}
-          >
-            Send New Notification
-          </Button>
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Datum</TableCell>
-                  <TableCell align="right">Titel</TableCell>
-                  <TableCell align="right">Type</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {notifications?.map((notification) => (
-                  <TableRow
-                    key={notification.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {new Date(notification.createdAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell align="right">{notification.title}</TableCell>
-                    <TableCell align="right">{notification.type}</TableCell>
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{ mb: 2 }}
+              onClick={handleSendNotification}
+            >
+              Send New Notification
+            </Button>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Datum</TableCell>
+                    <TableCell align="right">Titel</TableCell>
+                    <TableCell align="right">Type</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {notifications?.map((notification) => (
+                    <TableRow
+                      key={notification.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {new Date(notification.createdAt).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell align="right">{notification.title}</TableCell>
+                      <TableCell align="right">{notification.type}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </TabPanel>
       </Container>
     </Container>

@@ -26,7 +26,7 @@ const Header = () => {
       signOut({
         redirect: false,
       });
-      router.push("/auth/login");
+      router.push("/");
       router.refresh();
       handleClose();
     };
