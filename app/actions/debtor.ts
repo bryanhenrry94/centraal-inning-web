@@ -8,6 +8,11 @@ import {
 } from "@/lib/validations/debtor";
 import { getUserByEmail } from "@/app/actions/user";
 import { roleEnum } from "@/prisma/generated/prisma";
+import puppeteer from "puppeteer";
+import renderTemplate from "@/common/utils/templateRenderer";
+import { getParameterById } from "./parameter";
+import FinancialService from "@/common/mail/services/financialService";
+import path from "path";
 
 export const getAllDebtorsByTenantId = async (
   tenantId: string
@@ -262,4 +267,99 @@ export const validaEmailDebtorUserExist = async (
     }
   }
   return false;
+};
+
+export const sendFinancialSummaryEmail = async (
+  debtorId: string
+): Promise<boolean> => {
+  try {
+    const debtor = await prisma.debtor.findUnique({
+      where: { id: debtorId },
+    });
+
+    if (!debtor) return false;
+
+    if (debtor.email) {
+      const debtorEmail = debtor.email;
+      const subject = `Financieel overzicht - ${new Date().getFullYear()}`;
+
+      const dataMail = {
+        recipientName: debtor?.fullname || "Dear User",
+        currentYear: new Date().getFullYear(),
+      };
+
+      const pdfBuffer = await generateFinancialReportPDF(debtorId);
+
+      if (pdfBuffer) {
+        // Guardar el PDF en una ruta temporal
+        const tempDir = path.join(process.cwd(), "tmp");
+        const fs = await import("fs/promises");
+        await fs.mkdir(tempDir, { recursive: true });
+        const tempFilePath = path.join(
+          tempDir,
+          `financieel_overzicht_${debtorId}.pdf`
+        );
+        await fs.writeFile(tempFilePath, pdfBuffer);
+
+        // Configurar el adjunto usando el archivo temporal
+        const attachmentConfig = {
+          filename: `financieel_overzicht_${debtorId}.pdf`,
+          pdfTemplatePath: tempFilePath,
+        };
+
+        if (attachmentConfig.pdfTemplatePath) {
+          await FinancialService.sendEmail(
+            debtorEmail,
+            subject,
+            dataMail,
+            attachmentConfig
+          );
+        }
+      } else {
+        await FinancialService.sendEmail(debtorEmail, subject, dataMail);
+      }
+
+      console.log("notificacion de debtor enviada al correo: ", debtorEmail);
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("Error sending mail notification:", error);
+    return false;
+  }
+};
+
+export const generateFinancialReportPDF = async (
+  id: string
+): Promise<Buffer> => {
+  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
+  const parameter = await getParameterById(PARAMETER_ID);
+  if (!parameter) {
+    throw new Error("No se encontró el parámetro");
+  }
+
+  const data = {
+    // aqui van los datos del reporte financiero
+  };
+
+  const html = renderTemplate("financial/financial-summary", {
+    ...data,
+    companyName: "Dazzsoft",
+  });
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    executablePath:
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", // Update this path if Chrome is installed elsewhere
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+  const page = await browser.newPage();
+  await page.setContent(html, { waitUntil: "networkidle0" });
+
+  const pdfBuffer = await page.pdf({ format: "A4" });
+
+  await browser.close();
+
+  return Buffer.from(pdfBuffer);
 };

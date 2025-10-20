@@ -4,12 +4,16 @@ import Link from "next/link";
 import { Box, Container, Stack, Button } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Modal from "@mui/material/Modal";
+import { sendFinancialSummaryEmail } from "@/app/actions/debtor";
+import { notifyInfo } from "@/lib/notifications";
+import PaymentCard from "@/components/financial-report/payment-card";
 
 export const Shortcut = () => {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [loading, setLoading] = React.useState(false);
 
   const items = [
     {
@@ -19,6 +23,21 @@ export const Shortcut = () => {
       price: 45.0,
     },
   ];
+
+  const handlePaymentSuccess = async () => {
+    try {
+      setLoading(true);
+      // Enviar el correo con el reporte financiero
+      await sendFinancialSummaryEmail("43f6aa9e-5ff2-49f3-ab15-c58c0c62f48e");
+      notifyInfo("Reporte financiero enviado por correo.");
+
+      handleClose();
+    } catch (error) {
+      console.error("Error sending financial report email:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Container
@@ -108,7 +127,7 @@ export const Shortcut = () => {
             p: 4,
           }}
         >
-          {/* <PaymentCard items={items} onSuccess={handlePaymentSuccess} /> */}
+          <PaymentCard items={items} onSuccess={handlePaymentSuccess} loading={loading} />
         </Box>
       </Modal>
     </Container>

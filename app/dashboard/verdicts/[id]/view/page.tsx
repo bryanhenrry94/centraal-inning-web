@@ -186,7 +186,7 @@ const VerdictPageView: React.FC = () => {
         await handleSendMailNotificationCreditor(id);
         notifyInfo("Notificación enviada al acreedor");
 
-        router.push(`/verdicts`);
+        router.push(`/dashboard/verdicts`);
       }
     });
   };

@@ -182,7 +182,7 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
           const newVerdict = await createVerdict(data, tenant?.id);
           if (newVerdict) {
             notifyInfo("Registratie is succesvol aangemaakt");
-            router.push(`/verdicts/${newVerdict.id}/edit`); // Redirect to the newly created verdict page
+            router.push(`/dashboard/verdicts/${newVerdict.id}/edit`); // Redirect to the newly created verdict page
           }
         }
       });
@@ -210,7 +210,7 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
         await handleSendMailNotificationBailiff(id);
         notifyInfo("We hebben een melding naar de deurwaarder gestuurd.");
 
-        router.push(`/verdicts`);
+        router.push(`/dashboard/verdicts`);
       }
     });
   };
