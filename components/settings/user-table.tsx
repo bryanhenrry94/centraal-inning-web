@@ -12,8 +12,6 @@ import {
   TableRow,
   Paper,
   CircularProgress,
-  Alert,
-  IconButton,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { AlertService } from "@/lib/alerts";
@@ -41,7 +39,6 @@ export default function UserTable({
     if (initialUsers.length === 0) {
       fetchUsers();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tenantId]);
 
   async function fetchUsers() {
