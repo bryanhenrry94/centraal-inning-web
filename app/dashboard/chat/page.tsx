@@ -1,4 +1,4 @@
-import ChatUI from "@/components/ui/chat-ui";
+import ChatUI from "@/components/chat";
 import React from "react";
 
 const RegisterPage: React.FC = () => {

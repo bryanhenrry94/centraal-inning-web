@@ -4,6 +4,7 @@ import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import ChatIcon from "@mui/icons-material/Chat";
 import { useTheme } from "@mui/material/styles";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,6 +33,12 @@ const menus: MenuItem[] = [
     label: "Vonnis",
     href: "/dashboard/verdicts",
     icon: <BarChartOutlinedIcon fontSize="small" />,
+    role: ["ADMIN"],
+  },
+  {
+    label: "Chat",
+    href: "/dashboard/chat",
+    icon: <ChatIcon fontSize="small" />,
     role: ["ADMIN"],
   },
   {

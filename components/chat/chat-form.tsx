@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { Box, Button, IconButton, TextField } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { socket } from "@/lib/socketClient";
+import { ISelectedRoom } from "./types";
 
 interface ChatFormProps {
     onSendMessage: (message: string) => void;

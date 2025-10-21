@@ -36,6 +36,7 @@ model Tenant {
   registry        TenantRegistry?
   verdicts        Verdict[]
   users           User[]
+  chatRooms       ChatRoom[]
 
   @@map("tenant")
 }
@@ -56,19 +57,20 @@ model TenantRegistry {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String    @db.VarChar(80)
-  passwordHash    String?   @db.VarChar(120)
-  fullname        String?   @db.VarChar(80)
-  phone           String?   @db.VarChar(25)
+  id              String        @id @default(uuid())
+  email           String        @db.VarChar(80)
+  passwordHash    String?       @db.VarChar(120)
+  fullname        String?       @db.VarChar(80)
+  phone           String?       @db.VarChar(25)
   tenantId        String
-  tenant          Tenant    @relation(fields: [tenantId], references: [id])
-  role            roleEnum  @default(ADMIN)
-  isActive        Boolean   @default(true)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  tenant          Tenant        @relation(fields: [tenantId], references: [id])
+  role            roleEnum      @default(ADMIN)
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
   debtors         Debtor[]
-  verdictBailiffs Verdict[] @relation("UserToVerdictBailiff")
+  verdictBailiffs Verdict[]     @relation("UserToVerdictBailiff")
+  messages        ChatMessage[]
 
   @@map("user")
 }
@@ -311,6 +313,7 @@ model CollectionCase {
   payments        Payment[]
   agreements      PaymentAgreement[]
   penalties       Penalty[]
+  chatRooms       ChatRoom[]
 
   @@map("collection_case")
 }
@@ -344,35 +347,20 @@ model Notification {
 }
 
 model Payment {
-  id               String         @id @default(cuid())
-  amount           Decimal        @db.Decimal(10, 2)
-  method           PaymentMethod
-  createdAt        DateTime       @default(now())
-  collectionCaseId String
-  paymentDate      DateTime
-  referenceNumber  String?
-  updatedAt        DateTime       @updatedAt
-  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])
+  id                 String            @id @default(cuid())
+  amount             Decimal           @db.Decimal(10, 2)
+  method             PaymentMethod
+  createdAt          DateTime          @default(now())
+  collectionCaseId   String
+  paymentDate        DateTime
+  referenceNumber    String?
+  updatedAt          DateTime          @updatedAt
+  collectionCase     CollectionCase    @relation(fields: [collectionCaseId], references: [id])
+  PaymentAgreement   PaymentAgreement? @relation(fields: [paymentAgreementId], references: [id])
+  paymentAgreementId String?
+  Installment        Installment[]
 
   @@map("payment")
-}
-
-model PaymentAgreement {
-  id                String          @id @default(cuid())
-  debtorId          String?
-  agreementDate     DateTime
-  status            AgreementStatus @default(ACTIVE)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  collectionCaseId  String
-  installmentAmount Decimal?        @db.Decimal(10, 2)
-  nextPaymentDate   DateTime?
-  notes             String?
-  totalInstallments Int?
-  collectionCase    CollectionCase  @relation(fields: [collectionCaseId], references: [id])
-  Debtor            Debtor?         @relation(fields: [debtorId], references: [id])
-
-  @@map("payment_agreement")
 }
 
 model Debtor {
@@ -401,6 +389,38 @@ model Debtor {
   @@map("debtor")
 }
 
+model ChatRoom {
+  id               String         @id @default(cuid())
+  tenantId         String
+  tenant           Tenant         @relation(fields: [tenantId], references: [id])
+  collectionCaseId String
+  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])
+  name             String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  messages         ChatMessage[]
+
+  @@map("chat_room")
+}
+
+model ChatMessage {
+  id     String   @id @default(cuid())
+  roomId String
+  room   ChatRoom @relation(fields: [roomId], references: [id])
+
+  senderId String
+  sender   User    @relation(fields: [senderId], references: [id])
+  message  String
+  fileUrl  String?
+  fileName String?
+
+  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("chat_message")
+}
+
 model DebtorIncome {
   id        String   @id @default(uuid())
   debtorId  String
@@ -411,6 +431,59 @@ model DebtorIncome {
   debtor    Debtor   @relation(fields: [debtorId], references: [id])
 
   @@map("debtor_incomes")
+}
+
+model PaymentAgreement {
+  id                String           @id @default(cuid())
+  collectionCaseId  String           @unique
+  totalAmount       Decimal          @db.Decimal(10, 2)
+  installmentAmount Decimal          @db.Decimal(10, 2)
+  installmentsCount Int
+  startDate         DateTime
+  status            AgreementStatus  @default(ACTIVE)
+  complianceStatus  ComplianceStatus @default(ON_TIME)
+
+  // Relaciones
+  collectionCase CollectionCase @relation(fields: [collectionCaseId], references: [id])
+  installments   Installment[]
+  payments       Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Debtor    Debtor?  @relation(fields: [debtorId], references: [id])
+  debtorId  String?
+
+  @@map("payment_agreement")
+}
+
+model Installment {
+  id                 String            @id @default(cuid())
+  paymentAgreementId String
+  number             Int
+  dueDate            DateTime
+  amount             Decimal           @db.Decimal(10, 2)
+  status             InstallmentStatus @default(PENDING)
+  paymentId          String? // si se pagó, relaciona con Payment
+
+  // Relaciones
+  paymentAgreement PaymentAgreement @relation(fields: [paymentAgreementId], references: [id])
+  payment          Payment?         @relation(fields: [paymentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("installment")
+}
+
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+enum ComplianceStatus {
+  ON_TIME // al día
+  OVERDUE // en mora
 }
 
 enum CalculationTypeEnum {

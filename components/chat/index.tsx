@@ -14,73 +14,22 @@ import {
   Avatar,
 } from "@mui/material";
 // components
-import ChatForm from "./ChatForm";
-import ChatMessage from "./ChatMessage";
-import TypingIndicator from "./TypingIndicator";
+import ChatForm from "./chat-form";
+import ChatMessage from "./chat-message";
+import TypingIndicator from "./typ-ing-indicator";
 // libs
 import { socket } from "@/lib/socketClient";
-// data types
-const InitialInvoices = [
-  {
-    id: "1",
-    invoiceNumber: "INV001",
-    debtorName: "Juan Pérez",
-    description: "Juan Pérez (INV001)",
-  },
-  {
-    id: "2",
-    invoiceNumber: "INV002",
-    debtorName: "María López",
-    description: "María López (INV002)",
-  },
-  {
-    id: "3",
-    invoiceNumber: "INV003",
-    debtorName: "Carlos García",
-    description: "Carlos García (INV003)",
-  },
-  {
-    id: "4",
-    invoiceNumber: "INV004",
-    debtorName: "Ana Martínez",
-    description: "Ana Martínez (INV004)",
-  },
-  {
-    id: "5",
-    invoiceNumber: "INV005",
-    debtorName: "Luis Fernández",
-    description: "Luis Fernández (INV005)",
-  },
-  {
-    id: "6",
-    invoiceNumber: "INV006",
-    debtorName: "Laura Sánchez",
-    description: "Laura Sánchez (INV006)",
-  },
-  {
-    id: "7",
-    invoiceNumber: "INV007",
-    debtorName: "Pedro Ramírez",
-    description: "Pedro Ramírez (INV007)",
-  },
-  {
-    id: "8",
-    invoiceNumber: "INV008",
-    debtorName: "Sofía Torres",
-    description: "Sofía Torres (INV008)",
-  },
-];
+import {
+  getAllChatRoomsByTenantId,
+  getMessagesByRoomId,
+  saveMessage,
+} from "@/app/actions/chat";
+import { useAuthSession } from "@/hooks/useAuthSession";
+import { ChatWindowProps, ISelectedRoom, Sender } from "./types";
+import { IChatMessage, IChatMessageCreate } from "@/lib/validations/chat";
 
-function ChatWindow({ room, fullname, email }: ChatWindowProps) {
-  const [messages, setMessages] = useState<
-    {
-      sender: string;
-      message: string;
-      fullname: string;
-      fileUrl?: string;
-      fileName?: string;
-    }[]
-  >([]);
+function ChatWindow({ room, sender }: ChatWindowProps) {
+  const [messages, setMessages] = useState<IChatMessageCreate[]>([]);
   const [typingMessage, setTypingMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -89,42 +38,87 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
   };
 
   useEffect(() => {
+    const loadMessagesForRoom = async (roomId: string) => {
+      socket.emit("load_messages", { room: roomId });
+
+      const messages = await getMessagesByRoomId(roomId);
+      setMessages(
+        messages.map((msg) => ({
+          roomId: msg.roomId,
+          senderId: msg.senderId,
+          message: msg.message,
+          fileUrl: msg.fileUrl,
+          fileName: msg.fileName,
+        }))
+      );
+    };
+
     // Limpia los mensajes al cambiar de sala
     setMessages([]);
+    loadMessagesForRoom(room.id);
 
-    console.log(`fullname: ${fullname}`);
-    console.log(`email: ${email}`);
+    console.log(`sender: ${sender.fullname}`);
+    console.log(`email: ${sender.email}`);
     console.log(`room: ${room.id}`);
 
-    socket.emit("join-room", { room: room.id, fullname, email });
+    socket.emit("join-room", { room: room.id, sender: sender.fullname });
+
+    // helper to ensure incoming data matches IChatMessage shape
+    const normalizeToChatMessage = (d: any): IChatMessage => {
+      return {
+        id: d.id ?? `${Date.now()}_${Math.random()}`,
+        roomId: d.roomId ?? room.id,
+        senderId: d.senderId ?? d.sender ?? "",
+        message: d.message ?? "",
+        fileUrl: d.fileUrl ?? null,
+        fileName: d.fileName ?? null,
+        timestamp: d.timestamp
+          ? new Date(d.timestamp)
+          : d.createdAt
+          ? new Date(d.createdAt)
+          : new Date(),
+        createdAt: d.createdAt ? new Date(d.createdAt) : new Date(),
+        updatedAt: d.updatedAt ? new Date(d.updatedAt) : new Date(),
+      };
+    };
 
     socket.on("message", (data) => {
-      setMessages((prev) => [...prev, data]);
+      setMessages((prev) => [...prev, normalizeToChatMessage(data)]);
     });
 
-    socket.on("user_joined", ({ message, fullname, email }) => {
+    socket.on("user_joined", ({ message }) => {
       setMessages((prev) => [
         ...prev,
-        { sender: "System", message, fullname, email },
+        normalizeToChatMessage({
+          message,
+          createdAt: new Date(),
+          // minimal fields to satisfy IChatMessage
+          id: `${Date.now()}_join`,
+        }),
       ]);
     });
 
     socket.on("message_history", (history) => {
       console.log("history", history);
-      setMessages(history);
+      if (Array.isArray(history)) {
+        setMessages(history.map((h: any) => normalizeToChatMessage(h)));
+      } else {
+        // fallback: if history is a single item
+        setMessages((prev) => [...prev, normalizeToChatMessage(history)]);
+      }
     });
 
-    socket.on("file", ({ sender, fileName, fileUrl, fullname, email }) => {
+    socket.on("file", ({ sender, fileName, fileUrl }) => {
       setMessages((prev) => [
         ...prev,
-        {
+        normalizeToChatMessage({
           sender,
-          message: `Archivo: ${fileName}`,
+          senderId: typeof sender === "string" ? sender : sender?.id ?? "",
           fileUrl,
-          fullname,
           fileName,
-          email,
-        },
+          message: `Archivo: ${fileName}`,
+          createdAt: new Date(),
+        }),
       ]);
     });
 
@@ -144,7 +138,7 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
       socket.off("user_typing");
       socket.off("user_stop_typing");
     };
-  }, [room.id, fullname, email]); // Dependencia de `room` para ejecutar este efecto al cambiar de sala
+  }, [room.id, sender.fullname, sender.email]); // Dependencia de `room` para ejecutar este efecto al cambiar de sala
 
   useEffect(() => {
     scrollToBottom();
@@ -154,41 +148,54 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
     const reader = new FileReader();
     reader.onload = () => {
       const fileData = {
-        sender: email,
+        roomId: room.id,
+        senderId: sender.id,
         fileName: file.name,
         fileUrl: reader.result,
-        fullname,
-        room: room.id,
-        email,
       };
+
       socket.emit("file", fileData);
       setMessages((prev) => [
         ...prev,
         {
-          sender: email,
+          roomId: room.id,
+          senderId: sender.id,
           message: `Archivo: ${file.name}`,
           fileUrl: reader.result as string,
-          fullname,
-          email,
           fileName: file.name,
         },
       ]);
+
+      saveMessage({
+        roomId: room.id,
+        senderId: sender.id,
+        message: `Archivo: ${file.name}`,
+        fileUrl: reader.result as string,
+        fileName: file.name,
+      });
     };
     reader.readAsDataURL(file);
   };
 
   const handleMessage = (message: string) => {
-    const data = {
-      room: room.id,
+    const data: IChatMessageCreate = {
+      roomId: room.id,
+      senderId: sender?.id,
       message,
-      sender: email,
-      email,
-      fullname,
     };
     setMessages((prev) => [
       ...prev,
-      { sender: email, message, fullname, email },
+      {
+        roomId: room.id,
+        senderId: sender.id,
+        message,
+        fullname: sender.fullname,
+        email: sender.email,
+        fileUrl: null,
+        fileName: null,
+      },
     ]);
+    saveMessage(data);
     socket.emit("message", data);
     socket.emit("stop_typing", { room: room.id });
   };
@@ -214,7 +221,7 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
           borderTopRightRadius: "8px",
         }}
       >
-        <Typography variant="h6">Sala: {room.description}</Typography>
+        <Typography variant="h6">Sala: {room.name}</Typography>
       </Box>
 
       <Box
@@ -228,12 +235,12 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
-            sender={message.sender}
-            fullname={message.fullname}
+            sender={message.senderId}
+            fullname={sender?.fullname || "Usuario"}
             message={message.message}
-            isOwnMessage={message.sender === email}
-            fileUrl={message.fileUrl}
-            fileName={message.fileName}
+            isOwnMessage={message.senderId === sender?.id}
+            fileUrl={message.fileUrl ?? ""}
+            fileName={message.fileName ?? ""}
           />
         ))}
         <div ref={messagesEndRef} />
@@ -251,7 +258,7 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
         <ChatForm
           onSendMessage={handleMessage}
           onSendFile={handleFileUpload}
-          fullname={fullname || "Usuario"}
+          fullname={sender?.fullname || "Usuario"}
           room={room}
         />
       </Box>
@@ -260,24 +267,44 @@ function ChatWindow({ room, fullname, email }: ChatWindowProps) {
 }
 
 export default function ChatUI() {
-  // const user = useSelector((state: AppState) => state.user);
+  const { user } = useAuthSession();
+  const [sender, setSender] = useState<Sender>({
+    id: user?.id || "",
+    fullname: user?.name || "Nombre no disponible",
+    email: user?.email || "Email no disponible",
+  });
 
   const [rooms, setRooms] = useState<
     {
       id: string;
-      invoiceNumber: string;
-      debtorName: string;
-      description: string;
+      name: string;
     }[]
   >([]);
 
   useEffect(() => {
+    setSender({
+      id: user?.id || "",
+      fullname: user?.name || "Nombre no disponible",
+      email: user?.email || "Email no disponible",
+    });
+  }, [user]);
+
+  useEffect(() => {
     // Simula la obtención de las salas desde datos locales
-
-    const formattedRooms = InitialInvoices;
-
-    setRooms(formattedRooms);
+    fetchChatRooms();
   }, []);
+
+  const fetchChatRooms = async () => {
+    const data = await getAllChatRoomsByTenantId(
+      "8ee10d9e-8591-4216-abf5-50f310fb61d4"
+    );
+    console.log("Chat rooms fetched:", data);
+    const formattedRooms = data.map((room: any) => ({
+      id: room.id,
+      name: room.name,
+    }));
+    setRooms(formattedRooms);
+  };
 
   const [selectedRoom, setSelectedRoom] = useState<ISelectedRoom>();
 
@@ -322,11 +349,11 @@ export default function ChatUI() {
               const searchTerm = e.target.value.toLowerCase();
               if (searchTerm === "") {
                 // Reset rooms to the original list when the search term is empty
-                setRooms(InitialInvoices);
+                setRooms(rooms);
               } else {
                 setRooms((prevRooms) =>
                   prevRooms.filter((room) =>
-                    room.description.toLowerCase().includes(searchTerm)
+                    room.name.toLowerCase().includes(searchTerm)
                   )
                 );
               }
@@ -341,7 +368,7 @@ export default function ChatUI() {
                 onClick={() =>
                   setSelectedRoom({
                     id: room.id,
-                    description: room.description,
+                    name: room.name,
                   })
                 }
               >
@@ -354,16 +381,15 @@ export default function ChatUI() {
                   }}
                 >
                   <Typography variant="caption" sx={{ fontSize: "0.90rem" }}>
-                    {room.debtorName.charAt(0).toUpperCase()}
+                    {room?.name.charAt(0).toUpperCase()}
                   </Typography>
                 </Avatar>
-                <ListItemText primary={room.description} />
+                <ListItemText primary={room.name} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Paper>
-
       <Paper
         elevation={3}
         sx={{
@@ -374,13 +400,7 @@ export default function ChatUI() {
         }}
       >
         {selectedRoom ? (
-          <ChatWindow
-            room={selectedRoom}
-            email={""} // user?.email || "
-            fullname=""
-            // fullname={user?.fullname || "Usuario"}
-            // email={user?.email || "Email"}
-          />
+          <ChatWindow room={selectedRoom} sender={sender} />
         ) : (
           <Box
             sx={{

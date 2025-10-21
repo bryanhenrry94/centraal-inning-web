@@ -31,6 +31,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CollectionForm from "./collection-form";
 import EditIcon from "@mui/icons-material/Edit";
+import ChatIcon from "@mui/icons-material/Chat";
 import { formatCurrency, formatDate } from "@/common/utils/general";
 
 const CollectionTable = () => {
@@ -268,6 +269,7 @@ const CollectionTable = () => {
               >
                 Te ontvangen
               </TableCell>
+
               <TableCell
                 sx={{
                   minWidth: 50,

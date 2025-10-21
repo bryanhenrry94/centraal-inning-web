@@ -383,21 +383,8 @@ exports.Prisma.PaymentScalarFieldEnum = {
   collectionCaseId: 'collectionCaseId',
   paymentDate: 'paymentDate',
   referenceNumber: 'referenceNumber',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.PaymentAgreementScalarFieldEnum = {
-  id: 'id',
-  debtorId: 'debtorId',
-  agreementDate: 'agreementDate',
-  status: 'status',
-  createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  collectionCaseId: 'collectionCaseId',
-  installmentAmount: 'installmentAmount',
-  nextPaymentDate: 'nextPaymentDate',
-  notes: 'notes',
-  totalInstallments: 'totalInstallments'
+  paymentAgreementId: 'paymentAgreementId'
 };
 
 exports.Prisma.DebtorScalarFieldEnum = {
@@ -416,11 +403,58 @@ exports.Prisma.DebtorScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ChatRoomScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  collectionCaseId: 'collectionCaseId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  roomId: 'roomId',
+  senderId: 'senderId',
+  message: 'message',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  timestamp: 'timestamp',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.DebtorIncomeScalarFieldEnum = {
   id: 'id',
   debtorId: 'debtorId',
   amount: 'amount',
   source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentAgreementScalarFieldEnum = {
+  id: 'id',
+  collectionCaseId: 'collectionCaseId',
+  totalAmount: 'totalAmount',
+  installmentAmount: 'installmentAmount',
+  installmentsCount: 'installmentsCount',
+  startDate: 'startDate',
+  status: 'status',
+  complianceStatus: 'complianceStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  debtorId: 'debtorId'
+};
+
+exports.Prisma.InstallmentScalarFieldEnum = {
+  id: 'id',
+  paymentAgreementId: 'paymentAgreementId',
+  number: 'number',
+  dueDate: 'dueDate',
+  amount: 'amount',
+  status: 'status',
+  paymentId: 'paymentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -481,12 +515,6 @@ exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   OTHER: 'OTHER'
 };
 
-exports.AgreementStatus = exports.$Enums.AgreementStatus = {
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
-};
-
 exports.IdentificationType = exports.$Enums.IdentificationType = {
   DNI: 'DNI',
   PASSPORT: 'PASSPORT',
@@ -494,6 +522,23 @@ exports.IdentificationType = exports.$Enums.IdentificationType = {
   CIF: 'CIF',
   KVK: 'KVK',
   OTHER: 'OTHER'
+};
+
+exports.AgreementStatus = exports.$Enums.AgreementStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ComplianceStatus = exports.$Enums.ComplianceStatus = {
+  ON_TIME: 'ON_TIME',
+  OVERDUE: 'OVERDUE'
+};
+
+exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE'
 };
 
 exports.Prisma.ModelName = {
@@ -517,9 +562,12 @@ exports.Prisma.ModelName = {
   Penalty: 'Penalty',
   Notification: 'Notification',
   Payment: 'Payment',
-  PaymentAgreement: 'PaymentAgreement',
   Debtor: 'Debtor',
-  DebtorIncome: 'DebtorIncome'
+  ChatRoom: 'ChatRoom',
+  ChatMessage: 'ChatMessage',
+  DebtorIncome: 'DebtorIncome',
+  PaymentAgreement: 'PaymentAgreement',
+  Installment: 'Installment'
 };
 
 /**

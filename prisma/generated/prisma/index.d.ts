@@ -114,26 +114,58 @@ export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
  */
 export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
 /**
- * Model PaymentAgreement
- * 
- */
-export type PaymentAgreement = $Result.DefaultSelection<Prisma.$PaymentAgreementPayload>
-/**
  * Model Debtor
  * 
  */
 export type Debtor = $Result.DefaultSelection<Prisma.$DebtorPayload>
 /**
+ * Model ChatRoom
+ * 
+ */
+export type ChatRoom = $Result.DefaultSelection<Prisma.$ChatRoomPayload>
+/**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = $Result.DefaultSelection<Prisma.$ChatMessagePayload>
+/**
  * Model DebtorIncome
  * 
  */
 export type DebtorIncome = $Result.DefaultSelection<Prisma.$DebtorIncomePayload>
+/**
+ * Model PaymentAgreement
+ * 
+ */
+export type PaymentAgreement = $Result.DefaultSelection<Prisma.$PaymentAgreementPayload>
+/**
+ * Model Installment
+ * 
+ */
+export type Installment = $Result.DefaultSelection<Prisma.$InstallmentPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const CalculationTypeEnum: {
+  export const InstallmentStatus: {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE'
+};
+
+export type InstallmentStatus = (typeof InstallmentStatus)[keyof typeof InstallmentStatus]
+
+
+export const ComplianceStatus: {
+  ON_TIME: 'ON_TIME',
+  OVERDUE: 'OVERDUE'
+};
+
+export type ComplianceStatus = (typeof ComplianceStatus)[keyof typeof ComplianceStatus]
+
+
+export const CalculationTypeEnum: {
   FIXED: 'FIXED',
   VARIABLE: 'VARIABLE'
 };
@@ -214,6 +246,14 @@ export const CollectionStatus: {
 export type CollectionStatus = (typeof CollectionStatus)[keyof typeof CollectionStatus]
 
 }
+
+export type InstallmentStatus = $Enums.InstallmentStatus
+
+export const InstallmentStatus: typeof $Enums.InstallmentStatus
+
+export type ComplianceStatus = $Enums.ComplianceStatus
+
+export const ComplianceStatus: typeof $Enums.ComplianceStatus
 
 export type CalculationTypeEnum = $Enums.CalculationTypeEnum
 
@@ -566,16 +606,6 @@ export class PrismaClient<
   get payment(): Prisma.PaymentDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.paymentAgreement`: Exposes CRUD operations for the **PaymentAgreement** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more PaymentAgreements
-    * const paymentAgreements = await prisma.paymentAgreement.findMany()
-    * ```
-    */
-  get paymentAgreement(): Prisma.PaymentAgreementDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.debtor`: Exposes CRUD operations for the **Debtor** model.
     * Example usage:
     * ```ts
@@ -586,6 +616,26 @@ export class PrismaClient<
   get debtor(): Prisma.DebtorDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.chatRoom`: Exposes CRUD operations for the **ChatRoom** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatRooms
+    * const chatRooms = await prisma.chatRoom.findMany()
+    * ```
+    */
+  get chatRoom(): Prisma.ChatRoomDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.chatMessage`: Exposes CRUD operations for the **ChatMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatMessages
+    * const chatMessages = await prisma.chatMessage.findMany()
+    * ```
+    */
+  get chatMessage(): Prisma.ChatMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.debtorIncome`: Exposes CRUD operations for the **DebtorIncome** model.
     * Example usage:
     * ```ts
@@ -594,6 +644,26 @@ export class PrismaClient<
     * ```
     */
   get debtorIncome(): Prisma.DebtorIncomeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.paymentAgreement`: Exposes CRUD operations for the **PaymentAgreement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentAgreements
+    * const paymentAgreements = await prisma.paymentAgreement.findMany()
+    * ```
+    */
+  get paymentAgreement(): Prisma.PaymentAgreementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.installment`: Exposes CRUD operations for the **Installment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Installments
+    * const installments = await prisma.installment.findMany()
+    * ```
+    */
+  get installment(): Prisma.InstallmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1054,9 +1124,12 @@ export namespace Prisma {
     Penalty: 'Penalty',
     Notification: 'Notification',
     Payment: 'Payment',
-    PaymentAgreement: 'PaymentAgreement',
     Debtor: 'Debtor',
-    DebtorIncome: 'DebtorIncome'
+    ChatRoom: 'ChatRoom',
+    ChatMessage: 'ChatMessage',
+    DebtorIncome: 'DebtorIncome',
+    PaymentAgreement: 'PaymentAgreement',
+    Installment: 'Installment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1075,7 +1148,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "tenantRegistry" | "user" | "parameter" | "verdict" | "verdictInterest" | "verdictInterestDetails" | "verdictEmbargo" | "verdictBailiffServices" | "verdictAttachment" | "interestType" | "interestDetail" | "billingInvoice" | "billingInvoiceDetail" | "billingPayment" | "plan" | "collectionCase" | "penalty" | "notification" | "payment" | "paymentAgreement" | "debtor" | "debtorIncome"
+      modelProps: "tenant" | "tenantRegistry" | "user" | "parameter" | "verdict" | "verdictInterest" | "verdictInterestDetails" | "verdictEmbargo" | "verdictBailiffServices" | "verdictAttachment" | "interestType" | "interestDetail" | "billingInvoice" | "billingInvoiceDetail" | "billingPayment" | "plan" | "collectionCase" | "penalty" | "notification" | "payment" | "debtor" | "chatRoom" | "chatMessage" | "debtorIncome" | "paymentAgreement" | "installment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2559,80 +2632,6 @@ export namespace Prisma {
           }
         }
       }
-      PaymentAgreement: {
-        payload: Prisma.$PaymentAgreementPayload<ExtArgs>
-        fields: Prisma.PaymentAgreementFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.PaymentAgreementFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.PaymentAgreementFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          findFirst: {
-            args: Prisma.PaymentAgreementFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.PaymentAgreementFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          findMany: {
-            args: Prisma.PaymentAgreementFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
-          }
-          create: {
-            args: Prisma.PaymentAgreementCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          createMany: {
-            args: Prisma.PaymentAgreementCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.PaymentAgreementCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
-          }
-          delete: {
-            args: Prisma.PaymentAgreementDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          update: {
-            args: Prisma.PaymentAgreementUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          deleteMany: {
-            args: Prisma.PaymentAgreementDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.PaymentAgreementUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.PaymentAgreementUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
-          }
-          upsert: {
-            args: Prisma.PaymentAgreementUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
-          }
-          aggregate: {
-            args: Prisma.PaymentAgreementAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePaymentAgreement>
-          }
-          groupBy: {
-            args: Prisma.PaymentAgreementGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PaymentAgreementGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.PaymentAgreementCountArgs<ExtArgs>
-            result: $Utils.Optional<PaymentAgreementCountAggregateOutputType> | number
-          }
-        }
-      }
       Debtor: {
         payload: Prisma.$DebtorPayload<ExtArgs>
         fields: Prisma.DebtorFieldRefs
@@ -2707,6 +2706,154 @@ export namespace Prisma {
           }
         }
       }
+      ChatRoom: {
+        payload: Prisma.$ChatRoomPayload<ExtArgs>
+        fields: Prisma.ChatRoomFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatRoomFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatRoomFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          findFirst: {
+            args: Prisma.ChatRoomFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatRoomFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          findMany: {
+            args: Prisma.ChatRoomFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>[]
+          }
+          create: {
+            args: Prisma.ChatRoomCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          createMany: {
+            args: Prisma.ChatRoomCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatRoomCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>[]
+          }
+          delete: {
+            args: Prisma.ChatRoomDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          update: {
+            args: Prisma.ChatRoomUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatRoomDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatRoomUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChatRoomUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>[]
+          }
+          upsert: {
+            args: Prisma.ChatRoomUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+          }
+          aggregate: {
+            args: Prisma.ChatRoomAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatRoom>
+          }
+          groupBy: {
+            args: Prisma.ChatRoomGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatRoomGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatRoomCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatRoomCountAggregateOutputType> | number
+          }
+        }
+      }
+      ChatMessage: {
+        payload: Prisma.$ChatMessagePayload<ExtArgs>
+        fields: Prisma.ChatMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.ChatMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findMany: {
+            args: Prisma.ChatMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          create: {
+            args: Prisma.ChatMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          createMany: {
+            args: Prisma.ChatMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.ChatMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          update: {
+            args: Prisma.ChatMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChatMessageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          upsert: {
+            args: Prisma.ChatMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.ChatMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatMessage>
+          }
+          groupBy: {
+            args: Prisma.ChatMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageCountAggregateOutputType> | number
+          }
+        }
+      }
       DebtorIncome: {
         payload: Prisma.$DebtorIncomePayload<ExtArgs>
         fields: Prisma.DebtorIncomeFieldRefs
@@ -2778,6 +2925,154 @@ export namespace Prisma {
           count: {
             args: Prisma.DebtorIncomeCountArgs<ExtArgs>
             result: $Utils.Optional<DebtorIncomeCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaymentAgreement: {
+        payload: Prisma.$PaymentAgreementPayload<ExtArgs>
+        fields: Prisma.PaymentAgreementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentAgreementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentAgreementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentAgreementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentAgreementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentAgreementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentAgreementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentAgreementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaymentAgreementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
+          }
+          delete: {
+            args: Prisma.PaymentAgreementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          update: {
+            args: Prisma.PaymentAgreementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentAgreementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentAgreementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaymentAgreementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>[]
+          }
+          upsert: {
+            args: Prisma.PaymentAgreementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentAgreementPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentAgreementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentAgreement>
+          }
+          groupBy: {
+            args: Prisma.PaymentAgreementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentAgreementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentAgreementCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentAgreementCountAggregateOutputType> | number
+          }
+        }
+      }
+      Installment: {
+        payload: Prisma.$InstallmentPayload<ExtArgs>
+        fields: Prisma.InstallmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InstallmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InstallmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          findFirst: {
+            args: Prisma.InstallmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InstallmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          findMany: {
+            args: Prisma.InstallmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>[]
+          }
+          create: {
+            args: Prisma.InstallmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          createMany: {
+            args: Prisma.InstallmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InstallmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>[]
+          }
+          delete: {
+            args: Prisma.InstallmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          update: {
+            args: Prisma.InstallmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.InstallmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InstallmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InstallmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.InstallmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InstallmentPayload>
+          }
+          aggregate: {
+            args: Prisma.InstallmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInstallment>
+          }
+          groupBy: {
+            args: Prisma.InstallmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InstallmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InstallmentCountArgs<ExtArgs>
+            result: $Utils.Optional<InstallmentCountAggregateOutputType> | number
           }
         }
       }
@@ -2897,9 +3192,12 @@ export namespace Prisma {
     penalty?: PenaltyOmit
     notification?: NotificationOmit
     payment?: PaymentOmit
-    paymentAgreement?: PaymentAgreementOmit
     debtor?: DebtorOmit
+    chatRoom?: ChatRoomOmit
+    chatMessage?: ChatMessageOmit
     debtorIncome?: DebtorIncomeOmit
+    paymentAgreement?: PaymentAgreementOmit
+    installment?: InstallmentOmit
   }
 
   /* Types for Logging */
@@ -2985,6 +3283,7 @@ export namespace Prisma {
     debtors: number
     verdicts: number
     users: number
+    chatRooms: number
   }
 
   export type TenantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2993,6 +3292,7 @@ export namespace Prisma {
     debtors?: boolean | TenantCountOutputTypeCountDebtorsArgs
     verdicts?: boolean | TenantCountOutputTypeCountVerdictsArgs
     users?: boolean | TenantCountOutputTypeCountUsersArgs
+    chatRooms?: boolean | TenantCountOutputTypeCountChatRoomsArgs
   }
 
   // Custom InputTypes
@@ -3041,6 +3341,13 @@ export namespace Prisma {
     where?: UserWhereInput
   }
 
+  /**
+   * TenantCountOutputType without action
+   */
+  export type TenantCountOutputTypeCountChatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatRoomWhereInput
+  }
+
 
   /**
    * Count Type UserCountOutputType
@@ -3049,11 +3356,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     debtors: number
     verdictBailiffs: number
+    messages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     debtors?: boolean | UserCountOutputTypeCountDebtorsArgs
     verdictBailiffs?: boolean | UserCountOutputTypeCountVerdictBailiffsArgs
+    messages?: boolean | UserCountOutputTypeCountMessagesArgs
   }
 
   // Custom InputTypes
@@ -3079,6 +3388,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountVerdictBailiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VerdictWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
   }
 
 
@@ -3282,6 +3598,7 @@ export namespace Prisma {
     payments: number
     agreements: number
     penalties: number
+    chatRooms: number
   }
 
   export type CollectionCaseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3289,6 +3606,7 @@ export namespace Prisma {
     payments?: boolean | CollectionCaseCountOutputTypeCountPaymentsArgs
     agreements?: boolean | CollectionCaseCountOutputTypeCountAgreementsArgs
     penalties?: boolean | CollectionCaseCountOutputTypeCountPenaltiesArgs
+    chatRooms?: boolean | CollectionCaseCountOutputTypeCountChatRoomsArgs
   }
 
   // Custom InputTypes
@@ -3328,6 +3646,44 @@ export namespace Prisma {
    */
   export type CollectionCaseCountOutputTypeCountPenaltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PenaltyWhereInput
+  }
+
+  /**
+   * CollectionCaseCountOutputType without action
+   */
+  export type CollectionCaseCountOutputTypeCountChatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatRoomWhereInput
+  }
+
+
+  /**
+   * Count Type PaymentCountOutputType
+   */
+
+  export type PaymentCountOutputType = {
+    Installment: number
+  }
+
+  export type PaymentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Installment?: boolean | PaymentCountOutputTypeCountInstallmentArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PaymentCountOutputType without action
+   */
+  export type PaymentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentCountOutputType
+     */
+    select?: PaymentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaymentCountOutputType without action
+   */
+  export type PaymentCountOutputTypeCountInstallmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InstallmentWhereInput
   }
 
 
@@ -3386,6 +3742,77 @@ export namespace Prisma {
    */
   export type DebtorCountOutputTypeCountVerdictsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VerdictWhereInput
+  }
+
+
+  /**
+   * Count Type ChatRoomCountOutputType
+   */
+
+  export type ChatRoomCountOutputType = {
+    messages: number
+  }
+
+  export type ChatRoomCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    messages?: boolean | ChatRoomCountOutputTypeCountMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ChatRoomCountOutputType without action
+   */
+  export type ChatRoomCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoomCountOutputType
+     */
+    select?: ChatRoomCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ChatRoomCountOutputType without action
+   */
+  export type ChatRoomCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
+  }
+
+
+  /**
+   * Count Type PaymentAgreementCountOutputType
+   */
+
+  export type PaymentAgreementCountOutputType = {
+    installments: number
+    payments: number
+  }
+
+  export type PaymentAgreementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    installments?: boolean | PaymentAgreementCountOutputTypeCountInstallmentsArgs
+    payments?: boolean | PaymentAgreementCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PaymentAgreementCountOutputType without action
+   */
+  export type PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreementCountOutputType
+     */
+    select?: PaymentAgreementCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaymentAgreementCountOutputType without action
+   */
+  export type PaymentAgreementCountOutputTypeCountInstallmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InstallmentWhereInput
+  }
+
+  /**
+   * PaymentAgreementCountOutputType without action
+   */
+  export type PaymentAgreementCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
   }
 
 
@@ -3702,6 +4129,7 @@ export namespace Prisma {
     registry?: boolean | Tenant$registryArgs<ExtArgs>
     verdicts?: boolean | Tenant$verdictsArgs<ExtArgs>
     users?: boolean | Tenant$usersArgs<ExtArgs>
+    chatRooms?: boolean | Tenant$chatRoomsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenant"]>
 
@@ -3779,6 +4207,7 @@ export namespace Prisma {
     registry?: boolean | Tenant$registryArgs<ExtArgs>
     verdicts?: boolean | Tenant$verdictsArgs<ExtArgs>
     users?: boolean | Tenant$usersArgs<ExtArgs>
+    chatRooms?: boolean | Tenant$chatRoomsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TenantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3798,6 +4227,7 @@ export namespace Prisma {
       registry: Prisma.$TenantRegistryPayload<ExtArgs> | null
       verdicts: Prisma.$VerdictPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
+      chatRooms: Prisma.$ChatRoomPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4219,6 +4649,7 @@ export namespace Prisma {
     registry<T extends Tenant$registryArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$registryArgs<ExtArgs>>): Prisma__TenantRegistryClient<$Result.GetResult<Prisma.$TenantRegistryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     verdicts<T extends Tenant$verdictsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$verdictsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerdictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Tenant$usersArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chatRooms<T extends Tenant$chatRoomsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$chatRoomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4817,6 +5248,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Tenant.chatRooms
+   */
+  export type Tenant$chatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    where?: ChatRoomWhereInput
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    cursor?: ChatRoomWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
   }
 
   /**
@@ -6155,6 +6610,7 @@ export namespace Prisma {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     debtors?: boolean | User$debtorsArgs<ExtArgs>
     verdictBailiffs?: boolean | User$verdictBailiffsArgs<ExtArgs>
+    messages?: boolean | User$messagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6204,6 +6660,7 @@ export namespace Prisma {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     debtors?: boolean | User$debtorsArgs<ExtArgs>
     verdictBailiffs?: boolean | User$verdictBailiffsArgs<ExtArgs>
+    messages?: boolean | User$messagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6219,6 +6676,7 @@ export namespace Prisma {
       tenant: Prisma.$TenantPayload<ExtArgs>
       debtors: Prisma.$DebtorPayload<ExtArgs>[]
       verdictBailiffs: Prisma.$VerdictPayload<ExtArgs>[]
+      messages: Prisma.$ChatMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6628,6 +7086,7 @@ export namespace Prisma {
     tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     debtors<T extends User$debtorsArgs<ExtArgs> = {}>(args?: Subset<T, User$debtorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     verdictBailiffs<T extends User$verdictBailiffsArgs<ExtArgs> = {}>(args?: Subset<T, User$verdictBailiffsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerdictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7108,6 +7567,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VerdictScalarFieldEnum | VerdictScalarFieldEnum[]
+  }
+
+  /**
+   * User.messages
+   */
+  export type User$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    cursor?: ChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
   }
 
   /**
@@ -22884,6 +23367,7 @@ export namespace Prisma {
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
     agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
     penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
+    chatRooms?: boolean | CollectionCase$chatRoomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collectionCase"]>
 
@@ -22944,6 +23428,7 @@ export namespace Prisma {
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
     agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
     penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
+    chatRooms?: boolean | CollectionCase$chatRoomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CollectionCaseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22964,6 +23449,7 @@ export namespace Prisma {
       payments: Prisma.$PaymentPayload<ExtArgs>[]
       agreements: Prisma.$PaymentAgreementPayload<ExtArgs>[]
       penalties: Prisma.$PenaltyPayload<ExtArgs>[]
+      chatRooms: Prisma.$ChatRoomPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23378,6 +23864,7 @@ export namespace Prisma {
     payments<T extends CollectionCase$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agreements<T extends CollectionCase$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     penalties<T extends CollectionCase$penaltiesArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$penaltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PenaltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chatRooms<T extends CollectionCase$chatRoomsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$chatRoomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23908,6 +24395,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PenaltyScalarFieldEnum | PenaltyScalarFieldEnum[]
+  }
+
+  /**
+   * CollectionCase.chatRooms
+   */
+  export type CollectionCase$chatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    where?: ChatRoomWhereInput
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    cursor?: ChatRoomWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
   }
 
   /**
@@ -26186,6 +26697,7 @@ export namespace Prisma {
     paymentDate: Date | null
     referenceNumber: string | null
     updatedAt: Date | null
+    paymentAgreementId: string | null
   }
 
   export type PaymentMaxAggregateOutputType = {
@@ -26197,6 +26709,7 @@ export namespace Prisma {
     paymentDate: Date | null
     referenceNumber: string | null
     updatedAt: Date | null
+    paymentAgreementId: string | null
   }
 
   export type PaymentCountAggregateOutputType = {
@@ -26208,6 +26721,7 @@ export namespace Prisma {
     paymentDate: number
     referenceNumber: number
     updatedAt: number
+    paymentAgreementId: number
     _all: number
   }
 
@@ -26229,6 +26743,7 @@ export namespace Prisma {
     paymentDate?: true
     referenceNumber?: true
     updatedAt?: true
+    paymentAgreementId?: true
   }
 
   export type PaymentMaxAggregateInputType = {
@@ -26240,6 +26755,7 @@ export namespace Prisma {
     paymentDate?: true
     referenceNumber?: true
     updatedAt?: true
+    paymentAgreementId?: true
   }
 
   export type PaymentCountAggregateInputType = {
@@ -26251,6 +26767,7 @@ export namespace Prisma {
     paymentDate?: true
     referenceNumber?: true
     updatedAt?: true
+    paymentAgreementId?: true
     _all?: true
   }
 
@@ -26349,6 +26866,7 @@ export namespace Prisma {
     paymentDate: Date
     referenceNumber: string | null
     updatedAt: Date
+    paymentAgreementId: string | null
     _count: PaymentCountAggregateOutputType | null
     _avg: PaymentAvgAggregateOutputType | null
     _sum: PaymentSumAggregateOutputType | null
@@ -26379,7 +26897,11 @@ export namespace Prisma {
     paymentDate?: boolean
     referenceNumber?: boolean
     updatedAt?: boolean
+    paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    Installment?: boolean | Payment$InstallmentArgs<ExtArgs>
+    _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -26391,7 +26913,9 @@ export namespace Prisma {
     paymentDate?: boolean
     referenceNumber?: boolean
     updatedAt?: boolean
+    paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -26403,7 +26927,9 @@ export namespace Prisma {
     paymentDate?: boolean
     referenceNumber?: boolean
     updatedAt?: boolean
+    paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectScalar = {
@@ -26415,23 +26941,31 @@ export namespace Prisma {
     paymentDate?: boolean
     referenceNumber?: boolean
     updatedAt?: boolean
+    paymentAgreementId?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "method" | "createdAt" | "collectionCaseId" | "paymentDate" | "referenceNumber" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "method" | "createdAt" | "collectionCaseId" | "paymentDate" | "referenceNumber" | "updatedAt" | "paymentAgreementId", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    Installment?: boolean | Payment$InstallmentArgs<ExtArgs>
+    _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
   }
   export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
   }
 
   export type $PaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Payment"
     objects: {
       collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
+      PaymentAgreement: Prisma.$PaymentAgreementPayload<ExtArgs> | null
+      Installment: Prisma.$InstallmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -26442,6 +26976,7 @@ export namespace Prisma {
       paymentDate: Date
       referenceNumber: string | null
       updatedAt: Date
+      paymentAgreementId: string | null
     }, ExtArgs["result"]["payment"]>
     composites: {}
   }
@@ -26837,6 +27372,8 @@ export namespace Prisma {
   export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    PaymentAgreement<T extends Payment$PaymentAgreementArgs<ExtArgs> = {}>(args?: Subset<T, Payment$PaymentAgreementArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Installment<T extends Payment$InstallmentArgs<ExtArgs> = {}>(args?: Subset<T, Payment$InstallmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26874,6 +27411,7 @@ export namespace Prisma {
     readonly paymentDate: FieldRef<"Payment", 'DateTime'>
     readonly referenceNumber: FieldRef<"Payment", 'String'>
     readonly updatedAt: FieldRef<"Payment", 'DateTime'>
+    readonly paymentAgreementId: FieldRef<"Payment", 'String'>
   }
     
 
@@ -27270,6 +27808,49 @@ export namespace Prisma {
   }
 
   /**
+   * Payment.PaymentAgreement
+   */
+  export type Payment$PaymentAgreementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    where?: PaymentAgreementWhereInput
+  }
+
+  /**
+   * Payment.Installment
+   */
+  export type Payment$InstallmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    where?: InstallmentWhereInput
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    cursor?: InstallmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InstallmentScalarFieldEnum | InstallmentScalarFieldEnum[]
+  }
+
+  /**
    * Payment without action
    */
   export type PaymentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -27285,1207 +27866,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PaymentInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model PaymentAgreement
-   */
-
-  export type AggregatePaymentAgreement = {
-    _count: PaymentAgreementCountAggregateOutputType | null
-    _avg: PaymentAgreementAvgAggregateOutputType | null
-    _sum: PaymentAgreementSumAggregateOutputType | null
-    _min: PaymentAgreementMinAggregateOutputType | null
-    _max: PaymentAgreementMaxAggregateOutputType | null
-  }
-
-  export type PaymentAgreementAvgAggregateOutputType = {
-    installmentAmount: Decimal | null
-    totalInstallments: number | null
-  }
-
-  export type PaymentAgreementSumAggregateOutputType = {
-    installmentAmount: Decimal | null
-    totalInstallments: number | null
-  }
-
-  export type PaymentAgreementMinAggregateOutputType = {
-    id: string | null
-    debtorId: string | null
-    agreementDate: Date | null
-    status: $Enums.AgreementStatus | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    collectionCaseId: string | null
-    installmentAmount: Decimal | null
-    nextPaymentDate: Date | null
-    notes: string | null
-    totalInstallments: number | null
-  }
-
-  export type PaymentAgreementMaxAggregateOutputType = {
-    id: string | null
-    debtorId: string | null
-    agreementDate: Date | null
-    status: $Enums.AgreementStatus | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    collectionCaseId: string | null
-    installmentAmount: Decimal | null
-    nextPaymentDate: Date | null
-    notes: string | null
-    totalInstallments: number | null
-  }
-
-  export type PaymentAgreementCountAggregateOutputType = {
-    id: number
-    debtorId: number
-    agreementDate: number
-    status: number
-    createdAt: number
-    updatedAt: number
-    collectionCaseId: number
-    installmentAmount: number
-    nextPaymentDate: number
-    notes: number
-    totalInstallments: number
-    _all: number
-  }
-
-
-  export type PaymentAgreementAvgAggregateInputType = {
-    installmentAmount?: true
-    totalInstallments?: true
-  }
-
-  export type PaymentAgreementSumAggregateInputType = {
-    installmentAmount?: true
-    totalInstallments?: true
-  }
-
-  export type PaymentAgreementMinAggregateInputType = {
-    id?: true
-    debtorId?: true
-    agreementDate?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-    collectionCaseId?: true
-    installmentAmount?: true
-    nextPaymentDate?: true
-    notes?: true
-    totalInstallments?: true
-  }
-
-  export type PaymentAgreementMaxAggregateInputType = {
-    id?: true
-    debtorId?: true
-    agreementDate?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-    collectionCaseId?: true
-    installmentAmount?: true
-    nextPaymentDate?: true
-    notes?: true
-    totalInstallments?: true
-  }
-
-  export type PaymentAgreementCountAggregateInputType = {
-    id?: true
-    debtorId?: true
-    agreementDate?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-    collectionCaseId?: true
-    installmentAmount?: true
-    nextPaymentDate?: true
-    notes?: true
-    totalInstallments?: true
-    _all?: true
-  }
-
-  export type PaymentAgreementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which PaymentAgreement to aggregate.
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentAgreements to fetch.
-     */
-    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: PaymentAgreementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentAgreements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentAgreements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned PaymentAgreements
-    **/
-    _count?: true | PaymentAgreementCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: PaymentAgreementAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PaymentAgreementSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: PaymentAgreementMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: PaymentAgreementMaxAggregateInputType
-  }
-
-  export type GetPaymentAgreementAggregateType<T extends PaymentAgreementAggregateArgs> = {
-        [P in keyof T & keyof AggregatePaymentAgreement]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePaymentAgreement[P]>
-      : GetScalarType<T[P], AggregatePaymentAgreement[P]>
-  }
-
-
-
-
-  export type PaymentAgreementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PaymentAgreementWhereInput
-    orderBy?: PaymentAgreementOrderByWithAggregationInput | PaymentAgreementOrderByWithAggregationInput[]
-    by: PaymentAgreementScalarFieldEnum[] | PaymentAgreementScalarFieldEnum
-    having?: PaymentAgreementScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: PaymentAgreementCountAggregateInputType | true
-    _avg?: PaymentAgreementAvgAggregateInputType
-    _sum?: PaymentAgreementSumAggregateInputType
-    _min?: PaymentAgreementMinAggregateInputType
-    _max?: PaymentAgreementMaxAggregateInputType
-  }
-
-  export type PaymentAgreementGroupByOutputType = {
-    id: string
-    debtorId: string | null
-    agreementDate: Date
-    status: $Enums.AgreementStatus
-    createdAt: Date
-    updatedAt: Date
-    collectionCaseId: string
-    installmentAmount: Decimal | null
-    nextPaymentDate: Date | null
-    notes: string | null
-    totalInstallments: number | null
-    _count: PaymentAgreementCountAggregateOutputType | null
-    _avg: PaymentAgreementAvgAggregateOutputType | null
-    _sum: PaymentAgreementSumAggregateOutputType | null
-    _min: PaymentAgreementMinAggregateOutputType | null
-    _max: PaymentAgreementMaxAggregateOutputType | null
-  }
-
-  type GetPaymentAgreementGroupByPayload<T extends PaymentAgreementGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<PaymentAgreementGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof PaymentAgreementGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], PaymentAgreementGroupByOutputType[P]>
-            : GetScalarType<T[P], PaymentAgreementGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type PaymentAgreementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    debtorId?: boolean
-    agreementDate?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    collectionCaseId?: boolean
-    installmentAmount?: boolean
-    nextPaymentDate?: boolean
-    notes?: boolean
-    totalInstallments?: boolean
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }, ExtArgs["result"]["paymentAgreement"]>
-
-  export type PaymentAgreementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    debtorId?: boolean
-    agreementDate?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    collectionCaseId?: boolean
-    installmentAmount?: boolean
-    nextPaymentDate?: boolean
-    notes?: boolean
-    totalInstallments?: boolean
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }, ExtArgs["result"]["paymentAgreement"]>
-
-  export type PaymentAgreementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    debtorId?: boolean
-    agreementDate?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    collectionCaseId?: boolean
-    installmentAmount?: boolean
-    nextPaymentDate?: boolean
-    notes?: boolean
-    totalInstallments?: boolean
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }, ExtArgs["result"]["paymentAgreement"]>
-
-  export type PaymentAgreementSelectScalar = {
-    id?: boolean
-    debtorId?: boolean
-    agreementDate?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    collectionCaseId?: boolean
-    installmentAmount?: boolean
-    nextPaymentDate?: boolean
-    notes?: boolean
-    totalInstallments?: boolean
-  }
-
-  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "debtorId" | "agreementDate" | "status" | "createdAt" | "updatedAt" | "collectionCaseId" | "installmentAmount" | "nextPaymentDate" | "notes" | "totalInstallments", ExtArgs["result"]["paymentAgreement"]>
-  export type PaymentAgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }
-  export type PaymentAgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }
-  export type PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
-  }
-
-  export type $PaymentAgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "PaymentAgreement"
-    objects: {
-      collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
-      Debtor: Prisma.$DebtorPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      debtorId: string | null
-      agreementDate: Date
-      status: $Enums.AgreementStatus
-      createdAt: Date
-      updatedAt: Date
-      collectionCaseId: string
-      installmentAmount: Prisma.Decimal | null
-      nextPaymentDate: Date | null
-      notes: string | null
-      totalInstallments: number | null
-    }, ExtArgs["result"]["paymentAgreement"]>
-    composites: {}
-  }
-
-  type PaymentAgreementGetPayload<S extends boolean | null | undefined | PaymentAgreementDefaultArgs> = $Result.GetResult<Prisma.$PaymentAgreementPayload, S>
-
-  type PaymentAgreementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PaymentAgreementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PaymentAgreementCountAggregateInputType | true
-    }
-
-  export interface PaymentAgreementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentAgreement'], meta: { name: 'PaymentAgreement' } }
-    /**
-     * Find zero or one PaymentAgreement that matches the filter.
-     * @param {PaymentAgreementFindUniqueArgs} args - Arguments to find a PaymentAgreement
-     * @example
-     * // Get one PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends PaymentAgreementFindUniqueArgs>(args: SelectSubset<T, PaymentAgreementFindUniqueArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one PaymentAgreement that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {PaymentAgreementFindUniqueOrThrowArgs} args - Arguments to find a PaymentAgreement
-     * @example
-     * // Get one PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends PaymentAgreementFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentAgreementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first PaymentAgreement that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementFindFirstArgs} args - Arguments to find a PaymentAgreement
-     * @example
-     * // Get one PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends PaymentAgreementFindFirstArgs>(args?: SelectSubset<T, PaymentAgreementFindFirstArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first PaymentAgreement that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementFindFirstOrThrowArgs} args - Arguments to find a PaymentAgreement
-     * @example
-     * // Get one PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends PaymentAgreementFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentAgreementFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more PaymentAgreements that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all PaymentAgreements
-     * const paymentAgreements = await prisma.paymentAgreement.findMany()
-     * 
-     * // Get first 10 PaymentAgreements
-     * const paymentAgreements = await prisma.paymentAgreement.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends PaymentAgreementFindManyArgs>(args?: SelectSubset<T, PaymentAgreementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a PaymentAgreement.
-     * @param {PaymentAgreementCreateArgs} args - Arguments to create a PaymentAgreement.
-     * @example
-     * // Create one PaymentAgreement
-     * const PaymentAgreement = await prisma.paymentAgreement.create({
-     *   data: {
-     *     // ... data to create a PaymentAgreement
-     *   }
-     * })
-     * 
-     */
-    create<T extends PaymentAgreementCreateArgs>(args: SelectSubset<T, PaymentAgreementCreateArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many PaymentAgreements.
-     * @param {PaymentAgreementCreateManyArgs} args - Arguments to create many PaymentAgreements.
-     * @example
-     * // Create many PaymentAgreements
-     * const paymentAgreement = await prisma.paymentAgreement.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends PaymentAgreementCreateManyArgs>(args?: SelectSubset<T, PaymentAgreementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many PaymentAgreements and returns the data saved in the database.
-     * @param {PaymentAgreementCreateManyAndReturnArgs} args - Arguments to create many PaymentAgreements.
-     * @example
-     * // Create many PaymentAgreements
-     * const paymentAgreement = await prisma.paymentAgreement.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many PaymentAgreements and only return the `id`
-     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends PaymentAgreementCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentAgreementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a PaymentAgreement.
-     * @param {PaymentAgreementDeleteArgs} args - Arguments to delete one PaymentAgreement.
-     * @example
-     * // Delete one PaymentAgreement
-     * const PaymentAgreement = await prisma.paymentAgreement.delete({
-     *   where: {
-     *     // ... filter to delete one PaymentAgreement
-     *   }
-     * })
-     * 
-     */
-    delete<T extends PaymentAgreementDeleteArgs>(args: SelectSubset<T, PaymentAgreementDeleteArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one PaymentAgreement.
-     * @param {PaymentAgreementUpdateArgs} args - Arguments to update one PaymentAgreement.
-     * @example
-     * // Update one PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends PaymentAgreementUpdateArgs>(args: SelectSubset<T, PaymentAgreementUpdateArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more PaymentAgreements.
-     * @param {PaymentAgreementDeleteManyArgs} args - Arguments to filter PaymentAgreements to delete.
-     * @example
-     * // Delete a few PaymentAgreements
-     * const { count } = await prisma.paymentAgreement.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends PaymentAgreementDeleteManyArgs>(args?: SelectSubset<T, PaymentAgreementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PaymentAgreements.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many PaymentAgreements
-     * const paymentAgreement = await prisma.paymentAgreement.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends PaymentAgreementUpdateManyArgs>(args: SelectSubset<T, PaymentAgreementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PaymentAgreements and returns the data updated in the database.
-     * @param {PaymentAgreementUpdateManyAndReturnArgs} args - Arguments to update many PaymentAgreements.
-     * @example
-     * // Update many PaymentAgreements
-     * const paymentAgreement = await prisma.paymentAgreement.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more PaymentAgreements and only return the `id`
-     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends PaymentAgreementUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentAgreementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one PaymentAgreement.
-     * @param {PaymentAgreementUpsertArgs} args - Arguments to update or create a PaymentAgreement.
-     * @example
-     * // Update or create a PaymentAgreement
-     * const paymentAgreement = await prisma.paymentAgreement.upsert({
-     *   create: {
-     *     // ... data to create a PaymentAgreement
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the PaymentAgreement we want to update
-     *   }
-     * })
-     */
-    upsert<T extends PaymentAgreementUpsertArgs>(args: SelectSubset<T, PaymentAgreementUpsertArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of PaymentAgreements.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementCountArgs} args - Arguments to filter PaymentAgreements to count.
-     * @example
-     * // Count the number of PaymentAgreements
-     * const count = await prisma.paymentAgreement.count({
-     *   where: {
-     *     // ... the filter for the PaymentAgreements we want to count
-     *   }
-     * })
-    **/
-    count<T extends PaymentAgreementCountArgs>(
-      args?: Subset<T, PaymentAgreementCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PaymentAgreementCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a PaymentAgreement.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends PaymentAgreementAggregateArgs>(args: Subset<T, PaymentAgreementAggregateArgs>): Prisma.PrismaPromise<GetPaymentAgreementAggregateType<T>>
-
-    /**
-     * Group by PaymentAgreement.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentAgreementGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends PaymentAgreementGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PaymentAgreementGroupByArgs['orderBy'] }
-        : { orderBy?: PaymentAgreementGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, PaymentAgreementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentAgreementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the PaymentAgreement model
-   */
-  readonly fields: PaymentAgreementFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for PaymentAgreement.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__PaymentAgreementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Debtor<T extends PaymentAgreement$DebtorArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$DebtorArgs<ExtArgs>>): Prisma__DebtorClient<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the PaymentAgreement model
-   */
-  interface PaymentAgreementFieldRefs {
-    readonly id: FieldRef<"PaymentAgreement", 'String'>
-    readonly debtorId: FieldRef<"PaymentAgreement", 'String'>
-    readonly agreementDate: FieldRef<"PaymentAgreement", 'DateTime'>
-    readonly status: FieldRef<"PaymentAgreement", 'AgreementStatus'>
-    readonly createdAt: FieldRef<"PaymentAgreement", 'DateTime'>
-    readonly updatedAt: FieldRef<"PaymentAgreement", 'DateTime'>
-    readonly collectionCaseId: FieldRef<"PaymentAgreement", 'String'>
-    readonly installmentAmount: FieldRef<"PaymentAgreement", 'Decimal'>
-    readonly nextPaymentDate: FieldRef<"PaymentAgreement", 'DateTime'>
-    readonly notes: FieldRef<"PaymentAgreement", 'String'>
-    readonly totalInstallments: FieldRef<"PaymentAgreement", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * PaymentAgreement findUnique
-   */
-  export type PaymentAgreementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentAgreement to fetch.
-     */
-    where: PaymentAgreementWhereUniqueInput
-  }
-
-  /**
-   * PaymentAgreement findUniqueOrThrow
-   */
-  export type PaymentAgreementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentAgreement to fetch.
-     */
-    where: PaymentAgreementWhereUniqueInput
-  }
-
-  /**
-   * PaymentAgreement findFirst
-   */
-  export type PaymentAgreementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentAgreement to fetch.
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentAgreements to fetch.
-     */
-    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PaymentAgreements.
-     */
-    cursor?: PaymentAgreementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentAgreements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentAgreements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PaymentAgreements.
-     */
-    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentAgreement findFirstOrThrow
-   */
-  export type PaymentAgreementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentAgreement to fetch.
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentAgreements to fetch.
-     */
-    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PaymentAgreements.
-     */
-    cursor?: PaymentAgreementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentAgreements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentAgreements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PaymentAgreements.
-     */
-    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentAgreement findMany
-   */
-  export type PaymentAgreementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentAgreements to fetch.
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentAgreements to fetch.
-     */
-    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing PaymentAgreements.
-     */
-    cursor?: PaymentAgreementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentAgreements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentAgreements.
-     */
-    skip?: number
-    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentAgreement create
-   */
-  export type PaymentAgreementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * The data needed to create a PaymentAgreement.
-     */
-    data: XOR<PaymentAgreementCreateInput, PaymentAgreementUncheckedCreateInput>
-  }
-
-  /**
-   * PaymentAgreement createMany
-   */
-  export type PaymentAgreementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many PaymentAgreements.
-     */
-    data: PaymentAgreementCreateManyInput | PaymentAgreementCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * PaymentAgreement createManyAndReturn
-   */
-  export type PaymentAgreementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * The data used to create many PaymentAgreements.
-     */
-    data: PaymentAgreementCreateManyInput | PaymentAgreementCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * PaymentAgreement update
-   */
-  export type PaymentAgreementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * The data needed to update a PaymentAgreement.
-     */
-    data: XOR<PaymentAgreementUpdateInput, PaymentAgreementUncheckedUpdateInput>
-    /**
-     * Choose, which PaymentAgreement to update.
-     */
-    where: PaymentAgreementWhereUniqueInput
-  }
-
-  /**
-   * PaymentAgreement updateMany
-   */
-  export type PaymentAgreementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update PaymentAgreements.
-     */
-    data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyInput>
-    /**
-     * Filter which PaymentAgreements to update
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * Limit how many PaymentAgreements to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * PaymentAgreement updateManyAndReturn
-   */
-  export type PaymentAgreementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * The data used to update PaymentAgreements.
-     */
-    data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyInput>
-    /**
-     * Filter which PaymentAgreements to update
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * Limit how many PaymentAgreements to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * PaymentAgreement upsert
-   */
-  export type PaymentAgreementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * The filter to search for the PaymentAgreement to update in case it exists.
-     */
-    where: PaymentAgreementWhereUniqueInput
-    /**
-     * In case the PaymentAgreement found by the `where` argument doesn't exist, create a new PaymentAgreement with this data.
-     */
-    create: XOR<PaymentAgreementCreateInput, PaymentAgreementUncheckedCreateInput>
-    /**
-     * In case the PaymentAgreement was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<PaymentAgreementUpdateInput, PaymentAgreementUncheckedUpdateInput>
-  }
-
-  /**
-   * PaymentAgreement delete
-   */
-  export type PaymentAgreementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
-    /**
-     * Filter which PaymentAgreement to delete.
-     */
-    where: PaymentAgreementWhereUniqueInput
-  }
-
-  /**
-   * PaymentAgreement deleteMany
-   */
-  export type PaymentAgreementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which PaymentAgreements to delete
-     */
-    where?: PaymentAgreementWhereInput
-    /**
-     * Limit how many PaymentAgreements to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * PaymentAgreement.Debtor
-   */
-  export type PaymentAgreement$DebtorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Debtor
-     */
-    select?: DebtorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Debtor
-     */
-    omit?: DebtorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DebtorInclude<ExtArgs> | null
-    where?: DebtorWhereInput
-  }
-
-  /**
-   * PaymentAgreement without action
-   */
-  export type PaymentAgreementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentAgreement
-     */
-    select?: PaymentAgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentAgreement
-     */
-    omit?: PaymentAgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentAgreementInclude<ExtArgs> | null
   }
 
 
@@ -29827,6 +29207,2233 @@ export namespace Prisma {
 
 
   /**
+   * Model ChatRoom
+   */
+
+  export type AggregateChatRoom = {
+    _count: ChatRoomCountAggregateOutputType | null
+    _min: ChatRoomMinAggregateOutputType | null
+    _max: ChatRoomMaxAggregateOutputType | null
+  }
+
+  export type ChatRoomMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    collectionCaseId: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ChatRoomMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    collectionCaseId: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ChatRoomCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    collectionCaseId: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ChatRoomMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    collectionCaseId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ChatRoomMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    collectionCaseId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ChatRoomCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    collectionCaseId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ChatRoomAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatRoom to aggregate.
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatRooms to fetch.
+     */
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatRoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatRooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatRooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatRooms
+    **/
+    _count?: true | ChatRoomCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatRoomMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatRoomMaxAggregateInputType
+  }
+
+  export type GetChatRoomAggregateType<T extends ChatRoomAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatRoom]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatRoom[P]>
+      : GetScalarType<T[P], AggregateChatRoom[P]>
+  }
+
+
+
+
+  export type ChatRoomGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatRoomWhereInput
+    orderBy?: ChatRoomOrderByWithAggregationInput | ChatRoomOrderByWithAggregationInput[]
+    by: ChatRoomScalarFieldEnum[] | ChatRoomScalarFieldEnum
+    having?: ChatRoomScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatRoomCountAggregateInputType | true
+    _min?: ChatRoomMinAggregateInputType
+    _max?: ChatRoomMaxAggregateInputType
+  }
+
+  export type ChatRoomGroupByOutputType = {
+    id: string
+    tenantId: string
+    collectionCaseId: string
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ChatRoomCountAggregateOutputType | null
+    _min: ChatRoomMinAggregateOutputType | null
+    _max: ChatRoomMaxAggregateOutputType | null
+  }
+
+  type GetChatRoomGroupByPayload<T extends ChatRoomGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatRoomGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatRoomGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatRoomGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatRoomGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatRoomSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    collectionCaseId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    messages?: boolean | ChatRoom$messagesArgs<ExtArgs>
+    _count?: boolean | ChatRoomCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatRoom"]>
+
+  export type ChatRoomSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    collectionCaseId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatRoom"]>
+
+  export type ChatRoomSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    collectionCaseId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatRoom"]>
+
+  export type ChatRoomSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    collectionCaseId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ChatRoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "collectionCaseId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["chatRoom"]>
+  export type ChatRoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    messages?: boolean | ChatRoom$messagesArgs<ExtArgs>
+    _count?: boolean | ChatRoomCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ChatRoomIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+  }
+  export type ChatRoomIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatRoomPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatRoom"
+    objects: {
+      tenant: Prisma.$TenantPayload<ExtArgs>
+      collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
+      messages: Prisma.$ChatMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      collectionCaseId: string
+      name: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["chatRoom"]>
+    composites: {}
+  }
+
+  type ChatRoomGetPayload<S extends boolean | null | undefined | ChatRoomDefaultArgs> = $Result.GetResult<Prisma.$ChatRoomPayload, S>
+
+  type ChatRoomCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChatRoomFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChatRoomCountAggregateInputType | true
+    }
+
+  export interface ChatRoomDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatRoom'], meta: { name: 'ChatRoom' } }
+    /**
+     * Find zero or one ChatRoom that matches the filter.
+     * @param {ChatRoomFindUniqueArgs} args - Arguments to find a ChatRoom
+     * @example
+     * // Get one ChatRoom
+     * const chatRoom = await prisma.chatRoom.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatRoomFindUniqueArgs>(args: SelectSubset<T, ChatRoomFindUniqueArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChatRoom that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChatRoomFindUniqueOrThrowArgs} args - Arguments to find a ChatRoom
+     * @example
+     * // Get one ChatRoom
+     * const chatRoom = await prisma.chatRoom.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatRoomFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatRoomFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatRoom that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomFindFirstArgs} args - Arguments to find a ChatRoom
+     * @example
+     * // Get one ChatRoom
+     * const chatRoom = await prisma.chatRoom.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatRoomFindFirstArgs>(args?: SelectSubset<T, ChatRoomFindFirstArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatRoom that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomFindFirstOrThrowArgs} args - Arguments to find a ChatRoom
+     * @example
+     * // Get one ChatRoom
+     * const chatRoom = await prisma.chatRoom.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatRoomFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatRoomFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChatRooms that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatRooms
+     * const chatRooms = await prisma.chatRoom.findMany()
+     * 
+     * // Get first 10 ChatRooms
+     * const chatRooms = await prisma.chatRoom.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chatRoomWithIdOnly = await prisma.chatRoom.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChatRoomFindManyArgs>(args?: SelectSubset<T, ChatRoomFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChatRoom.
+     * @param {ChatRoomCreateArgs} args - Arguments to create a ChatRoom.
+     * @example
+     * // Create one ChatRoom
+     * const ChatRoom = await prisma.chatRoom.create({
+     *   data: {
+     *     // ... data to create a ChatRoom
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatRoomCreateArgs>(args: SelectSubset<T, ChatRoomCreateArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChatRooms.
+     * @param {ChatRoomCreateManyArgs} args - Arguments to create many ChatRooms.
+     * @example
+     * // Create many ChatRooms
+     * const chatRoom = await prisma.chatRoom.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatRoomCreateManyArgs>(args?: SelectSubset<T, ChatRoomCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatRooms and returns the data saved in the database.
+     * @param {ChatRoomCreateManyAndReturnArgs} args - Arguments to create many ChatRooms.
+     * @example
+     * // Create many ChatRooms
+     * const chatRoom = await prisma.chatRoom.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatRooms and only return the `id`
+     * const chatRoomWithIdOnly = await prisma.chatRoom.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatRoomCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatRoomCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ChatRoom.
+     * @param {ChatRoomDeleteArgs} args - Arguments to delete one ChatRoom.
+     * @example
+     * // Delete one ChatRoom
+     * const ChatRoom = await prisma.chatRoom.delete({
+     *   where: {
+     *     // ... filter to delete one ChatRoom
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatRoomDeleteArgs>(args: SelectSubset<T, ChatRoomDeleteArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChatRoom.
+     * @param {ChatRoomUpdateArgs} args - Arguments to update one ChatRoom.
+     * @example
+     * // Update one ChatRoom
+     * const chatRoom = await prisma.chatRoom.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatRoomUpdateArgs>(args: SelectSubset<T, ChatRoomUpdateArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChatRooms.
+     * @param {ChatRoomDeleteManyArgs} args - Arguments to filter ChatRooms to delete.
+     * @example
+     * // Delete a few ChatRooms
+     * const { count } = await prisma.chatRoom.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatRoomDeleteManyArgs>(args?: SelectSubset<T, ChatRoomDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatRooms.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatRooms
+     * const chatRoom = await prisma.chatRoom.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatRoomUpdateManyArgs>(args: SelectSubset<T, ChatRoomUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatRooms and returns the data updated in the database.
+     * @param {ChatRoomUpdateManyAndReturnArgs} args - Arguments to update many ChatRooms.
+     * @example
+     * // Update many ChatRooms
+     * const chatRoom = await prisma.chatRoom.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ChatRooms and only return the `id`
+     * const chatRoomWithIdOnly = await prisma.chatRoom.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChatRoomUpdateManyAndReturnArgs>(args: SelectSubset<T, ChatRoomUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ChatRoom.
+     * @param {ChatRoomUpsertArgs} args - Arguments to update or create a ChatRoom.
+     * @example
+     * // Update or create a ChatRoom
+     * const chatRoom = await prisma.chatRoom.upsert({
+     *   create: {
+     *     // ... data to create a ChatRoom
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatRoom we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatRoomUpsertArgs>(args: SelectSubset<T, ChatRoomUpsertArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChatRooms.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomCountArgs} args - Arguments to filter ChatRooms to count.
+     * @example
+     * // Count the number of ChatRooms
+     * const count = await prisma.chatRoom.count({
+     *   where: {
+     *     // ... the filter for the ChatRooms we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatRoomCountArgs>(
+      args?: Subset<T, ChatRoomCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatRoomCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatRoom.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatRoomAggregateArgs>(args: Subset<T, ChatRoomAggregateArgs>): Prisma.PrismaPromise<GetChatRoomAggregateType<T>>
+
+    /**
+     * Group by ChatRoom.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatRoomGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatRoomGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatRoomGroupByArgs['orderBy'] }
+        : { orderBy?: ChatRoomGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatRoomGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatRoomGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatRoom model
+   */
+  readonly fields: ChatRoomFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatRoom.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatRoomClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    messages<T extends ChatRoom$messagesArgs<ExtArgs> = {}>(args?: Subset<T, ChatRoom$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatRoom model
+   */
+  interface ChatRoomFieldRefs {
+    readonly id: FieldRef<"ChatRoom", 'String'>
+    readonly tenantId: FieldRef<"ChatRoom", 'String'>
+    readonly collectionCaseId: FieldRef<"ChatRoom", 'String'>
+    readonly name: FieldRef<"ChatRoom", 'String'>
+    readonly createdAt: FieldRef<"ChatRoom", 'DateTime'>
+    readonly updatedAt: FieldRef<"ChatRoom", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatRoom findUnique
+   */
+  export type ChatRoomFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatRoom to fetch.
+     */
+    where: ChatRoomWhereUniqueInput
+  }
+
+  /**
+   * ChatRoom findUniqueOrThrow
+   */
+  export type ChatRoomFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatRoom to fetch.
+     */
+    where: ChatRoomWhereUniqueInput
+  }
+
+  /**
+   * ChatRoom findFirst
+   */
+  export type ChatRoomFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatRoom to fetch.
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatRooms to fetch.
+     */
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatRooms.
+     */
+    cursor?: ChatRoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatRooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatRooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatRooms.
+     */
+    distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
+  }
+
+  /**
+   * ChatRoom findFirstOrThrow
+   */
+  export type ChatRoomFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatRoom to fetch.
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatRooms to fetch.
+     */
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatRooms.
+     */
+    cursor?: ChatRoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatRooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatRooms.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatRooms.
+     */
+    distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
+  }
+
+  /**
+   * ChatRoom findMany
+   */
+  export type ChatRoomFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatRooms to fetch.
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatRooms to fetch.
+     */
+    orderBy?: ChatRoomOrderByWithRelationInput | ChatRoomOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatRooms.
+     */
+    cursor?: ChatRoomWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatRooms from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatRooms.
+     */
+    skip?: number
+    distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
+  }
+
+  /**
+   * ChatRoom create
+   */
+  export type ChatRoomCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatRoom.
+     */
+    data: XOR<ChatRoomCreateInput, ChatRoomUncheckedCreateInput>
+  }
+
+  /**
+   * ChatRoom createMany
+   */
+  export type ChatRoomCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatRooms.
+     */
+    data: ChatRoomCreateManyInput | ChatRoomCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatRoom createManyAndReturn
+   */
+  export type ChatRoomCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * The data used to create many ChatRooms.
+     */
+    data: ChatRoomCreateManyInput | ChatRoomCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatRoom update
+   */
+  export type ChatRoomUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatRoom.
+     */
+    data: XOR<ChatRoomUpdateInput, ChatRoomUncheckedUpdateInput>
+    /**
+     * Choose, which ChatRoom to update.
+     */
+    where: ChatRoomWhereUniqueInput
+  }
+
+  /**
+   * ChatRoom updateMany
+   */
+  export type ChatRoomUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatRooms.
+     */
+    data: XOR<ChatRoomUpdateManyMutationInput, ChatRoomUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatRooms to update
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * Limit how many ChatRooms to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatRoom updateManyAndReturn
+   */
+  export type ChatRoomUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * The data used to update ChatRooms.
+     */
+    data: XOR<ChatRoomUpdateManyMutationInput, ChatRoomUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatRooms to update
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * Limit how many ChatRooms to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatRoom upsert
+   */
+  export type ChatRoomUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatRoom to update in case it exists.
+     */
+    where: ChatRoomWhereUniqueInput
+    /**
+     * In case the ChatRoom found by the `where` argument doesn't exist, create a new ChatRoom with this data.
+     */
+    create: XOR<ChatRoomCreateInput, ChatRoomUncheckedCreateInput>
+    /**
+     * In case the ChatRoom was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatRoomUpdateInput, ChatRoomUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatRoom delete
+   */
+  export type ChatRoomDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+    /**
+     * Filter which ChatRoom to delete.
+     */
+    where: ChatRoomWhereUniqueInput
+  }
+
+  /**
+   * ChatRoom deleteMany
+   */
+  export type ChatRoomDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatRooms to delete
+     */
+    where?: ChatRoomWhereInput
+    /**
+     * Limit how many ChatRooms to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatRoom.messages
+   */
+  export type ChatRoom$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    cursor?: ChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatRoom without action
+   */
+  export type ChatRoomDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatRoom
+     */
+    select?: ChatRoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatRoom
+     */
+    omit?: ChatRoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatRoomInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ChatMessage
+   */
+
+  export type AggregateChatMessage = {
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  export type ChatMessageMinAggregateOutputType = {
+    id: string | null
+    roomId: string | null
+    senderId: string | null
+    message: string | null
+    fileUrl: string | null
+    fileName: string | null
+    timestamp: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ChatMessageMaxAggregateOutputType = {
+    id: string | null
+    roomId: string | null
+    senderId: string | null
+    message: string | null
+    fileUrl: string | null
+    fileName: string | null
+    timestamp: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ChatMessageCountAggregateOutputType = {
+    id: number
+    roomId: number
+    senderId: number
+    message: number
+    fileUrl: number
+    fileName: number
+    timestamp: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ChatMessageMinAggregateInputType = {
+    id?: true
+    roomId?: true
+    senderId?: true
+    message?: true
+    fileUrl?: true
+    fileName?: true
+    timestamp?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ChatMessageMaxAggregateInputType = {
+    id?: true
+    roomId?: true
+    senderId?: true
+    message?: true
+    fileUrl?: true
+    fileName?: true
+    timestamp?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ChatMessageCountAggregateInputType = {
+    id?: true
+    roomId?: true
+    senderId?: true
+    message?: true
+    fileUrl?: true
+    fileName?: true
+    timestamp?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ChatMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessage to aggregate.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatMessages
+    **/
+    _count?: true | ChatMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type GetChatMessageAggregateType<T extends ChatMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatMessage[P]>
+      : GetScalarType<T[P], AggregateChatMessage[P]>
+  }
+
+
+
+
+  export type ChatMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithAggregationInput | ChatMessageOrderByWithAggregationInput[]
+    by: ChatMessageScalarFieldEnum[] | ChatMessageScalarFieldEnum
+    having?: ChatMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatMessageCountAggregateInputType | true
+    _min?: ChatMessageMinAggregateInputType
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type ChatMessageGroupByOutputType = {
+    id: string
+    roomId: string
+    senderId: string
+    message: string
+    fileUrl: string | null
+    fileName: string | null
+    timestamp: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  type GetChatMessageGroupByPayload<T extends ChatMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomId?: boolean
+    senderId?: boolean
+    message?: boolean
+    fileUrl?: boolean
+    fileName?: boolean
+    timestamp?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomId?: boolean
+    senderId?: boolean
+    message?: boolean
+    fileUrl?: boolean
+    fileName?: boolean
+    timestamp?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roomId?: boolean
+    senderId?: boolean
+    message?: boolean
+    fileUrl?: boolean
+    fileName?: boolean
+    timestamp?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectScalar = {
+    id?: boolean
+    roomId?: boolean
+    senderId?: boolean
+    message?: boolean
+    fileUrl?: boolean
+    fileName?: boolean
+    timestamp?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "senderId" | "message" | "fileUrl" | "fileName" | "timestamp" | "createdAt" | "updatedAt", ExtArgs["result"]["chatMessage"]>
+  export type ChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatMessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    room?: boolean | ChatRoomDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatMessage"
+    objects: {
+      room: Prisma.$ChatRoomPayload<ExtArgs>
+      sender: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      roomId: string
+      senderId: string
+      message: string
+      fileUrl: string | null
+      fileName: string | null
+      timestamp: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["chatMessage"]>
+    composites: {}
+  }
+
+  type ChatMessageGetPayload<S extends boolean | null | undefined | ChatMessageDefaultArgs> = $Result.GetResult<Prisma.$ChatMessagePayload, S>
+
+  type ChatMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChatMessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChatMessageCountAggregateInputType | true
+    }
+
+  export interface ChatMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatMessage'], meta: { name: 'ChatMessage' } }
+    /**
+     * Find zero or one ChatMessage that matches the filter.
+     * @param {ChatMessageFindUniqueArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatMessageFindUniqueArgs>(args: SelectSubset<T, ChatMessageFindUniqueArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChatMessage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChatMessageFindUniqueOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatMessageFindFirstArgs>(args?: SelectSubset<T, ChatMessageFindFirstArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChatMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany()
+     * 
+     * // Get first 10 ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChatMessageFindManyArgs>(args?: SelectSubset<T, ChatMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChatMessage.
+     * @param {ChatMessageCreateArgs} args - Arguments to create a ChatMessage.
+     * @example
+     * // Create one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.create({
+     *   data: {
+     *     // ... data to create a ChatMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatMessageCreateArgs>(args: SelectSubset<T, ChatMessageCreateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChatMessages.
+     * @param {ChatMessageCreateManyArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatMessageCreateManyArgs>(args?: SelectSubset<T, ChatMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatMessages and returns the data saved in the database.
+     * @param {ChatMessageCreateManyAndReturnArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatMessages and only return the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ChatMessage.
+     * @param {ChatMessageDeleteArgs} args - Arguments to delete one ChatMessage.
+     * @example
+     * // Delete one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.delete({
+     *   where: {
+     *     // ... filter to delete one ChatMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatMessageDeleteArgs>(args: SelectSubset<T, ChatMessageDeleteArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChatMessage.
+     * @param {ChatMessageUpdateArgs} args - Arguments to update one ChatMessage.
+     * @example
+     * // Update one ChatMessage
+     * const chatMessage = await prisma.chatMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatMessageUpdateArgs>(args: SelectSubset<T, ChatMessageUpdateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChatMessages.
+     * @param {ChatMessageDeleteManyArgs} args - Arguments to filter ChatMessages to delete.
+     * @example
+     * // Delete a few ChatMessages
+     * const { count } = await prisma.chatMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatMessageDeleteManyArgs>(args?: SelectSubset<T, ChatMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatMessages
+     * const chatMessage = await prisma.chatMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatMessageUpdateManyArgs>(args: SelectSubset<T, ChatMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMessages and returns the data updated in the database.
+     * @param {ChatMessageUpdateManyAndReturnArgs} args - Arguments to update many ChatMessages.
+     * @example
+     * // Update many ChatMessages
+     * const chatMessage = await prisma.chatMessage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ChatMessages and only return the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChatMessageUpdateManyAndReturnArgs>(args: SelectSubset<T, ChatMessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ChatMessage.
+     * @param {ChatMessageUpsertArgs} args - Arguments to update or create a ChatMessage.
+     * @example
+     * // Update or create a ChatMessage
+     * const chatMessage = await prisma.chatMessage.upsert({
+     *   create: {
+     *     // ... data to create a ChatMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatMessageUpsertArgs>(args: SelectSubset<T, ChatMessageUpsertArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageCountArgs} args - Arguments to filter ChatMessages to count.
+     * @example
+     * // Count the number of ChatMessages
+     * const count = await prisma.chatMessage.count({
+     *   where: {
+     *     // ... the filter for the ChatMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatMessageCountArgs>(
+      args?: Subset<T, ChatMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatMessageAggregateArgs>(args: Subset<T, ChatMessageAggregateArgs>): Prisma.PrismaPromise<GetChatMessageAggregateType<T>>
+
+    /**
+     * Group by ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatMessageGroupByArgs['orderBy'] }
+        : { orderBy?: ChatMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatMessage model
+   */
+  readonly fields: ChatMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    room<T extends ChatRoomDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ChatRoomDefaultArgs<ExtArgs>>): Prisma__ChatRoomClient<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatMessage model
+   */
+  interface ChatMessageFieldRefs {
+    readonly id: FieldRef<"ChatMessage", 'String'>
+    readonly roomId: FieldRef<"ChatMessage", 'String'>
+    readonly senderId: FieldRef<"ChatMessage", 'String'>
+    readonly message: FieldRef<"ChatMessage", 'String'>
+    readonly fileUrl: FieldRef<"ChatMessage", 'String'>
+    readonly fileName: FieldRef<"ChatMessage", 'String'>
+    readonly timestamp: FieldRef<"ChatMessage", 'DateTime'>
+    readonly createdAt: FieldRef<"ChatMessage", 'DateTime'>
+    readonly updatedAt: FieldRef<"ChatMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatMessage findUnique
+   */
+  export type ChatMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findUniqueOrThrow
+   */
+  export type ChatMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findFirst
+   */
+  export type ChatMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findFirstOrThrow
+   */
+  export type ChatMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findMany
+   */
+  export type ChatMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessages to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage create
+   */
+  export type ChatMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatMessage.
+     */
+    data: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+  }
+
+  /**
+   * ChatMessage createMany
+   */
+  export type ChatMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatMessage createManyAndReturn
+   */
+  export type ChatMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMessage update
+   */
+  export type ChatMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatMessage.
+     */
+    data: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+    /**
+     * Choose, which ChatMessage to update.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage updateMany
+   */
+  export type ChatMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatMessages.
+     */
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMessages to update
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * Limit how many ChatMessages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatMessage updateManyAndReturn
+   */
+  export type ChatMessageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to update ChatMessages.
+     */
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMessages to update
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * Limit how many ChatMessages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMessage upsert
+   */
+  export type ChatMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatMessage to update in case it exists.
+     */
+    where: ChatMessageWhereUniqueInput
+    /**
+     * In case the ChatMessage found by the `where` argument doesn't exist, create a new ChatMessage with this data.
+     */
+    create: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+    /**
+     * In case the ChatMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatMessage delete
+   */
+  export type ChatMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter which ChatMessage to delete.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage deleteMany
+   */
+  export type ChatMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessages to delete
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * Limit how many ChatMessages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatMessage without action
+   */
+  export type ChatMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatMessage
+     */
+    omit?: ChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model DebtorIncome
    */
 
@@ -30932,6 +32539,2444 @@ export namespace Prisma {
 
 
   /**
+   * Model PaymentAgreement
+   */
+
+  export type AggregatePaymentAgreement = {
+    _count: PaymentAgreementCountAggregateOutputType | null
+    _avg: PaymentAgreementAvgAggregateOutputType | null
+    _sum: PaymentAgreementSumAggregateOutputType | null
+    _min: PaymentAgreementMinAggregateOutputType | null
+    _max: PaymentAgreementMaxAggregateOutputType | null
+  }
+
+  export type PaymentAgreementAvgAggregateOutputType = {
+    totalAmount: Decimal | null
+    installmentAmount: Decimal | null
+    installmentsCount: number | null
+  }
+
+  export type PaymentAgreementSumAggregateOutputType = {
+    totalAmount: Decimal | null
+    installmentAmount: Decimal | null
+    installmentsCount: number | null
+  }
+
+  export type PaymentAgreementMinAggregateOutputType = {
+    id: string | null
+    collectionCaseId: string | null
+    totalAmount: Decimal | null
+    installmentAmount: Decimal | null
+    installmentsCount: number | null
+    startDate: Date | null
+    status: $Enums.AgreementStatus | null
+    complianceStatus: $Enums.ComplianceStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    debtorId: string | null
+  }
+
+  export type PaymentAgreementMaxAggregateOutputType = {
+    id: string | null
+    collectionCaseId: string | null
+    totalAmount: Decimal | null
+    installmentAmount: Decimal | null
+    installmentsCount: number | null
+    startDate: Date | null
+    status: $Enums.AgreementStatus | null
+    complianceStatus: $Enums.ComplianceStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    debtorId: string | null
+  }
+
+  export type PaymentAgreementCountAggregateOutputType = {
+    id: number
+    collectionCaseId: number
+    totalAmount: number
+    installmentAmount: number
+    installmentsCount: number
+    startDate: number
+    status: number
+    complianceStatus: number
+    createdAt: number
+    updatedAt: number
+    debtorId: number
+    _all: number
+  }
+
+
+  export type PaymentAgreementAvgAggregateInputType = {
+    totalAmount?: true
+    installmentAmount?: true
+    installmentsCount?: true
+  }
+
+  export type PaymentAgreementSumAggregateInputType = {
+    totalAmount?: true
+    installmentAmount?: true
+    installmentsCount?: true
+  }
+
+  export type PaymentAgreementMinAggregateInputType = {
+    id?: true
+    collectionCaseId?: true
+    totalAmount?: true
+    installmentAmount?: true
+    installmentsCount?: true
+    startDate?: true
+    status?: true
+    complianceStatus?: true
+    createdAt?: true
+    updatedAt?: true
+    debtorId?: true
+  }
+
+  export type PaymentAgreementMaxAggregateInputType = {
+    id?: true
+    collectionCaseId?: true
+    totalAmount?: true
+    installmentAmount?: true
+    installmentsCount?: true
+    startDate?: true
+    status?: true
+    complianceStatus?: true
+    createdAt?: true
+    updatedAt?: true
+    debtorId?: true
+  }
+
+  export type PaymentAgreementCountAggregateInputType = {
+    id?: true
+    collectionCaseId?: true
+    totalAmount?: true
+    installmentAmount?: true
+    installmentsCount?: true
+    startDate?: true
+    status?: true
+    complianceStatus?: true
+    createdAt?: true
+    updatedAt?: true
+    debtorId?: true
+    _all?: true
+  }
+
+  export type PaymentAgreementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentAgreement to aggregate.
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentAgreements to fetch.
+     */
+    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentAgreementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentAgreements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentAgreements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentAgreements
+    **/
+    _count?: true | PaymentAgreementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PaymentAgreementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PaymentAgreementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentAgreementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentAgreementMaxAggregateInputType
+  }
+
+  export type GetPaymentAgreementAggregateType<T extends PaymentAgreementAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentAgreement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentAgreement[P]>
+      : GetScalarType<T[P], AggregatePaymentAgreement[P]>
+  }
+
+
+
+
+  export type PaymentAgreementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentAgreementWhereInput
+    orderBy?: PaymentAgreementOrderByWithAggregationInput | PaymentAgreementOrderByWithAggregationInput[]
+    by: PaymentAgreementScalarFieldEnum[] | PaymentAgreementScalarFieldEnum
+    having?: PaymentAgreementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentAgreementCountAggregateInputType | true
+    _avg?: PaymentAgreementAvgAggregateInputType
+    _sum?: PaymentAgreementSumAggregateInputType
+    _min?: PaymentAgreementMinAggregateInputType
+    _max?: PaymentAgreementMaxAggregateInputType
+  }
+
+  export type PaymentAgreementGroupByOutputType = {
+    id: string
+    collectionCaseId: string
+    totalAmount: Decimal
+    installmentAmount: Decimal
+    installmentsCount: number
+    startDate: Date
+    status: $Enums.AgreementStatus
+    complianceStatus: $Enums.ComplianceStatus
+    createdAt: Date
+    updatedAt: Date
+    debtorId: string | null
+    _count: PaymentAgreementCountAggregateOutputType | null
+    _avg: PaymentAgreementAvgAggregateOutputType | null
+    _sum: PaymentAgreementSumAggregateOutputType | null
+    _min: PaymentAgreementMinAggregateOutputType | null
+    _max: PaymentAgreementMaxAggregateOutputType | null
+  }
+
+  type GetPaymentAgreementGroupByPayload<T extends PaymentAgreementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentAgreementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentAgreementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentAgreementGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentAgreementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentAgreementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    collectionCaseId?: boolean
+    totalAmount?: boolean
+    installmentAmount?: boolean
+    installmentsCount?: boolean
+    startDate?: boolean
+    status?: boolean
+    complianceStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    debtorId?: boolean
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
+    payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    _count?: boolean | PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentAgreement"]>
+
+  export type PaymentAgreementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    collectionCaseId?: boolean
+    totalAmount?: boolean
+    installmentAmount?: boolean
+    installmentsCount?: boolean
+    startDate?: boolean
+    status?: boolean
+    complianceStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    debtorId?: boolean
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentAgreement"]>
+
+  export type PaymentAgreementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    collectionCaseId?: boolean
+    totalAmount?: boolean
+    installmentAmount?: boolean
+    installmentsCount?: boolean
+    startDate?: boolean
+    status?: boolean
+    complianceStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    debtorId?: boolean
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentAgreement"]>
+
+  export type PaymentAgreementSelectScalar = {
+    id?: boolean
+    collectionCaseId?: boolean
+    totalAmount?: boolean
+    installmentAmount?: boolean
+    installmentsCount?: boolean
+    startDate?: boolean
+    status?: boolean
+    complianceStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    debtorId?: boolean
+  }
+
+  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collectionCaseId" | "totalAmount" | "installmentAmount" | "installmentsCount" | "startDate" | "status" | "complianceStatus" | "createdAt" | "updatedAt" | "debtorId", ExtArgs["result"]["paymentAgreement"]>
+  export type PaymentAgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
+    payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    _count?: boolean | PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PaymentAgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+  }
+  export type PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
+    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+  }
+
+  export type $PaymentAgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentAgreement"
+    objects: {
+      collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
+      installments: Prisma.$InstallmentPayload<ExtArgs>[]
+      payments: Prisma.$PaymentPayload<ExtArgs>[]
+      Debtor: Prisma.$DebtorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      collectionCaseId: string
+      totalAmount: Prisma.Decimal
+      installmentAmount: Prisma.Decimal
+      installmentsCount: number
+      startDate: Date
+      status: $Enums.AgreementStatus
+      complianceStatus: $Enums.ComplianceStatus
+      createdAt: Date
+      updatedAt: Date
+      debtorId: string | null
+    }, ExtArgs["result"]["paymentAgreement"]>
+    composites: {}
+  }
+
+  type PaymentAgreementGetPayload<S extends boolean | null | undefined | PaymentAgreementDefaultArgs> = $Result.GetResult<Prisma.$PaymentAgreementPayload, S>
+
+  type PaymentAgreementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentAgreementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentAgreementCountAggregateInputType | true
+    }
+
+  export interface PaymentAgreementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentAgreement'], meta: { name: 'PaymentAgreement' } }
+    /**
+     * Find zero or one PaymentAgreement that matches the filter.
+     * @param {PaymentAgreementFindUniqueArgs} args - Arguments to find a PaymentAgreement
+     * @example
+     * // Get one PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentAgreementFindUniqueArgs>(args: SelectSubset<T, PaymentAgreementFindUniqueArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentAgreement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentAgreementFindUniqueOrThrowArgs} args - Arguments to find a PaymentAgreement
+     * @example
+     * // Get one PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentAgreementFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentAgreementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentAgreement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementFindFirstArgs} args - Arguments to find a PaymentAgreement
+     * @example
+     * // Get one PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentAgreementFindFirstArgs>(args?: SelectSubset<T, PaymentAgreementFindFirstArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentAgreement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementFindFirstOrThrowArgs} args - Arguments to find a PaymentAgreement
+     * @example
+     * // Get one PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentAgreementFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentAgreementFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentAgreements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentAgreements
+     * const paymentAgreements = await prisma.paymentAgreement.findMany()
+     * 
+     * // Get first 10 PaymentAgreements
+     * const paymentAgreements = await prisma.paymentAgreement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentAgreementFindManyArgs>(args?: SelectSubset<T, PaymentAgreementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentAgreement.
+     * @param {PaymentAgreementCreateArgs} args - Arguments to create a PaymentAgreement.
+     * @example
+     * // Create one PaymentAgreement
+     * const PaymentAgreement = await prisma.paymentAgreement.create({
+     *   data: {
+     *     // ... data to create a PaymentAgreement
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentAgreementCreateArgs>(args: SelectSubset<T, PaymentAgreementCreateArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentAgreements.
+     * @param {PaymentAgreementCreateManyArgs} args - Arguments to create many PaymentAgreements.
+     * @example
+     * // Create many PaymentAgreements
+     * const paymentAgreement = await prisma.paymentAgreement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentAgreementCreateManyArgs>(args?: SelectSubset<T, PaymentAgreementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaymentAgreements and returns the data saved in the database.
+     * @param {PaymentAgreementCreateManyAndReturnArgs} args - Arguments to create many PaymentAgreements.
+     * @example
+     * // Create many PaymentAgreements
+     * const paymentAgreement = await prisma.paymentAgreement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaymentAgreements and only return the `id`
+     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentAgreementCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentAgreementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaymentAgreement.
+     * @param {PaymentAgreementDeleteArgs} args - Arguments to delete one PaymentAgreement.
+     * @example
+     * // Delete one PaymentAgreement
+     * const PaymentAgreement = await prisma.paymentAgreement.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentAgreement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentAgreementDeleteArgs>(args: SelectSubset<T, PaymentAgreementDeleteArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentAgreement.
+     * @param {PaymentAgreementUpdateArgs} args - Arguments to update one PaymentAgreement.
+     * @example
+     * // Update one PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentAgreementUpdateArgs>(args: SelectSubset<T, PaymentAgreementUpdateArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentAgreements.
+     * @param {PaymentAgreementDeleteManyArgs} args - Arguments to filter PaymentAgreements to delete.
+     * @example
+     * // Delete a few PaymentAgreements
+     * const { count } = await prisma.paymentAgreement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentAgreementDeleteManyArgs>(args?: SelectSubset<T, PaymentAgreementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentAgreements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentAgreements
+     * const paymentAgreement = await prisma.paymentAgreement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentAgreementUpdateManyArgs>(args: SelectSubset<T, PaymentAgreementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentAgreements and returns the data updated in the database.
+     * @param {PaymentAgreementUpdateManyAndReturnArgs} args - Arguments to update many PaymentAgreements.
+     * @example
+     * // Update many PaymentAgreements
+     * const paymentAgreement = await prisma.paymentAgreement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaymentAgreements and only return the `id`
+     * const paymentAgreementWithIdOnly = await prisma.paymentAgreement.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentAgreementUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentAgreementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaymentAgreement.
+     * @param {PaymentAgreementUpsertArgs} args - Arguments to update or create a PaymentAgreement.
+     * @example
+     * // Update or create a PaymentAgreement
+     * const paymentAgreement = await prisma.paymentAgreement.upsert({
+     *   create: {
+     *     // ... data to create a PaymentAgreement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentAgreement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentAgreementUpsertArgs>(args: SelectSubset<T, PaymentAgreementUpsertArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentAgreements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementCountArgs} args - Arguments to filter PaymentAgreements to count.
+     * @example
+     * // Count the number of PaymentAgreements
+     * const count = await prisma.paymentAgreement.count({
+     *   where: {
+     *     // ... the filter for the PaymentAgreements we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentAgreementCountArgs>(
+      args?: Subset<T, PaymentAgreementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentAgreementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentAgreement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentAgreementAggregateArgs>(args: Subset<T, PaymentAgreementAggregateArgs>): Prisma.PrismaPromise<GetPaymentAgreementAggregateType<T>>
+
+    /**
+     * Group by PaymentAgreement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAgreementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentAgreementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentAgreementGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentAgreementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentAgreementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentAgreementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentAgreement model
+   */
+  readonly fields: PaymentAgreementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentAgreement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentAgreementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    installments<T extends PaymentAgreement$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends PaymentAgreement$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Debtor<T extends PaymentAgreement$DebtorArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$DebtorArgs<ExtArgs>>): Prisma__DebtorClient<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentAgreement model
+   */
+  interface PaymentAgreementFieldRefs {
+    readonly id: FieldRef<"PaymentAgreement", 'String'>
+    readonly collectionCaseId: FieldRef<"PaymentAgreement", 'String'>
+    readonly totalAmount: FieldRef<"PaymentAgreement", 'Decimal'>
+    readonly installmentAmount: FieldRef<"PaymentAgreement", 'Decimal'>
+    readonly installmentsCount: FieldRef<"PaymentAgreement", 'Int'>
+    readonly startDate: FieldRef<"PaymentAgreement", 'DateTime'>
+    readonly status: FieldRef<"PaymentAgreement", 'AgreementStatus'>
+    readonly complianceStatus: FieldRef<"PaymentAgreement", 'ComplianceStatus'>
+    readonly createdAt: FieldRef<"PaymentAgreement", 'DateTime'>
+    readonly updatedAt: FieldRef<"PaymentAgreement", 'DateTime'>
+    readonly debtorId: FieldRef<"PaymentAgreement", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentAgreement findUnique
+   */
+  export type PaymentAgreementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentAgreement to fetch.
+     */
+    where: PaymentAgreementWhereUniqueInput
+  }
+
+  /**
+   * PaymentAgreement findUniqueOrThrow
+   */
+  export type PaymentAgreementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentAgreement to fetch.
+     */
+    where: PaymentAgreementWhereUniqueInput
+  }
+
+  /**
+   * PaymentAgreement findFirst
+   */
+  export type PaymentAgreementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentAgreement to fetch.
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentAgreements to fetch.
+     */
+    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentAgreements.
+     */
+    cursor?: PaymentAgreementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentAgreements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentAgreements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentAgreements.
+     */
+    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentAgreement findFirstOrThrow
+   */
+  export type PaymentAgreementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentAgreement to fetch.
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentAgreements to fetch.
+     */
+    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentAgreements.
+     */
+    cursor?: PaymentAgreementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentAgreements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentAgreements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentAgreements.
+     */
+    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentAgreement findMany
+   */
+  export type PaymentAgreementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentAgreements to fetch.
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentAgreements to fetch.
+     */
+    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentAgreements.
+     */
+    cursor?: PaymentAgreementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentAgreements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentAgreements.
+     */
+    skip?: number
+    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentAgreement create
+   */
+  export type PaymentAgreementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentAgreement.
+     */
+    data: XOR<PaymentAgreementCreateInput, PaymentAgreementUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentAgreement createMany
+   */
+  export type PaymentAgreementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentAgreements.
+     */
+    data: PaymentAgreementCreateManyInput | PaymentAgreementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentAgreement createManyAndReturn
+   */
+  export type PaymentAgreementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaymentAgreements.
+     */
+    data: PaymentAgreementCreateManyInput | PaymentAgreementCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentAgreement update
+   */
+  export type PaymentAgreementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentAgreement.
+     */
+    data: XOR<PaymentAgreementUpdateInput, PaymentAgreementUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentAgreement to update.
+     */
+    where: PaymentAgreementWhereUniqueInput
+  }
+
+  /**
+   * PaymentAgreement updateMany
+   */
+  export type PaymentAgreementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentAgreements.
+     */
+    data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentAgreements to update
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * Limit how many PaymentAgreements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentAgreement updateManyAndReturn
+   */
+  export type PaymentAgreementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * The data used to update PaymentAgreements.
+     */
+    data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentAgreements to update
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * Limit how many PaymentAgreements to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentAgreement upsert
+   */
+  export type PaymentAgreementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentAgreement to update in case it exists.
+     */
+    where: PaymentAgreementWhereUniqueInput
+    /**
+     * In case the PaymentAgreement found by the `where` argument doesn't exist, create a new PaymentAgreement with this data.
+     */
+    create: XOR<PaymentAgreementCreateInput, PaymentAgreementUncheckedCreateInput>
+    /**
+     * In case the PaymentAgreement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentAgreementUpdateInput, PaymentAgreementUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentAgreement delete
+   */
+  export type PaymentAgreementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentAgreement to delete.
+     */
+    where: PaymentAgreementWhereUniqueInput
+  }
+
+  /**
+   * PaymentAgreement deleteMany
+   */
+  export type PaymentAgreementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentAgreements to delete
+     */
+    where?: PaymentAgreementWhereInput
+    /**
+     * Limit how many PaymentAgreements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentAgreement.installments
+   */
+  export type PaymentAgreement$installmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    where?: InstallmentWhereInput
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    cursor?: InstallmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InstallmentScalarFieldEnum | InstallmentScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentAgreement.payments
+   */
+  export type PaymentAgreement$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentAgreement.Debtor
+   */
+  export type PaymentAgreement$DebtorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Debtor
+     */
+    select?: DebtorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Debtor
+     */
+    omit?: DebtorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DebtorInclude<ExtArgs> | null
+    where?: DebtorWhereInput
+  }
+
+  /**
+   * PaymentAgreement without action
+   */
+  export type PaymentAgreementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Installment
+   */
+
+  export type AggregateInstallment = {
+    _count: InstallmentCountAggregateOutputType | null
+    _avg: InstallmentAvgAggregateOutputType | null
+    _sum: InstallmentSumAggregateOutputType | null
+    _min: InstallmentMinAggregateOutputType | null
+    _max: InstallmentMaxAggregateOutputType | null
+  }
+
+  export type InstallmentAvgAggregateOutputType = {
+    number: number | null
+    amount: Decimal | null
+  }
+
+  export type InstallmentSumAggregateOutputType = {
+    number: number | null
+    amount: Decimal | null
+  }
+
+  export type InstallmentMinAggregateOutputType = {
+    id: string | null
+    paymentAgreementId: string | null
+    number: number | null
+    dueDate: Date | null
+    amount: Decimal | null
+    status: $Enums.InstallmentStatus | null
+    paymentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InstallmentMaxAggregateOutputType = {
+    id: string | null
+    paymentAgreementId: string | null
+    number: number | null
+    dueDate: Date | null
+    amount: Decimal | null
+    status: $Enums.InstallmentStatus | null
+    paymentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InstallmentCountAggregateOutputType = {
+    id: number
+    paymentAgreementId: number
+    number: number
+    dueDate: number
+    amount: number
+    status: number
+    paymentId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InstallmentAvgAggregateInputType = {
+    number?: true
+    amount?: true
+  }
+
+  export type InstallmentSumAggregateInputType = {
+    number?: true
+    amount?: true
+  }
+
+  export type InstallmentMinAggregateInputType = {
+    id?: true
+    paymentAgreementId?: true
+    number?: true
+    dueDate?: true
+    amount?: true
+    status?: true
+    paymentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InstallmentMaxAggregateInputType = {
+    id?: true
+    paymentAgreementId?: true
+    number?: true
+    dueDate?: true
+    amount?: true
+    status?: true
+    paymentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InstallmentCountAggregateInputType = {
+    id?: true
+    paymentAgreementId?: true
+    number?: true
+    dueDate?: true
+    amount?: true
+    status?: true
+    paymentId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InstallmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Installment to aggregate.
+     */
+    where?: InstallmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Installments to fetch.
+     */
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InstallmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Installments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Installments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Installments
+    **/
+    _count?: true | InstallmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InstallmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InstallmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InstallmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InstallmentMaxAggregateInputType
+  }
+
+  export type GetInstallmentAggregateType<T extends InstallmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateInstallment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInstallment[P]>
+      : GetScalarType<T[P], AggregateInstallment[P]>
+  }
+
+
+
+
+  export type InstallmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InstallmentWhereInput
+    orderBy?: InstallmentOrderByWithAggregationInput | InstallmentOrderByWithAggregationInput[]
+    by: InstallmentScalarFieldEnum[] | InstallmentScalarFieldEnum
+    having?: InstallmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InstallmentCountAggregateInputType | true
+    _avg?: InstallmentAvgAggregateInputType
+    _sum?: InstallmentSumAggregateInputType
+    _min?: InstallmentMinAggregateInputType
+    _max?: InstallmentMaxAggregateInputType
+  }
+
+  export type InstallmentGroupByOutputType = {
+    id: string
+    paymentAgreementId: string
+    number: number
+    dueDate: Date
+    amount: Decimal
+    status: $Enums.InstallmentStatus
+    paymentId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InstallmentCountAggregateOutputType | null
+    _avg: InstallmentAvgAggregateOutputType | null
+    _sum: InstallmentSumAggregateOutputType | null
+    _min: InstallmentMinAggregateOutputType | null
+    _max: InstallmentMaxAggregateOutputType | null
+  }
+
+  type GetInstallmentGroupByPayload<T extends InstallmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InstallmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InstallmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InstallmentGroupByOutputType[P]>
+            : GetScalarType<T[P], InstallmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InstallmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentAgreementId?: boolean
+    number?: boolean
+    dueDate?: boolean
+    amount?: boolean
+    status?: boolean
+    paymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }, ExtArgs["result"]["installment"]>
+
+  export type InstallmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentAgreementId?: boolean
+    number?: boolean
+    dueDate?: boolean
+    amount?: boolean
+    status?: boolean
+    paymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }, ExtArgs["result"]["installment"]>
+
+  export type InstallmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentAgreementId?: boolean
+    number?: boolean
+    dueDate?: boolean
+    amount?: boolean
+    status?: boolean
+    paymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }, ExtArgs["result"]["installment"]>
+
+  export type InstallmentSelectScalar = {
+    id?: boolean
+    paymentAgreementId?: boolean
+    number?: boolean
+    dueDate?: boolean
+    amount?: boolean
+    status?: boolean
+    paymentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentAgreementId" | "number" | "dueDate" | "amount" | "status" | "paymentId" | "createdAt" | "updatedAt", ExtArgs["result"]["installment"]>
+  export type InstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }
+  export type InstallmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }
+  export type InstallmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentAgreement?: boolean | PaymentAgreementDefaultArgs<ExtArgs>
+    payment?: boolean | Installment$paymentArgs<ExtArgs>
+  }
+
+  export type $InstallmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Installment"
+    objects: {
+      paymentAgreement: Prisma.$PaymentAgreementPayload<ExtArgs>
+      payment: Prisma.$PaymentPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      paymentAgreementId: string
+      number: number
+      dueDate: Date
+      amount: Prisma.Decimal
+      status: $Enums.InstallmentStatus
+      paymentId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["installment"]>
+    composites: {}
+  }
+
+  type InstallmentGetPayload<S extends boolean | null | undefined | InstallmentDefaultArgs> = $Result.GetResult<Prisma.$InstallmentPayload, S>
+
+  type InstallmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InstallmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InstallmentCountAggregateInputType | true
+    }
+
+  export interface InstallmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Installment'], meta: { name: 'Installment' } }
+    /**
+     * Find zero or one Installment that matches the filter.
+     * @param {InstallmentFindUniqueArgs} args - Arguments to find a Installment
+     * @example
+     * // Get one Installment
+     * const installment = await prisma.installment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InstallmentFindUniqueArgs>(args: SelectSubset<T, InstallmentFindUniqueArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Installment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InstallmentFindUniqueOrThrowArgs} args - Arguments to find a Installment
+     * @example
+     * // Get one Installment
+     * const installment = await prisma.installment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InstallmentFindUniqueOrThrowArgs>(args: SelectSubset<T, InstallmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Installment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentFindFirstArgs} args - Arguments to find a Installment
+     * @example
+     * // Get one Installment
+     * const installment = await prisma.installment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InstallmentFindFirstArgs>(args?: SelectSubset<T, InstallmentFindFirstArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Installment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentFindFirstOrThrowArgs} args - Arguments to find a Installment
+     * @example
+     * // Get one Installment
+     * const installment = await prisma.installment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InstallmentFindFirstOrThrowArgs>(args?: SelectSubset<T, InstallmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Installments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Installments
+     * const installments = await prisma.installment.findMany()
+     * 
+     * // Get first 10 Installments
+     * const installments = await prisma.installment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const installmentWithIdOnly = await prisma.installment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InstallmentFindManyArgs>(args?: SelectSubset<T, InstallmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Installment.
+     * @param {InstallmentCreateArgs} args - Arguments to create a Installment.
+     * @example
+     * // Create one Installment
+     * const Installment = await prisma.installment.create({
+     *   data: {
+     *     // ... data to create a Installment
+     *   }
+     * })
+     * 
+     */
+    create<T extends InstallmentCreateArgs>(args: SelectSubset<T, InstallmentCreateArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Installments.
+     * @param {InstallmentCreateManyArgs} args - Arguments to create many Installments.
+     * @example
+     * // Create many Installments
+     * const installment = await prisma.installment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InstallmentCreateManyArgs>(args?: SelectSubset<T, InstallmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Installments and returns the data saved in the database.
+     * @param {InstallmentCreateManyAndReturnArgs} args - Arguments to create many Installments.
+     * @example
+     * // Create many Installments
+     * const installment = await prisma.installment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Installments and only return the `id`
+     * const installmentWithIdOnly = await prisma.installment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InstallmentCreateManyAndReturnArgs>(args?: SelectSubset<T, InstallmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Installment.
+     * @param {InstallmentDeleteArgs} args - Arguments to delete one Installment.
+     * @example
+     * // Delete one Installment
+     * const Installment = await prisma.installment.delete({
+     *   where: {
+     *     // ... filter to delete one Installment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InstallmentDeleteArgs>(args: SelectSubset<T, InstallmentDeleteArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Installment.
+     * @param {InstallmentUpdateArgs} args - Arguments to update one Installment.
+     * @example
+     * // Update one Installment
+     * const installment = await prisma.installment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InstallmentUpdateArgs>(args: SelectSubset<T, InstallmentUpdateArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Installments.
+     * @param {InstallmentDeleteManyArgs} args - Arguments to filter Installments to delete.
+     * @example
+     * // Delete a few Installments
+     * const { count } = await prisma.installment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InstallmentDeleteManyArgs>(args?: SelectSubset<T, InstallmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Installments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Installments
+     * const installment = await prisma.installment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InstallmentUpdateManyArgs>(args: SelectSubset<T, InstallmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Installments and returns the data updated in the database.
+     * @param {InstallmentUpdateManyAndReturnArgs} args - Arguments to update many Installments.
+     * @example
+     * // Update many Installments
+     * const installment = await prisma.installment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Installments and only return the `id`
+     * const installmentWithIdOnly = await prisma.installment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InstallmentUpdateManyAndReturnArgs>(args: SelectSubset<T, InstallmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Installment.
+     * @param {InstallmentUpsertArgs} args - Arguments to update or create a Installment.
+     * @example
+     * // Update or create a Installment
+     * const installment = await prisma.installment.upsert({
+     *   create: {
+     *     // ... data to create a Installment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Installment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InstallmentUpsertArgs>(args: SelectSubset<T, InstallmentUpsertArgs<ExtArgs>>): Prisma__InstallmentClient<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Installments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentCountArgs} args - Arguments to filter Installments to count.
+     * @example
+     * // Count the number of Installments
+     * const count = await prisma.installment.count({
+     *   where: {
+     *     // ... the filter for the Installments we want to count
+     *   }
+     * })
+    **/
+    count<T extends InstallmentCountArgs>(
+      args?: Subset<T, InstallmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InstallmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Installment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InstallmentAggregateArgs>(args: Subset<T, InstallmentAggregateArgs>): Prisma.PrismaPromise<GetInstallmentAggregateType<T>>
+
+    /**
+     * Group by Installment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InstallmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InstallmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InstallmentGroupByArgs['orderBy'] }
+        : { orderBy?: InstallmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InstallmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInstallmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Installment model
+   */
+  readonly fields: InstallmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Installment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InstallmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    paymentAgreement<T extends PaymentAgreementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreementDefaultArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payment<T extends Installment$paymentArgs<ExtArgs> = {}>(args?: Subset<T, Installment$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Installment model
+   */
+  interface InstallmentFieldRefs {
+    readonly id: FieldRef<"Installment", 'String'>
+    readonly paymentAgreementId: FieldRef<"Installment", 'String'>
+    readonly number: FieldRef<"Installment", 'Int'>
+    readonly dueDate: FieldRef<"Installment", 'DateTime'>
+    readonly amount: FieldRef<"Installment", 'Decimal'>
+    readonly status: FieldRef<"Installment", 'InstallmentStatus'>
+    readonly paymentId: FieldRef<"Installment", 'String'>
+    readonly createdAt: FieldRef<"Installment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Installment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Installment findUnique
+   */
+  export type InstallmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Installment to fetch.
+     */
+    where: InstallmentWhereUniqueInput
+  }
+
+  /**
+   * Installment findUniqueOrThrow
+   */
+  export type InstallmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Installment to fetch.
+     */
+    where: InstallmentWhereUniqueInput
+  }
+
+  /**
+   * Installment findFirst
+   */
+  export type InstallmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Installment to fetch.
+     */
+    where?: InstallmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Installments to fetch.
+     */
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Installments.
+     */
+    cursor?: InstallmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Installments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Installments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Installments.
+     */
+    distinct?: InstallmentScalarFieldEnum | InstallmentScalarFieldEnum[]
+  }
+
+  /**
+   * Installment findFirstOrThrow
+   */
+  export type InstallmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Installment to fetch.
+     */
+    where?: InstallmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Installments to fetch.
+     */
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Installments.
+     */
+    cursor?: InstallmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Installments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Installments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Installments.
+     */
+    distinct?: InstallmentScalarFieldEnum | InstallmentScalarFieldEnum[]
+  }
+
+  /**
+   * Installment findMany
+   */
+  export type InstallmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Installments to fetch.
+     */
+    where?: InstallmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Installments to fetch.
+     */
+    orderBy?: InstallmentOrderByWithRelationInput | InstallmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Installments.
+     */
+    cursor?: InstallmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Installments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Installments.
+     */
+    skip?: number
+    distinct?: InstallmentScalarFieldEnum | InstallmentScalarFieldEnum[]
+  }
+
+  /**
+   * Installment create
+   */
+  export type InstallmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Installment.
+     */
+    data: XOR<InstallmentCreateInput, InstallmentUncheckedCreateInput>
+  }
+
+  /**
+   * Installment createMany
+   */
+  export type InstallmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Installments.
+     */
+    data: InstallmentCreateManyInput | InstallmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Installment createManyAndReturn
+   */
+  export type InstallmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Installments.
+     */
+    data: InstallmentCreateManyInput | InstallmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Installment update
+   */
+  export type InstallmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Installment.
+     */
+    data: XOR<InstallmentUpdateInput, InstallmentUncheckedUpdateInput>
+    /**
+     * Choose, which Installment to update.
+     */
+    where: InstallmentWhereUniqueInput
+  }
+
+  /**
+   * Installment updateMany
+   */
+  export type InstallmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Installments.
+     */
+    data: XOR<InstallmentUpdateManyMutationInput, InstallmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Installments to update
+     */
+    where?: InstallmentWhereInput
+    /**
+     * Limit how many Installments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Installment updateManyAndReturn
+   */
+  export type InstallmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Installments.
+     */
+    data: XOR<InstallmentUpdateManyMutationInput, InstallmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Installments to update
+     */
+    where?: InstallmentWhereInput
+    /**
+     * Limit how many Installments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Installment upsert
+   */
+  export type InstallmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Installment to update in case it exists.
+     */
+    where: InstallmentWhereUniqueInput
+    /**
+     * In case the Installment found by the `where` argument doesn't exist, create a new Installment with this data.
+     */
+    create: XOR<InstallmentCreateInput, InstallmentUncheckedCreateInput>
+    /**
+     * In case the Installment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InstallmentUpdateInput, InstallmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Installment delete
+   */
+  export type InstallmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+    /**
+     * Filter which Installment to delete.
+     */
+    where: InstallmentWhereUniqueInput
+  }
+
+  /**
+   * Installment deleteMany
+   */
+  export type InstallmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Installments to delete
+     */
+    where?: InstallmentWhereInput
+    /**
+     * Limit how many Installments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Installment.payment
+   */
+  export type Installment$paymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+  }
+
+  /**
+   * Installment without action
+   */
+  export type InstallmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Installment
+     */
+    select?: InstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Installment
+     */
+    omit?: InstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstallmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -31265,27 +35310,11 @@ export namespace Prisma {
     collectionCaseId: 'collectionCaseId',
     paymentDate: 'paymentDate',
     referenceNumber: 'referenceNumber',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    paymentAgreementId: 'paymentAgreementId'
   };
 
   export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
-
-
-  export const PaymentAgreementScalarFieldEnum: {
-    id: 'id',
-    debtorId: 'debtorId',
-    agreementDate: 'agreementDate',
-    status: 'status',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    collectionCaseId: 'collectionCaseId',
-    installmentAmount: 'installmentAmount',
-    nextPaymentDate: 'nextPaymentDate',
-    notes: 'notes',
-    totalInstallments: 'totalInstallments'
-  };
-
-  export type PaymentAgreementScalarFieldEnum = (typeof PaymentAgreementScalarFieldEnum)[keyof typeof PaymentAgreementScalarFieldEnum]
 
 
   export const DebtorScalarFieldEnum: {
@@ -31307,6 +35336,33 @@ export namespace Prisma {
   export type DebtorScalarFieldEnum = (typeof DebtorScalarFieldEnum)[keyof typeof DebtorScalarFieldEnum]
 
 
+  export const ChatRoomScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    collectionCaseId: 'collectionCaseId',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ChatRoomScalarFieldEnum = (typeof ChatRoomScalarFieldEnum)[keyof typeof ChatRoomScalarFieldEnum]
+
+
+  export const ChatMessageScalarFieldEnum: {
+    id: 'id',
+    roomId: 'roomId',
+    senderId: 'senderId',
+    message: 'message',
+    fileUrl: 'fileUrl',
+    fileName: 'fileName',
+    timestamp: 'timestamp',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
+
+
   export const DebtorIncomeScalarFieldEnum: {
     id: 'id',
     debtorId: 'debtorId',
@@ -31317,6 +35373,38 @@ export namespace Prisma {
   };
 
   export type DebtorIncomeScalarFieldEnum = (typeof DebtorIncomeScalarFieldEnum)[keyof typeof DebtorIncomeScalarFieldEnum]
+
+
+  export const PaymentAgreementScalarFieldEnum: {
+    id: 'id',
+    collectionCaseId: 'collectionCaseId',
+    totalAmount: 'totalAmount',
+    installmentAmount: 'installmentAmount',
+    installmentsCount: 'installmentsCount',
+    startDate: 'startDate',
+    status: 'status',
+    complianceStatus: 'complianceStatus',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    debtorId: 'debtorId'
+  };
+
+  export type PaymentAgreementScalarFieldEnum = (typeof PaymentAgreementScalarFieldEnum)[keyof typeof PaymentAgreementScalarFieldEnum]
+
+
+  export const InstallmentScalarFieldEnum: {
+    id: 'id',
+    paymentAgreementId: 'paymentAgreementId',
+    number: 'number',
+    dueDate: 'dueDate',
+    amount: 'amount',
+    status: 'status',
+    paymentId: 'paymentId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InstallmentScalarFieldEnum = (typeof InstallmentScalarFieldEnum)[keyof typeof InstallmentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -31524,6 +35612,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'IdentificationType'
+   */
+  export type EnumIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'IdentificationType[]'
+   */
+  export type ListEnumIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentificationType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'AgreementStatus'
    */
   export type EnumAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementStatus'>
@@ -31538,16 +35640,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'IdentificationType'
+   * Reference to a field of type 'ComplianceStatus'
    */
-  export type EnumIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentificationType'>
+  export type EnumComplianceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceStatus'>
     
 
 
   /**
-   * Reference to a field of type 'IdentificationType[]'
+   * Reference to a field of type 'ComplianceStatus[]'
    */
-  export type ListEnumIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentificationType[]'>
+  export type ListEnumComplianceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'InstallmentStatus'
+   */
+  export type EnumInstallmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InstallmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'InstallmentStatus[]'
+   */
+  export type ListEnumInstallmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InstallmentStatus[]'>
     
   /**
    * Deep Input Types
@@ -31583,6 +35699,7 @@ export namespace Prisma {
     registry?: XOR<TenantRegistryNullableScalarRelationFilter, TenantRegistryWhereInput> | null
     verdicts?: VerdictListRelationFilter
     users?: UserListRelationFilter
+    chatRooms?: ChatRoomListRelationFilter
   }
 
   export type TenantOrderByWithRelationInput = {
@@ -31611,6 +35728,7 @@ export namespace Prisma {
     registry?: TenantRegistryOrderByWithRelationInput
     verdicts?: VerdictOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
+    chatRooms?: ChatRoomOrderByRelationAggregateInput
   }
 
   export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -31642,6 +35760,7 @@ export namespace Prisma {
     registry?: XOR<TenantRegistryNullableScalarRelationFilter, TenantRegistryWhereInput> | null
     verdicts?: VerdictListRelationFilter
     users?: UserListRelationFilter
+    chatRooms?: ChatRoomListRelationFilter
   }, "id" | "subdomain">
 
   export type TenantOrderByWithAggregationInput = {
@@ -31786,6 +35905,7 @@ export namespace Prisma {
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     debtors?: DebtorListRelationFilter
     verdictBailiffs?: VerdictListRelationFilter
+    messages?: ChatMessageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -31802,6 +35922,7 @@ export namespace Prisma {
     tenant?: TenantOrderByWithRelationInput
     debtors?: DebtorOrderByRelationAggregateInput
     verdictBailiffs?: VerdictOrderByRelationAggregateInput
+    messages?: ChatMessageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -31821,6 +35942,7 @@ export namespace Prisma {
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     debtors?: DebtorListRelationFilter
     verdictBailiffs?: VerdictListRelationFilter
+    messages?: ChatMessageListRelationFilter
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -32982,6 +37104,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     agreements?: PaymentAgreementListRelationFilter
     penalties?: PenaltyListRelationFilter
+    chatRooms?: ChatRoomListRelationFilter
   }
 
   export type CollectionCaseOrderByWithRelationInput = {
@@ -33003,6 +37126,7 @@ export namespace Prisma {
     payments?: PaymentOrderByRelationAggregateInput
     agreements?: PaymentAgreementOrderByRelationAggregateInput
     penalties?: PenaltyOrderByRelationAggregateInput
+    chatRooms?: ChatRoomOrderByRelationAggregateInput
   }
 
   export type CollectionCaseWhereUniqueInput = Prisma.AtLeast<{
@@ -33027,6 +37151,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     agreements?: PaymentAgreementListRelationFilter
     penalties?: PenaltyListRelationFilter
+    chatRooms?: ChatRoomListRelationFilter
   }, "id">
 
   export type CollectionCaseOrderByWithAggregationInput = {
@@ -33221,7 +37346,10 @@ export namespace Prisma {
     paymentDate?: DateTimeFilter<"Payment"> | Date | string
     referenceNumber?: StringNullableFilter<"Payment"> | string | null
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    paymentAgreementId?: StringNullableFilter<"Payment"> | string | null
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    PaymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
+    Installment?: InstallmentListRelationFilter
   }
 
   export type PaymentOrderByWithRelationInput = {
@@ -33233,7 +37361,10 @@ export namespace Prisma {
     paymentDate?: SortOrder
     referenceNumber?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
+    paymentAgreementId?: SortOrderInput | SortOrder
     collectionCase?: CollectionCaseOrderByWithRelationInput
+    PaymentAgreement?: PaymentAgreementOrderByWithRelationInput
+    Installment?: InstallmentOrderByRelationAggregateInput
   }
 
   export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -33248,7 +37379,10 @@ export namespace Prisma {
     paymentDate?: DateTimeFilter<"Payment"> | Date | string
     referenceNumber?: StringNullableFilter<"Payment"> | string | null
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    paymentAgreementId?: StringNullableFilter<"Payment"> | string | null
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    PaymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
+    Installment?: InstallmentListRelationFilter
   }, "id">
 
   export type PaymentOrderByWithAggregationInput = {
@@ -33260,6 +37394,7 @@ export namespace Prisma {
     paymentDate?: SortOrder
     referenceNumber?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
+    paymentAgreementId?: SortOrderInput | SortOrder
     _count?: PaymentCountOrderByAggregateInput
     _avg?: PaymentAvgOrderByAggregateInput
     _max?: PaymentMaxOrderByAggregateInput
@@ -33279,96 +37414,7 @@ export namespace Prisma {
     paymentDate?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     referenceNumber?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
-  }
-
-  export type PaymentAgreementWhereInput = {
-    AND?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
-    OR?: PaymentAgreementWhereInput[]
-    NOT?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
-    id?: StringFilter<"PaymentAgreement"> | string
-    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
-    agreementDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
-    installmentAmount?: DecimalNullableFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: DateTimeNullableFilter<"PaymentAgreement"> | Date | string | null
-    notes?: StringNullableFilter<"PaymentAgreement"> | string | null
-    totalInstallments?: IntNullableFilter<"PaymentAgreement"> | number | null
-    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
-    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
-  }
-
-  export type PaymentAgreementOrderByWithRelationInput = {
-    id?: SortOrder
-    debtorId?: SortOrderInput | SortOrder
-    agreementDate?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    collectionCaseId?: SortOrder
-    installmentAmount?: SortOrderInput | SortOrder
-    nextPaymentDate?: SortOrderInput | SortOrder
-    notes?: SortOrderInput | SortOrder
-    totalInstallments?: SortOrderInput | SortOrder
-    collectionCase?: CollectionCaseOrderByWithRelationInput
-    Debtor?: DebtorOrderByWithRelationInput
-  }
-
-  export type PaymentAgreementWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
-    OR?: PaymentAgreementWhereInput[]
-    NOT?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
-    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
-    agreementDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
-    installmentAmount?: DecimalNullableFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: DateTimeNullableFilter<"PaymentAgreement"> | Date | string | null
-    notes?: StringNullableFilter<"PaymentAgreement"> | string | null
-    totalInstallments?: IntNullableFilter<"PaymentAgreement"> | number | null
-    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
-    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
-  }, "id">
-
-  export type PaymentAgreementOrderByWithAggregationInput = {
-    id?: SortOrder
-    debtorId?: SortOrderInput | SortOrder
-    agreementDate?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    collectionCaseId?: SortOrder
-    installmentAmount?: SortOrderInput | SortOrder
-    nextPaymentDate?: SortOrderInput | SortOrder
-    notes?: SortOrderInput | SortOrder
-    totalInstallments?: SortOrderInput | SortOrder
-    _count?: PaymentAgreementCountOrderByAggregateInput
-    _avg?: PaymentAgreementAvgOrderByAggregateInput
-    _max?: PaymentAgreementMaxOrderByAggregateInput
-    _min?: PaymentAgreementMinOrderByAggregateInput
-    _sum?: PaymentAgreementSumOrderByAggregateInput
-  }
-
-  export type PaymentAgreementScalarWhereWithAggregatesInput = {
-    AND?: PaymentAgreementScalarWhereWithAggregatesInput | PaymentAgreementScalarWhereWithAggregatesInput[]
-    OR?: PaymentAgreementScalarWhereWithAggregatesInput[]
-    NOT?: PaymentAgreementScalarWhereWithAggregatesInput | PaymentAgreementScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"PaymentAgreement"> | string
-    debtorId?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
-    agreementDate?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    createdAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
-    collectionCaseId?: StringWithAggregatesFilter<"PaymentAgreement"> | string
-    installmentAmount?: DecimalNullableWithAggregatesFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: DateTimeNullableWithAggregatesFilter<"PaymentAgreement"> | Date | string | null
-    notes?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
-    totalInstallments?: IntNullableWithAggregatesFilter<"PaymentAgreement"> | number | null
+    paymentAgreementId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
   }
 
   export type DebtorWhereInput = {
@@ -33485,6 +37531,150 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Debtor"> | Date | string
   }
 
+  export type ChatRoomWhereInput = {
+    AND?: ChatRoomWhereInput | ChatRoomWhereInput[]
+    OR?: ChatRoomWhereInput[]
+    NOT?: ChatRoomWhereInput | ChatRoomWhereInput[]
+    id?: StringFilter<"ChatRoom"> | string
+    tenantId?: StringFilter<"ChatRoom"> | string
+    collectionCaseId?: StringFilter<"ChatRoom"> | string
+    name?: StringFilter<"ChatRoom"> | string
+    createdAt?: DateTimeFilter<"ChatRoom"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatRoom"> | Date | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    messages?: ChatMessageListRelationFilter
+  }
+
+  export type ChatRoomOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    collectionCaseId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    tenant?: TenantOrderByWithRelationInput
+    collectionCase?: CollectionCaseOrderByWithRelationInput
+    messages?: ChatMessageOrderByRelationAggregateInput
+  }
+
+  export type ChatRoomWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ChatRoomWhereInput | ChatRoomWhereInput[]
+    OR?: ChatRoomWhereInput[]
+    NOT?: ChatRoomWhereInput | ChatRoomWhereInput[]
+    tenantId?: StringFilter<"ChatRoom"> | string
+    collectionCaseId?: StringFilter<"ChatRoom"> | string
+    name?: StringFilter<"ChatRoom"> | string
+    createdAt?: DateTimeFilter<"ChatRoom"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatRoom"> | Date | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    messages?: ChatMessageListRelationFilter
+  }, "id">
+
+  export type ChatRoomOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    collectionCaseId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ChatRoomCountOrderByAggregateInput
+    _max?: ChatRoomMaxOrderByAggregateInput
+    _min?: ChatRoomMinOrderByAggregateInput
+  }
+
+  export type ChatRoomScalarWhereWithAggregatesInput = {
+    AND?: ChatRoomScalarWhereWithAggregatesInput | ChatRoomScalarWhereWithAggregatesInput[]
+    OR?: ChatRoomScalarWhereWithAggregatesInput[]
+    NOT?: ChatRoomScalarWhereWithAggregatesInput | ChatRoomScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChatRoom"> | string
+    tenantId?: StringWithAggregatesFilter<"ChatRoom"> | string
+    collectionCaseId?: StringWithAggregatesFilter<"ChatRoom"> | string
+    name?: StringWithAggregatesFilter<"ChatRoom"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ChatRoom"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ChatRoom"> | Date | string
+  }
+
+  export type ChatMessageWhereInput = {
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    roomId?: StringFilter<"ChatMessage"> | string
+    senderId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    fileUrl?: StringNullableFilter<"ChatMessage"> | string | null
+    fileName?: StringNullableFilter<"ChatMessage"> | string | null
+    timestamp?: DateTimeFilter<"ChatMessage"> | Date | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    room?: XOR<ChatRoomScalarRelationFilter, ChatRoomWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ChatMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    roomId?: SortOrder
+    senderId?: SortOrder
+    message?: SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    timestamp?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    room?: ChatRoomOrderByWithRelationInput
+    sender?: UserOrderByWithRelationInput
+  }
+
+  export type ChatMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    roomId?: StringFilter<"ChatMessage"> | string
+    senderId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    fileUrl?: StringNullableFilter<"ChatMessage"> | string | null
+    fileName?: StringNullableFilter<"ChatMessage"> | string | null
+    timestamp?: DateTimeFilter<"ChatMessage"> | Date | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    room?: XOR<ChatRoomScalarRelationFilter, ChatRoomWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ChatMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    roomId?: SortOrder
+    senderId?: SortOrder
+    message?: SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    timestamp?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ChatMessageCountOrderByAggregateInput
+    _max?: ChatMessageMaxOrderByAggregateInput
+    _min?: ChatMessageMinOrderByAggregateInput
+  }
+
+  export type ChatMessageScalarWhereWithAggregatesInput = {
+    AND?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    OR?: ChatMessageScalarWhereWithAggregatesInput[]
+    NOT?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChatMessage"> | string
+    roomId?: StringWithAggregatesFilter<"ChatMessage"> | string
+    senderId?: StringWithAggregatesFilter<"ChatMessage"> | string
+    message?: StringWithAggregatesFilter<"ChatMessage"> | string
+    fileUrl?: StringNullableWithAggregatesFilter<"ChatMessage"> | string | null
+    fileName?: StringNullableWithAggregatesFilter<"ChatMessage"> | string | null
+    timestamp?: DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string
+  }
+
   export type DebtorIncomeWhereInput = {
     AND?: DebtorIncomeWhereInput | DebtorIncomeWhereInput[]
     OR?: DebtorIncomeWhereInput[]
@@ -33547,6 +37737,182 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"DebtorIncome"> | Date | string
   }
 
+  export type PaymentAgreementWhereInput = {
+    AND?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
+    OR?: PaymentAgreementWhereInput[]
+    NOT?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
+    id?: StringFilter<"PaymentAgreement"> | string
+    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
+    totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFilter<"PaymentAgreement"> | number
+    startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
+    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    installments?: InstallmentListRelationFilter
+    payments?: PaymentListRelationFilter
+    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
+  }
+
+  export type PaymentAgreementOrderByWithRelationInput = {
+    id?: SortOrder
+    collectionCaseId?: SortOrder
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+    startDate?: SortOrder
+    status?: SortOrder
+    complianceStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    debtorId?: SortOrderInput | SortOrder
+    collectionCase?: CollectionCaseOrderByWithRelationInput
+    installments?: InstallmentOrderByRelationAggregateInput
+    payments?: PaymentOrderByRelationAggregateInput
+    Debtor?: DebtorOrderByWithRelationInput
+  }
+
+  export type PaymentAgreementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    collectionCaseId?: string
+    AND?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
+    OR?: PaymentAgreementWhereInput[]
+    NOT?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
+    totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFilter<"PaymentAgreement"> | number
+    startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
+    collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
+    installments?: InstallmentListRelationFilter
+    payments?: PaymentListRelationFilter
+    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
+  }, "id" | "collectionCaseId">
+
+  export type PaymentAgreementOrderByWithAggregationInput = {
+    id?: SortOrder
+    collectionCaseId?: SortOrder
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+    startDate?: SortOrder
+    status?: SortOrder
+    complianceStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    debtorId?: SortOrderInput | SortOrder
+    _count?: PaymentAgreementCountOrderByAggregateInput
+    _avg?: PaymentAgreementAvgOrderByAggregateInput
+    _max?: PaymentAgreementMaxOrderByAggregateInput
+    _min?: PaymentAgreementMinOrderByAggregateInput
+    _sum?: PaymentAgreementSumOrderByAggregateInput
+  }
+
+  export type PaymentAgreementScalarWhereWithAggregatesInput = {
+    AND?: PaymentAgreementScalarWhereWithAggregatesInput | PaymentAgreementScalarWhereWithAggregatesInput[]
+    OR?: PaymentAgreementScalarWhereWithAggregatesInput[]
+    NOT?: PaymentAgreementScalarWhereWithAggregatesInput | PaymentAgreementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PaymentAgreement"> | string
+    collectionCaseId?: StringWithAggregatesFilter<"PaymentAgreement"> | string
+    totalAmount?: DecimalWithAggregatesFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalWithAggregatesFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntWithAggregatesFilter<"PaymentAgreement"> | number
+    startDate?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
+    status?: EnumAgreementStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    createdAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
+    debtorId?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
+  }
+
+  export type InstallmentWhereInput = {
+    AND?: InstallmentWhereInput | InstallmentWhereInput[]
+    OR?: InstallmentWhereInput[]
+    NOT?: InstallmentWhereInput | InstallmentWhereInput[]
+    id?: StringFilter<"Installment"> | string
+    paymentAgreementId?: StringFilter<"Installment"> | string
+    number?: IntFilter<"Installment"> | number
+    dueDate?: DateTimeFilter<"Installment"> | Date | string
+    amount?: DecimalFilter<"Installment"> | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFilter<"Installment"> | $Enums.InstallmentStatus
+    paymentId?: StringNullableFilter<"Installment"> | string | null
+    createdAt?: DateTimeFilter<"Installment"> | Date | string
+    updatedAt?: DateTimeFilter<"Installment"> | Date | string
+    paymentAgreement?: XOR<PaymentAgreementScalarRelationFilter, PaymentAgreementWhereInput>
+    payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
+  }
+
+  export type InstallmentOrderByWithRelationInput = {
+    id?: SortOrder
+    paymentAgreementId?: SortOrder
+    number?: SortOrder
+    dueDate?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    paymentAgreement?: PaymentAgreementOrderByWithRelationInput
+    payment?: PaymentOrderByWithRelationInput
+  }
+
+  export type InstallmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InstallmentWhereInput | InstallmentWhereInput[]
+    OR?: InstallmentWhereInput[]
+    NOT?: InstallmentWhereInput | InstallmentWhereInput[]
+    paymentAgreementId?: StringFilter<"Installment"> | string
+    number?: IntFilter<"Installment"> | number
+    dueDate?: DateTimeFilter<"Installment"> | Date | string
+    amount?: DecimalFilter<"Installment"> | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFilter<"Installment"> | $Enums.InstallmentStatus
+    paymentId?: StringNullableFilter<"Installment"> | string | null
+    createdAt?: DateTimeFilter<"Installment"> | Date | string
+    updatedAt?: DateTimeFilter<"Installment"> | Date | string
+    paymentAgreement?: XOR<PaymentAgreementScalarRelationFilter, PaymentAgreementWhereInput>
+    payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
+  }, "id">
+
+  export type InstallmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    paymentAgreementId?: SortOrder
+    number?: SortOrder
+    dueDate?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InstallmentCountOrderByAggregateInput
+    _avg?: InstallmentAvgOrderByAggregateInput
+    _max?: InstallmentMaxOrderByAggregateInput
+    _min?: InstallmentMinOrderByAggregateInput
+    _sum?: InstallmentSumOrderByAggregateInput
+  }
+
+  export type InstallmentScalarWhereWithAggregatesInput = {
+    AND?: InstallmentScalarWhereWithAggregatesInput | InstallmentScalarWhereWithAggregatesInput[]
+    OR?: InstallmentScalarWhereWithAggregatesInput[]
+    NOT?: InstallmentScalarWhereWithAggregatesInput | InstallmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Installment"> | string
+    paymentAgreementId?: StringWithAggregatesFilter<"Installment"> | string
+    number?: IntWithAggregatesFilter<"Installment"> | number
+    dueDate?: DateTimeWithAggregatesFilter<"Installment"> | Date | string
+    amount?: DecimalWithAggregatesFilter<"Installment"> | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusWithAggregatesFilter<"Installment"> | $Enums.InstallmentStatus
+    paymentId?: StringNullableWithAggregatesFilter<"Installment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Installment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Installment"> | Date | string
+  }
+
   export type TenantCreateInput = {
     id?: string
     name: string
@@ -33572,6 +37938,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateInput = {
@@ -33599,6 +37966,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUpdateInput = {
@@ -33626,6 +37994,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateInput = {
@@ -33653,6 +38022,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateManyInput = {
@@ -33813,6 +38183,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutUsersInput
     debtors?: DebtorCreateNestedManyWithoutUserInput
     verdictBailiffs?: VerdictCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -33828,6 +38199,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     debtors?: DebtorUncheckedCreateNestedManyWithoutUserInput
     verdictBailiffs?: VerdictUncheckedCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserUpdateInput = {
@@ -33843,6 +38215,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     debtors?: DebtorUpdateManyWithoutUserNestedInput
     verdictBailiffs?: VerdictUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -33858,6 +38231,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtors?: DebtorUncheckedUpdateManyWithoutUserNestedInput
     verdictBailiffs?: VerdictUncheckedUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -35137,6 +39511,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateInput = {
@@ -35156,6 +39531,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUpdateInput = {
@@ -35175,6 +39551,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateInput = {
@@ -35194,6 +39571,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseCreateManyInput = {
@@ -35400,6 +39778,8 @@ export namespace Prisma {
     referenceNumber?: string | null
     updatedAt?: Date | string
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentsInput
+    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+    Installment?: InstallmentCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateInput = {
@@ -35411,6 +39791,8 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
+    paymentAgreementId?: string | null
+    Installment?: InstallmentUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUpdateInput = {
@@ -35422,6 +39804,8 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentsNestedInput
+    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+    Installment?: InstallmentUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateInput = {
@@ -35433,6 +39817,8 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreementId?: NullableStringFieldUpdateOperationsInput | string | null
+    Installment?: InstallmentUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentCreateManyInput = {
@@ -35444,6 +39830,7 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
+    paymentAgreementId?: string | null
   }
 
   export type PaymentUpdateManyMutationInput = {
@@ -35465,102 +39852,7 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PaymentAgreementCreateInput = {
-    id?: string
-    agreementDate: Date | string
-    status?: $Enums.AgreementStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
-    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
-  }
-
-  export type PaymentAgreementUncheckedCreateInput = {
-    id?: string
-    debtorId?: string | null
-    agreementDate: Date | string
-    status?: $Enums.AgreementStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collectionCaseId: string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
-  }
-
-  export type PaymentAgreementUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
-    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
-  }
-
-  export type PaymentAgreementUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCaseId?: StringFieldUpdateOperationsInput | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
-  export type PaymentAgreementCreateManyInput = {
-    id?: string
-    debtorId?: string | null
-    agreementDate: Date | string
-    status?: $Enums.AgreementStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collectionCaseId: string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
-  }
-
-  export type PaymentAgreementUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
-  export type PaymentAgreementUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCaseId?: StringFieldUpdateOperationsInput | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentAgreementId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DebtorCreateInput = {
@@ -35689,6 +39981,153 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ChatRoomCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutChatRoomsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutChatRoomsInput
+    messages?: ChatMessageCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    collectionCaseId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutChatRoomsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutChatRoomsNestedInput
+    messages?: ChatMessageUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: ChatMessageUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomCreateManyInput = {
+    id?: string
+    tenantId: string
+    collectionCaseId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatRoomUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatRoomUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageCreateInput = {
+    id?: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    room: ChatRoomCreateNestedOneWithoutMessagesInput
+    sender: UserCreateNestedOneWithoutMessagesInput
+  }
+
+  export type ChatMessageUncheckedCreateInput = {
+    id?: string
+    roomId: string
+    senderId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    room?: ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+    sender?: UserUpdateOneRequiredWithoutMessagesNestedInput
+  }
+
+  export type ChatMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageCreateManyInput = {
+    id?: string
+    roomId: string
+    senderId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DebtorIncomeCreateInput = {
     id?: string
     amount: number
@@ -35747,6 +40186,192 @@ export namespace Prisma {
     debtorId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentAgreementCreateInput = {
+    id?: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
+    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+  }
+
+  export type PaymentAgreementUncheckedCreateInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
+    installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+  }
+
+  export type PaymentAgreementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
+    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+  }
+
+  export type PaymentAgreementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+  }
+
+  export type PaymentAgreementCreateManyInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
+  }
+
+  export type PaymentAgreementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentAgreementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type InstallmentCreateInput = {
+    id?: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paymentAgreement: PaymentAgreementCreateNestedOneWithoutInstallmentsInput
+    payment?: PaymentCreateNestedOneWithoutInstallmentInput
+  }
+
+  export type InstallmentUncheckedCreateInput = {
+    id?: string
+    paymentAgreementId: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    paymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreement?: PaymentAgreementUpdateOneRequiredWithoutInstallmentsNestedInput
+    payment?: PaymentUpdateOneWithoutInstallmentNestedInput
+  }
+
+  export type InstallmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentAgreementId?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentCreateManyInput = {
+    id?: string
+    paymentAgreementId: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    paymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentAgreementId?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35859,6 +40484,12 @@ export namespace Prisma {
     none?: UserWhereInput
   }
 
+  export type ChatRoomListRelationFilter = {
+    every?: ChatRoomWhereInput
+    some?: ChatRoomWhereInput
+    none?: ChatRoomWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -35881,6 +40512,10 @@ export namespace Prisma {
   }
 
   export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatRoomOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -36089,6 +40724,16 @@ export namespace Prisma {
     in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
     notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
     not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
+  }
+
+  export type ChatMessageListRelationFilter = {
+    every?: ChatMessageWhereInput
+    some?: ChatMessageWhereInput
+    none?: ChatMessageWhereInput
+  }
+
+  export type ChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -37347,6 +41992,21 @@ export namespace Prisma {
     not?: NestedEnumPaymentMethodFilter<$PrismaModel> | $Enums.PaymentMethod
   }
 
+  export type PaymentAgreementNullableScalarRelationFilter = {
+    is?: PaymentAgreementWhereInput | null
+    isNot?: PaymentAgreementWhereInput | null
+  }
+
+  export type InstallmentListRelationFilter = {
+    every?: InstallmentWhereInput
+    some?: InstallmentWhereInput
+    none?: InstallmentWhereInput
+  }
+
+  export type InstallmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PaymentCountOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
@@ -37356,6 +42016,7 @@ export namespace Prisma {
     paymentDate?: SortOrder
     referenceNumber?: SortOrder
     updatedAt?: SortOrder
+    paymentAgreementId?: SortOrder
   }
 
   export type PaymentAvgOrderByAggregateInput = {
@@ -37371,6 +42032,7 @@ export namespace Prisma {
     paymentDate?: SortOrder
     referenceNumber?: SortOrder
     updatedAt?: SortOrder
+    paymentAgreementId?: SortOrder
   }
 
   export type PaymentMinOrderByAggregateInput = {
@@ -37382,6 +42044,7 @@ export namespace Prisma {
     paymentDate?: SortOrder
     referenceNumber?: SortOrder
     updatedAt?: SortOrder
+    paymentAgreementId?: SortOrder
   }
 
   export type PaymentSumOrderByAggregateInput = {
@@ -37396,107 +42059,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentMethodFilter<$PrismaModel>
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
-  }
-
-  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
-  export type DecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type DebtorNullableScalarRelationFilter = {
-    is?: DebtorWhereInput | null
-    isNot?: DebtorWhereInput | null
-  }
-
-  export type PaymentAgreementCountOrderByAggregateInput = {
-    id?: SortOrder
-    debtorId?: SortOrder
-    agreementDate?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    collectionCaseId?: SortOrder
-    installmentAmount?: SortOrder
-    nextPaymentDate?: SortOrder
-    notes?: SortOrder
-    totalInstallments?: SortOrder
-  }
-
-  export type PaymentAgreementAvgOrderByAggregateInput = {
-    installmentAmount?: SortOrder
-    totalInstallments?: SortOrder
-  }
-
-  export type PaymentAgreementMaxOrderByAggregateInput = {
-    id?: SortOrder
-    debtorId?: SortOrder
-    agreementDate?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    collectionCaseId?: SortOrder
-    installmentAmount?: SortOrder
-    nextPaymentDate?: SortOrder
-    notes?: SortOrder
-    totalInstallments?: SortOrder
-  }
-
-  export type PaymentAgreementMinOrderByAggregateInput = {
-    id?: SortOrder
-    debtorId?: SortOrder
-    agreementDate?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    collectionCaseId?: SortOrder
-    installmentAmount?: SortOrder
-    nextPaymentDate?: SortOrder
-    notes?: SortOrder
-    totalInstallments?: SortOrder
-  }
-
-  export type PaymentAgreementSumOrderByAggregateInput = {
-    installmentAmount?: SortOrder
-    totalInstallments?: SortOrder
-  }
-
-  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
-  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type EnumIdentificationTypeNullableFilter<$PrismaModel = never> = {
@@ -37592,6 +42154,79 @@ export namespace Prisma {
     _max?: NestedEnumIdentificationTypeNullableFilter<$PrismaModel>
   }
 
+  export type ChatRoomCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    collectionCaseId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ChatRoomMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    collectionCaseId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ChatRoomMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    collectionCaseId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ChatRoomScalarRelationFilter = {
+    is?: ChatRoomWhereInput
+    isNot?: ChatRoomWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type ChatMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    roomId?: SortOrder
+    senderId?: SortOrder
+    message?: SortOrder
+    fileUrl?: SortOrder
+    fileName?: SortOrder
+    timestamp?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ChatMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    roomId?: SortOrder
+    senderId?: SortOrder
+    message?: SortOrder
+    fileUrl?: SortOrder
+    fileName?: SortOrder
+    timestamp?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ChatMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    roomId?: SortOrder
+    senderId?: SortOrder
+    message?: SortOrder
+    fileUrl?: SortOrder
+    fileName?: SortOrder
+    timestamp?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type DebtorIncomeCountOrderByAggregateInput = {
     id?: SortOrder
     debtorId?: SortOrder
@@ -37625,6 +42260,172 @@ export namespace Prisma {
 
   export type DebtorIncomeSumOrderByAggregateInput = {
     amount?: SortOrder
+  }
+
+  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
+  }
+
+  export type EnumComplianceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumComplianceStatusFilter<$PrismaModel> | $Enums.ComplianceStatus
+  }
+
+  export type DebtorNullableScalarRelationFilter = {
+    is?: DebtorWhereInput | null
+    isNot?: DebtorWhereInput | null
+  }
+
+  export type PaymentAgreementCountOrderByAggregateInput = {
+    id?: SortOrder
+    collectionCaseId?: SortOrder
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+    startDate?: SortOrder
+    status?: SortOrder
+    complianceStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    debtorId?: SortOrder
+  }
+
+  export type PaymentAgreementAvgOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+  }
+
+  export type PaymentAgreementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    collectionCaseId?: SortOrder
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+    startDate?: SortOrder
+    status?: SortOrder
+    complianceStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    debtorId?: SortOrder
+  }
+
+  export type PaymentAgreementMinOrderByAggregateInput = {
+    id?: SortOrder
+    collectionCaseId?: SortOrder
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+    startDate?: SortOrder
+    status?: SortOrder
+    complianceStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    debtorId?: SortOrder
+  }
+
+  export type PaymentAgreementSumOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    installmentAmount?: SortOrder
+    installmentsCount?: SortOrder
+  }
+
+  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
+    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
+  }
+
+  export type EnumComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.ComplianceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumComplianceStatusFilter<$PrismaModel>
+    _max?: NestedEnumComplianceStatusFilter<$PrismaModel>
+  }
+
+  export type EnumInstallmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InstallmentStatus | EnumInstallmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInstallmentStatusFilter<$PrismaModel> | $Enums.InstallmentStatus
+  }
+
+  export type PaymentAgreementScalarRelationFilter = {
+    is?: PaymentAgreementWhereInput
+    isNot?: PaymentAgreementWhereInput
+  }
+
+  export type PaymentNullableScalarRelationFilter = {
+    is?: PaymentWhereInput | null
+    isNot?: PaymentWhereInput | null
+  }
+
+  export type InstallmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    paymentAgreementId?: SortOrder
+    number?: SortOrder
+    dueDate?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InstallmentAvgOrderByAggregateInput = {
+    number?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type InstallmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    paymentAgreementId?: SortOrder
+    number?: SortOrder
+    dueDate?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InstallmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    paymentAgreementId?: SortOrder
+    number?: SortOrder
+    dueDate?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    paymentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InstallmentSumOrderByAggregateInput = {
+    number?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type EnumInstallmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InstallmentStatus | EnumInstallmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInstallmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.InstallmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInstallmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumInstallmentStatusFilter<$PrismaModel>
   }
 
   export type PlanCreateNestedOneWithoutTenantsInput = {
@@ -37674,6 +42475,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type ChatRoomCreateNestedManyWithoutTenantInput = {
+    create?: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput> | ChatRoomCreateWithoutTenantInput[] | ChatRoomUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutTenantInput | ChatRoomCreateOrConnectWithoutTenantInput[]
+    createMany?: ChatRoomCreateManyTenantInputEnvelope
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+  }
+
   export type BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -37713,6 +42521,13 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
     createMany?: UserCreateManyTenantInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type ChatRoomUncheckedCreateNestedManyWithoutTenantInput = {
+    create?: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput> | ChatRoomCreateWithoutTenantInput[] | ChatRoomUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutTenantInput | ChatRoomCreateOrConnectWithoutTenantInput[]
+    createMany?: ChatRoomCreateManyTenantInputEnvelope
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -37833,6 +42648,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type ChatRoomUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput> | ChatRoomCreateWithoutTenantInput[] | ChatRoomUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutTenantInput | ChatRoomCreateOrConnectWithoutTenantInput[]
+    upsert?: ChatRoomUpsertWithWhereUniqueWithoutTenantInput | ChatRoomUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: ChatRoomCreateManyTenantInputEnvelope
+    set?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    disconnect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    delete?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    update?: ChatRoomUpdateWithWhereUniqueWithoutTenantInput | ChatRoomUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: ChatRoomUpdateManyWithWhereWithoutTenantInput | ChatRoomUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
   export type BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -37913,6 +42742,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type ChatRoomUncheckedUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput> | ChatRoomCreateWithoutTenantInput[] | ChatRoomUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutTenantInput | ChatRoomCreateOrConnectWithoutTenantInput[]
+    upsert?: ChatRoomUpsertWithWhereUniqueWithoutTenantInput | ChatRoomUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: ChatRoomCreateManyTenantInputEnvelope
+    set?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    disconnect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    delete?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    update?: ChatRoomUpdateWithWhereUniqueWithoutTenantInput | ChatRoomUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: ChatRoomUpdateManyWithWhereWithoutTenantInput | ChatRoomUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
   export type TenantCreateNestedOneWithoutRegistryInput = {
     create?: XOR<TenantCreateWithoutRegistryInput, TenantUncheckedCreateWithoutRegistryInput>
     connectOrCreate?: TenantCreateOrConnectWithoutRegistryInput
@@ -37947,6 +42790,13 @@ export namespace Prisma {
     connect?: VerdictWhereUniqueInput | VerdictWhereUniqueInput[]
   }
 
+  export type ChatMessageCreateNestedManyWithoutSenderInput = {
+    create?: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput> | ChatMessageCreateWithoutSenderInput[] | ChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutSenderInput | ChatMessageCreateOrConnectWithoutSenderInput[]
+    createMany?: ChatMessageCreateManySenderInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
   export type DebtorUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<DebtorCreateWithoutUserInput, DebtorUncheckedCreateWithoutUserInput> | DebtorCreateWithoutUserInput[] | DebtorUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DebtorCreateOrConnectWithoutUserInput | DebtorCreateOrConnectWithoutUserInput[]
@@ -37959,6 +42809,13 @@ export namespace Prisma {
     connectOrCreate?: VerdictCreateOrConnectWithoutBailiffInput | VerdictCreateOrConnectWithoutBailiffInput[]
     createMany?: VerdictCreateManyBailiffInputEnvelope
     connect?: VerdictWhereUniqueInput | VerdictWhereUniqueInput[]
+  }
+
+  export type ChatMessageUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput> | ChatMessageCreateWithoutSenderInput[] | ChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutSenderInput | ChatMessageCreateOrConnectWithoutSenderInput[]
+    createMany?: ChatMessageCreateManySenderInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
   export type EnumroleEnumFieldUpdateOperationsInput = {
@@ -38001,6 +42858,20 @@ export namespace Prisma {
     deleteMany?: VerdictScalarWhereInput | VerdictScalarWhereInput[]
   }
 
+  export type ChatMessageUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput> | ChatMessageCreateWithoutSenderInput[] | ChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutSenderInput | ChatMessageCreateOrConnectWithoutSenderInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutSenderInput | ChatMessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: ChatMessageCreateManySenderInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutSenderInput | ChatMessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutSenderInput | ChatMessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
   export type DebtorUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<DebtorCreateWithoutUserInput, DebtorUncheckedCreateWithoutUserInput> | DebtorCreateWithoutUserInput[] | DebtorUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DebtorCreateOrConnectWithoutUserInput | DebtorCreateOrConnectWithoutUserInput[]
@@ -38027,6 +42898,20 @@ export namespace Prisma {
     update?: VerdictUpdateWithWhereUniqueWithoutBailiffInput | VerdictUpdateWithWhereUniqueWithoutBailiffInput[]
     updateMany?: VerdictUpdateManyWithWhereWithoutBailiffInput | VerdictUpdateManyWithWhereWithoutBailiffInput[]
     deleteMany?: VerdictScalarWhereInput | VerdictScalarWhereInput[]
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput> | ChatMessageCreateWithoutSenderInput[] | ChatMessageUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutSenderInput | ChatMessageCreateOrConnectWithoutSenderInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutSenderInput | ChatMessageUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: ChatMessageCreateManySenderInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutSenderInput | ChatMessageUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutSenderInput | ChatMessageUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -38663,6 +43548,13 @@ export namespace Prisma {
     connect?: PenaltyWhereUniqueInput | PenaltyWhereUniqueInput[]
   }
 
+  export type ChatRoomCreateNestedManyWithoutCollectionCaseInput = {
+    create?: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput> | ChatRoomCreateWithoutCollectionCaseInput[] | ChatRoomUncheckedCreateWithoutCollectionCaseInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutCollectionCaseInput | ChatRoomCreateOrConnectWithoutCollectionCaseInput[]
+    createMany?: ChatRoomCreateManyCollectionCaseInputEnvelope
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+  }
+
   export type NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput = {
     create?: XOR<NotificationCreateWithoutCollectionCaseInput, NotificationUncheckedCreateWithoutCollectionCaseInput> | NotificationCreateWithoutCollectionCaseInput[] | NotificationUncheckedCreateWithoutCollectionCaseInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutCollectionCaseInput | NotificationCreateOrConnectWithoutCollectionCaseInput[]
@@ -38689,6 +43581,13 @@ export namespace Prisma {
     connectOrCreate?: PenaltyCreateOrConnectWithoutCollectionCaseInput | PenaltyCreateOrConnectWithoutCollectionCaseInput[]
     createMany?: PenaltyCreateManyCollectionCaseInputEnvelope
     connect?: PenaltyWhereUniqueInput | PenaltyWhereUniqueInput[]
+  }
+
+  export type ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput = {
+    create?: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput> | ChatRoomCreateWithoutCollectionCaseInput[] | ChatRoomUncheckedCreateWithoutCollectionCaseInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutCollectionCaseInput | ChatRoomCreateOrConnectWithoutCollectionCaseInput[]
+    createMany?: ChatRoomCreateManyCollectionCaseInputEnvelope
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -38775,6 +43674,20 @@ export namespace Prisma {
     deleteMany?: PenaltyScalarWhereInput | PenaltyScalarWhereInput[]
   }
 
+  export type ChatRoomUpdateManyWithoutCollectionCaseNestedInput = {
+    create?: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput> | ChatRoomCreateWithoutCollectionCaseInput[] | ChatRoomUncheckedCreateWithoutCollectionCaseInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutCollectionCaseInput | ChatRoomCreateOrConnectWithoutCollectionCaseInput[]
+    upsert?: ChatRoomUpsertWithWhereUniqueWithoutCollectionCaseInput | ChatRoomUpsertWithWhereUniqueWithoutCollectionCaseInput[]
+    createMany?: ChatRoomCreateManyCollectionCaseInputEnvelope
+    set?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    disconnect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    delete?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    update?: ChatRoomUpdateWithWhereUniqueWithoutCollectionCaseInput | ChatRoomUpdateWithWhereUniqueWithoutCollectionCaseInput[]
+    updateMany?: ChatRoomUpdateManyWithWhereWithoutCollectionCaseInput | ChatRoomUpdateManyWithWhereWithoutCollectionCaseInput[]
+    deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
   export type NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput = {
     create?: XOR<NotificationCreateWithoutCollectionCaseInput, NotificationUncheckedCreateWithoutCollectionCaseInput> | NotificationCreateWithoutCollectionCaseInput[] | NotificationUncheckedCreateWithoutCollectionCaseInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutCollectionCaseInput | NotificationCreateOrConnectWithoutCollectionCaseInput[]
@@ -38831,6 +43744,20 @@ export namespace Prisma {
     deleteMany?: PenaltyScalarWhereInput | PenaltyScalarWhereInput[]
   }
 
+  export type ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput = {
+    create?: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput> | ChatRoomCreateWithoutCollectionCaseInput[] | ChatRoomUncheckedCreateWithoutCollectionCaseInput[]
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutCollectionCaseInput | ChatRoomCreateOrConnectWithoutCollectionCaseInput[]
+    upsert?: ChatRoomUpsertWithWhereUniqueWithoutCollectionCaseInput | ChatRoomUpsertWithWhereUniqueWithoutCollectionCaseInput[]
+    createMany?: ChatRoomCreateManyCollectionCaseInputEnvelope
+    set?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    disconnect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    delete?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+    update?: ChatRoomUpdateWithWhereUniqueWithoutCollectionCaseInput | ChatRoomUpdateWithWhereUniqueWithoutCollectionCaseInput[]
+    updateMany?: ChatRoomUpdateManyWithWhereWithoutCollectionCaseInput | ChatRoomUpdateManyWithWhereWithoutCollectionCaseInput[]
+    deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
   export type CollectionCaseCreateNestedOneWithoutPenaltiesInput = {
     create?: XOR<CollectionCaseCreateWithoutPenaltiesInput, CollectionCaseUncheckedCreateWithoutPenaltiesInput>
     connectOrCreate?: CollectionCaseCreateOrConnectWithoutPenaltiesInput
@@ -38869,6 +43796,26 @@ export namespace Prisma {
     connect?: CollectionCaseWhereUniqueInput
   }
 
+  export type PaymentAgreementCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<PaymentAgreementCreateWithoutPaymentsInput, PaymentAgreementUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutPaymentsInput
+    connect?: PaymentAgreementWhereUniqueInput
+  }
+
+  export type InstallmentCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput> | InstallmentCreateWithoutPaymentInput[] | InstallmentUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentInput | InstallmentCreateOrConnectWithoutPaymentInput[]
+    createMany?: InstallmentCreateManyPaymentInputEnvelope
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+  }
+
+  export type InstallmentUncheckedCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput> | InstallmentCreateWithoutPaymentInput[] | InstallmentUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentInput | InstallmentCreateOrConnectWithoutPaymentInput[]
+    createMany?: InstallmentCreateManyPaymentInputEnvelope
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+  }
+
   export type EnumPaymentMethodFieldUpdateOperationsInput = {
     set?: $Enums.PaymentMethod
   }
@@ -38881,46 +43828,42 @@ export namespace Prisma {
     update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutPaymentsInput, CollectionCaseUpdateWithoutPaymentsInput>, CollectionCaseUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type CollectionCaseCreateNestedOneWithoutAgreementsInput = {
-    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
-    connect?: CollectionCaseWhereUniqueInput
+  export type PaymentAgreementUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<PaymentAgreementCreateWithoutPaymentsInput, PaymentAgreementUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutPaymentsInput
+    upsert?: PaymentAgreementUpsertWithoutPaymentsInput
+    disconnect?: PaymentAgreementWhereInput | boolean
+    delete?: PaymentAgreementWhereInput | boolean
+    connect?: PaymentAgreementWhereUniqueInput
+    update?: XOR<XOR<PaymentAgreementUpdateToOneWithWhereWithoutPaymentsInput, PaymentAgreementUpdateWithoutPaymentsInput>, PaymentAgreementUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type DebtorCreateNestedOneWithoutPaymentAgreementsInput = {
-    create?: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
-    connectOrCreate?: DebtorCreateOrConnectWithoutPaymentAgreementsInput
-    connect?: DebtorWhereUniqueInput
+  export type InstallmentUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput> | InstallmentCreateWithoutPaymentInput[] | InstallmentUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentInput | InstallmentCreateOrConnectWithoutPaymentInput[]
+    upsert?: InstallmentUpsertWithWhereUniqueWithoutPaymentInput | InstallmentUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: InstallmentCreateManyPaymentInputEnvelope
+    set?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    disconnect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    delete?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    update?: InstallmentUpdateWithWhereUniqueWithoutPaymentInput | InstallmentUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: InstallmentUpdateManyWithWhereWithoutPaymentInput | InstallmentUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
   }
 
-  export type EnumAgreementStatusFieldUpdateOperationsInput = {
-    set?: $Enums.AgreementStatus
-  }
-
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput = {
-    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
-    upsert?: CollectionCaseUpsertWithoutAgreementsInput
-    connect?: CollectionCaseWhereUniqueInput
-    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput, CollectionCaseUpdateWithoutAgreementsInput>, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type DebtorUpdateOneWithoutPaymentAgreementsNestedInput = {
-    create?: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
-    connectOrCreate?: DebtorCreateOrConnectWithoutPaymentAgreementsInput
-    upsert?: DebtorUpsertWithoutPaymentAgreementsInput
-    disconnect?: DebtorWhereInput | boolean
-    delete?: DebtorWhereInput | boolean
-    connect?: DebtorWhereUniqueInput
-    update?: XOR<XOR<DebtorUpdateToOneWithWhereWithoutPaymentAgreementsInput, DebtorUpdateWithoutPaymentAgreementsInput>, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
+  export type InstallmentUncheckedUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput> | InstallmentCreateWithoutPaymentInput[] | InstallmentUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentInput | InstallmentCreateOrConnectWithoutPaymentInput[]
+    upsert?: InstallmentUpsertWithWhereUniqueWithoutPaymentInput | InstallmentUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: InstallmentCreateManyPaymentInputEnvelope
+    set?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    disconnect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    delete?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    update?: InstallmentUpdateWithWhereUniqueWithoutPaymentInput | InstallmentUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: InstallmentUpdateManyWithWhereWithoutPaymentInput | InstallmentUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
   }
 
   export type CollectionCaseCreateNestedManyWithoutDebtorInput = {
@@ -39125,6 +44068,104 @@ export namespace Prisma {
     deleteMany?: VerdictScalarWhereInput | VerdictScalarWhereInput[]
   }
 
+  export type TenantCreateNestedOneWithoutChatRoomsInput = {
+    create?: XOR<TenantCreateWithoutChatRoomsInput, TenantUncheckedCreateWithoutChatRoomsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutChatRoomsInput
+    connect?: TenantWhereUniqueInput
+  }
+
+  export type CollectionCaseCreateNestedOneWithoutChatRoomsInput = {
+    create?: XOR<CollectionCaseCreateWithoutChatRoomsInput, CollectionCaseUncheckedCreateWithoutChatRoomsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutChatRoomsInput
+    connect?: CollectionCaseWhereUniqueInput
+  }
+
+  export type ChatMessageCreateNestedManyWithoutRoomInput = {
+    create?: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput> | ChatMessageCreateWithoutRoomInput[] | ChatMessageUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutRoomInput | ChatMessageCreateOrConnectWithoutRoomInput[]
+    createMany?: ChatMessageCreateManyRoomInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
+  export type ChatMessageUncheckedCreateNestedManyWithoutRoomInput = {
+    create?: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput> | ChatMessageCreateWithoutRoomInput[] | ChatMessageUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutRoomInput | ChatMessageCreateOrConnectWithoutRoomInput[]
+    createMany?: ChatMessageCreateManyRoomInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
+  export type TenantUpdateOneRequiredWithoutChatRoomsNestedInput = {
+    create?: XOR<TenantCreateWithoutChatRoomsInput, TenantUncheckedCreateWithoutChatRoomsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutChatRoomsInput
+    upsert?: TenantUpsertWithoutChatRoomsInput
+    connect?: TenantWhereUniqueInput
+    update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutChatRoomsInput, TenantUpdateWithoutChatRoomsInput>, TenantUncheckedUpdateWithoutChatRoomsInput>
+  }
+
+  export type CollectionCaseUpdateOneRequiredWithoutChatRoomsNestedInput = {
+    create?: XOR<CollectionCaseCreateWithoutChatRoomsInput, CollectionCaseUncheckedCreateWithoutChatRoomsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutChatRoomsInput
+    upsert?: CollectionCaseUpsertWithoutChatRoomsInput
+    connect?: CollectionCaseWhereUniqueInput
+    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutChatRoomsInput, CollectionCaseUpdateWithoutChatRoomsInput>, CollectionCaseUncheckedUpdateWithoutChatRoomsInput>
+  }
+
+  export type ChatMessageUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput> | ChatMessageCreateWithoutRoomInput[] | ChatMessageUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutRoomInput | ChatMessageCreateOrConnectWithoutRoomInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutRoomInput | ChatMessageUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: ChatMessageCreateManyRoomInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutRoomInput | ChatMessageUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutRoomInput | ChatMessageUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutRoomNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput> | ChatMessageCreateWithoutRoomInput[] | ChatMessageUncheckedCreateWithoutRoomInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutRoomInput | ChatMessageCreateOrConnectWithoutRoomInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutRoomInput | ChatMessageUpsertWithWhereUniqueWithoutRoomInput[]
+    createMany?: ChatMessageCreateManyRoomInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutRoomInput | ChatMessageUpdateWithWhereUniqueWithoutRoomInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutRoomInput | ChatMessageUpdateManyWithWhereWithoutRoomInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type ChatRoomCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<ChatRoomCreateWithoutMessagesInput, ChatRoomUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutMessagesInput
+    connect?: ChatRoomWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMessagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ChatRoomUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<ChatRoomCreateWithoutMessagesInput, ChatRoomUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: ChatRoomCreateOrConnectWithoutMessagesInput
+    upsert?: ChatRoomUpsertWithoutMessagesInput
+    connect?: ChatRoomWhereUniqueInput
+    update?: XOR<XOR<ChatRoomUpdateToOneWithWhereWithoutMessagesInput, ChatRoomUpdateWithoutMessagesInput>, ChatRoomUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMessagesInput
+    upsert?: UserUpsertWithoutMessagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMessagesInput, UserUpdateWithoutMessagesInput>, UserUncheckedUpdateWithoutMessagesInput>
+  }
+
   export type DebtorCreateNestedOneWithoutIncomesInput = {
     create?: XOR<DebtorCreateWithoutIncomesInput, DebtorUncheckedCreateWithoutIncomesInput>
     connectOrCreate?: DebtorCreateOrConnectWithoutIncomesInput
@@ -39137,6 +44178,162 @@ export namespace Prisma {
     upsert?: DebtorUpsertWithoutIncomesInput
     connect?: DebtorWhereUniqueInput
     update?: XOR<XOR<DebtorUpdateToOneWithWhereWithoutIncomesInput, DebtorUpdateWithoutIncomesInput>, DebtorUncheckedUpdateWithoutIncomesInput>
+  }
+
+  export type CollectionCaseCreateNestedOneWithoutAgreementsInput = {
+    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
+    connect?: CollectionCaseWhereUniqueInput
+  }
+
+  export type InstallmentCreateNestedManyWithoutPaymentAgreementInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput> | InstallmentCreateWithoutPaymentAgreementInput[] | InstallmentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentAgreementInput | InstallmentCreateOrConnectWithoutPaymentAgreementInput[]
+    createMany?: InstallmentCreateManyPaymentAgreementInputEnvelope
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+  }
+
+  export type PaymentCreateNestedManyWithoutPaymentAgreementInput = {
+    create?: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput> | PaymentCreateWithoutPaymentAgreementInput[] | PaymentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPaymentAgreementInput | PaymentCreateOrConnectWithoutPaymentAgreementInput[]
+    createMany?: PaymentCreateManyPaymentAgreementInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type DebtorCreateNestedOneWithoutPaymentAgreementsInput = {
+    create?: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: DebtorCreateOrConnectWithoutPaymentAgreementsInput
+    connect?: DebtorWhereUniqueInput
+  }
+
+  export type InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput> | InstallmentCreateWithoutPaymentAgreementInput[] | InstallmentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentAgreementInput | InstallmentCreateOrConnectWithoutPaymentAgreementInput[]
+    createMany?: InstallmentCreateManyPaymentAgreementInputEnvelope
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput = {
+    create?: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput> | PaymentCreateWithoutPaymentAgreementInput[] | PaymentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPaymentAgreementInput | PaymentCreateOrConnectWithoutPaymentAgreementInput[]
+    createMany?: PaymentCreateManyPaymentAgreementInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type EnumAgreementStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AgreementStatus
+  }
+
+  export type EnumComplianceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ComplianceStatus
+  }
+
+  export type CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput = {
+    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
+    upsert?: CollectionCaseUpsertWithoutAgreementsInput
+    connect?: CollectionCaseWhereUniqueInput
+    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput, CollectionCaseUpdateWithoutAgreementsInput>, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
+  }
+
+  export type InstallmentUpdateManyWithoutPaymentAgreementNestedInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput> | InstallmentCreateWithoutPaymentAgreementInput[] | InstallmentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentAgreementInput | InstallmentCreateOrConnectWithoutPaymentAgreementInput[]
+    upsert?: InstallmentUpsertWithWhereUniqueWithoutPaymentAgreementInput | InstallmentUpsertWithWhereUniqueWithoutPaymentAgreementInput[]
+    createMany?: InstallmentCreateManyPaymentAgreementInputEnvelope
+    set?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    disconnect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    delete?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    update?: InstallmentUpdateWithWhereUniqueWithoutPaymentAgreementInput | InstallmentUpdateWithWhereUniqueWithoutPaymentAgreementInput[]
+    updateMany?: InstallmentUpdateManyWithWhereWithoutPaymentAgreementInput | InstallmentUpdateManyWithWhereWithoutPaymentAgreementInput[]
+    deleteMany?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutPaymentAgreementNestedInput = {
+    create?: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput> | PaymentCreateWithoutPaymentAgreementInput[] | PaymentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPaymentAgreementInput | PaymentCreateOrConnectWithoutPaymentAgreementInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutPaymentAgreementInput | PaymentUpsertWithWhereUniqueWithoutPaymentAgreementInput[]
+    createMany?: PaymentCreateManyPaymentAgreementInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutPaymentAgreementInput | PaymentUpdateWithWhereUniqueWithoutPaymentAgreementInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutPaymentAgreementInput | PaymentUpdateManyWithWhereWithoutPaymentAgreementInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type DebtorUpdateOneWithoutPaymentAgreementsNestedInput = {
+    create?: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: DebtorCreateOrConnectWithoutPaymentAgreementsInput
+    upsert?: DebtorUpsertWithoutPaymentAgreementsInput
+    disconnect?: DebtorWhereInput | boolean
+    delete?: DebtorWhereInput | boolean
+    connect?: DebtorWhereUniqueInput
+    update?: XOR<XOR<DebtorUpdateToOneWithWhereWithoutPaymentAgreementsInput, DebtorUpdateWithoutPaymentAgreementsInput>, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
+  }
+
+  export type InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput = {
+    create?: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput> | InstallmentCreateWithoutPaymentAgreementInput[] | InstallmentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: InstallmentCreateOrConnectWithoutPaymentAgreementInput | InstallmentCreateOrConnectWithoutPaymentAgreementInput[]
+    upsert?: InstallmentUpsertWithWhereUniqueWithoutPaymentAgreementInput | InstallmentUpsertWithWhereUniqueWithoutPaymentAgreementInput[]
+    createMany?: InstallmentCreateManyPaymentAgreementInputEnvelope
+    set?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    disconnect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    delete?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    connect?: InstallmentWhereUniqueInput | InstallmentWhereUniqueInput[]
+    update?: InstallmentUpdateWithWhereUniqueWithoutPaymentAgreementInput | InstallmentUpdateWithWhereUniqueWithoutPaymentAgreementInput[]
+    updateMany?: InstallmentUpdateManyWithWhereWithoutPaymentAgreementInput | InstallmentUpdateManyWithWhereWithoutPaymentAgreementInput[]
+    deleteMany?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput = {
+    create?: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput> | PaymentCreateWithoutPaymentAgreementInput[] | PaymentUncheckedCreateWithoutPaymentAgreementInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutPaymentAgreementInput | PaymentCreateOrConnectWithoutPaymentAgreementInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutPaymentAgreementInput | PaymentUpsertWithWhereUniqueWithoutPaymentAgreementInput[]
+    createMany?: PaymentCreateManyPaymentAgreementInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutPaymentAgreementInput | PaymentUpdateWithWhereUniqueWithoutPaymentAgreementInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutPaymentAgreementInput | PaymentUpdateManyWithWhereWithoutPaymentAgreementInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type PaymentAgreementCreateNestedOneWithoutInstallmentsInput = {
+    create?: XOR<PaymentAgreementCreateWithoutInstallmentsInput, PaymentAgreementUncheckedCreateWithoutInstallmentsInput>
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutInstallmentsInput
+    connect?: PaymentAgreementWhereUniqueInput
+  }
+
+  export type PaymentCreateNestedOneWithoutInstallmentInput = {
+    create?: XOR<PaymentCreateWithoutInstallmentInput, PaymentUncheckedCreateWithoutInstallmentInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutInstallmentInput
+    connect?: PaymentWhereUniqueInput
+  }
+
+  export type EnumInstallmentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.InstallmentStatus
+  }
+
+  export type PaymentAgreementUpdateOneRequiredWithoutInstallmentsNestedInput = {
+    create?: XOR<PaymentAgreementCreateWithoutInstallmentsInput, PaymentAgreementUncheckedCreateWithoutInstallmentsInput>
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutInstallmentsInput
+    upsert?: PaymentAgreementUpsertWithoutInstallmentsInput
+    connect?: PaymentAgreementWhereUniqueInput
+    update?: XOR<XOR<PaymentAgreementUpdateToOneWithWhereWithoutInstallmentsInput, PaymentAgreementUpdateWithoutInstallmentsInput>, PaymentAgreementUncheckedUpdateWithoutInstallmentsInput>
+  }
+
+  export type PaymentUpdateOneWithoutInstallmentNestedInput = {
+    create?: XOR<PaymentCreateWithoutInstallmentInput, PaymentUncheckedCreateWithoutInstallmentInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutInstallmentInput
+    upsert?: PaymentUpsertWithoutInstallmentInput
+    disconnect?: PaymentWhereInput | boolean
+    delete?: PaymentWhereInput | boolean
+    connect?: PaymentWhereUniqueInput
+    update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutInstallmentInput, PaymentUpdateWithoutInstallmentInput>, PaymentUncheckedUpdateWithoutInstallmentInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -39528,50 +44725,6 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
   }
 
-  export type NestedEnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
   export type NestedEnumIdentificationTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.IdentificationType | EnumIdentificationTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.IdentificationType[] | ListEnumIdentificationTypeFieldRefInput<$PrismaModel> | null
@@ -39587,6 +44740,57 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumIdentificationTypeNullableFilter<$PrismaModel>
     _max?: NestedEnumIdentificationTypeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAgreementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
+  }
+
+  export type NestedEnumComplianceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumComplianceStatusFilter<$PrismaModel> | $Enums.ComplianceStatus
+  }
+
+  export type NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
+    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.ComplianceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumComplianceStatusFilter<$PrismaModel>
+    _max?: NestedEnumComplianceStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInstallmentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InstallmentStatus | EnumInstallmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInstallmentStatusFilter<$PrismaModel> | $Enums.InstallmentStatus
+  }
+
+  export type NestedEnumInstallmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InstallmentStatus | EnumInstallmentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InstallmentStatus[] | ListEnumInstallmentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumInstallmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.InstallmentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInstallmentStatusFilter<$PrismaModel>
+    _max?: NestedEnumInstallmentStatusFilter<$PrismaModel>
   }
 
   export type PlanCreateWithoutTenantsInput = {
@@ -39668,6 +44872,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutTenantInput = {
@@ -39686,6 +44891,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutTenantInput = {
@@ -39835,6 +45041,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     debtors?: DebtorCreateNestedManyWithoutUserInput
     verdictBailiffs?: VerdictCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutTenantInput = {
@@ -39849,6 +45056,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     debtors?: DebtorUncheckedCreateNestedManyWithoutUserInput
     verdictBailiffs?: VerdictUncheckedCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutTenantInput = {
@@ -39858,6 +45066,34 @@ export namespace Prisma {
 
   export type UserCreateManyTenantInputEnvelope = {
     data: UserCreateManyTenantInput | UserCreateManyTenantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatRoomCreateWithoutTenantInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutChatRoomsInput
+    messages?: ChatMessageCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomUncheckedCreateWithoutTenantInput = {
+    id?: string
+    collectionCaseId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomCreateOrConnectWithoutTenantInput = {
+    where: ChatRoomWhereUniqueInput
+    create: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput>
+  }
+
+  export type ChatRoomCreateManyTenantInputEnvelope = {
+    data: ChatRoomCreateManyTenantInput | ChatRoomCreateManyTenantInput[]
     skipDuplicates?: boolean
   }
 
@@ -40093,6 +45329,34 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
+  export type ChatRoomUpsertWithWhereUniqueWithoutTenantInput = {
+    where: ChatRoomWhereUniqueInput
+    update: XOR<ChatRoomUpdateWithoutTenantInput, ChatRoomUncheckedUpdateWithoutTenantInput>
+    create: XOR<ChatRoomCreateWithoutTenantInput, ChatRoomUncheckedCreateWithoutTenantInput>
+  }
+
+  export type ChatRoomUpdateWithWhereUniqueWithoutTenantInput = {
+    where: ChatRoomWhereUniqueInput
+    data: XOR<ChatRoomUpdateWithoutTenantInput, ChatRoomUncheckedUpdateWithoutTenantInput>
+  }
+
+  export type ChatRoomUpdateManyWithWhereWithoutTenantInput = {
+    where: ChatRoomScalarWhereInput
+    data: XOR<ChatRoomUpdateManyMutationInput, ChatRoomUncheckedUpdateManyWithoutTenantInput>
+  }
+
+  export type ChatRoomScalarWhereInput = {
+    AND?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+    OR?: ChatRoomScalarWhereInput[]
+    NOT?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+    id?: StringFilter<"ChatRoom"> | string
+    tenantId?: StringFilter<"ChatRoom"> | string
+    collectionCaseId?: StringFilter<"ChatRoom"> | string
+    name?: StringFilter<"ChatRoom"> | string
+    createdAt?: DateTimeFilter<"ChatRoom"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatRoom"> | Date | string
+  }
+
   export type TenantCreateWithoutRegistryInput = {
     id?: string
     name: string
@@ -40117,6 +45381,7 @@ export namespace Prisma {
     debtors?: DebtorCreateNestedManyWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutRegistryInput = {
@@ -40143,6 +45408,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutRegistryInput = {
@@ -40185,6 +45451,7 @@ export namespace Prisma {
     debtors?: DebtorUpdateManyWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutRegistryInput = {
@@ -40211,6 +45478,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateWithoutUsersInput = {
@@ -40237,6 +45505,7 @@ export namespace Prisma {
     debtors?: DebtorCreateNestedManyWithoutTenantInput
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutUsersInput = {
@@ -40263,6 +45532,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutUsersInput = {
@@ -40368,6 +45638,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ChatMessageCreateWithoutSenderInput = {
+    id?: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    room: ChatRoomCreateNestedOneWithoutMessagesInput
+  }
+
+  export type ChatMessageUncheckedCreateWithoutSenderInput = {
+    id?: string
+    roomId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageCreateOrConnectWithoutSenderInput = {
+    where: ChatMessageWhereUniqueInput
+    create: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type ChatMessageCreateManySenderInputEnvelope = {
+    data: ChatMessageCreateManySenderInput | ChatMessageCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutUsersInput = {
     update: XOR<TenantUpdateWithoutUsersInput, TenantUncheckedUpdateWithoutUsersInput>
     create: XOR<TenantCreateWithoutUsersInput, TenantUncheckedCreateWithoutUsersInput>
@@ -40403,6 +45705,7 @@ export namespace Prisma {
     debtors?: DebtorUpdateManyWithoutTenantNestedInput
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -40429,6 +45732,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type DebtorUpsertWithWhereUniqueWithoutUserInput = {
@@ -40463,6 +45767,37 @@ export namespace Prisma {
     data: XOR<VerdictUpdateManyMutationInput, VerdictUncheckedUpdateManyWithoutBailiffInput>
   }
 
+  export type ChatMessageUpsertWithWhereUniqueWithoutSenderInput = {
+    where: ChatMessageWhereUniqueInput
+    update: XOR<ChatMessageUpdateWithoutSenderInput, ChatMessageUncheckedUpdateWithoutSenderInput>
+    create: XOR<ChatMessageCreateWithoutSenderInput, ChatMessageUncheckedCreateWithoutSenderInput>
+  }
+
+  export type ChatMessageUpdateWithWhereUniqueWithoutSenderInput = {
+    where: ChatMessageWhereUniqueInput
+    data: XOR<ChatMessageUpdateWithoutSenderInput, ChatMessageUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type ChatMessageUpdateManyWithWhereWithoutSenderInput = {
+    where: ChatMessageScalarWhereInput
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type ChatMessageScalarWhereInput = {
+    AND?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    OR?: ChatMessageScalarWhereInput[]
+    NOT?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    roomId?: StringFilter<"ChatMessage"> | string
+    senderId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    fileUrl?: StringNullableFilter<"ChatMessage"> | string | null
+    fileName?: StringNullableFilter<"ChatMessage"> | string | null
+    timestamp?: DateTimeFilter<"ChatMessage"> | Date | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    updatedAt?: DateTimeFilter<"ChatMessage"> | Date | string
+  }
+
   export type UserCreateWithoutVerdictBailiffsInput = {
     id?: string
     email: string
@@ -40475,6 +45810,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
     debtors?: DebtorCreateNestedManyWithoutUserInput
+    messages?: ChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutVerdictBailiffsInput = {
@@ -40489,6 +45825,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     debtors?: DebtorUncheckedCreateNestedManyWithoutUserInput
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutVerdictBailiffsInput = {
@@ -40563,6 +45900,7 @@ export namespace Prisma {
     debtors?: DebtorCreateNestedManyWithoutTenantInput
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutVerdictsInput = {
@@ -40589,6 +45927,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutVerdictsInput = {
@@ -40747,6 +46086,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     debtors?: DebtorUpdateManyWithoutUserNestedInput
+    messages?: ChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerdictBailiffsInput = {
@@ -40761,6 +46101,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtors?: DebtorUncheckedUpdateManyWithoutUserNestedInput
+    messages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type DebtorUpsertWithoutVerdictsInput = {
@@ -40847,6 +46188,7 @@ export namespace Prisma {
     debtors?: DebtorUpdateManyWithoutTenantNestedInput
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutVerdictsInput = {
@@ -40873,6 +46215,7 @@ export namespace Prisma {
     debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type VerdictAttachmentUpsertWithWhereUniqueWithoutVerdictInput = {
@@ -41634,6 +46977,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutBillingInvoiceInput = {
@@ -41660,6 +47004,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutBillingInvoiceInput = {
@@ -41770,6 +47115,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutBillingInvoiceInput = {
@@ -41796,6 +47142,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type BillingInvoiceDetailUpsertWithWhereUniqueWithoutBillingInvoiceInput = {
@@ -42038,6 +47385,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutPlanInput = {
@@ -42064,6 +47412,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutPlanInput = {
@@ -42183,6 +47532,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutCollectionCasesInput = {
@@ -42209,6 +47559,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutCollectionCasesInput = {
@@ -42254,6 +47605,8 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
+    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+    Installment?: InstallmentCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentUncheckedCreateWithoutCollectionCaseInput = {
@@ -42264,6 +47617,8 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
+    paymentAgreementId?: string | null
+    Installment?: InstallmentUncheckedCreateNestedManyWithoutPaymentInput
   }
 
   export type PaymentCreateOrConnectWithoutCollectionCaseInput = {
@@ -42278,28 +47633,32 @@ export namespace Prisma {
 
   export type PaymentAgreementCreateWithoutCollectionCaseInput = {
     id?: string
-    agreementDate: Date | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
+    installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutCollectionCaseInput = {
     id?: string
-    debtorId?: string | null
-    agreementDate: Date | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
+    debtorId?: string | null
+    installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput
   }
 
   export type PaymentAgreementCreateOrConnectWithoutCollectionCaseInput = {
@@ -42339,6 +47698,34 @@ export namespace Prisma {
 
   export type PenaltyCreateManyCollectionCaseInputEnvelope = {
     data: PenaltyCreateManyCollectionCaseInput | PenaltyCreateManyCollectionCaseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatRoomCreateWithoutCollectionCaseInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutChatRoomsInput
+    messages?: ChatMessageCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomUncheckedCreateWithoutCollectionCaseInput = {
+    id?: string
+    tenantId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutRoomInput
+  }
+
+  export type ChatRoomCreateOrConnectWithoutCollectionCaseInput = {
+    where: ChatRoomWhereUniqueInput
+    create: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput>
+  }
+
+  export type ChatRoomCreateManyCollectionCaseInputEnvelope = {
+    data: ChatRoomCreateManyCollectionCaseInput | ChatRoomCreateManyCollectionCaseInput[]
     skipDuplicates?: boolean
   }
 
@@ -42426,6 +47813,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutCollectionCasesInput = {
@@ -42452,6 +47840,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type NotificationUpsertWithWhereUniqueWithoutCollectionCaseInput = {
@@ -42512,6 +47901,7 @@ export namespace Prisma {
     paymentDate?: DateTimeFilter<"Payment"> | Date | string
     referenceNumber?: StringNullableFilter<"Payment"> | string | null
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    paymentAgreementId?: StringNullableFilter<"Payment"> | string | null
   }
 
   export type PaymentAgreementUpsertWithWhereUniqueWithoutCollectionCaseInput = {
@@ -42535,16 +47925,16 @@ export namespace Prisma {
     OR?: PaymentAgreementScalarWhereInput[]
     NOT?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
     id?: StringFilter<"PaymentAgreement"> | string
-    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
-    agreementDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
+    totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFilter<"PaymentAgreement"> | number
+    startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
     status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
-    installmentAmount?: DecimalNullableFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: DateTimeNullableFilter<"PaymentAgreement"> | Date | string | null
-    notes?: StringNullableFilter<"PaymentAgreement"> | string | null
-    totalInstallments?: IntNullableFilter<"PaymentAgreement"> | number | null
+    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
   }
 
   export type PenaltyUpsertWithWhereUniqueWithoutCollectionCaseInput = {
@@ -42577,6 +47967,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Penalty"> | Date | string
   }
 
+  export type ChatRoomUpsertWithWhereUniqueWithoutCollectionCaseInput = {
+    where: ChatRoomWhereUniqueInput
+    update: XOR<ChatRoomUpdateWithoutCollectionCaseInput, ChatRoomUncheckedUpdateWithoutCollectionCaseInput>
+    create: XOR<ChatRoomCreateWithoutCollectionCaseInput, ChatRoomUncheckedCreateWithoutCollectionCaseInput>
+  }
+
+  export type ChatRoomUpdateWithWhereUniqueWithoutCollectionCaseInput = {
+    where: ChatRoomWhereUniqueInput
+    data: XOR<ChatRoomUpdateWithoutCollectionCaseInput, ChatRoomUncheckedUpdateWithoutCollectionCaseInput>
+  }
+
+  export type ChatRoomUpdateManyWithWhereWithoutCollectionCaseInput = {
+    where: ChatRoomScalarWhereInput
+    data: XOR<ChatRoomUpdateManyMutationInput, ChatRoomUncheckedUpdateManyWithoutCollectionCaseInput>
+  }
+
   export type CollectionCaseCreateWithoutPenaltiesInput = {
     id?: string
     referenceNumber?: string | null
@@ -42593,6 +47999,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutPenaltiesInput = {
@@ -42611,6 +48018,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutPenaltiesInput = {
@@ -42645,6 +48053,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutPenaltiesInput = {
@@ -42663,6 +48072,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseCreateWithoutNotificationsInput = {
@@ -42681,6 +48091,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutNotificationsInput = {
@@ -42699,6 +48110,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutNotificationsInput = {
@@ -42733,6 +48145,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutNotificationsInput = {
@@ -42751,6 +48164,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseCreateWithoutPaymentsInput = {
@@ -42769,6 +48183,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutPaymentsInput = {
@@ -42787,11 +48202,79 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutPaymentsInput = {
     where: CollectionCaseWhereUniqueInput
     create: XOR<CollectionCaseCreateWithoutPaymentsInput, CollectionCaseUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type PaymentAgreementCreateWithoutPaymentsInput = {
+    id?: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
+    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+  }
+
+  export type PaymentAgreementUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
+    installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+  }
+
+  export type PaymentAgreementCreateOrConnectWithoutPaymentsInput = {
+    where: PaymentAgreementWhereUniqueInput
+    create: XOR<PaymentAgreementCreateWithoutPaymentsInput, PaymentAgreementUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type InstallmentCreateWithoutPaymentInput = {
+    id?: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paymentAgreement: PaymentAgreementCreateNestedOneWithoutInstallmentsInput
+  }
+
+  export type InstallmentUncheckedCreateWithoutPaymentInput = {
+    id?: string
+    paymentAgreementId: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentCreateOrConnectWithoutPaymentInput = {
+    where: InstallmentWhereUniqueInput
+    create: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type InstallmentCreateManyPaymentInputEnvelope = {
+    data: InstallmentCreateManyPaymentInput | InstallmentCreateManyPaymentInput[]
+    skipDuplicates?: boolean
   }
 
   export type CollectionCaseUpsertWithoutPaymentsInput = {
@@ -42821,6 +48304,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutPaymentsInput = {
@@ -42839,186 +48323,79 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
-  export type CollectionCaseCreateWithoutAgreementsInput = {
-    id?: string
-    referenceNumber?: string | null
-    issueDate?: Date | string | null
-    dueDate?: Date | string | null
-    amountOriginal: Decimal | DecimalJsLike | number | string
-    amountDue: Decimal | DecimalJsLike | number | string
-    amountToReceive: Decimal | DecimalJsLike | number | string
-    status?: $Enums.CollectionStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
-    tenant: TenantCreateNestedOneWithoutCollectionCasesInput
-    notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
-    payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+  export type PaymentAgreementUpsertWithoutPaymentsInput = {
+    update: XOR<PaymentAgreementUpdateWithoutPaymentsInput, PaymentAgreementUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<PaymentAgreementCreateWithoutPaymentsInput, PaymentAgreementUncheckedCreateWithoutPaymentsInput>
+    where?: PaymentAgreementWhereInput
   }
 
-  export type CollectionCaseUncheckedCreateWithoutAgreementsInput = {
-    id?: string
-    referenceNumber?: string | null
-    issueDate?: Date | string | null
-    dueDate?: Date | string | null
-    tenantId: string
-    debtorId: string
-    amountOriginal: Decimal | DecimalJsLike | number | string
-    amountDue: Decimal | DecimalJsLike | number | string
-    amountToReceive: Decimal | DecimalJsLike | number | string
-    status?: $Enums.CollectionStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+  export type PaymentAgreementUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: PaymentAgreementWhereInput
+    data: XOR<PaymentAgreementUpdateWithoutPaymentsInput, PaymentAgreementUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type CollectionCaseCreateOrConnectWithoutAgreementsInput = {
-    where: CollectionCaseWhereUniqueInput
-    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-  }
-
-  export type DebtorCreateWithoutPaymentAgreementsInput = {
-    id?: string
-    fullname: string
-    email: string
-    phone?: string | null
-    address?: string | null
-    personType?: string | null
-    identificationType?: $Enums.IdentificationType | null
-    identification?: string | null
-    totalIncome?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collectionCases?: CollectionCaseCreateNestedManyWithoutDebtorInput
-    tenant: TenantCreateNestedOneWithoutDebtorsInput
-    user?: UserCreateNestedOneWithoutDebtorsInput
-    incomes?: DebtorIncomeCreateNestedManyWithoutDebtorInput
-    verdicts?: VerdictCreateNestedManyWithoutDebtorInput
-  }
-
-  export type DebtorUncheckedCreateWithoutPaymentAgreementsInput = {
-    id?: string
-    tenantId: string
-    userId?: string | null
-    fullname: string
-    email: string
-    phone?: string | null
-    address?: string | null
-    personType?: string | null
-    identificationType?: $Enums.IdentificationType | null
-    identification?: string | null
-    totalIncome?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    collectionCases?: CollectionCaseUncheckedCreateNestedManyWithoutDebtorInput
-    incomes?: DebtorIncomeUncheckedCreateNestedManyWithoutDebtorInput
-    verdicts?: VerdictUncheckedCreateNestedManyWithoutDebtorInput
-  }
-
-  export type DebtorCreateOrConnectWithoutPaymentAgreementsInput = {
-    where: DebtorWhereUniqueInput
-    create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
-  }
-
-  export type CollectionCaseUpsertWithoutAgreementsInput = {
-    update: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-    where?: CollectionCaseWhereInput
-  }
-
-  export type CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput = {
-    where?: CollectionCaseWhereInput
-    data: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type CollectionCaseUpdateWithoutAgreementsInput = {
+  export type PaymentAgreementUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
-    tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
-    notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
-    payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
+    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
-  export type CollectionCaseUncheckedUpdateWithoutAgreementsInput = {
+  export type PaymentAgreementUncheckedUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    tenantId?: StringFieldUpdateOperationsInput | string
-    debtorId?: StringFieldUpdateOperationsInput | string
-    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
   }
 
-  export type DebtorUpsertWithoutPaymentAgreementsInput = {
-    update: XOR<DebtorUpdateWithoutPaymentAgreementsInput, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
-    create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
-    where?: DebtorWhereInput
+  export type InstallmentUpsertWithWhereUniqueWithoutPaymentInput = {
+    where: InstallmentWhereUniqueInput
+    update: XOR<InstallmentUpdateWithoutPaymentInput, InstallmentUncheckedUpdateWithoutPaymentInput>
+    create: XOR<InstallmentCreateWithoutPaymentInput, InstallmentUncheckedCreateWithoutPaymentInput>
   }
 
-  export type DebtorUpdateToOneWithWhereWithoutPaymentAgreementsInput = {
-    where?: DebtorWhereInput
-    data: XOR<DebtorUpdateWithoutPaymentAgreementsInput, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
+  export type InstallmentUpdateWithWhereUniqueWithoutPaymentInput = {
+    where: InstallmentWhereUniqueInput
+    data: XOR<InstallmentUpdateWithoutPaymentInput, InstallmentUncheckedUpdateWithoutPaymentInput>
   }
 
-  export type DebtorUpdateWithoutPaymentAgreementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fullname?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
-    identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
-    identification?: NullableStringFieldUpdateOperationsInput | string | null
-    totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCases?: CollectionCaseUpdateManyWithoutDebtorNestedInput
-    tenant?: TenantUpdateOneRequiredWithoutDebtorsNestedInput
-    user?: UserUpdateOneWithoutDebtorsNestedInput
-    incomes?: DebtorIncomeUpdateManyWithoutDebtorNestedInput
-    verdicts?: VerdictUpdateManyWithoutDebtorNestedInput
+  export type InstallmentUpdateManyWithWhereWithoutPaymentInput = {
+    where: InstallmentScalarWhereInput
+    data: XOR<InstallmentUpdateManyMutationInput, InstallmentUncheckedUpdateManyWithoutPaymentInput>
   }
 
-  export type DebtorUncheckedUpdateWithoutPaymentAgreementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    fullname?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
-    identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
-    identification?: NullableStringFieldUpdateOperationsInput | string | null
-    totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCases?: CollectionCaseUncheckedUpdateManyWithoutDebtorNestedInput
-    incomes?: DebtorIncomeUncheckedUpdateManyWithoutDebtorNestedInput
-    verdicts?: VerdictUncheckedUpdateManyWithoutDebtorNestedInput
+  export type InstallmentScalarWhereInput = {
+    AND?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
+    OR?: InstallmentScalarWhereInput[]
+    NOT?: InstallmentScalarWhereInput | InstallmentScalarWhereInput[]
+    id?: StringFilter<"Installment"> | string
+    paymentAgreementId?: StringFilter<"Installment"> | string
+    number?: IntFilter<"Installment"> | number
+    dueDate?: DateTimeFilter<"Installment"> | Date | string
+    amount?: DecimalFilter<"Installment"> | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFilter<"Installment"> | $Enums.InstallmentStatus
+    paymentId?: StringNullableFilter<"Installment"> | string | null
+    createdAt?: DateTimeFilter<"Installment"> | Date | string
+    updatedAt?: DateTimeFilter<"Installment"> | Date | string
   }
 
   export type CollectionCaseCreateWithoutDebtorInput = {
@@ -43037,6 +48414,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutDebtorInput = {
@@ -43055,6 +48433,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
     agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutDebtorInput = {
@@ -43091,6 +48470,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutDebtorsInput = {
@@ -43117,6 +48497,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutDebtorsInput = {
@@ -43136,6 +48517,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
     verdictBailiffs?: VerdictCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageCreateNestedManyWithoutSenderInput
   }
 
   export type UserUncheckedCreateWithoutDebtorsInput = {
@@ -43150,6 +48532,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     verdictBailiffs?: VerdictUncheckedCreateNestedManyWithoutBailiffInput
+    messages?: ChatMessageUncheckedCreateNestedManyWithoutSenderInput
   }
 
   export type UserCreateOrConnectWithoutDebtorsInput = {
@@ -43185,28 +48568,32 @@ export namespace Prisma {
 
   export type PaymentAgreementCreateWithoutDebtorInput = {
     id?: string
-    agreementDate: Date | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
     collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutDebtorInput = {
     id?: string
-    agreementDate: Date | string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCaseId: string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
+    installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput
   }
 
   export type PaymentAgreementCreateOrConnectWithoutDebtorInput = {
@@ -43320,6 +48707,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutDebtorsInput = {
@@ -43346,6 +48734,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type UserUpsertWithoutDebtorsInput = {
@@ -43371,6 +48760,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     verdictBailiffs?: VerdictUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDebtorsInput = {
@@ -43385,6 +48775,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     verdictBailiffs?: VerdictUncheckedUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type DebtorIncomeUpsertWithWhereUniqueWithoutDebtorInput = {
@@ -43445,6 +48836,398 @@ export namespace Prisma {
   export type VerdictUpdateManyWithWhereWithoutDebtorInput = {
     where: VerdictScalarWhereInput
     data: XOR<VerdictUpdateManyMutationInput, VerdictUncheckedUpdateManyWithoutDebtorInput>
+  }
+
+  export type TenantCreateWithoutChatRoomsInput = {
+    id?: string
+    name: string
+    subdomain: string
+    contactEmail: string
+    countryCode: string
+    address?: string | null
+    city?: string | null
+    logoUrl?: string | null
+    numberOfEmployees?: number | null
+    phone?: string | null
+    website?: string | null
+    planStatus?: string
+    planExpiresAt?: Date | string | null
+    termsAccepted?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    plan?: PlanCreateNestedOneWithoutTenantsInput
+    billingInvoice?: BillingInvoiceCreateNestedManyWithoutTenantInput
+    collectionCases?: CollectionCaseCreateNestedManyWithoutTenantInput
+    debtors?: DebtorCreateNestedManyWithoutTenantInput
+    registry?: TenantRegistryCreateNestedOneWithoutTenantInput
+    verdicts?: VerdictCreateNestedManyWithoutTenantInput
+    users?: UserCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantUncheckedCreateWithoutChatRoomsInput = {
+    id?: string
+    name: string
+    subdomain: string
+    contactEmail: string
+    countryCode: string
+    address?: string | null
+    city?: string | null
+    logoUrl?: string | null
+    numberOfEmployees?: number | null
+    phone?: string | null
+    website?: string | null
+    planId?: string | null
+    planStatus?: string
+    planExpiresAt?: Date | string | null
+    termsAccepted?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    billingInvoice?: BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput
+    collectionCases?: CollectionCaseUncheckedCreateNestedManyWithoutTenantInput
+    debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
+    registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
+    verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
+    users?: UserUncheckedCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantCreateOrConnectWithoutChatRoomsInput = {
+    where: TenantWhereUniqueInput
+    create: XOR<TenantCreateWithoutChatRoomsInput, TenantUncheckedCreateWithoutChatRoomsInput>
+  }
+
+  export type CollectionCaseCreateWithoutChatRoomsInput = {
+    id?: string
+    referenceNumber?: string | null
+    issueDate?: Date | string | null
+    dueDate?: Date | string | null
+    amountOriginal: Decimal | DecimalJsLike | number | string
+    amountDue: Decimal | DecimalJsLike | number | string
+    amountToReceive: Decimal | DecimalJsLike | number | string
+    status?: $Enums.CollectionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
+    tenant: TenantCreateNestedOneWithoutCollectionCasesInput
+    notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
+    payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
+    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+  }
+
+  export type CollectionCaseUncheckedCreateWithoutChatRoomsInput = {
+    id?: string
+    referenceNumber?: string | null
+    issueDate?: Date | string | null
+    dueDate?: Date | string | null
+    tenantId: string
+    debtorId: string
+    amountOriginal: Decimal | DecimalJsLike | number | string
+    amountDue: Decimal | DecimalJsLike | number | string
+    amountToReceive: Decimal | DecimalJsLike | number | string
+    status?: $Enums.CollectionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
+    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+  }
+
+  export type CollectionCaseCreateOrConnectWithoutChatRoomsInput = {
+    where: CollectionCaseWhereUniqueInput
+    create: XOR<CollectionCaseCreateWithoutChatRoomsInput, CollectionCaseUncheckedCreateWithoutChatRoomsInput>
+  }
+
+  export type ChatMessageCreateWithoutRoomInput = {
+    id?: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sender: UserCreateNestedOneWithoutMessagesInput
+  }
+
+  export type ChatMessageUncheckedCreateWithoutRoomInput = {
+    id?: string
+    senderId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageCreateOrConnectWithoutRoomInput = {
+    where: ChatMessageWhereUniqueInput
+    create: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput>
+  }
+
+  export type ChatMessageCreateManyRoomInputEnvelope = {
+    data: ChatMessageCreateManyRoomInput | ChatMessageCreateManyRoomInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TenantUpsertWithoutChatRoomsInput = {
+    update: XOR<TenantUpdateWithoutChatRoomsInput, TenantUncheckedUpdateWithoutChatRoomsInput>
+    create: XOR<TenantCreateWithoutChatRoomsInput, TenantUncheckedCreateWithoutChatRoomsInput>
+    where?: TenantWhereInput
+  }
+
+  export type TenantUpdateToOneWithWhereWithoutChatRoomsInput = {
+    where?: TenantWhereInput
+    data: XOR<TenantUpdateWithoutChatRoomsInput, TenantUncheckedUpdateWithoutChatRoomsInput>
+  }
+
+  export type TenantUpdateWithoutChatRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfEmployees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    planStatus?: StringFieldUpdateOperationsInput | string
+    planExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsAccepted?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plan?: PlanUpdateOneWithoutTenantsNestedInput
+    billingInvoice?: BillingInvoiceUpdateManyWithoutTenantNestedInput
+    collectionCases?: CollectionCaseUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUpdateManyWithoutTenantNestedInput
+    registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
+    verdicts?: VerdictUpdateManyWithoutTenantNestedInput
+    users?: UserUpdateManyWithoutTenantNestedInput
+  }
+
+  export type TenantUncheckedUpdateWithoutChatRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfEmployees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: NullableStringFieldUpdateOperationsInput | string | null
+    planStatus?: StringFieldUpdateOperationsInput | string
+    planExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsAccepted?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    billingInvoice?: BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput
+    collectionCases?: CollectionCaseUncheckedUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
+    registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
+    verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
+    users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+  }
+
+  export type CollectionCaseUpsertWithoutChatRoomsInput = {
+    update: XOR<CollectionCaseUpdateWithoutChatRoomsInput, CollectionCaseUncheckedUpdateWithoutChatRoomsInput>
+    create: XOR<CollectionCaseCreateWithoutChatRoomsInput, CollectionCaseUncheckedCreateWithoutChatRoomsInput>
+    where?: CollectionCaseWhereInput
+  }
+
+  export type CollectionCaseUpdateToOneWithWhereWithoutChatRoomsInput = {
+    where?: CollectionCaseWhereInput
+    data: XOR<CollectionCaseUpdateWithoutChatRoomsInput, CollectionCaseUncheckedUpdateWithoutChatRoomsInput>
+  }
+
+  export type CollectionCaseUpdateWithoutChatRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
+    tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
+    notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
+    payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
+    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+  }
+
+  export type CollectionCaseUncheckedUpdateWithoutChatRoomsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tenantId?: StringFieldUpdateOperationsInput | string
+    debtorId?: StringFieldUpdateOperationsInput | string
+    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+  }
+
+  export type ChatMessageUpsertWithWhereUniqueWithoutRoomInput = {
+    where: ChatMessageWhereUniqueInput
+    update: XOR<ChatMessageUpdateWithoutRoomInput, ChatMessageUncheckedUpdateWithoutRoomInput>
+    create: XOR<ChatMessageCreateWithoutRoomInput, ChatMessageUncheckedCreateWithoutRoomInput>
+  }
+
+  export type ChatMessageUpdateWithWhereUniqueWithoutRoomInput = {
+    where: ChatMessageWhereUniqueInput
+    data: XOR<ChatMessageUpdateWithoutRoomInput, ChatMessageUncheckedUpdateWithoutRoomInput>
+  }
+
+  export type ChatMessageUpdateManyWithWhereWithoutRoomInput = {
+    where: ChatMessageScalarWhereInput
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutRoomInput>
+  }
+
+  export type ChatRoomCreateWithoutMessagesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutChatRoomsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutChatRoomsInput
+  }
+
+  export type ChatRoomUncheckedCreateWithoutMessagesInput = {
+    id?: string
+    tenantId: string
+    collectionCaseId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatRoomCreateOrConnectWithoutMessagesInput = {
+    where: ChatRoomWhereUniqueInput
+    create: XOR<ChatRoomCreateWithoutMessagesInput, ChatRoomUncheckedCreateWithoutMessagesInput>
+  }
+
+  export type UserCreateWithoutMessagesInput = {
+    id?: string
+    email: string
+    passwordHash?: string | null
+    fullname?: string | null
+    phone?: string | null
+    role?: $Enums.roleEnum
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    debtors?: DebtorCreateNestedManyWithoutUserInput
+    verdictBailiffs?: VerdictCreateNestedManyWithoutBailiffInput
+  }
+
+  export type UserUncheckedCreateWithoutMessagesInput = {
+    id?: string
+    email: string
+    passwordHash?: string | null
+    fullname?: string | null
+    phone?: string | null
+    tenantId: string
+    role?: $Enums.roleEnum
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtors?: DebtorUncheckedCreateNestedManyWithoutUserInput
+    verdictBailiffs?: VerdictUncheckedCreateNestedManyWithoutBailiffInput
+  }
+
+  export type UserCreateOrConnectWithoutMessagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
+  }
+
+  export type ChatRoomUpsertWithoutMessagesInput = {
+    update: XOR<ChatRoomUpdateWithoutMessagesInput, ChatRoomUncheckedUpdateWithoutMessagesInput>
+    create: XOR<ChatRoomCreateWithoutMessagesInput, ChatRoomUncheckedCreateWithoutMessagesInput>
+    where?: ChatRoomWhereInput
+  }
+
+  export type ChatRoomUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: ChatRoomWhereInput
+    data: XOR<ChatRoomUpdateWithoutMessagesInput, ChatRoomUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type ChatRoomUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutChatRoomsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutChatRoomsNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutMessagesInput = {
+    update: XOR<UserUpdateWithoutMessagesInput, UserUncheckedUpdateWithoutMessagesInput>
+    create: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMessagesInput, UserUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type UserUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    debtors?: DebtorUpdateManyWithoutUserNestedInput
+    verdictBailiffs?: VerdictUpdateManyWithoutBailiffNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    tenantId?: StringFieldUpdateOperationsInput | string
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtors?: DebtorUncheckedUpdateManyWithoutUserNestedInput
+    verdictBailiffs?: VerdictUncheckedUpdateManyWithoutBailiffNestedInput
   }
 
   export type DebtorCreateWithoutIncomesInput = {
@@ -43539,6 +49322,428 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutDebtorNestedInput
   }
 
+  export type CollectionCaseCreateWithoutAgreementsInput = {
+    id?: string
+    referenceNumber?: string | null
+    issueDate?: Date | string | null
+    dueDate?: Date | string | null
+    amountOriginal: Decimal | DecimalJsLike | number | string
+    amountDue: Decimal | DecimalJsLike | number | string
+    amountToReceive: Decimal | DecimalJsLike | number | string
+    status?: $Enums.CollectionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
+    tenant: TenantCreateNestedOneWithoutCollectionCasesInput
+    notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
+    payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
+    penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
+  }
+
+  export type CollectionCaseUncheckedCreateWithoutAgreementsInput = {
+    id?: string
+    referenceNumber?: string | null
+    issueDate?: Date | string | null
+    dueDate?: Date | string | null
+    tenantId: string
+    debtorId: string
+    amountOriginal: Decimal | DecimalJsLike | number | string
+    amountDue: Decimal | DecimalJsLike | number | string
+    amountToReceive: Decimal | DecimalJsLike | number | string
+    status?: $Enums.CollectionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
+    penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
+  }
+
+  export type CollectionCaseCreateOrConnectWithoutAgreementsInput = {
+    where: CollectionCaseWhereUniqueInput
+    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+  }
+
+  export type InstallmentCreateWithoutPaymentAgreementInput = {
+    id?: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payment?: PaymentCreateNestedOneWithoutInstallmentInput
+  }
+
+  export type InstallmentUncheckedCreateWithoutPaymentAgreementInput = {
+    id?: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    paymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentCreateOrConnectWithoutPaymentAgreementInput = {
+    where: InstallmentWhereUniqueInput
+    create: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput>
+  }
+
+  export type InstallmentCreateManyPaymentAgreementInputEnvelope = {
+    data: InstallmentCreateManyPaymentAgreementInput | InstallmentCreateManyPaymentAgreementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentCreateWithoutPaymentAgreementInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    method: $Enums.PaymentMethod
+    createdAt?: Date | string
+    paymentDate: Date | string
+    referenceNumber?: string | null
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentsInput
+    Installment?: InstallmentCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutPaymentAgreementInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    method: $Enums.PaymentMethod
+    createdAt?: Date | string
+    collectionCaseId: string
+    paymentDate: Date | string
+    referenceNumber?: string | null
+    updatedAt?: Date | string
+    Installment?: InstallmentUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutPaymentAgreementInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput>
+  }
+
+  export type PaymentCreateManyPaymentAgreementInputEnvelope = {
+    data: PaymentCreateManyPaymentAgreementInput | PaymentCreateManyPaymentAgreementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DebtorCreateWithoutPaymentAgreementsInput = {
+    id?: string
+    fullname: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    personType?: string | null
+    identificationType?: $Enums.IdentificationType | null
+    identification?: string | null
+    totalIncome?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCases?: CollectionCaseCreateNestedManyWithoutDebtorInput
+    tenant: TenantCreateNestedOneWithoutDebtorsInput
+    user?: UserCreateNestedOneWithoutDebtorsInput
+    incomes?: DebtorIncomeCreateNestedManyWithoutDebtorInput
+    verdicts?: VerdictCreateNestedManyWithoutDebtorInput
+  }
+
+  export type DebtorUncheckedCreateWithoutPaymentAgreementsInput = {
+    id?: string
+    tenantId: string
+    userId?: string | null
+    fullname: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    personType?: string | null
+    identificationType?: $Enums.IdentificationType | null
+    identification?: string | null
+    totalIncome?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCases?: CollectionCaseUncheckedCreateNestedManyWithoutDebtorInput
+    incomes?: DebtorIncomeUncheckedCreateNestedManyWithoutDebtorInput
+    verdicts?: VerdictUncheckedCreateNestedManyWithoutDebtorInput
+  }
+
+  export type DebtorCreateOrConnectWithoutPaymentAgreementsInput = {
+    where: DebtorWhereUniqueInput
+    create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
+  }
+
+  export type CollectionCaseUpsertWithoutAgreementsInput = {
+    update: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
+    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+    where?: CollectionCaseWhereInput
+  }
+
+  export type CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput = {
+    where?: CollectionCaseWhereInput
+    data: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
+  }
+
+  export type CollectionCaseUpdateWithoutAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
+    tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
+    notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
+    payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
+    penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
+  }
+
+  export type CollectionCaseUncheckedUpdateWithoutAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tenantId?: StringFieldUpdateOperationsInput | string
+    debtorId?: StringFieldUpdateOperationsInput | string
+    amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumCollectionStatusFieldUpdateOperationsInput | $Enums.CollectionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
+  }
+
+  export type InstallmentUpsertWithWhereUniqueWithoutPaymentAgreementInput = {
+    where: InstallmentWhereUniqueInput
+    update: XOR<InstallmentUpdateWithoutPaymentAgreementInput, InstallmentUncheckedUpdateWithoutPaymentAgreementInput>
+    create: XOR<InstallmentCreateWithoutPaymentAgreementInput, InstallmentUncheckedCreateWithoutPaymentAgreementInput>
+  }
+
+  export type InstallmentUpdateWithWhereUniqueWithoutPaymentAgreementInput = {
+    where: InstallmentWhereUniqueInput
+    data: XOR<InstallmentUpdateWithoutPaymentAgreementInput, InstallmentUncheckedUpdateWithoutPaymentAgreementInput>
+  }
+
+  export type InstallmentUpdateManyWithWhereWithoutPaymentAgreementInput = {
+    where: InstallmentScalarWhereInput
+    data: XOR<InstallmentUpdateManyMutationInput, InstallmentUncheckedUpdateManyWithoutPaymentAgreementInput>
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutPaymentAgreementInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutPaymentAgreementInput, PaymentUncheckedUpdateWithoutPaymentAgreementInput>
+    create: XOR<PaymentCreateWithoutPaymentAgreementInput, PaymentUncheckedCreateWithoutPaymentAgreementInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutPaymentAgreementInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutPaymentAgreementInput, PaymentUncheckedUpdateWithoutPaymentAgreementInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutPaymentAgreementInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutPaymentAgreementInput>
+  }
+
+  export type DebtorUpsertWithoutPaymentAgreementsInput = {
+    update: XOR<DebtorUpdateWithoutPaymentAgreementsInput, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
+    create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
+    where?: DebtorWhereInput
+  }
+
+  export type DebtorUpdateToOneWithWhereWithoutPaymentAgreementsInput = {
+    where?: DebtorWhereInput
+    data: XOR<DebtorUpdateWithoutPaymentAgreementsInput, DebtorUncheckedUpdateWithoutPaymentAgreementsInput>
+  }
+
+  export type DebtorUpdateWithoutPaymentAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullname?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
+    identification?: NullableStringFieldUpdateOperationsInput | string | null
+    totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCases?: CollectionCaseUpdateManyWithoutDebtorNestedInput
+    tenant?: TenantUpdateOneRequiredWithoutDebtorsNestedInput
+    user?: UserUpdateOneWithoutDebtorsNestedInput
+    incomes?: DebtorIncomeUpdateManyWithoutDebtorNestedInput
+    verdicts?: VerdictUpdateManyWithoutDebtorNestedInput
+  }
+
+  export type DebtorUncheckedUpdateWithoutPaymentAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    fullname?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
+    identification?: NullableStringFieldUpdateOperationsInput | string | null
+    totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCases?: CollectionCaseUncheckedUpdateManyWithoutDebtorNestedInput
+    incomes?: DebtorIncomeUncheckedUpdateManyWithoutDebtorNestedInput
+    verdicts?: VerdictUncheckedUpdateManyWithoutDebtorNestedInput
+  }
+
+  export type PaymentAgreementCreateWithoutInstallmentsInput = {
+    id?: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
+    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+  }
+
+  export type PaymentAgreementUncheckedCreateWithoutInstallmentsInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
+    payments?: PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+  }
+
+  export type PaymentAgreementCreateOrConnectWithoutInstallmentsInput = {
+    where: PaymentAgreementWhereUniqueInput
+    create: XOR<PaymentAgreementCreateWithoutInstallmentsInput, PaymentAgreementUncheckedCreateWithoutInstallmentsInput>
+  }
+
+  export type PaymentCreateWithoutInstallmentInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    method: $Enums.PaymentMethod
+    createdAt?: Date | string
+    paymentDate: Date | string
+    referenceNumber?: string | null
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentsInput
+    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentUncheckedCreateWithoutInstallmentInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    method: $Enums.PaymentMethod
+    createdAt?: Date | string
+    collectionCaseId: string
+    paymentDate: Date | string
+    referenceNumber?: string | null
+    updatedAt?: Date | string
+    paymentAgreementId?: string | null
+  }
+
+  export type PaymentCreateOrConnectWithoutInstallmentInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutInstallmentInput, PaymentUncheckedCreateWithoutInstallmentInput>
+  }
+
+  export type PaymentAgreementUpsertWithoutInstallmentsInput = {
+    update: XOR<PaymentAgreementUpdateWithoutInstallmentsInput, PaymentAgreementUncheckedUpdateWithoutInstallmentsInput>
+    create: XOR<PaymentAgreementCreateWithoutInstallmentsInput, PaymentAgreementUncheckedCreateWithoutInstallmentsInput>
+    where?: PaymentAgreementWhereInput
+  }
+
+  export type PaymentAgreementUpdateToOneWithWhereWithoutInstallmentsInput = {
+    where?: PaymentAgreementWhereInput
+    data: XOR<PaymentAgreementUpdateWithoutInstallmentsInput, PaymentAgreementUncheckedUpdateWithoutInstallmentsInput>
+  }
+
+  export type PaymentAgreementUpdateWithoutInstallmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
+    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+  }
+
+  export type PaymentAgreementUncheckedUpdateWithoutInstallmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+    payments?: PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+  }
+
+  export type PaymentUpsertWithoutInstallmentInput = {
+    update: XOR<PaymentUpdateWithoutInstallmentInput, PaymentUncheckedUpdateWithoutInstallmentInput>
+    create: XOR<PaymentCreateWithoutInstallmentInput, PaymentUncheckedCreateWithoutInstallmentInput>
+    where?: PaymentWhereInput
+  }
+
+  export type PaymentUpdateToOneWithWhereWithoutInstallmentInput = {
+    where?: PaymentWhereInput
+    data: XOR<PaymentUpdateWithoutInstallmentInput, PaymentUncheckedUpdateWithoutInstallmentInput>
+  }
+
+  export type PaymentUpdateWithoutInstallmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentsNestedInput
+    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutInstallmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreementId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type BillingInvoiceCreateManyTenantInput = {
     id?: string
     invoiceNumber: string
@@ -43609,6 +49814,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ChatRoomCreateManyTenantInput = {
+    id?: string
+    collectionCaseId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BillingInvoiceUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoiceNumber?: StringFieldUpdateOperationsInput | string
@@ -43668,6 +49881,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutTenantInput = {
@@ -43686,6 +49900,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateManyWithoutTenantInput = {
@@ -43823,6 +50038,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtors?: DebtorUpdateManyWithoutUserNestedInput
     verdictBailiffs?: VerdictUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTenantInput = {
@@ -43837,6 +50053,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtors?: DebtorUncheckedUpdateManyWithoutUserNestedInput
     verdictBailiffs?: VerdictUncheckedUpdateManyWithoutBailiffNestedInput
+    messages?: ChatMessageUncheckedUpdateManyWithoutSenderNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -43847,6 +50064,32 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatRoomUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutChatRoomsNestedInput
+    messages?: ChatMessageUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: ChatMessageUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateManyWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43880,6 +50123,17 @@ export namespace Prisma {
     procesalCost?: number | null
     tenantId: string
     notes?: string | null
+  }
+
+  export type ChatMessageCreateManySenderInput = {
+    id?: string
+    roomId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DebtorUpdateWithoutUserInput = {
@@ -43989,6 +50243,39 @@ export namespace Prisma {
     procesalCost?: NullableFloatFieldUpdateOperationsInput | number | null
     tenantId?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChatMessageUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    room?: ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
+  }
+
+  export type ChatMessageUncheckedUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerdictAttachmentCreateManyVerdictInput = {
@@ -44388,6 +50675,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutPlanInput = {
@@ -44414,6 +50702,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateManyWithoutPlanInput = {
@@ -44454,19 +50743,20 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
+    paymentAgreementId?: string | null
   }
 
   export type PaymentAgreementCreateManyCollectionCaseInput = {
     id?: string
-    debtorId?: string | null
-    agreementDate: Date | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
+    debtorId?: string | null
   }
 
   export type PenaltyCreateManyCollectionCaseInput = {
@@ -44475,6 +50765,14 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     dateApplied?: Date | string
     isPaid?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatRoomCreateManyCollectionCaseInput = {
+    id?: string
+    tenantId: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44517,6 +50815,8 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+    Installment?: InstallmentUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutCollectionCaseInput = {
@@ -44527,6 +50827,8 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreementId?: NullableStringFieldUpdateOperationsInput | string | null
+    Installment?: InstallmentUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type PaymentUncheckedUpdateManyWithoutCollectionCaseInput = {
@@ -44537,45 +50839,50 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreementId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentAgreementUpdateWithoutCollectionCaseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutCollectionCaseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PenaltyUpdateWithoutCollectionCaseInput = {
@@ -44608,6 +50915,76 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ChatRoomUpdateWithoutCollectionCaseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutChatRoomsNestedInput
+    messages?: ChatMessageUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateWithoutCollectionCaseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: ChatMessageUncheckedUpdateManyWithoutRoomNestedInput
+  }
+
+  export type ChatRoomUncheckedUpdateManyWithoutCollectionCaseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentCreateManyPaymentInput = {
+    id?: string
+    paymentAgreementId: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentUpdateWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentAgreement?: PaymentAgreementUpdateOneRequiredWithoutInstallmentsNestedInput
+  }
+
+  export type InstallmentUncheckedUpdateWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentAgreementId?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentUncheckedUpdateManyWithoutPaymentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentAgreementId?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CollectionCaseCreateManyDebtorInput = {
     id?: string
     referenceNumber?: string | null
@@ -44632,15 +51009,15 @@ export namespace Prisma {
 
   export type PaymentAgreementCreateManyDebtorInput = {
     id?: string
-    agreementDate: Date | string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
     status?: $Enums.AgreementStatus
+    complianceStatus?: $Enums.ComplianceStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCaseId: string
-    installmentAmount?: Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: Date | string | null
-    notes?: string | null
-    totalInstallments?: number | null
   }
 
   export type VerdictCreateManyDebtorInput = {
@@ -44675,6 +51052,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutDebtorInput = {
@@ -44693,6 +51071,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
     agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateManyWithoutDebtorInput = {
@@ -44735,41 +51114,45 @@ export namespace Prisma {
 
   export type PaymentAgreementUpdateWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCaseId?: StringFieldUpdateOperationsInput | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateManyWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    agreementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCaseId?: StringFieldUpdateOperationsInput | string
-    installmentAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    nextPaymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    totalInstallments?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type VerdictUpdateWithoutDebtorInput = {
@@ -44826,6 +51209,140 @@ export namespace Prisma {
     tenantId?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     bailiffId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ChatMessageCreateManyRoomInput = {
+    id?: string
+    senderId: string
+    message: string
+    fileUrl?: string | null
+    fileName?: string | null
+    timestamp?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sender?: UserUpdateOneRequiredWithoutMessagesNestedInput
+  }
+
+  export type ChatMessageUncheckedUpdateWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutRoomInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentCreateManyPaymentAgreementInput = {
+    id?: string
+    number: number
+    dueDate: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.InstallmentStatus
+    paymentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateManyPaymentAgreementInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    method: $Enums.PaymentMethod
+    createdAt?: Date | string
+    collectionCaseId: string
+    paymentDate: Date | string
+    referenceNumber?: string | null
+    updatedAt?: Date | string
+  }
+
+  export type InstallmentUpdateWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payment?: PaymentUpdateOneWithoutInstallmentNestedInput
+  }
+
+  export type InstallmentUncheckedUpdateWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstallmentUncheckedUpdateManyWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: IntFieldUpdateOperationsInput | number
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentsNestedInput
+    Installment?: InstallmentUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Installment?: InstallmentUncheckedUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutPaymentAgreementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

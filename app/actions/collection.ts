@@ -213,6 +213,20 @@ export const createCollectionCase = async (
   });
   if (!tenant) throw new Error("Tenant not found");
 
+  const debtor = await prisma.debtor.findUnique({
+    where: { id: newCollectionCase.debtorId },
+  });
+  if (!debtor) throw new Error("Debtor not found");
+
+  // Crear room para el chat de la colección
+  await prisma.chatRoom.create({
+    data: {
+      tenantId: tenant.id,
+      collectionCaseId: newCollectionCase.id,
+      name: `${debtor.fullname} ${newCollectionCase.referenceNumber}`,
+    },
+  });
+
   const firstPlan = tenant.plan;
 
   if (!firstPlan)
