@@ -40,6 +40,7 @@ import { notifyError, notifyInfo } from "@/lib/notifications";
 import TabPanel from "@/components/ui/tab-panel";
 import AgreementForm from "@/components/agreements/agreement-form";
 import { getAllNotificationsByCollectionCase } from "@/app/actions/notification";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 const DashboardDebtor = () => {
   const { data: session } = useSession();
@@ -137,6 +138,11 @@ const DashboardDebtor = () => {
 
       if (!collectionCaseSelected?.id) return;
 
+      if (!session?.user?.tenantId) {
+        notifyError("No se encontró el tenantId del usuario");
+        return;
+      }
+
       if (data.startDate < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
@@ -148,7 +154,7 @@ const DashboardDebtor = () => {
         return;
       }
 
-      await createPaymentAgreement(data);
+      await createPaymentAgreement(session?.user?.tenantId, data);
       await fetchPaymentAgreements(collectionCaseSelected.id);
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");
@@ -170,6 +176,16 @@ const DashboardDebtor = () => {
           Bekijk uw openstaande schulden en vraag betalingsregelingen aan.
         </Typography>
         <Grid container spacing={2} sx={{ mt: 2 }}>
+          {collectionCases.length === 0 && (
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <Paper elevation={3} sx={{ p: 6, textAlign: "center" }}>
+                <TaskAltIcon fontSize="large" color="disabled" />
+                <Typography variant="body1">
+                  Geen incassozaken gevonden.
+                </Typography>
+              </Paper>
+            </Grid>
+          )}
           {collectionCases.map((caseItem) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={caseItem.id}>
               <Paper

@@ -30,6 +30,12 @@ const menus: MenuItem[] = [
     role: ["ADMIN"],
   },
   {
+    label: "Betalingsovereenkomsten",
+    href: "/dashboard/payment-agreements",
+    icon: <ReceiptOutlinedIcon fontSize="small" />,
+    role: ["ADMIN"],
+  },
+  {
     label: "Vonnis",
     href: "/dashboard/verdicts",
     icon: <GavelIcon fontSize="small" />,

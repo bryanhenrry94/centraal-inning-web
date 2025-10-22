@@ -445,6 +445,8 @@ exports.Prisma.PaymentAgreementScalarFieldEnum = {
   installmentsCount: 'installmentsCount',
   startDate: 'startDate',
   status: 'status',
+  tenantId: 'tenantId',
+  comment: 'comment',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   debtorId: 'debtorId'
@@ -536,7 +538,9 @@ exports.PaymentAgreementStatus = exports.$Enums.PaymentAgreementStatus = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
   OVERDUE: 'OVERDUE',
-  PAID: 'PAID'
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED',
+  REJECTED: 'REJECTED'
 };
 
 exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {

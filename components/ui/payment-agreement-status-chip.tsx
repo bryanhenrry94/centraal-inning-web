@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 
-const CollectionStatusChip = ({ status }: { status: string }) => {
+const PaymentAgreementStatusChip = ({ status }: { status: string }) => {
   let label = "Onbekend";
   let color:
     | "default"
@@ -13,28 +13,32 @@ const CollectionStatusChip = ({ status }: { status: string }) => {
 
   switch (status) {
     case "PENDING":
-      label = "Te betalen";
+      label = "Open";
       color = "primary";
       break;
-    case "IN_PROGRESS":
-      label = "Gedeeltelijk betaald";
+    case "ACTIVE":
+      label = "In Behandeling";
       color = "info";
       break;
     case "OVERDUE":
       label = "Verlopen";
-      color = "error";
+      color = "warning";
       break;
     case "PAID":
       label = "Betaald";
       color = "success";
       break;
+    case "REJECTED":
+      label = "Afgewezen";
+      color = "error";
+      break;
     case "CANCELLED":
       label = "Geannuleerd";
-      color = "secondary";
+      color = "error";
       break;
   }
 
   return <Chip label={label} color={color} size="small" />;
 };
 
-export default CollectionStatusChip;
+export default PaymentAgreementStatusChip;

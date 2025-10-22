@@ -43,9 +43,11 @@ import {
 } from "@/app/actions/payment-agreement";
 import AgreementForm from "@/components/agreements/agreement-form";
 import AgreementTable from "@/components/agreements/agreement-table";
+import { useSession } from "next-auth/react";
 
 const CollectionViewPage: React.FC = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [loading, setLoading] = React.useState(true);
   const [collection, setCollection] = React.useState<CollectionCaseView | null>(
     null
@@ -191,6 +193,11 @@ const CollectionViewPage: React.FC = () => {
       setLoading(true);
       console.log("Agreement Data Submitted:", data);
 
+      if (!session?.user?.tenantId) {
+        notifyError("No se pudo obtener la información del inquilino");
+        return;
+      }
+
       if (data.startDate < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
@@ -198,11 +205,11 @@ const CollectionViewPage: React.FC = () => {
 
       const exists = await existsPaymentAgreement(params.id as string);
       if (exists) {
-        notifyError("Ya existe un acuerdo de pago para esta collection");
+        notifyError("Ya tiene un acuerdo de pago vigente");
         return;
       }
 
-      await createPaymentAgreement(data);
+      await createPaymentAgreement(session?.user?.tenantId, data);
       await fetchPaymentAgreements();
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");

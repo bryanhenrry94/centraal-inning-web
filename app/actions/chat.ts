@@ -113,5 +113,10 @@ export const getMessagesByRoomId = async (
     timestamp: msg.createdAt,
     createdAt: msg.createdAt,
     updatedAt: msg.updatedAt,
+    sender: {
+      id: msg.sender.id,
+      fullname: msg.sender.fullname ? msg.sender.fullname : "Usuario",
+      email: msg.sender.email,
+    },
   }));
 };

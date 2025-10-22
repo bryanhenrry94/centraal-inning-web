@@ -27,6 +27,7 @@ import {
 } from "@/app/actions/payment-agreement";
 import { AlertService } from "@/lib/alerts";
 import { notifyInfo } from "@/lib/notifications";
+import PaymentAgreementStatusChip from "../ui/payment-agreement-status-chip";
 
 interface AgreementTableProps {
   paymentAgreements: PaymentAgreement[];
@@ -102,7 +103,9 @@ const AgreementTable = ({
                 <TableCell align="center">
                   {new Date(agreement.startDate).toLocaleDateString()}
                 </TableCell>
-                <TableCell align="right">{agreement.status}</TableCell>
+                <TableCell align="right">
+                  <PaymentAgreementStatusChip status={agreement.status} />
+                </TableCell>
                 <TableCell align="center">
                   <Stack direction="row" spacing={1}>
                     <IconButton>
@@ -110,11 +113,13 @@ const AgreementTable = ({
                         onClick={() => handleMoreDetails(agreement.id)}
                       />
                     </IconButton>
-                    <IconButton>
-                      <DeleteIcon
-                        onClick={() => handleDeleteAgreement(agreement.id)}
-                      />
-                    </IconButton>
+                    {agreement.status === "PENDING" && (
+                      <IconButton>
+                        <DeleteIcon
+                          onClick={() => handleDeleteAgreement(agreement.id)}
+                        />
+                      </IconButton>
+                    )}
                   </Stack>
                 </TableCell>
               </TableRow>

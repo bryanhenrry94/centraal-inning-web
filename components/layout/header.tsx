@@ -1,6 +1,14 @@
 "use client";
 import React from "react";
-import { AppBar, Toolbar, Typography, Box, Divider } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Divider,
+  Badge,
+  Stack,
+} from "@mui/material";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -8,6 +16,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import MailIcon from "@mui/icons-material/Mail";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -37,13 +46,18 @@ const Header = () => {
 
     return (
       <>
-        <IconButton onClick={handleOpen} sx={{ ml: 1, p: 0.5 }}>
-          <Avatar
-            alt={session.user?.name || "User"}
-            src={session.user?.image || undefined}
-            sx={{ width: 28, height: 28 }}
-          />
-        </IconButton>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Badge badgeContent={4} color="primary">
+            <MailIcon color="info" />
+          </Badge>
+          <IconButton onClick={handleOpen} sx={{ ml: 1, p: 0.5 }}>
+            <Avatar
+              alt={session.user?.name || "User"}
+              src={session.user?.image || undefined}
+              sx={{ width: 28, height: 28 }}
+            />
+          </IconButton>
+        </Stack>
 
         <Menu
           anchorEl={anchorEl}

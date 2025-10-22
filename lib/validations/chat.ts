@@ -1,9 +1,16 @@
 import { z } from "zod";
 
+export const SenderSchema = z.object({
+  id: z.uuid(),
+  fullname: z.string(),
+  email: z.string(),
+});
+
 export const ChatMessageSchema = z.object({
   id: z.string(),
   roomId: z.string(),
   senderId: z.string(),
+  sender: SenderSchema,
   message: z.string(),
   fileUrl: z.string().nullable().optional(),
   fileName: z.string().nullable().optional(),

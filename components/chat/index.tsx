@@ -29,7 +29,7 @@ import { ChatWindowProps, ISelectedRoom, Sender } from "./types";
 import { IChatMessage, IChatMessageCreate } from "@/lib/validations/chat";
 
 function ChatWindow({ room, sender }: ChatWindowProps) {
-  const [messages, setMessages] = useState<IChatMessageCreate[]>([]);
+  const [messages, setMessages] = useState<IChatMessage[]>([]);
   const [typingMessage, setTypingMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,14 +41,19 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
     const loadMessagesForRoom = async (roomId: string) => {
       socket.emit("load_messages", { room: roomId });
 
-      const messages = await getMessagesByRoomId(roomId);
+      const messages: IChatMessage[] = await getMessagesByRoomId(roomId);
       setMessages(
         messages.map((msg) => ({
+          id: msg.id ?? `${Date.now()}_${Math.random()}`,
           roomId: msg.roomId,
           senderId: msg.senderId,
           message: msg.message,
           fileUrl: msg.fileUrl,
           fileName: msg.fileName,
+          sender: msg.sender,
+          timestamp: msg.timestamp ?? msg.createdAt,
+          createdAt: msg.createdAt,
+          updatedAt: msg.updatedAt,
         }))
       );
     };
@@ -65,10 +70,37 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
 
     // helper to ensure incoming data matches IChatMessage shape
     const normalizeToChatMessage = (d: any): IChatMessage => {
+      // normalize sender into the expected shape { id, fullname, email }
+      const resolvedSender = (() => {
+        const s = d?.sender;
+        if (s && typeof s === "object") {
+          return {
+            id: s.id ?? d?.senderId ?? "",
+            fullname:
+              s.fullname ??
+              d?.fullname ??
+              String(s.id ?? d?.senderId ?? "Usuario"),
+            email: s.email ?? d?.email ?? "",
+          };
+        }
+        // when sender is a string or missing, derive reasonable defaults
+        const senderId = d?.senderId ?? (typeof s === "string" ? s : "");
+        const fullname = d?.fullname ?? (typeof s === "string" ? s : "Usuario");
+        const email = d?.email ?? "";
+        return {
+          id: senderId,
+          fullname,
+          email,
+        };
+      })();
+
       return {
         id: d.id ?? `${Date.now()}_${Math.random()}`,
         roomId: d.roomId ?? room.id,
-        senderId: d.senderId ?? d.sender ?? "",
+        senderId:
+          d.senderId ??
+          (typeof d.sender === "string" ? d.sender : resolvedSender.id),
+        sender: resolvedSender,
         message: d.message ?? "",
         fileUrl: d.fileUrl ?? null,
         fileName: d.fileName ?? null,
@@ -158,11 +190,20 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
       setMessages((prev) => [
         ...prev,
         {
+          id: `${Date.now()}_${Math.random()}`,
           roomId: room.id,
           senderId: sender.id,
           message: `Archivo: ${file.name}`,
           fileUrl: reader.result as string,
           fileName: file.name,
+          sender: {
+            id: sender.id,
+            fullname: sender.fullname,
+            email: sender.email,
+          },
+          timestamp: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ]);
 
@@ -172,6 +213,11 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         message: `Archivo: ${file.name}`,
         fileUrl: reader.result as string,
         fileName: file.name,
+        sender: {
+          id: sender.id,
+          fullname: sender.fullname,
+          email: sender.email,
+        },
       });
     };
     reader.readAsDataURL(file);
@@ -182,10 +228,16 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
       roomId: room.id,
       senderId: sender?.id,
       message,
+      sender: {
+        id: sender.id,
+        fullname: sender.fullname,
+        email: sender.email,
+      },
     };
     setMessages((prev) => [
       ...prev,
       {
+        id: `${Date.now()}_${Math.random()}`,
         roomId: room.id,
         senderId: sender.id,
         message,
@@ -193,6 +245,14 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         email: sender.email,
         fileUrl: null,
         fileName: null,
+        sender: {
+          id: sender.id,
+          fullname: sender.fullname,
+          email: sender.email,
+        },
+        timestamp: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]);
     saveMessage(data);
@@ -236,7 +296,7 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
           <ChatMessage
             key={index}
             sender={message.senderId}
-            fullname={sender?.fullname || "Usuario"}
+            fullname={message?.sender.fullname || "Usuario"}
             message={message.message}
             isOwnMessage={message.senderId === sender?.id}
             fileUrl={message.fileUrl ?? ""}
@@ -308,18 +368,8 @@ export default function ChatUI() {
 
   const [selectedRoom, setSelectedRoom] = useState<ISelectedRoom>();
 
-  // if (!user) {
-  //   return (
-  //     <Container maxWidth="lg" sx={{ mt: 5 }}>
-  //       <Typography variant="h6" color="textSecondary">
-  //         Por favor, inicia sesión para acceder al chat.
-  //       </Typography>
-  //     </Container>
-  //   );
-  // }
-
   return (
-    <Container maxWidth="lg" sx={{ mt: 5, display: "flex", height: "80vh" }}>
+    <Container maxWidth="lg" sx={{ mt: 2, display: "flex", height: "70vh" }}>
       <Paper
         elevation={3}
         sx={{

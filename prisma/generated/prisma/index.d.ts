@@ -161,7 +161,9 @@ export const PaymentAgreementStatus: {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
   OVERDUE: 'OVERDUE',
-  PAID: 'PAID'
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED',
+  REJECTED: 'REJECTED'
 };
 
 export type PaymentAgreementStatus = (typeof PaymentAgreementStatus)[keyof typeof PaymentAgreementStatus]
@@ -3285,6 +3287,7 @@ export namespace Prisma {
     verdicts: number
     users: number
     chatRooms: number
+    paymentAgreements: number
   }
 
   export type TenantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3294,6 +3297,7 @@ export namespace Prisma {
     verdicts?: boolean | TenantCountOutputTypeCountVerdictsArgs
     users?: boolean | TenantCountOutputTypeCountUsersArgs
     chatRooms?: boolean | TenantCountOutputTypeCountChatRoomsArgs
+    paymentAgreements?: boolean | TenantCountOutputTypeCountPaymentAgreementsArgs
   }
 
   // Custom InputTypes
@@ -3347,6 +3351,13 @@ export namespace Prisma {
    */
   export type TenantCountOutputTypeCountChatRoomsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChatRoomWhereInput
+  }
+
+  /**
+   * TenantCountOutputType without action
+   */
+  export type TenantCountOutputTypeCountPaymentAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentAgreementWhereInput
   }
 
 
@@ -4131,6 +4142,7 @@ export namespace Prisma {
     verdicts?: boolean | Tenant$verdictsArgs<ExtArgs>
     users?: boolean | Tenant$usersArgs<ExtArgs>
     chatRooms?: boolean | Tenant$chatRoomsArgs<ExtArgs>
+    paymentAgreements?: boolean | Tenant$paymentAgreementsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenant"]>
 
@@ -4209,6 +4221,7 @@ export namespace Prisma {
     verdicts?: boolean | Tenant$verdictsArgs<ExtArgs>
     users?: boolean | Tenant$usersArgs<ExtArgs>
     chatRooms?: boolean | Tenant$chatRoomsArgs<ExtArgs>
+    paymentAgreements?: boolean | Tenant$paymentAgreementsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TenantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4229,6 +4242,7 @@ export namespace Prisma {
       verdicts: Prisma.$VerdictPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
       chatRooms: Prisma.$ChatRoomPayload<ExtArgs>[]
+      paymentAgreements: Prisma.$PaymentAgreementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4651,6 +4665,7 @@ export namespace Prisma {
     verdicts<T extends Tenant$verdictsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$verdictsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerdictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Tenant$usersArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatRooms<T extends Tenant$chatRoomsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$chatRoomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentAgreements<T extends Tenant$paymentAgreementsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$paymentAgreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5273,6 +5288,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChatRoomScalarFieldEnum | ChatRoomScalarFieldEnum[]
+  }
+
+  /**
+   * Tenant.paymentAgreements
+   */
+  export type Tenant$paymentAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentAgreement
+     */
+    select?: PaymentAgreementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentAgreement
+     */
+    omit?: PaymentAgreementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentAgreementInclude<ExtArgs> | null
+    where?: PaymentAgreementWhereInput
+    orderBy?: PaymentAgreementOrderByWithRelationInput | PaymentAgreementOrderByWithRelationInput[]
+    cursor?: PaymentAgreementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentAgreementScalarFieldEnum | PaymentAgreementScalarFieldEnum[]
   }
 
   /**
@@ -32623,6 +32662,8 @@ export namespace Prisma {
     installmentsCount: number | null
     startDate: Date | null
     status: $Enums.PaymentAgreementStatus | null
+    tenantId: string | null
+    comment: string | null
     createdAt: Date | null
     updatedAt: Date | null
     debtorId: string | null
@@ -32636,6 +32677,8 @@ export namespace Prisma {
     installmentsCount: number | null
     startDate: Date | null
     status: $Enums.PaymentAgreementStatus | null
+    tenantId: string | null
+    comment: string | null
     createdAt: Date | null
     updatedAt: Date | null
     debtorId: string | null
@@ -32649,6 +32692,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: number
     status: number
+    tenantId: number
+    comment: number
     createdAt: number
     updatedAt: number
     debtorId: number
@@ -32676,6 +32721,8 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
+    tenantId?: true
+    comment?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32689,6 +32736,8 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
+    tenantId?: true
+    comment?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32702,6 +32751,8 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
+    tenantId?: true
+    comment?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32802,6 +32853,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date
     status: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment: string | null
     createdAt: Date
     updatedAt: Date
     debtorId: string | null
@@ -32834,9 +32887,12 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
+    tenantId?: boolean
+    comment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
     payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
@@ -32852,9 +32908,12 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
+    tenantId?: boolean
+    comment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
   }, ExtArgs["result"]["paymentAgreement"]>
@@ -32867,9 +32926,12 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
+    tenantId?: boolean
+    comment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
   }, ExtArgs["result"]["paymentAgreement"]>
@@ -32882,13 +32944,16 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
+    tenantId?: boolean
+    comment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
   }
 
-  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collectionCaseId" | "totalAmount" | "installmentAmount" | "installmentsCount" | "startDate" | "status" | "createdAt" | "updatedAt" | "debtorId", ExtArgs["result"]["paymentAgreement"]>
+  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collectionCaseId" | "totalAmount" | "installmentAmount" | "installmentsCount" | "startDate" | "status" | "tenantId" | "comment" | "createdAt" | "updatedAt" | "debtorId", ExtArgs["result"]["paymentAgreement"]>
   export type PaymentAgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
     payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
@@ -32896,10 +32961,12 @@ export namespace Prisma {
     _count?: boolean | PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentAgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
   }
   export type PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
   }
@@ -32907,6 +32974,7 @@ export namespace Prisma {
   export type $PaymentAgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PaymentAgreement"
     objects: {
+      tenant: Prisma.$TenantPayload<ExtArgs>
       collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
       installments: Prisma.$InstallmentPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
@@ -32920,6 +32988,8 @@ export namespace Prisma {
       installmentsCount: number
       startDate: Date
       status: $Enums.PaymentAgreementStatus
+      tenantId: string
+      comment: string | null
       createdAt: Date
       updatedAt: Date
       debtorId: string | null
@@ -33317,6 +33387,7 @@ export namespace Prisma {
    */
   export interface Prisma__PaymentAgreementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     installments<T extends PaymentAgreement$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends PaymentAgreement$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -33357,6 +33428,8 @@ export namespace Prisma {
     readonly installmentsCount: FieldRef<"PaymentAgreement", 'Int'>
     readonly startDate: FieldRef<"PaymentAgreement", 'DateTime'>
     readonly status: FieldRef<"PaymentAgreement", 'PaymentAgreementStatus'>
+    readonly tenantId: FieldRef<"PaymentAgreement", 'String'>
+    readonly comment: FieldRef<"PaymentAgreement", 'String'>
     readonly createdAt: FieldRef<"PaymentAgreement", 'DateTime'>
     readonly updatedAt: FieldRef<"PaymentAgreement", 'DateTime'>
     readonly debtorId: FieldRef<"PaymentAgreement", 'String'>
@@ -35427,6 +35500,8 @@ export namespace Prisma {
     installmentsCount: 'installmentsCount',
     startDate: 'startDate',
     status: 'status',
+    tenantId: 'tenantId',
+    comment: 'comment',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     debtorId: 'debtorId'
@@ -35743,6 +35818,7 @@ export namespace Prisma {
     verdicts?: VerdictListRelationFilter
     users?: UserListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
+    paymentAgreements?: PaymentAgreementListRelationFilter
   }
 
   export type TenantOrderByWithRelationInput = {
@@ -35772,6 +35848,7 @@ export namespace Prisma {
     verdicts?: VerdictOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
     chatRooms?: ChatRoomOrderByRelationAggregateInput
+    paymentAgreements?: PaymentAgreementOrderByRelationAggregateInput
   }
 
   export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -35804,6 +35881,7 @@ export namespace Prisma {
     verdicts?: VerdictListRelationFilter
     users?: UserListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
+    paymentAgreements?: PaymentAgreementListRelationFilter
   }, "id" | "subdomain">
 
   export type TenantOrderByWithAggregationInput = {
@@ -37811,9 +37889,12 @@ export namespace Prisma {
     installmentsCount?: IntFilter<"PaymentAgreement"> | number
     startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
     status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
+    tenantId?: StringFilter<"PaymentAgreement"> | string
+    comment?: StringNullableFilter<"PaymentAgreement"> | string | null
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
     installments?: InstallmentListRelationFilter
     payments?: PaymentListRelationFilter
@@ -37828,9 +37909,12 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
+    tenantId?: SortOrder
+    comment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrderInput | SortOrder
+    tenant?: TenantOrderByWithRelationInput
     collectionCase?: CollectionCaseOrderByWithRelationInput
     installments?: InstallmentOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
@@ -37839,23 +37923,26 @@ export namespace Prisma {
 
   export type PaymentAgreementWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    collectionCaseId?: string
     AND?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
     OR?: PaymentAgreementWhereInput[]
     NOT?: PaymentAgreementWhereInput | PaymentAgreementWhereInput[]
+    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
     totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFilter<"PaymentAgreement"> | number
     startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
     status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
+    tenantId?: StringFilter<"PaymentAgreement"> | string
+    comment?: StringNullableFilter<"PaymentAgreement"> | string | null
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
     installments?: InstallmentListRelationFilter
     payments?: PaymentListRelationFilter
     Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
-  }, "id" | "collectionCaseId">
+  }, "id">
 
   export type PaymentAgreementOrderByWithAggregationInput = {
     id?: SortOrder
@@ -37865,6 +37952,8 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
+    tenantId?: SortOrder
+    comment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrderInput | SortOrder
@@ -37886,6 +37975,8 @@ export namespace Prisma {
     installmentsCount?: IntWithAggregatesFilter<"PaymentAgreement"> | number
     startDate?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
     status?: EnumPaymentAgreementStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
+    tenantId?: StringWithAggregatesFilter<"PaymentAgreement"> | string
+    comment?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
@@ -37997,6 +38088,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateInput = {
@@ -38025,6 +38117,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUpdateInput = {
@@ -38053,6 +38146,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateInput = {
@@ -38081,6 +38175,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateManyInput = {
@@ -40283,8 +40378,10 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
@@ -40299,6 +40396,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -40313,8 +40412,10 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
@@ -40329,6 +40430,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40344,6 +40447,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -40356,6 +40461,7 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40368,6 +40474,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40569,6 +40677,12 @@ export namespace Prisma {
     none?: ChatRoomWhereInput
   }
 
+  export type PaymentAgreementListRelationFilter = {
+    every?: PaymentAgreementWhereInput
+    some?: PaymentAgreementWhereInput
+    none?: PaymentAgreementWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -40595,6 +40709,10 @@ export namespace Prisma {
   }
 
   export type ChatRoomOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentAgreementOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41857,12 +41975,6 @@ export namespace Prisma {
     none?: PaymentWhereInput
   }
 
-  export type PaymentAgreementListRelationFilter = {
-    every?: PaymentAgreementWhereInput
-    some?: PaymentAgreementWhereInput
-    none?: PaymentAgreementWhereInput
-  }
-
   export type PenaltyListRelationFilter = {
     every?: PenaltyWhereInput
     some?: PenaltyWhereInput
@@ -41874,10 +41986,6 @@ export namespace Prisma {
   }
 
   export type PaymentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PaymentAgreementOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -42390,6 +42498,8 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
+    tenantId?: SortOrder
+    comment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42409,6 +42519,8 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
+    tenantId?: SortOrder
+    comment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42422,6 +42534,8 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
+    tenantId?: SortOrder
+    comment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42570,6 +42684,13 @@ export namespace Prisma {
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
+  export type PaymentAgreementCreateNestedManyWithoutTenantInput = {
+    create?: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput> | PaymentAgreementCreateWithoutTenantInput[] | PaymentAgreementUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutTenantInput | PaymentAgreementCreateOrConnectWithoutTenantInput[]
+    createMany?: PaymentAgreementCreateManyTenantInputEnvelope
+    connect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+  }
+
   export type BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -42616,6 +42737,13 @@ export namespace Prisma {
     connectOrCreate?: ChatRoomCreateOrConnectWithoutTenantInput | ChatRoomCreateOrConnectWithoutTenantInput[]
     createMany?: ChatRoomCreateManyTenantInputEnvelope
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
+  }
+
+  export type PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput = {
+    create?: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput> | PaymentAgreementCreateWithoutTenantInput[] | PaymentAgreementUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutTenantInput | PaymentAgreementCreateOrConnectWithoutTenantInput[]
+    createMany?: PaymentAgreementCreateManyTenantInputEnvelope
+    connect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -42750,6 +42878,20 @@ export namespace Prisma {
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
   }
 
+  export type PaymentAgreementUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput> | PaymentAgreementCreateWithoutTenantInput[] | PaymentAgreementUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutTenantInput | PaymentAgreementCreateOrConnectWithoutTenantInput[]
+    upsert?: PaymentAgreementUpsertWithWhereUniqueWithoutTenantInput | PaymentAgreementUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: PaymentAgreementCreateManyTenantInputEnvelope
+    set?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    disconnect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    delete?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    connect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    update?: PaymentAgreementUpdateWithWhereUniqueWithoutTenantInput | PaymentAgreementUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: PaymentAgreementUpdateManyWithWhereWithoutTenantInput | PaymentAgreementUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
+  }
+
   export type BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -42842,6 +42984,20 @@ export namespace Prisma {
     update?: ChatRoomUpdateWithWhereUniqueWithoutTenantInput | ChatRoomUpdateWithWhereUniqueWithoutTenantInput[]
     updateMany?: ChatRoomUpdateManyWithWhereWithoutTenantInput | ChatRoomUpdateManyWithWhereWithoutTenantInput[]
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
+  }
+
+  export type PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput> | PaymentAgreementCreateWithoutTenantInput[] | PaymentAgreementUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: PaymentAgreementCreateOrConnectWithoutTenantInput | PaymentAgreementCreateOrConnectWithoutTenantInput[]
+    upsert?: PaymentAgreementUpsertWithWhereUniqueWithoutTenantInput | PaymentAgreementUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: PaymentAgreementCreateManyTenantInputEnvelope
+    set?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    disconnect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    delete?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    connect?: PaymentAgreementWhereUniqueInput | PaymentAgreementWhereUniqueInput[]
+    update?: PaymentAgreementUpdateWithWhereUniqueWithoutTenantInput | PaymentAgreementUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: PaymentAgreementUpdateManyWithWhereWithoutTenantInput | PaymentAgreementUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutRegistryInput = {
@@ -44272,6 +44428,12 @@ export namespace Prisma {
     update?: XOR<XOR<DebtorUpdateToOneWithWhereWithoutIncomesInput, DebtorUpdateWithoutIncomesInput>, DebtorUncheckedUpdateWithoutIncomesInput>
   }
 
+  export type TenantCreateNestedOneWithoutPaymentAgreementsInput = {
+    create?: XOR<TenantCreateWithoutPaymentAgreementsInput, TenantUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutPaymentAgreementsInput
+    connect?: TenantWhereUniqueInput
+  }
+
   export type CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput = {
     create?: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
     connectOrCreate?: CollectionCaseCreateOrConnectWithoutPaymentAgreementsInput
@@ -44314,6 +44476,14 @@ export namespace Prisma {
 
   export type EnumPaymentAgreementStatusFieldUpdateOperationsInput = {
     set?: $Enums.PaymentAgreementStatus
+  }
+
+  export type TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput = {
+    create?: XOR<TenantCreateWithoutPaymentAgreementsInput, TenantUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutPaymentAgreementsInput
+    upsert?: TenantUpsertWithoutPaymentAgreementsInput
+    connect?: TenantWhereUniqueInput
+    update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutPaymentAgreementsInput, TenantUpdateWithoutPaymentAgreementsInput>, TenantUncheckedUpdateWithoutPaymentAgreementsInput>
   }
 
   export type CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput = {
@@ -45193,6 +45363,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PaymentAgreementCreateWithoutTenantInput = {
+    id?: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
+    installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
+    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+  }
+
+  export type PaymentAgreementUncheckedCreateWithoutTenantInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
+    installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPaymentAgreementInput
+  }
+
+  export type PaymentAgreementCreateOrConnectWithoutTenantInput = {
+    where: PaymentAgreementWhereUniqueInput
+    create: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput>
+  }
+
+  export type PaymentAgreementCreateManyTenantInputEnvelope = {
+    data: PaymentAgreementCreateManyTenantInput | PaymentAgreementCreateManyTenantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PlanUpsertWithoutTenantsInput = {
     update: XOR<PlanUpdateWithoutTenantsInput, PlanUncheckedUpdateWithoutTenantsInput>
     create: XOR<PlanCreateWithoutTenantsInput, PlanUncheckedCreateWithoutTenantsInput>
@@ -45457,6 +45669,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ChatRoom"> | Date | string
   }
 
+  export type PaymentAgreementUpsertWithWhereUniqueWithoutTenantInput = {
+    where: PaymentAgreementWhereUniqueInput
+    update: XOR<PaymentAgreementUpdateWithoutTenantInput, PaymentAgreementUncheckedUpdateWithoutTenantInput>
+    create: XOR<PaymentAgreementCreateWithoutTenantInput, PaymentAgreementUncheckedCreateWithoutTenantInput>
+  }
+
+  export type PaymentAgreementUpdateWithWhereUniqueWithoutTenantInput = {
+    where: PaymentAgreementWhereUniqueInput
+    data: XOR<PaymentAgreementUpdateWithoutTenantInput, PaymentAgreementUncheckedUpdateWithoutTenantInput>
+  }
+
+  export type PaymentAgreementUpdateManyWithWhereWithoutTenantInput = {
+    where: PaymentAgreementScalarWhereInput
+    data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyWithoutTenantInput>
+  }
+
+  export type PaymentAgreementScalarWhereInput = {
+    AND?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
+    OR?: PaymentAgreementScalarWhereInput[]
+    NOT?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
+    id?: StringFilter<"PaymentAgreement"> | string
+    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
+    totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFilter<"PaymentAgreement"> | number
+    startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
+    tenantId?: StringFilter<"PaymentAgreement"> | string
+    comment?: StringNullableFilter<"PaymentAgreement"> | string | null
+    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
+    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
+  }
+
   export type TenantCreateWithoutRegistryInput = {
     id?: string
     name: string
@@ -45482,6 +45728,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutRegistryInput = {
@@ -45509,6 +45756,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutRegistryInput = {
@@ -45552,6 +45800,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutRegistryInput = {
@@ -45579,6 +45828,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateWithoutUsersInput = {
@@ -45606,6 +45856,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutUsersInput = {
@@ -45633,6 +45884,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutUsersInput = {
@@ -45806,6 +46058,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -45833,6 +46086,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type DebtorUpsertWithWhereUniqueWithoutUserInput = {
@@ -46001,6 +46255,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutVerdictsInput = {
@@ -46028,6 +46283,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutVerdictsInput = {
@@ -46289,6 +46545,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutVerdictsInput = {
@@ -46316,6 +46573,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type VerdictAttachmentUpsertWithWhereUniqueWithoutVerdictInput = {
@@ -47078,6 +47336,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutBillingInvoiceInput = {
@@ -47105,6 +47364,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutBillingInvoiceInput = {
@@ -47216,6 +47476,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutBillingInvoiceInput = {
@@ -47243,6 +47504,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type BillingInvoiceDetailUpsertWithWhereUniqueWithoutBillingInvoiceInput = {
@@ -47486,6 +47748,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutPlanInput = {
@@ -47513,6 +47776,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutPlanInput = {
@@ -47633,6 +47897,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutCollectionCasesInput = {
@@ -47660,6 +47925,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutCollectionCasesInput = {
@@ -47738,8 +48004,10 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
@@ -47752,6 +48020,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -47912,6 +48182,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutCollectionCasesInput = {
@@ -47939,6 +48210,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type NotificationUpsertWithWhereUniqueWithoutCollectionCaseInput = {
@@ -48016,22 +48288,6 @@ export namespace Prisma {
   export type PaymentAgreementUpdateManyWithWhereWithoutCollectionCaseInput = {
     where: PaymentAgreementScalarWhereInput
     data: XOR<PaymentAgreementUpdateManyMutationInput, PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseInput>
-  }
-
-  export type PaymentAgreementScalarWhereInput = {
-    AND?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
-    OR?: PaymentAgreementScalarWhereInput[]
-    NOT?: PaymentAgreementScalarWhereInput | PaymentAgreementScalarWhereInput[]
-    id?: StringFilter<"PaymentAgreement"> | string
-    collectionCaseId?: StringFilter<"PaymentAgreement"> | string
-    totalAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
-    installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
-    installmentsCount?: IntFilter<"PaymentAgreement"> | number
-    startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
-    createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
   }
 
   export type PenaltyUpsertWithWhereUniqueWithoutCollectionCaseInput = {
@@ -48354,8 +48610,10 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
@@ -48369,6 +48627,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -48487,8 +48747,10 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
@@ -48502,6 +48764,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48620,6 +48884,7 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutDebtorsInput = {
@@ -48647,6 +48912,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutDebtorsInput = {
@@ -48722,8 +48988,10 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
@@ -48737,6 +49005,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
@@ -48855,6 +49125,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutDebtorsInput = {
@@ -48882,6 +49153,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type UserUpsertWithoutDebtorsInput = {
@@ -49010,6 +49282,7 @@ export namespace Prisma {
     registry?: TenantRegistryCreateNestedOneWithoutTenantInput
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutChatRoomsInput = {
@@ -49037,6 +49310,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutChatRoomsInput = {
@@ -49163,6 +49437,7 @@ export namespace Prisma {
     registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutChatRoomsInput = {
@@ -49190,6 +49465,7 @@ export namespace Prisma {
     registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type CollectionCaseUpsertWithoutChatRoomsInput = {
@@ -49485,6 +49761,67 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutDebtorNestedInput
   }
 
+  export type TenantCreateWithoutPaymentAgreementsInput = {
+    id?: string
+    name: string
+    subdomain: string
+    contactEmail: string
+    countryCode: string
+    address?: string | null
+    city?: string | null
+    logoUrl?: string | null
+    numberOfEmployees?: number | null
+    phone?: string | null
+    website?: string | null
+    planStatus?: string
+    planExpiresAt?: Date | string | null
+    termsAccepted?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    plan?: PlanCreateNestedOneWithoutTenantsInput
+    billingInvoice?: BillingInvoiceCreateNestedManyWithoutTenantInput
+    collectionCases?: CollectionCaseCreateNestedManyWithoutTenantInput
+    debtors?: DebtorCreateNestedManyWithoutTenantInput
+    registry?: TenantRegistryCreateNestedOneWithoutTenantInput
+    verdicts?: VerdictCreateNestedManyWithoutTenantInput
+    users?: UserCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantUncheckedCreateWithoutPaymentAgreementsInput = {
+    id?: string
+    name: string
+    subdomain: string
+    contactEmail: string
+    countryCode: string
+    address?: string | null
+    city?: string | null
+    logoUrl?: string | null
+    numberOfEmployees?: number | null
+    phone?: string | null
+    website?: string | null
+    planId?: string | null
+    planStatus?: string
+    planExpiresAt?: Date | string | null
+    termsAccepted?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    billingInvoice?: BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput
+    collectionCases?: CollectionCaseUncheckedCreateNestedManyWithoutTenantInput
+    debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
+    registry?: TenantRegistryUncheckedCreateNestedOneWithoutTenantInput
+    verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
+    users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantCreateOrConnectWithoutPaymentAgreementsInput = {
+    where: TenantWhereUniqueInput
+    create: XOR<TenantCreateWithoutPaymentAgreementsInput, TenantUncheckedCreateWithoutPaymentAgreementsInput>
+  }
+
   export type CollectionCaseCreateWithoutPaymentAgreementsInput = {
     id?: string
     referenceNumber?: string | null
@@ -49645,6 +49982,73 @@ export namespace Prisma {
     create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
   }
 
+  export type TenantUpsertWithoutPaymentAgreementsInput = {
+    update: XOR<TenantUpdateWithoutPaymentAgreementsInput, TenantUncheckedUpdateWithoutPaymentAgreementsInput>
+    create: XOR<TenantCreateWithoutPaymentAgreementsInput, TenantUncheckedCreateWithoutPaymentAgreementsInput>
+    where?: TenantWhereInput
+  }
+
+  export type TenantUpdateToOneWithWhereWithoutPaymentAgreementsInput = {
+    where?: TenantWhereInput
+    data: XOR<TenantUpdateWithoutPaymentAgreementsInput, TenantUncheckedUpdateWithoutPaymentAgreementsInput>
+  }
+
+  export type TenantUpdateWithoutPaymentAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfEmployees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    planStatus?: StringFieldUpdateOperationsInput | string
+    planExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsAccepted?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plan?: PlanUpdateOneWithoutTenantsNestedInput
+    billingInvoice?: BillingInvoiceUpdateManyWithoutTenantNestedInput
+    collectionCases?: CollectionCaseUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUpdateManyWithoutTenantNestedInput
+    registry?: TenantRegistryUpdateOneWithoutTenantNestedInput
+    verdicts?: VerdictUpdateManyWithoutTenantNestedInput
+    users?: UserUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+  }
+
+  export type TenantUncheckedUpdateWithoutPaymentAgreementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    numberOfEmployees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: NullableStringFieldUpdateOperationsInput | string | null
+    planStatus?: StringFieldUpdateOperationsInput | string
+    planExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsAccepted?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    billingInvoice?: BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput
+    collectionCases?: CollectionCaseUncheckedUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
+    registry?: TenantRegistryUncheckedUpdateOneWithoutTenantNestedInput
+    verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
+    users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+  }
+
   export type CollectionCaseUpsertWithoutPaymentAgreementsInput = {
     update: XOR<CollectionCaseUpdateWithoutPaymentAgreementsInput, CollectionCaseUncheckedUpdateWithoutPaymentAgreementsInput>
     create: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
@@ -49790,8 +50194,10 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
@@ -49805,6 +50211,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -49863,8 +50271,10 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
@@ -49878,6 +50288,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49999,6 +50411,20 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type PaymentAgreementCreateManyTenantInput = {
+    id?: string
+    collectionCaseId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    installmentAmount: Decimal | DecimalJsLike | number | string
+    installmentsCount: number
+    startDate: Date | string
+    status?: $Enums.PaymentAgreementStatus
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    debtorId?: string | null
   }
 
   export type BillingInvoiceUpdateWithoutTenantInput = {
@@ -50283,6 +50709,52 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentAgreementUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
+    installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
+    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+  }
+
+  export type PaymentAgreementUncheckedUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
+  }
+
+  export type PaymentAgreementUncheckedUpdateManyWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    collectionCaseId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    installmentsCount?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    debtorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DebtorCreateManyUserInput = {
@@ -50867,6 +51339,7 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutPlanInput = {
@@ -50894,6 +51367,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateManyWithoutPlanInput = {
@@ -50944,6 +51418,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -51039,8 +51515,10 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
@@ -51053,6 +51531,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51067,6 +51547,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51206,6 +51688,8 @@ export namespace Prisma {
     installmentsCount: number
     startDate: Date | string
     status?: $Enums.PaymentAgreementStatus
+    tenantId: string
+    comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -51321,8 +51805,10 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
@@ -51336,6 +51822,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
@@ -51350,6 +51838,8 @@ export namespace Prisma {
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
+    tenantId?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -3,10 +3,12 @@ import { z } from "zod";
 export const PaymentAgreementSchema = z.object({
   id: z.string().cuid(),
   collectionCaseId: z.string(),
+  tenantId: z.uuid(),
   totalAmount: z.number(),
   installmentAmount: z.number(),
   installmentsCount: z.number().int(),
   startDate: z.date(),
+  comment: z.string().optional().nullable(),
   status: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
@@ -15,6 +17,7 @@ export const PaymentAgreementSchema = z.object({
 
 export const PaymentAgreementCreateSchema = PaymentAgreementSchema.omit({
   id: true,
+  tenantId: true,
   createdAt: true,
   updatedAt: true,
 });

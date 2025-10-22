@@ -7,17 +7,25 @@ import {
 } from "@/lib/validations/payment-agreement";
 import { $Enums } from "@/prisma/generated/prisma";
 
-export const getPaymentAgreementsByCollection = async (
-  collectionId: string
+type PaymentAgreementFilter = {
+  collectionCaseId?: string;
+  tenantId?: string;
+  status?: $Enums.PaymentAgreementStatus;
+  debtorId?: string;
+};
+
+export const getPaymentAgreements = async (
+  filter?: Partial<PaymentAgreementFilter>
 ): Promise<PaymentAgreement[]> => {
   const agreements = await prisma.paymentAgreement.findMany({
-    where: { collectionCaseId: collectionId },
+    where: { ...filter },
   });
 
-  revalidatePath(`/dashboard/collection-cases/${collectionId}`);
+  revalidatePath("/dashboard/payment-agreements");
   return agreements.map((agreement) => ({
     id: agreement.id,
     collectionCaseId: agreement.collectionCaseId,
+    tenantId: agreement.tenantId,
     totalAmount: Number(agreement.totalAmount),
     installmentAmount: Number(agreement.installmentAmount),
     installmentsCount: agreement.installmentsCount,
@@ -29,9 +37,36 @@ export const getPaymentAgreementsByCollection = async (
   }));
 };
 
-export const createPaymentAgreement = async (data: PaymentAgreementCreate) => {
+export const getPaymentAgreementsByCollection = async (
+  collectionId: string
+): Promise<PaymentAgreement[]> => {
+  const agreements = await prisma.paymentAgreement.findMany({
+    where: { collectionCaseId: collectionId },
+  });
+
+  revalidatePath(`/dashboard/collection-cases/${collectionId}`);
+  return agreements.map((agreement) => ({
+    id: agreement.id,
+    collectionCaseId: agreement.collectionCaseId,
+    tenantId: agreement.tenantId,
+    totalAmount: Number(agreement.totalAmount),
+    installmentAmount: Number(agreement.installmentAmount),
+    installmentsCount: agreement.installmentsCount,
+    startDate: agreement.startDate,
+    status: String(agreement.status),
+    createdAt: agreement.createdAt ?? undefined,
+    updatedAt: agreement.updatedAt ?? undefined,
+    debtorId: agreement.debtorId ?? undefined,
+  }));
+};
+
+export const createPaymentAgreement = async (
+  tenantId: string,
+  data: PaymentAgreementCreate
+) => {
   const newAgreement = await prisma.paymentAgreement.create({
     data: {
+      tenantId: tenantId,
       collectionCaseId: data.collectionCaseId,
       totalAmount: data.totalAmount,
       installmentAmount: data.installmentAmount,
@@ -90,19 +125,37 @@ export const deletePaymentAgreement = async (id: string) => {
 
 export const updatePaymentAgreement = async (
   id: string,
-  data: PaymentAgreementCreate
+  data: Partial<PaymentAgreement>
 ) => {
+  // Build an update object with only the fields that Prisma allows to be updated
+  const updateData: {
+    totalAmount?: number;
+    installmentAmount?: number;
+    installmentsCount?: number;
+    startDate?: Date;
+    status?: $Enums.PaymentAgreementStatus;
+    debtorId?: string | null;
+  } = {};
+
+  if (data.totalAmount !== undefined) updateData.totalAmount = data.totalAmount;
+  if (data.installmentAmount !== undefined)
+    updateData.installmentAmount = data.installmentAmount;
+  if (data.installmentsCount !== undefined)
+    updateData.installmentsCount = data.installmentsCount;
+  if (data.startDate !== undefined) updateData.startDate = data.startDate;
+  if (data.status !== undefined)
+    updateData.status = data.status as unknown as $Enums.PaymentAgreementStatus;
+  if (data.debtorId !== undefined) updateData.debtorId = data.debtorId ?? null;
+
   const updatedAgreement = await prisma.paymentAgreement.update({
     where: { id },
-    data: {
-      totalAmount: data.totalAmount,
-      installmentAmount: data.installmentAmount,
-      installmentsCount: data.installmentsCount,
-      startDate: data.startDate,
-    },
+    data: updateData,
   });
 
-  revalidatePath(`/dashboard/collection-cases/${data.collectionCaseId}`);
+  // use the updated record to revalidate the correct collection case path
+  revalidatePath(
+    `/dashboard/collection-cases/${updatedAgreement.collectionCaseId}`
+  );
   return {
     id: updatedAgreement.id,
     collectionCaseId: updatedAgreement.collectionCaseId,
@@ -121,7 +174,7 @@ export const existsPaymentAgreement = async (
   collectionCaseId: string
 ): Promise<boolean> => {
   const count = await prisma.paymentAgreement.count({
-    where: { collectionCaseId },
+    where: { collectionCaseId, status: $Enums.PaymentAgreementStatus.ACTIVE },
   });
 
   return count > 0;
@@ -141,6 +194,7 @@ export const getPaymentAgreementById = async (
   return {
     id: agreement.id,
     collectionCaseId: agreement.collectionCaseId,
+    tenantId: agreement.tenantId,
     totalAmount: Number(agreement.totalAmount),
     installmentAmount: Number(agreement.installmentAmount),
     installmentsCount: agreement.installmentsCount,

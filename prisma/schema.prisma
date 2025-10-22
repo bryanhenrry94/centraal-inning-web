@@ -30,13 +30,14 @@ model Tenant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  billingInvoice  BillingInvoice[]
-  collectionCases CollectionCase[]
-  debtors         Debtor[]
-  registry        TenantRegistry?
-  verdicts        Verdict[]
-  users           User[]
-  chatRooms       ChatRoom[]
+  billingInvoice    BillingInvoice[]
+  collectionCases   CollectionCase[]
+  debtors           Debtor[]
+  registry          TenantRegistry?
+  verdicts          Verdict[]
+  users             User[]
+  chatRooms         ChatRoom[]
+  paymentAgreements PaymentAgreement[]
 
   @@map("tenant")
 }
@@ -439,12 +440,15 @@ model DebtorIncome {
 
 model PaymentAgreement {
   id                String                 @id @default(cuid())
-  collectionCaseId  String                 @unique
+  collectionCaseId  String
   totalAmount       Decimal                @db.Decimal(10, 2)
   installmentAmount Decimal                @db.Decimal(10, 2)
   installmentsCount Int
   startDate         DateTime
   status            PaymentAgreementStatus @default(PENDING)
+  tenantId          String
+  tenant            Tenant                 @relation(fields: [tenantId], references: [id])
+  comment           String?
 
   // Relaciones
   collectionCase CollectionCase @relation(fields: [collectionCaseId], references: [id])
@@ -489,6 +493,8 @@ enum PaymentAgreementStatus {
   ACTIVE
   OVERDUE
   PAID
+  CANCELLED
+  REJECTED
 }
 
 enum CalculationTypeEnum {
