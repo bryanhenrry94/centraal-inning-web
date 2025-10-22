@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import GavelIcon from "@mui/icons-material/Gavel";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useTheme } from "@mui/material/styles";
 import NextLink from "next/link";
@@ -20,11 +20,11 @@ const menus: MenuItem[] = [
   {
     label: "Dashboard",
     href: "/dashboard",
-    icon: <HomeOutlinedIcon fontSize="small" />,
-    role: ["ADMIN", "SUPERADMIN"],
+    icon: <DashboardIcon fontSize="small" />,
+    role: ["ADMIN", "SUPERADMIN", "DEBTOR"],
   },
   {
-    label: "Collections",
+    label: "Verzameltaken",
     href: "/dashboard/collections",
     icon: <ReceiptOutlinedIcon fontSize="small" />,
     role: ["ADMIN"],
@@ -32,13 +32,7 @@ const menus: MenuItem[] = [
   {
     label: "Vonnis",
     href: "/dashboard/verdicts",
-    icon: <BarChartOutlinedIcon fontSize="small" />,
-    role: ["ADMIN"],
-  },
-  {
-    label: "Chat",
-    href: "/dashboard/chat",
-    icon: <ChatIcon fontSize="small" />,
+    icon: <GavelIcon fontSize="small" />,
     role: ["ADMIN"],
   },
   {
@@ -46,6 +40,12 @@ const menus: MenuItem[] = [
     href: "/dashboard/invoices",
     icon: <ReceiptOutlinedIcon fontSize="small" />,
     role: ["SUPERADMIN"],
+  },
+  {
+    label: "Chat",
+    href: "/dashboard/chat",
+    icon: <ChatIcon fontSize="small" />,
+    role: ["ADMIN", "DEBTOR"],
   },
 ];
 

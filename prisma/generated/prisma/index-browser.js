@@ -343,6 +343,10 @@ exports.Prisma.CollectionCaseScalarFieldEnum = {
   referenceNumber: 'referenceNumber',
   issueDate: 'issueDate',
   dueDate: 'dueDate',
+  reminder1SentAt: 'reminder1SentAt',
+  reminder1DueDate: 'reminder1DueDate',
+  reminder2SentAt: 'reminder2SentAt',
+  reminder2DueDate: 'reminder2DueDate',
   tenantId: 'tenantId',
   debtorId: 'debtorId',
   amountOriginal: 'amountOriginal',
@@ -441,7 +445,6 @@ exports.Prisma.PaymentAgreementScalarFieldEnum = {
   installmentsCount: 'installmentsCount',
   startDate: 'startDate',
   status: 'status',
-  complianceStatus: 'complianceStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   debtorId: 'debtorId'
@@ -515,6 +518,11 @@ exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   OTHER: 'OTHER'
 };
 
+exports.PersonType = exports.$Enums.PersonType = {
+  INDIVIDUAL: 'INDIVIDUAL',
+  COMPANY: 'COMPANY'
+};
+
 exports.IdentificationType = exports.$Enums.IdentificationType = {
   DNI: 'DNI',
   PASSPORT: 'PASSPORT',
@@ -524,15 +532,11 @@ exports.IdentificationType = exports.$Enums.IdentificationType = {
   OTHER: 'OTHER'
 };
 
-exports.AgreementStatus = exports.$Enums.AgreementStatus = {
+exports.PaymentAgreementStatus = exports.$Enums.PaymentAgreementStatus = {
+  PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
-};
-
-exports.ComplianceStatus = exports.$Enums.ComplianceStatus = {
-  ON_TIME: 'ON_TIME',
-  OVERDUE: 'OVERDUE'
+  OVERDUE: 'OVERDUE',
+  PAID: 'PAID'
 };
 
 exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {

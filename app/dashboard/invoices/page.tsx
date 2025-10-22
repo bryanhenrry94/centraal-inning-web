@@ -234,10 +234,10 @@ const InvoicesPage: React.FC = () => {
 
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Overzicht Facturen"
         navigation={[{ title: "Dashboard", href: "/" }]}
-      />
+      /> */}
 
       {/* Header Section */}
       <Box
@@ -246,7 +246,6 @@ const InvoicesPage: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
         }}
-        mt={8}
         mb={2}
       >
         <Box>

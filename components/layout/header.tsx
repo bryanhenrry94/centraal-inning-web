@@ -2,6 +2,8 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box, Divider } from "@mui/material";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -22,13 +24,13 @@ const Header = () => {
       setAnchorEl(null);
     };
 
-    const handleSignOut = () => {
-      signOut({
+    const handleSignOut = async () => {
+      await signOut({
         redirect: false,
       });
+      handleClose();
       router.push("/");
       router.refresh();
-      handleClose();
     };
 
     if (!session) return null;
@@ -76,10 +78,14 @@ const Header = () => {
           </MenuItem>
           <Divider sx={{ my: 0.5 }} />
           <MenuItem onClick={() => router.push("/dashboard/settings")}>
-            Configuración
+            <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
+            Configuratie
           </MenuItem>
 
-          <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
+          <MenuItem onClick={handleSignOut}>
+            <ExitToAppIcon fontSize="small" sx={{ mr: 1 }} />
+            Afmelden
+          </MenuItem>
         </Menu>
       </>
     );
@@ -106,7 +112,7 @@ const Header = () => {
               display: { xs: "none", md: "block" },
             }}
           >
-            CIO SYSTEM
+            CIO-SYSTEEM
           </Typography>
           <Box>
             <UserAvatar />

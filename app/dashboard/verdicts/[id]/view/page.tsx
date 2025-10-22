@@ -193,13 +193,13 @@ const VerdictPageView: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Consultar"
         navigation={[
           { title: "Dashboard", href: "/dashboard" },
           { title: "Vonnis", href: "/dashboard/verdicts" },
         ]}
-      />
+      /> */}
       <Box sx={{ mt: 2 }}>
         <VerdictProvider>
           <Box component={"div"}>

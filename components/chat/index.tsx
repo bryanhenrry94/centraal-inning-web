@@ -337,12 +337,12 @@ export default function ChatUI() {
             // color: "#fff",
           }}
         >
-          <Typography variant="h6">Salas</Typography>
+          <Typography variant="h6">Chats</Typography>
         </Box>
         <Box sx={{ p: 2, borderBottom: "1px solid #ddd" }}>
           <TextField
             fullWidth
-            placeholder="Buscar sala..."
+            placeholder="Zoek chat..."
             variant="outlined"
             size="small"
             onChange={(e) => {
@@ -411,7 +411,7 @@ export default function ChatUI() {
             }}
           >
             <Typography variant="h6" color="textSecondary">
-              Selecciona una sala para comenzar a chatear
+              Selecteer een chat om te beginnen met typen.
             </Typography>
           </Box>
         )}

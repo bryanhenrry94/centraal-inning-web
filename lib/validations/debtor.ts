@@ -21,7 +21,7 @@ export const DebtorBaseSchema = z.object({
     .max(255, { message: "La dirección no debe exceder 255 caracteres." })
     .optional(),
   personType: z
-    .enum(["individual", "company"], {
+    .enum(["INDIVIDUAL", "COMPANY"], {
       message: "El tipo de persona debe ser 'natural' o 'empresa'.",
     })
     .optional(),

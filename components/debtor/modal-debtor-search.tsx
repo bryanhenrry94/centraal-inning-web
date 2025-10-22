@@ -77,10 +77,10 @@ const ModalSearchDebtor: React.FC<ModalSearchDebtorProps> = ({
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <Typography variant="h6" mb={2}>
-          Seleccionar Deudor
+          Selecteer Debiteur
         </Typography>
         <TextField
-          label="Buscar deudor"
+          label="Zoek debiteur"
           variant="outlined"
           fullWidth
           size="small"

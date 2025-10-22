@@ -8,14 +8,14 @@ import InvoiceFormPage from "@/components/billing/invoice-form";
 const InvoicePage: React.FC = () => {
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Nieuwe Factuur"
         navigation={[
           { title: "Dashboard", href: "/dashboard" },
           { title: "Overzicht Facturen", href: "/dashboard/invoices" },
         ]}
-      />
-      <Box sx={{ mt: 8 }}>
+      /> */}
+      <Box>
         <InvoiceProvider>
           <InvoiceFormPage />
         </InvoiceProvider>

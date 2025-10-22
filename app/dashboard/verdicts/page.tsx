@@ -257,10 +257,10 @@ const VerdictsPage: React.FC = () => {
 
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Vonnis"
         navigation={[{ title: "Dashboard", href: "/" }]}
-      />
+      /> */}
 
       {/* Header Section */}
       <Box
@@ -269,7 +269,6 @@ const VerdictsPage: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
         }}
-        mt={8}
         mb={2}
       >
         <Box>

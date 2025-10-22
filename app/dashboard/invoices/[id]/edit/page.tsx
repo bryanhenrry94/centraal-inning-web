@@ -19,14 +19,14 @@ const InvoicePageEdit: React.FC = () => {
 
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Bewerk Factuur"
         navigation={[
           { title: "Dashboard", href: "/dashboard" },
           { title: "Overzicht Facturen", href: "/dashboard/invoices" },
         ]}
-      />
-      <Box sx={{ mt: 8 }}>
+      /> */}
+      <Box>
         <InvoiceProvider>
           <InvoiceFormPage id={id} />
         </InvoiceProvider>

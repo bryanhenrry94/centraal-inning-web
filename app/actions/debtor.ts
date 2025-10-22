@@ -69,7 +69,7 @@ export const createDebtor = async (
         email: debtor.email || "",
         phone: debtor.phone || "",
         address: debtor.address || "",
-        personType: debtor.personType || "",
+        personType: debtor.personType || "INDIVIDUAL",
         tenantId,
         totalIncome: debtor.totalIncome || 0,
         incomes: {
@@ -108,7 +108,7 @@ export const updateDebtor = async (
           email: debtor.email || "",
           phone: debtor.phone || "",
           address: debtor.address || "",
-          personType: debtor.personType || "",
+          personType: debtor.personType || "INDIVIDUAL",
           tenantId,
         },
       });

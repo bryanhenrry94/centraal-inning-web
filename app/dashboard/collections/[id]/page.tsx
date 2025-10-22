@@ -16,12 +16,9 @@ import {
   TableBody,
   Button,
   Modal,
-  Stack,
   IconButton,
 } from "@mui/material";
-import MoreIcon from "@mui/icons-material/More";
-import DeleteIcon from "@mui/icons-material/Delete";
-
+import CloseIcon from "@mui/icons-material/Close";
 import { CollectionCaseView } from "@/lib/validations/collection";
 import { Payment } from "@/lib/validations/payment";
 import { getCollectionViewById } from "@/app/actions/collection";
@@ -34,7 +31,6 @@ import {
   sendNotification,
 } from "@/app/actions/notification";
 import { Notification } from "@/lib/validations/notification";
-import { useTenant } from "@/hooks/useTenant";
 import TabPanel from "@/components/ui/tab-panel";
 import {
   PaymentAgreement,
@@ -42,18 +38,14 @@ import {
 } from "@/lib/validations/payment-agreement";
 import {
   createPaymentAgreement,
-  deletePaymentAgreement,
   existsPaymentAgreement,
-  getInstallmentsByAgreement,
   getPaymentAgreementsByCollection,
 } from "@/app/actions/payment-agreement";
 import AgreementForm from "@/components/agreements/agreement-form";
-import { AlertService } from "@/lib/alerts";
-import { Installment } from "@/lib/validations/installment";
+import AgreementTable from "@/components/agreements/agreement-table";
 
 const CollectionViewPage: React.FC = () => {
   const router = useRouter();
-  const { tenant } = useTenant();
   const [loading, setLoading] = React.useState(true);
   const [collection, setCollection] = React.useState<CollectionCaseView | null>(
     null
@@ -74,14 +66,6 @@ const CollectionViewPage: React.FC = () => {
   const [openModalAgreement, setOpenModalAgreement] = React.useState(false);
   const handleOpenModalAgreement = () => setOpenModalAgreement(true);
   const handleCloseModalAgreement = () => setOpenModalAgreement(false);
-
-  const [installments, setInstallments] = useState<Installment[]>([]);
-  const [openModalAgreementDetails, setOpenModalAgreementDetails] =
-    React.useState(false);
-  const handleOpenModalAgreementDetails = () =>
-    setOpenModalAgreementDetails(true);
-  const handleCloseModalAgreementDetails = () =>
-    setOpenModalAgreementDetails(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -168,12 +152,7 @@ const CollectionViewPage: React.FC = () => {
         return;
       }
 
-      if (!tenant?.id) {
-        notifyError("Tenant ID no disponible");
-        return;
-      }
-
-      await sendNotification(tenant?.id, params.id as string);
+      await sendNotification(params.id as string);
       await fetchNotifications();
 
       notifyInfo("Notificación enviada exitosamente");
@@ -235,32 +214,12 @@ const CollectionViewPage: React.FC = () => {
     }
   };
 
-  const handleDeleteAgreement = (agreementId: string) => {
-    AlertService.showConfirm(
-      "¿Estás seguro?",
-      "Esta acción eliminará el registro.",
-      "Sí, eliminar",
-      "Cancelar"
-    ).then(async (confirmed) => {
-      if (confirmed) {
-        await deletePaymentAgreement(agreementId);
-        await fetchPaymentAgreements();
-        notifyInfo("Acuerdo de pago eliminado exitosamente");
-      }
-    });
-    return;
-  };
-
-  const handleMoreDetails = async (agreementId: string) => {
-    // Implement more details logic here
-    const agreement = await getInstallmentsByAgreement(agreementId);
-    setInstallments(agreement);
-    console.log("More details for agreement:", agreement);
-    handleOpenModalAgreementDetails();
+  const onDeleteAgreement = async () => {
+    await fetchPaymentAgreements();
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container maxWidth="lg">
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Paper elevation={3} sx={{ mb: 4 }}>
           <Box
@@ -313,7 +272,7 @@ const CollectionViewPage: React.FC = () => {
         <Box sx={{ width: "100%" }}>
           <Tabs value={value} onChange={handleChange} aria-label="example tabs">
             <Tab value={0} label="Betalingen" wrapped />
-            <Tab value={1} label="Betalingsregelingen" />
+            <Tab value={1} label="Overeenkomsten" />
             <Tab value={2} label="Notificaties" />
           </Tabs>
         </Box>
@@ -389,68 +348,12 @@ const CollectionViewPage: React.FC = () => {
               sx={{ mb: 2 }}
               onClick={handleOpenModalAgreement}
             >
-              New Payment Arrangement
+              NIEUWE OVEREENKOMST
             </Button>
-            <TableContainer component={Paper}>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Datum</TableCell>
-                    <TableCell align="right">Total Amount</TableCell>
-                    <TableCell align="right">Installment Count</TableCell>
-                    <TableCell align="right">Installment Amount</TableCell>
-                    <TableCell align="right">First Installment Date</TableCell>
-                    <TableCell align="right">Status</TableCell>
-                    <TableCell align="right">Compliance Status</TableCell>
-                    <TableCell align="right">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {paymentAgreements?.map((agreement) => (
-                    <TableRow
-                      key={agreement.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {new Date(agreement.startDate).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell align="right">
-                        {agreement.totalAmount}
-                      </TableCell>
-                      <TableCell align="right">
-                        {agreement.installmentsCount}
-                      </TableCell>
-                      <TableCell align="right">
-                        {agreement.installmentAmount}
-                      </TableCell>
-                      <TableCell align="right">
-                        {new Date(agreement.startDate).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell align="right">{agreement.status}</TableCell>
-                      <TableCell align="right">
-                        {agreement.complianceStatus}
-                      </TableCell>
-                      <TableCell align="right">
-                        <Stack direction="row" spacing={1}>
-                          <IconButton>
-                            <MoreIcon
-                              onClick={() => handleMoreDetails(agreement.id)}
-                            />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteIcon
-                              onClick={() =>
-                                handleDeleteAgreement(agreement.id)
-                              }
-                            />
-                          </IconButton>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <AgreementTable
+              paymentAgreements={paymentAgreements}
+              onDelete={onDeleteAgreement}
+            />
             <Modal
               open={openModalAgreement}
               onClose={handleCloseModalAgreement}
@@ -482,7 +385,8 @@ const CollectionViewPage: React.FC = () => {
                     borderTopRightRadius: 8,
                     borderBottom: "1px solid #e0e0e0",
                     display: "flex",
-                    alignItems: "left",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Typography
@@ -492,6 +396,9 @@ const CollectionViewPage: React.FC = () => {
                   >
                     NIEUWE OVEREENKOMST
                   </Typography>
+                  <IconButton sx={{ color: "white" }}>
+                    <CloseIcon onClick={handleCloseModalAgreement} />
+                  </IconButton>
                 </Box>
                 <AgreementForm
                   onSubmit={handleAgreementSubmit}
@@ -501,98 +408,10 @@ const CollectionViewPage: React.FC = () => {
                     installmentsCount: 0,
                     installmentAmount: 0,
                     startDate: new Date(),
-                    status: "",
-                    complianceStatus: "",
+                    status: "ACTIVE",
                   }}
                   loading={loading}
                 />
-              </Paper>
-            </Modal>
-            <Modal
-              open={openModalAgreementDetails}
-              onClose={handleCloseModalAgreementDetails}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Paper
-                component="section"
-                sx={{
-                  mt: 2,
-                  elevation: 1,
-                  borderRadius: 1,
-                  overflow: "hidden",
-                  mb: 2,
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 400,
-                }}
-              >
-                <Box
-                  sx={{
-                    bgcolor: "secondary.main",
-                    color: "white",
-                    px: 2,
-                    py: 1.5,
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 8,
-                    borderBottom: "1px solid #e0e0e0",
-                    display: "flex",
-                    alignItems: "left",
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    component="h3"
-                    sx={{ fontWeight: 600 }}
-                  >
-                    OVEREENKOMSTGEGEVENS
-                  </Typography>
-                </Box>
-                <Box sx={{ p: 2 }}>
-                  <TableContainer component={Paper}>
-                    <Table aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Vervaldatum</TableCell>
-                          <TableCell align="right">#Cuota</TableCell>
-                          <TableCell align="right">Bedrag</TableCell>
-                          <TableCell align="right">Status</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {installments?.map((installment) => (
-                          <TableRow
-                            key={installment.id}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              align="center"
-                            >
-                              {new Date(
-                                installment.dueDate
-                              ).toLocaleDateString()}
-                            </TableCell>
-                            <TableCell align="center">
-                              {installment.number}
-                            </TableCell>
-                            <TableCell align="right">
-                              {formatCurrency(installment.amount)}
-                            </TableCell>
-                            <TableCell align="right">
-                              {installment.status}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Box>
               </Paper>
             </Modal>
           </Box>

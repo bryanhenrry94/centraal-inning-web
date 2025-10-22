@@ -57,8 +57,8 @@ export const getAllVerdicts = async (
                 : verdict.debtor.address,
             personType:
               verdict.debtor.personType === null
-                ? "individual"
-                : (verdict.debtor.personType as "individual" | "company"),
+                ? "INDIVIDUAL"
+                : (verdict.debtor.personType as "INDIVIDUAL" | "COMPANY"),
             identificationType:
               verdict.debtor.identificationType === null
                 ? "OTHER"
@@ -138,7 +138,7 @@ export const getVerdictById = async (
             personType:
               verdict.debtor.personType === null
                 ? undefined
-                : (verdict.debtor.personType as "individual" | "company"),
+                : (verdict.debtor.personType as "INDIVIDUAL" | "COMPANY"),
             identificationType:
               verdict.debtor.identificationType === null
                 ? "OTHER"

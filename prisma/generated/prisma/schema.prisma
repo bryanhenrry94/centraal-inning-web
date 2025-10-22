@@ -295,25 +295,29 @@ model Plan {
 }
 
 model CollectionCase {
-  id              String             @id @default(cuid())
-  referenceNumber String?
-  issueDate       DateTime?
-  dueDate         DateTime?
-  tenantId        String
-  debtorId        String
-  amountOriginal  Decimal            @db.Decimal(10, 2)
-  amountDue       Decimal            @db.Decimal(10, 2)
-  amountToReceive Decimal            @db.Decimal(10, 2)
-  status          CollectionStatus   @default(PENDING)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  debtor          Debtor             @relation(fields: [debtorId], references: [id])
-  tenant          Tenant             @relation(fields: [tenantId], references: [id])
-  notifications   Notification[]
-  payments        Payment[]
-  agreements      PaymentAgreement[]
-  penalties       Penalty[]
-  chatRooms       ChatRoom[]
+  id                String             @id @default(cuid())
+  referenceNumber   String?
+  issueDate         DateTime?
+  dueDate           DateTime? // fecha de vencimiento original
+  reminder1SentAt   DateTime? // fecha de envío del aviso 1 (Aanmanning)
+  reminder1DueDate  DateTime? // fecha límite de pago para el aviso 1
+  reminder2SentAt   DateTime? // fecha de envío del aviso 2 (Sommatie)
+  reminder2DueDate  DateTime? // fecha límite de pago para el aviso 2
+  tenantId          String
+  debtorId          String
+  amountOriginal    Decimal            @db.Decimal(10, 2)
+  amountDue         Decimal            @db.Decimal(10, 2)
+  amountToReceive   Decimal            @db.Decimal(10, 2)
+  status            CollectionStatus   @default(PENDING)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  debtor            Debtor             @relation(fields: [debtorId], references: [id])
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  notifications     Notification[]
+  payments          Payment[]
+  paymentAgreements PaymentAgreement[]
+  penalties         Penalty[]
+  chatRooms         ChatRoom[]
 
   @@map("collection_case")
 }
@@ -371,7 +375,7 @@ model Debtor {
   email              String
   phone              String?
   address            String?
-  personType         String?
+  personType         PersonType          @default(INDIVIDUAL)
   identificationType IdentificationType?
   identification     String?
   totalIncome        Float?
@@ -434,14 +438,13 @@ model DebtorIncome {
 }
 
 model PaymentAgreement {
-  id                String           @id @default(cuid())
-  collectionCaseId  String           @unique
-  totalAmount       Decimal          @db.Decimal(10, 2)
-  installmentAmount Decimal          @db.Decimal(10, 2)
+  id                String                 @id @default(cuid())
+  collectionCaseId  String                 @unique
+  totalAmount       Decimal                @db.Decimal(10, 2)
+  installmentAmount Decimal                @db.Decimal(10, 2)
   installmentsCount Int
   startDate         DateTime
-  status            AgreementStatus  @default(ACTIVE)
-  complianceStatus  ComplianceStatus @default(ON_TIME)
+  status            PaymentAgreementStatus @default(PENDING)
 
   // Relaciones
   collectionCase CollectionCase @relation(fields: [collectionCaseId], references: [id])
@@ -481,9 +484,11 @@ enum InstallmentStatus {
   OVERDUE
 }
 
-enum ComplianceStatus {
-  ON_TIME // al día
-  OVERDUE // en mora
+enum PaymentAgreementStatus {
+  PENDING
+  ACTIVE
+  OVERDUE
+  PAID
 }
 
 enum CalculationTypeEnum {
@@ -529,16 +534,15 @@ enum PaymentMethod {
   OTHER
 }
 
-enum AgreementStatus {
-  ACTIVE
-  COMPLETED
-  CANCELLED
-}
-
 enum CollectionStatus {
   PENDING
   IN_PROGRESS
   PAID
   OVERDUE
   CANCELLED
+}
+
+enum PersonType {
+  INDIVIDUAL
+  COMPANY
 }

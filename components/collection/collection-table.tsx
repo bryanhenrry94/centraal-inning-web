@@ -21,18 +21,14 @@ import {
 } from "@mui/material";
 import { useTenant } from "@/hooks/useTenant";
 import { CollectionCaseResponse } from "@/lib/validations/collection";
-import {
-  getAllCollectionCases,
-  processCollection,
-} from "@/app/actions/collection";
-import { AlertService } from "@/lib/alerts";
-import { notifyError, notifyInfo } from "@/lib/notifications";
 import SearchIcon from "@mui/icons-material/Search";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import RefresIcon from "@mui/icons-material/Refresh";
+import CloseIcon from "@mui/icons-material/Close";
 import CollectionForm from "./collection-form";
-import EditIcon from "@mui/icons-material/Edit";
-import ChatIcon from "@mui/icons-material/Chat";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { formatCurrency, formatDate } from "@/common/utils/general";
+import { getAllCollectionCases } from "@/app/actions/collection";
+import { notifyError } from "@/lib/notifications";
 
 const CollectionTable = () => {
   const router = useRouter();
@@ -40,26 +36,25 @@ const CollectionTable = () => {
   const [collectionCases, setCollectionCases] = React.useState<
     CollectionCaseResponse[]
   >([]);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedRow, setSelectedRow] =
-    React.useState<CollectionCaseResponse | null>(null);
   const [open, setOpen] = React.useState(false);
-  const openMenu = Boolean(anchorEl);
   const [loading, setLoading] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-    setSelectedRow(null);
-  };
-
   const fetchInvoices = async () => {
     if (!tenant?.id) return;
 
-    const data = await getAllCollectionCases(tenant.id);
-    setCollectionCases(data);
+    try {
+      setLoading(true);
+      const data = await getAllCollectionCases(tenant.id);
+      setCollectionCases(data);
+    } catch (error) {
+      console.error("Error fetching collection cases:", error);
+      notifyError("Fout bij het ophalen van vorderingen.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   React.useEffect(() => {
@@ -68,51 +63,12 @@ const CollectionTable = () => {
     fetchInvoices();
   }, [tenant?.id]);
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    verdict: CollectionCaseResponse
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedRow(verdict);
-  };
-
   const handleEdit = (id: string) => {
     router.push(`/dashboard/collections/${id}`);
   };
 
-  const handleDelete = async (verdict: CollectionCaseResponse) => {
-    AlertService.showConfirm(
-      "¿Estás seguro?",
-      "Esta acción eliminará el registro de la factura.",
-      "Sí, eliminar",
-      "Cancelar"
-    ).then(async (confirmed) => {
-      if (confirmed) {
-        // const result = await deleteCollectionCase(verdict.id);
-        // if (result) {
-        //   notifyInfo("Factura eliminada exitosamente");
-        //   fetchInvoices();
-        // } else {
-        //   notifyError("Error al eliminar la factura");
-        // }
-      }
-    });
-    return;
-  };
-
-  const handleProcess = async () => {
-    if (!tenant) return;
-
-    try {
-      setLoading(true);
-      await processCollection(tenant.id);
-      await fetchInvoices();
-      notifyInfo("Lista de facturas actualizada");
-    } catch (error) {
-      notifyError("Error al procesar las facturas");
-    } finally {
-      setLoading(false);
-    }
+  const handleSave = () => {
+    fetchInvoices();
   };
 
   return (
@@ -131,7 +87,7 @@ const CollectionTable = () => {
             <TextField
               variant="outlined"
               size="small"
-              placeholder="Buscar..."
+              placeholder="Zoek naar..."
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -145,14 +101,8 @@ const CollectionTable = () => {
         </Box>
         <Box>
           <Stack spacing={2} direction="row">
-            <IconButton
-              color="primary"
-              onClick={() => {
-                handleProcess();
-              }}
-              loading={loading}
-            >
-              <RefreshIcon />
+            <IconButton onClick={fetchInvoices} color="primary">
+              <RefresIcon />
             </IconButton>
             <Button onClick={handleOpen} variant="contained" color="primary">
               NIEUWE VORDERING
@@ -189,7 +139,8 @@ const CollectionTable = () => {
                   borderTopRightRadius: 8,
                   borderBottom: "1px solid #e0e0e0",
                   display: "flex",
-                  alignItems: "left",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
                 <Typography
@@ -199,12 +150,16 @@ const CollectionTable = () => {
                 >
                   NIEUWE VORDERING
                 </Typography>
+                <IconButton onClick={handleClose} sx={{ color: "white" }}>
+                  <CloseIcon />
+                </IconButton>
               </Box>
-              <CollectionForm />
+              <CollectionForm onSave={handleSave} />
             </Paper>
           </Modal>
         </Box>
       </Box>
+      {loading && <Typography>Loading...</Typography>}
       <TableContainer component={"div"}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -324,7 +279,7 @@ const CollectionTable = () => {
                       handleEdit(invoice.id)
                     }
                   >
-                    <EditIcon />
+                    <VisibilityIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

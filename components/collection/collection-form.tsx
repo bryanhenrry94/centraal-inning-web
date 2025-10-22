@@ -36,7 +36,11 @@ const InitialCollectionCaseCreate: CollectionCaseCreate = {
   dueDate: new Date() ?? undefined,
 };
 
-const RegisterInvoice: React.FC = () => {
+interface IRegisterInvoiceProps {
+  onSave?: () => void;
+}
+
+const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
   const { tenant } = useTenant();
 
   const [formData, setFormData] = useState<CollectionCaseCreate>(
@@ -79,6 +83,7 @@ const RegisterInvoice: React.FC = () => {
     console.log("result: ", result);
     setDebtors(result);
   };
+
   // const porcCobranza = demo?.porcCobranza ? demo?.porcCobranza : 0;
   const porcCobranza = _parameter?.porcCobranza ?? 0;
   const porcAbb = _parameter?.porcAbb ?? 0;
@@ -123,6 +128,7 @@ const RegisterInvoice: React.FC = () => {
       setFormData(InitialCollectionCaseCreate);
       console.log("New invoice: ", newInvoice);
       notifySuccess("Factura guardada exitosamente");
+      onSave?.();
     } catch (error) {
       console.error("Error: ", error);
       notifyError("Ocurrió un error al registrar la factura");

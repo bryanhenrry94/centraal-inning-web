@@ -8,14 +8,14 @@ import { Box } from "@mui/material";
 const VerdictPage: React.FC = () => {
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Nieuw"
         navigation={[
           { title: "Dashboard", href: "/dashboard" },
           { title: "Vonnis", href: "/dashboard/verdicts" },
         ]}
-      />
-      <Box sx={{ mt: 8 }}>
+      /> */}
+      <Box >
         <VerdictProvider>
           <VerdictFormPage />
         </VerdictProvider>

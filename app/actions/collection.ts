@@ -11,7 +11,11 @@ import {
   CollectionCaseView,
 } from "@/lib/validations/collection";
 import { $Enums } from "@/prisma/generated/prisma";
-import { sendNotification } from "@/app/actions/notification";
+import {
+  getNotificationDays,
+  sendNotification,
+} from "@/app/actions/notification";
+import { getParameterById } from "./parameter";
 
 export const getAllCollectionCases = async (
   tenantId: string
@@ -59,8 +63,71 @@ export const getAllCollectionCases = async (
       ...(collection.debtor?.personType
         ? {
             personType: collection.debtor.personType as
-              | "individual"
-              | "company",
+              | "INDIVIDUAL"
+              | "COMPANY",
+          }
+        : {}),
+      ...(collection.debtor?.identification
+        ? { identification: collection.debtor.identification }
+        : {}),
+    },
+  }));
+};
+
+export const getAllCollectionCasesByUserId = async (
+  tenantId: string,
+  userId: string
+): Promise<CollectionCaseResponse[]> => {
+  const debtor = await prisma.debtor.findFirst({
+    where: { userId: userId },
+  });
+  if (!debtor) throw new Error("Debtor not found");
+
+  const collectionCases = await prisma.collectionCase.findMany({
+    where: { tenantId, debtorId: debtor.id },
+    include: {
+      debtor: true,
+    },
+  });
+
+  return collectionCases.map((collection) => ({
+    id: collection.id,
+    referenceNumber: collection.referenceNumber || undefined,
+    issueDate: collection.issueDate ?? undefined,
+    dueDate: collection.dueDate ?? undefined,
+    tenantId: collection.tenantId ?? undefined,
+    debtorId: collection.debtorId,
+    amountOriginal: collection.amountOriginal.toDecimalPlaces(2).toNumber(),
+    amountDue: collection.amountDue.toDecimalPlaces(2).toNumber(),
+    amountToReceive: collection.amountToReceive.toDecimalPlaces(2).toNumber(),
+    status: collection.status as
+      | "PENDING"
+      | "IN_PROGRESS"
+      | "PAID"
+      | "OVERDUE"
+      | "CANCELLED",
+    createdAt: collection.createdAt,
+    updatedAt: collection.updatedAt,
+    debtor: {
+      id: collection.debtor?.id ?? "",
+      fullname: collection.debtor?.fullname ?? "",
+      email: collection.debtor?.email ?? "",
+      identificationType: collection.debtor?.identificationType as
+        | "DNI"
+        | "PASSPORT"
+        | "NIE"
+        | "CIF"
+        | "KVK"
+        | "OTHER",
+      ...(collection.debtor?.phone ? { phone: collection.debtor.phone } : {}),
+      ...(collection.debtor?.address
+        ? { address: collection.debtor.address }
+        : {}),
+      ...(collection.debtor?.personType
+        ? {
+            personType: collection.debtor.personType as
+              | "INDIVIDUAL"
+              | "COMPANY",
           }
         : {}),
       ...(collection.debtor?.identification
@@ -166,8 +233,8 @@ export const getCollectionViewById = async (
       ...(collection.debtor?.personType
         ? {
             personType: collection.debtor.personType as
-              | "individual"
-              | "company",
+              | "INDIVIDUAL"
+              | "COMPANY",
           }
         : {}),
       ...(collection.debtor?.identification
@@ -183,12 +250,56 @@ export const createCollectionCase = async (
 ) => {
   const parsedData = CollectionCaseCreateSchema.parse(data);
 
+  // Obtener el tenant
+  const tenant = await prisma.tenant.findUnique({
+    where: { id: tenantId },
+    include: { plan: true },
+  });
+  if (!tenant) throw new Error("Tenant not found");
+
+  // Obtiene params de cobranza
+  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
+  const parameter = await getParameterById(PARAMETER_ID);
+  if (!parameter) {
+    throw new Error("No se encontró el parámetro");
+  }
+
+  // Obtener el deudor
+  const debtor = await prisma.debtor.findUnique({
+    where: { id: parsedData.debtorId },
+  });
+  if (!debtor) throw new Error("Debtor not found");
+
+  // Calcular montos
   const amountOriginal = parsedData.amountOriginal ?? 0;
-  const comision = amountOriginal * 0.15; // 15% de comisión
-  const abb = comision * 0.06; // 2.5% de gastos administrativos
+  const comision = (amountOriginal * parameter.porcCobranza) / 100; // 15% de comisión
+  const abb = (comision * parameter.porcAbb) / 100; // 6% de impuesto sobre la comisión
   const amountDue = comision + abb;
   const amountToReceive = amountOriginal - amountDue;
 
+  // Obtener los días de notificación según el estado de la ultima notificacion y tipo de persona
+  const dayReminderOne = await getNotificationDays(
+    $Enums.NotificationType.AANMANING,
+    debtor.personType
+  );
+
+  // Obtener los días de notificación según el estado de la ultima notificacion y tipo de persona
+  const dayReminderTwo = await getNotificationDays(
+    $Enums.NotificationType.SOMMATIE,
+    debtor.personType
+  );
+
+  // Calcular las fechas de recordatorio
+  const today = new Date();
+  const addDays = (date: Date, days: number) =>
+    new Date(date.getTime() + Math.round(days) * 24 * 60 * 60 * 1000);
+  const reminder1DueDate = addDays(today, Number(dayReminderOne) || 0);
+  const reminder2DueDate = addDays(today, Number(dayReminderTwo) || 0);
+
+  // La fecha de vencimiento se suma los dias del primer recordatorio a la fecha de hoy
+  const dueDate = addDays(today, Number(dayReminderOne) || 0);
+
+  // Crear el caso de cobranza
   const newCollectionCase = await prisma.collectionCase.create({
     data: {
       debtorId: parsedData.debtorId || "",
@@ -196,7 +307,11 @@ export const createCollectionCase = async (
       issueDate: parsedData.issueDate
         ? new Date(parsedData.issueDate)
         : undefined,
-      dueDate: parsedData.dueDate ? new Date(parsedData.dueDate) : undefined,
+      dueDate: dueDate,
+      reminder1DueDate: reminder1DueDate,
+      reminder1SentAt: null,
+      reminder2DueDate: reminder2DueDate,
+      reminder2SentAt: null,
       amountOriginal: amountOriginal,
       amountDue: amountDue,
       amountToReceive: amountToReceive,
@@ -206,17 +321,6 @@ export const createCollectionCase = async (
       tenantId: tenantId,
     },
   });
-
-  const tenant = await prisma.tenant.findUnique({
-    where: { id: tenantId },
-    include: { plan: true },
-  });
-  if (!tenant) throw new Error("Tenant not found");
-
-  const debtor = await prisma.debtor.findUnique({
-    where: { id: newCollectionCase.debtorId },
-  });
-  if (!debtor) throw new Error("Debtor not found");
 
   // Crear room para el chat de la colección
   await prisma.chatRoom.create({
@@ -228,11 +332,10 @@ export const createCollectionCase = async (
   });
 
   const firstPlan = tenant.plan;
-
   if (!firstPlan)
     throw new Error("Tenant does not have an active subscription");
 
-  // Envia la factura de la comisión al cliente
+  // // Envia la factura de la comisión al cliente
   await createCollectionInvoice({
     tenantId: tenant.id,
     planId: firstPlan.id,
@@ -242,8 +345,7 @@ export const createCollectionCase = async (
   });
 
   // Envia una notificación al deudor del aviso de AANMANING
-  await sendNotification(tenant.id, newCollectionCase.id);
-
+  await sendNotification(newCollectionCase.id);
   return newCollectionCase;
 };
 

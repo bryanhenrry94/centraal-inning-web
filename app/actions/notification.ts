@@ -16,20 +16,13 @@ import {
   formatDate,
   getNameCountry,
 } from "@/common/utils/general";
+import { $Enums } from "@/prisma/generated/prisma";
 
-export const sendNotification = async (
-  tenantId: string,
-  colleccionCaseId: string
-) => {
+export const sendNotification = async (colleccionCaseId: string) => {
   if (!colleccionCaseId) {
     throw new Error("Notification colleccionCaseId is required");
   }
 
-  // Check if the tenant exists
-  const tenant = await validateTenantById(tenantId);
-  if (!tenant) {
-    throw new Error("Tenant not found");
-  }
   // Check if the notification.collectionCase exists
   const collection = await getCollectionById(colleccionCaseId);
   if (!collection) {
@@ -230,8 +223,8 @@ export const sendAanmaning = async (
       await createNotification(
         collection.id,
         NotificationType.AANMANING,
-        "Primera notificación de cobranza",
-        "Se ha enviado la primera notificación de cobranza."
+        "Eerste incassoaankondiging",
+        "De eerste incassoaankondiging is verzonden."
       );
     }
 
@@ -342,8 +335,8 @@ export const sendSommatie = async (
     await createNotification(
       collection.id,
       NotificationType.SOMMATIE,
-      "Segunda notificación de cobranza",
-      "Se ha enviado la segunda notificación de cobranza."
+      "Tweede incassobericht",
+      "De tweede incassoaankondiging is verzonden."
     );
 
     return "Sommatie sent successfully";
@@ -472,8 +465,8 @@ export const sendIngebrekestelling = async (
     await createNotification(
       collection.id,
       NotificationType.INGEBREKESTELLING,
-      "Tercera notificación de cobranza",
-      "Se ha enviado la tercera notificación de cobranza."
+      "Derde incassoaankondiging",
+      "De derde incassoaankondiging is verzonden."
     );
 
     return "Ingebrekestelling sent successfully";
@@ -578,54 +571,14 @@ export const sendBlokkade = async (
     await createNotification(
       collection.id,
       NotificationType.BLOKKADE,
-      "Notificación de bloqueo financiero",
-      "Se ha enviado la notificación de bloqueo financiero."
+      "Notificatie van financiële blokkade",
+      "De notificatie van financiële blokkade is verzonden."
     );
 
     return "Financiele Blokkade sent successfully";
   } catch (error) {
     console.error("Error sending FinancieleBlokkade:", error);
     throw new Error("Failed to send FinancieleBlokkade");
-  }
-};
-
-export const sendABGILetterToEmployer = async (
-  collection: CollectionCase
-): Promise<string> => {
-  try {
-    // if (!collection.tenant?.id) {
-    //   throw new Error("Tenant ID not found");
-    // }
-    // const params: iBlockRecordCreate = {
-    //   issueDate: new Date(),
-    //   claimantCompanyId: collection.tenant?.id,
-    //   city: "",
-    //   claimantCompanyAddress: collection.tenant?.address || "",
-    //   debtorId: collection.debtorId || "",
-    //   debtorName: collection.debtor?.fullname || "",
-    //   caseNumber: collection.invoiceNumber || "",
-    //   totalAmountUsd: collection.invoiceAmount || 0,
-    //   blockStatus: BlockStatus.ACTIVE,
-    //   abgiResponsible: process.env.ABGI_MANAGER_NAME || "ABGI Manager",
-    //   contactedCompany: "Dazzsoft",
-    //   contactedCompanyEmail: "jnavarrete@dazzsoft.com",
-    //   contactedCompanyPhone: "123456789",
-    // };
-    // const record = await createBlockRecord(params);
-    // if (!record) {
-    //   throw new Error("Failed to create block record");
-    // }
-    // const response = await sendBlockRecordEmail(record.id);
-    // if (!response.success) {
-    //   throw new Error(
-    //     response.message || "Failed to send ABGI letter to employer"
-    //   );
-    // }
-    // return response.message || "ABGI letter sent successfully";
-    return "ABGI letter sent successfully";
-  } catch (error) {
-    console.error("Error sending ABGI letter to employer:", error);
-    throw new Error("Failed to send ABGI letter to employer");
   }
 };
 
@@ -670,8 +623,8 @@ export const sendBetalingsbewijs = async (
 };
 
 export const getNotificationDays = async (
-  status: string,
-  personType: "individual" | "company"
+  status: $Enums.NotificationType,
+  personType: $Enums.PersonType
 ): Promise<number> => {
   const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
   const _parameter = await getParameterById(PARAMETER_ID);
@@ -680,14 +633,14 @@ export const getNotificationDays = async (
     throw new Error("Parameter not found");
   }
 
-  if (status === "AANMANING") {
-    return personType === "individual"
-      ? _parameter.diasPlazoConsumidorSommatie
-      : _parameter.diasPlazoEmpresaSommatie;
+  if (status === $Enums.NotificationType.AANMANING) {
+    return personType === $Enums.PersonType.INDIVIDUAL
+      ? _parameter.diasPlazoConsumidorAanmaning
+      : _parameter.diasPlazoEmpresaAanmaning;
   }
 
-  if (status === "SOMMATIE") {
-    return personType === "individual"
+  if (status === $Enums.NotificationType.SOMMATIE) {
+    return personType === $Enums.PersonType.INDIVIDUAL
       ? _parameter.diasPlazoConsumidorSommatie
       : _parameter.diasPlazoEmpresaSommatie;
   }

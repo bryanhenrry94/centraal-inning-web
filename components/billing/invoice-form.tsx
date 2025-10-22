@@ -457,7 +457,7 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                         {...field}
                         value={field.value ?? ""}
                         select
-                        sx={{ maxWidth: 400 }}
+                        sx={{ width: 200 }}
                         size="small"
                         error={!!errors.tenantId}
                         helperText={errors.tenantId?.message}

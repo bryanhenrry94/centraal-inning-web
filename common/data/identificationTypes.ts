@@ -8,16 +8,16 @@ export const identificationOptions = [
 ];
 
 export const personTypeOptions = [
-  { value: "individual", label: "Persona Natural" },
-  { value: "company", label: "Empresa" },
+  { value: "INDIVIDUAL", label: "Persona Natural" },
+  { value: "COMPANY", label: "Empresa" },
 ];
 
 export const filterIdentificationOptionsByPersonType = (personType: string) => {
-  if (personType === "individual") {
+  if (personType === "INDIVIDUAL") {
     return identificationOptions.filter((item) =>
       ["DNI", "PASSPORT"].includes(item.value)
     );
-  } else if (personType === "company") {
+  } else if (personType === "COMPANY") {
     return identificationOptions.filter((item) => ["KVK"].includes(item.value));
   }
   return [];

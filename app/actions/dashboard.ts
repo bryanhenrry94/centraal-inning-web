@@ -13,7 +13,7 @@ export async function getDashboardStats() {
         prisma.debtor.count(),
         prisma.collectionCase.count(),
         prisma.billingInvoice.findMany({
-          where: { tenantId: "0874303e-6795-46ef-8416-5d76bba8071b" },
+          // where: { tenantId: process.env.ADMIN_TENANT_ID },
           include: {
             tenant: true,
           },
@@ -29,14 +29,10 @@ export async function getDashboardStats() {
 
     const facturasDelMes = await prisma.billingInvoice.findMany({
       where: {
-        tenantId: "0874303e-6795-46ef-8416-5d76bba8071b",
+        // tenantId: process.env.ADMIN_TENANT_ID,
         createdAt: {
           gte: inicioMes,
         },
-
-        // status: {
-        //   in: ["EMITIDA", "AUTORIZADA"],
-        // },
       },
       include: {
         tenant: true,

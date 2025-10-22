@@ -19,13 +19,13 @@ const VerdictPageEdit: React.FC = () => {
 
   return (
     <Box sx={{ m: 4 }}>
-      <ActionToolbar
+      {/* <ActionToolbar
         title="Editar"
         navigation={[
           { title: "Dashboard", href: "/dashboard" },
           { title: "Veredictos", href: "/dashboard/verdicts" },
         ]}
-      />
+      /> */}
       <Box sx={{ mt: 2 }}>
         <VerdictProvider>
           <VerdictFormPage id={id} />

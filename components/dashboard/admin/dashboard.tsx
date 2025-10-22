@@ -8,7 +8,7 @@ import { sendFinancialSummaryEmail } from "@/app/actions/debtor";
 import { notifyInfo } from "@/lib/notifications";
 import PaymentCard from "@/components/financial-report/payment-card";
 
-export const Shortcut = () => {
+export const DashboardAdmin = () => {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);

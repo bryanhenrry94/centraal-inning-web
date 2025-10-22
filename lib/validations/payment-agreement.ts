@@ -8,7 +8,6 @@ export const PaymentAgreementSchema = z.object({
   installmentsCount: z.number().int(),
   startDate: z.date(),
   status: z.string(),
-  complianceStatus: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   debtorId: z.string().nullable().optional(),

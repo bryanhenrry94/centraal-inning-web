@@ -57,7 +57,7 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
     //   address: "",
     //   identification: "",
     //   identificationType: "DNI",
-    //   personType: "individual",
+    //   personType: "INDIVIDUAL",
     // },
   });
 
@@ -82,9 +82,9 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
       identification: debtor.identification,
       identificationType: debtor.identificationType,
       personType:
-        debtor.personType === "individual" || debtor.personType === "company"
+        debtor.personType === "INDIVIDUAL" || debtor.personType === "COMPANY"
           ? debtor.personType
-          : "individual",
+          : "INDIVIDUAL",
     });
   };
 
@@ -113,7 +113,7 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
       address: "",
       identification: "",
       identificationType: "DNI",
-      personType: "individual",
+      personType: "INDIVIDUAL",
     });
   };
 

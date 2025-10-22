@@ -157,12 +157,14 @@ export namespace $Enums {
 export type InstallmentStatus = (typeof InstallmentStatus)[keyof typeof InstallmentStatus]
 
 
-export const ComplianceStatus: {
-  ON_TIME: 'ON_TIME',
-  OVERDUE: 'OVERDUE'
+export const PaymentAgreementStatus: {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  OVERDUE: 'OVERDUE',
+  PAID: 'PAID'
 };
 
-export type ComplianceStatus = (typeof ComplianceStatus)[keyof typeof ComplianceStatus]
+export type PaymentAgreementStatus = (typeof PaymentAgreementStatus)[keyof typeof PaymentAgreementStatus]
 
 
 export const CalculationTypeEnum: {
@@ -226,15 +228,6 @@ export const PaymentMethod: {
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 
 
-export const AgreementStatus: {
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
-};
-
-export type AgreementStatus = (typeof AgreementStatus)[keyof typeof AgreementStatus]
-
-
 export const CollectionStatus: {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -245,15 +238,23 @@ export const CollectionStatus: {
 
 export type CollectionStatus = (typeof CollectionStatus)[keyof typeof CollectionStatus]
 
+
+export const PersonType: {
+  INDIVIDUAL: 'INDIVIDUAL',
+  COMPANY: 'COMPANY'
+};
+
+export type PersonType = (typeof PersonType)[keyof typeof PersonType]
+
 }
 
 export type InstallmentStatus = $Enums.InstallmentStatus
 
 export const InstallmentStatus: typeof $Enums.InstallmentStatus
 
-export type ComplianceStatus = $Enums.ComplianceStatus
+export type PaymentAgreementStatus = $Enums.PaymentAgreementStatus
 
-export const ComplianceStatus: typeof $Enums.ComplianceStatus
+export const PaymentAgreementStatus: typeof $Enums.PaymentAgreementStatus
 
 export type CalculationTypeEnum = $Enums.CalculationTypeEnum
 
@@ -279,13 +280,13 @@ export type PaymentMethod = $Enums.PaymentMethod
 
 export const PaymentMethod: typeof $Enums.PaymentMethod
 
-export type AgreementStatus = $Enums.AgreementStatus
-
-export const AgreementStatus: typeof $Enums.AgreementStatus
-
 export type CollectionStatus = $Enums.CollectionStatus
 
 export const CollectionStatus: typeof $Enums.CollectionStatus
+
+export type PersonType = $Enums.PersonType
+
+export const PersonType: typeof $Enums.PersonType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -3596,7 +3597,7 @@ export namespace Prisma {
   export type CollectionCaseCountOutputType = {
     notifications: number
     payments: number
-    agreements: number
+    paymentAgreements: number
     penalties: number
     chatRooms: number
   }
@@ -3604,7 +3605,7 @@ export namespace Prisma {
   export type CollectionCaseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notifications?: boolean | CollectionCaseCountOutputTypeCountNotificationsArgs
     payments?: boolean | CollectionCaseCountOutputTypeCountPaymentsArgs
-    agreements?: boolean | CollectionCaseCountOutputTypeCountAgreementsArgs
+    paymentAgreements?: boolean | CollectionCaseCountOutputTypeCountPaymentAgreementsArgs
     penalties?: boolean | CollectionCaseCountOutputTypeCountPenaltiesArgs
     chatRooms?: boolean | CollectionCaseCountOutputTypeCountChatRoomsArgs
   }
@@ -3637,7 +3638,7 @@ export namespace Prisma {
   /**
    * CollectionCaseCountOutputType without action
    */
-  export type CollectionCaseCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseCountOutputTypeCountPaymentAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentAgreementWhereInput
   }
 
@@ -23128,6 +23129,10 @@ export namespace Prisma {
     referenceNumber: string | null
     issueDate: Date | null
     dueDate: Date | null
+    reminder1SentAt: Date | null
+    reminder1DueDate: Date | null
+    reminder2SentAt: Date | null
+    reminder2DueDate: Date | null
     tenantId: string | null
     debtorId: string | null
     amountOriginal: Decimal | null
@@ -23143,6 +23148,10 @@ export namespace Prisma {
     referenceNumber: string | null
     issueDate: Date | null
     dueDate: Date | null
+    reminder1SentAt: Date | null
+    reminder1DueDate: Date | null
+    reminder2SentAt: Date | null
+    reminder2DueDate: Date | null
     tenantId: string | null
     debtorId: string | null
     amountOriginal: Decimal | null
@@ -23158,6 +23167,10 @@ export namespace Prisma {
     referenceNumber: number
     issueDate: number
     dueDate: number
+    reminder1SentAt: number
+    reminder1DueDate: number
+    reminder2SentAt: number
+    reminder2DueDate: number
     tenantId: number
     debtorId: number
     amountOriginal: number
@@ -23187,6 +23200,10 @@ export namespace Prisma {
     referenceNumber?: true
     issueDate?: true
     dueDate?: true
+    reminder1SentAt?: true
+    reminder1DueDate?: true
+    reminder2SentAt?: true
+    reminder2DueDate?: true
     tenantId?: true
     debtorId?: true
     amountOriginal?: true
@@ -23202,6 +23219,10 @@ export namespace Prisma {
     referenceNumber?: true
     issueDate?: true
     dueDate?: true
+    reminder1SentAt?: true
+    reminder1DueDate?: true
+    reminder2SentAt?: true
+    reminder2DueDate?: true
     tenantId?: true
     debtorId?: true
     amountOriginal?: true
@@ -23217,6 +23238,10 @@ export namespace Prisma {
     referenceNumber?: true
     issueDate?: true
     dueDate?: true
+    reminder1SentAt?: true
+    reminder1DueDate?: true
+    reminder2SentAt?: true
+    reminder2DueDate?: true
     tenantId?: true
     debtorId?: true
     amountOriginal?: true
@@ -23319,6 +23344,10 @@ export namespace Prisma {
     referenceNumber: string | null
     issueDate: Date | null
     dueDate: Date | null
+    reminder1SentAt: Date | null
+    reminder1DueDate: Date | null
+    reminder2SentAt: Date | null
+    reminder2DueDate: Date | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal
@@ -23353,6 +23382,10 @@ export namespace Prisma {
     referenceNumber?: boolean
     issueDate?: boolean
     dueDate?: boolean
+    reminder1SentAt?: boolean
+    reminder1DueDate?: boolean
+    reminder2SentAt?: boolean
+    reminder2DueDate?: boolean
     tenantId?: boolean
     debtorId?: boolean
     amountOriginal?: boolean
@@ -23365,7 +23398,7 @@ export namespace Prisma {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
-    agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
+    paymentAgreements?: boolean | CollectionCase$paymentAgreementsArgs<ExtArgs>
     penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
     chatRooms?: boolean | CollectionCase$chatRoomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -23376,6 +23409,10 @@ export namespace Prisma {
     referenceNumber?: boolean
     issueDate?: boolean
     dueDate?: boolean
+    reminder1SentAt?: boolean
+    reminder1DueDate?: boolean
+    reminder2SentAt?: boolean
+    reminder2DueDate?: boolean
     tenantId?: boolean
     debtorId?: boolean
     amountOriginal?: boolean
@@ -23393,6 +23430,10 @@ export namespace Prisma {
     referenceNumber?: boolean
     issueDate?: boolean
     dueDate?: boolean
+    reminder1SentAt?: boolean
+    reminder1DueDate?: boolean
+    reminder2SentAt?: boolean
+    reminder2DueDate?: boolean
     tenantId?: boolean
     debtorId?: boolean
     amountOriginal?: boolean
@@ -23410,6 +23451,10 @@ export namespace Prisma {
     referenceNumber?: boolean
     issueDate?: boolean
     dueDate?: boolean
+    reminder1SentAt?: boolean
+    reminder1DueDate?: boolean
+    reminder2SentAt?: boolean
+    reminder2DueDate?: boolean
     tenantId?: boolean
     debtorId?: boolean
     amountOriginal?: boolean
@@ -23420,13 +23465,13 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNumber" | "issueDate" | "dueDate" | "tenantId" | "debtorId" | "amountOriginal" | "amountDue" | "amountToReceive" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["collectionCase"]>
+  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNumber" | "issueDate" | "dueDate" | "reminder1SentAt" | "reminder1DueDate" | "reminder2SentAt" | "reminder2DueDate" | "tenantId" | "debtorId" | "amountOriginal" | "amountDue" | "amountToReceive" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["collectionCase"]>
   export type CollectionCaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
-    agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
+    paymentAgreements?: boolean | CollectionCase$paymentAgreementsArgs<ExtArgs>
     penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
     chatRooms?: boolean | CollectionCase$chatRoomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -23447,7 +23492,7 @@ export namespace Prisma {
       tenant: Prisma.$TenantPayload<ExtArgs>
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
-      agreements: Prisma.$PaymentAgreementPayload<ExtArgs>[]
+      paymentAgreements: Prisma.$PaymentAgreementPayload<ExtArgs>[]
       penalties: Prisma.$PenaltyPayload<ExtArgs>[]
       chatRooms: Prisma.$ChatRoomPayload<ExtArgs>[]
     }
@@ -23456,6 +23501,10 @@ export namespace Prisma {
       referenceNumber: string | null
       issueDate: Date | null
       dueDate: Date | null
+      reminder1SentAt: Date | null
+      reminder1DueDate: Date | null
+      reminder2SentAt: Date | null
+      reminder2DueDate: Date | null
       tenantId: string
       debtorId: string
       amountOriginal: Prisma.Decimal
@@ -23862,7 +23911,7 @@ export namespace Prisma {
     tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     notifications<T extends CollectionCase$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends CollectionCase$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    agreements<T extends CollectionCase$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentAgreements<T extends CollectionCase$paymentAgreementsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$paymentAgreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     penalties<T extends CollectionCase$penaltiesArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$penaltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PenaltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatRooms<T extends CollectionCase$chatRoomsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$chatRoomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -23898,6 +23947,10 @@ export namespace Prisma {
     readonly referenceNumber: FieldRef<"CollectionCase", 'String'>
     readonly issueDate: FieldRef<"CollectionCase", 'DateTime'>
     readonly dueDate: FieldRef<"CollectionCase", 'DateTime'>
+    readonly reminder1SentAt: FieldRef<"CollectionCase", 'DateTime'>
+    readonly reminder1DueDate: FieldRef<"CollectionCase", 'DateTime'>
+    readonly reminder2SentAt: FieldRef<"CollectionCase", 'DateTime'>
+    readonly reminder2DueDate: FieldRef<"CollectionCase", 'DateTime'>
     readonly tenantId: FieldRef<"CollectionCase", 'String'>
     readonly debtorId: FieldRef<"CollectionCase", 'String'>
     readonly amountOriginal: FieldRef<"CollectionCase", 'Decimal'>
@@ -24350,9 +24403,9 @@ export namespace Prisma {
   }
 
   /**
-   * CollectionCase.agreements
+   * CollectionCase.paymentAgreements
    */
-  export type CollectionCase$agreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCase$paymentAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PaymentAgreement
      */
@@ -27897,7 +27950,7 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     address: string | null
-    personType: string | null
+    personType: $Enums.PersonType | null
     identificationType: $Enums.IdentificationType | null
     identification: string | null
     totalIncome: number | null
@@ -27913,7 +27966,7 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     address: string | null
-    personType: string | null
+    personType: $Enums.PersonType | null
     identificationType: $Enums.IdentificationType | null
     identification: string | null
     totalIncome: number | null
@@ -28090,7 +28143,7 @@ export namespace Prisma {
     email: string
     phone: string | null
     address: string | null
-    personType: string | null
+    personType: $Enums.PersonType
     identificationType: $Enums.IdentificationType | null
     identification: string | null
     totalIncome: number | null
@@ -28229,7 +28282,7 @@ export namespace Prisma {
       email: string
       phone: string | null
       address: string | null
-      personType: string | null
+      personType: $Enums.PersonType
       identificationType: $Enums.IdentificationType | null
       identification: string | null
       totalIncome: number | null
@@ -28671,7 +28724,7 @@ export namespace Prisma {
     readonly email: FieldRef<"Debtor", 'String'>
     readonly phone: FieldRef<"Debtor", 'String'>
     readonly address: FieldRef<"Debtor", 'String'>
-    readonly personType: FieldRef<"Debtor", 'String'>
+    readonly personType: FieldRef<"Debtor", 'PersonType'>
     readonly identificationType: FieldRef<"Debtor", 'IdentificationType'>
     readonly identification: FieldRef<"Debtor", 'String'>
     readonly totalIncome: FieldRef<"Debtor", 'Float'>
@@ -32569,8 +32622,7 @@ export namespace Prisma {
     installmentAmount: Decimal | null
     installmentsCount: number | null
     startDate: Date | null
-    status: $Enums.AgreementStatus | null
-    complianceStatus: $Enums.ComplianceStatus | null
+    status: $Enums.PaymentAgreementStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     debtorId: string | null
@@ -32583,8 +32635,7 @@ export namespace Prisma {
     installmentAmount: Decimal | null
     installmentsCount: number | null
     startDate: Date | null
-    status: $Enums.AgreementStatus | null
-    complianceStatus: $Enums.ComplianceStatus | null
+    status: $Enums.PaymentAgreementStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     debtorId: string | null
@@ -32598,7 +32649,6 @@ export namespace Prisma {
     installmentsCount: number
     startDate: number
     status: number
-    complianceStatus: number
     createdAt: number
     updatedAt: number
     debtorId: number
@@ -32626,7 +32676,6 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
-    complianceStatus?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32640,7 +32689,6 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
-    complianceStatus?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32654,7 +32702,6 @@ export namespace Prisma {
     installmentsCount?: true
     startDate?: true
     status?: true
-    complianceStatus?: true
     createdAt?: true
     updatedAt?: true
     debtorId?: true
@@ -32754,8 +32801,7 @@ export namespace Prisma {
     installmentAmount: Decimal
     installmentsCount: number
     startDate: Date
-    status: $Enums.AgreementStatus
-    complianceStatus: $Enums.ComplianceStatus
+    status: $Enums.PaymentAgreementStatus
     createdAt: Date
     updatedAt: Date
     debtorId: string | null
@@ -32788,7 +32834,6 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
-    complianceStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
@@ -32807,7 +32852,6 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
-    complianceStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
@@ -32823,7 +32867,6 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
-    complianceStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
@@ -32839,13 +32882,12 @@ export namespace Prisma {
     installmentsCount?: boolean
     startDate?: boolean
     status?: boolean
-    complianceStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     debtorId?: boolean
   }
 
-  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collectionCaseId" | "totalAmount" | "installmentAmount" | "installmentsCount" | "startDate" | "status" | "complianceStatus" | "createdAt" | "updatedAt" | "debtorId", ExtArgs["result"]["paymentAgreement"]>
+  export type PaymentAgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collectionCaseId" | "totalAmount" | "installmentAmount" | "installmentsCount" | "startDate" | "status" | "createdAt" | "updatedAt" | "debtorId", ExtArgs["result"]["paymentAgreement"]>
   export type PaymentAgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
@@ -32877,8 +32919,7 @@ export namespace Prisma {
       installmentAmount: Prisma.Decimal
       installmentsCount: number
       startDate: Date
-      status: $Enums.AgreementStatus
-      complianceStatus: $Enums.ComplianceStatus
+      status: $Enums.PaymentAgreementStatus
       createdAt: Date
       updatedAt: Date
       debtorId: string | null
@@ -33315,8 +33356,7 @@ export namespace Prisma {
     readonly installmentAmount: FieldRef<"PaymentAgreement", 'Decimal'>
     readonly installmentsCount: FieldRef<"PaymentAgreement", 'Int'>
     readonly startDate: FieldRef<"PaymentAgreement", 'DateTime'>
-    readonly status: FieldRef<"PaymentAgreement", 'AgreementStatus'>
-    readonly complianceStatus: FieldRef<"PaymentAgreement", 'ComplianceStatus'>
+    readonly status: FieldRef<"PaymentAgreement", 'PaymentAgreementStatus'>
     readonly createdAt: FieldRef<"PaymentAgreement", 'DateTime'>
     readonly updatedAt: FieldRef<"PaymentAgreement", 'DateTime'>
     readonly debtorId: FieldRef<"PaymentAgreement", 'String'>
@@ -35261,6 +35301,10 @@ export namespace Prisma {
     referenceNumber: 'referenceNumber',
     issueDate: 'issueDate',
     dueDate: 'dueDate',
+    reminder1SentAt: 'reminder1SentAt',
+    reminder1DueDate: 'reminder1DueDate',
+    reminder2SentAt: 'reminder2SentAt',
+    reminder2DueDate: 'reminder2DueDate',
     tenantId: 'tenantId',
     debtorId: 'debtorId',
     amountOriginal: 'amountOriginal',
@@ -35383,7 +35427,6 @@ export namespace Prisma {
     installmentsCount: 'installmentsCount',
     startDate: 'startDate',
     status: 'status',
-    complianceStatus: 'complianceStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     debtorId: 'debtorId'
@@ -35612,6 +35655,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'PersonType'
+   */
+  export type EnumPersonTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PersonType'>
+    
+
+
+  /**
+   * Reference to a field of type 'PersonType[]'
+   */
+  export type ListEnumPersonTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PersonType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'IdentificationType'
    */
   export type EnumIdentificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentificationType'>
@@ -35626,30 +35683,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AgreementStatus'
+   * Reference to a field of type 'PaymentAgreementStatus'
    */
-  export type EnumAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementStatus'>
+  export type EnumPaymentAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentAgreementStatus'>
     
 
 
   /**
-   * Reference to a field of type 'AgreementStatus[]'
+   * Reference to a field of type 'PaymentAgreementStatus[]'
    */
-  export type ListEnumAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'ComplianceStatus'
-   */
-  export type EnumComplianceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'ComplianceStatus[]'
-   */
-  export type ListEnumComplianceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceStatus[]'>
+  export type ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentAgreementStatus[]'>
     
 
 
@@ -37090,6 +37133,10 @@ export namespace Prisma {
     referenceNumber?: StringNullableFilter<"CollectionCase"> | string | null
     issueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     dueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenantId?: StringFilter<"CollectionCase"> | string
     debtorId?: StringFilter<"CollectionCase"> | string
     amountOriginal?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -37102,7 +37149,7 @@ export namespace Prisma {
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     notifications?: NotificationListRelationFilter
     payments?: PaymentListRelationFilter
-    agreements?: PaymentAgreementListRelationFilter
+    paymentAgreements?: PaymentAgreementListRelationFilter
     penalties?: PenaltyListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
   }
@@ -37112,6 +37159,10 @@ export namespace Prisma {
     referenceNumber?: SortOrderInput | SortOrder
     issueDate?: SortOrderInput | SortOrder
     dueDate?: SortOrderInput | SortOrder
+    reminder1SentAt?: SortOrderInput | SortOrder
+    reminder1DueDate?: SortOrderInput | SortOrder
+    reminder2SentAt?: SortOrderInput | SortOrder
+    reminder2DueDate?: SortOrderInput | SortOrder
     tenantId?: SortOrder
     debtorId?: SortOrder
     amountOriginal?: SortOrder
@@ -37124,7 +37175,7 @@ export namespace Prisma {
     tenant?: TenantOrderByWithRelationInput
     notifications?: NotificationOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
-    agreements?: PaymentAgreementOrderByRelationAggregateInput
+    paymentAgreements?: PaymentAgreementOrderByRelationAggregateInput
     penalties?: PenaltyOrderByRelationAggregateInput
     chatRooms?: ChatRoomOrderByRelationAggregateInput
   }
@@ -37137,6 +37188,10 @@ export namespace Prisma {
     referenceNumber?: StringNullableFilter<"CollectionCase"> | string | null
     issueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     dueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenantId?: StringFilter<"CollectionCase"> | string
     debtorId?: StringFilter<"CollectionCase"> | string
     amountOriginal?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -37149,7 +37204,7 @@ export namespace Prisma {
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     notifications?: NotificationListRelationFilter
     payments?: PaymentListRelationFilter
-    agreements?: PaymentAgreementListRelationFilter
+    paymentAgreements?: PaymentAgreementListRelationFilter
     penalties?: PenaltyListRelationFilter
     chatRooms?: ChatRoomListRelationFilter
   }, "id">
@@ -37159,6 +37214,10 @@ export namespace Prisma {
     referenceNumber?: SortOrderInput | SortOrder
     issueDate?: SortOrderInput | SortOrder
     dueDate?: SortOrderInput | SortOrder
+    reminder1SentAt?: SortOrderInput | SortOrder
+    reminder1DueDate?: SortOrderInput | SortOrder
+    reminder2SentAt?: SortOrderInput | SortOrder
+    reminder2DueDate?: SortOrderInput | SortOrder
     tenantId?: SortOrder
     debtorId?: SortOrder
     amountOriginal?: SortOrder
@@ -37182,6 +37241,10 @@ export namespace Prisma {
     referenceNumber?: StringNullableWithAggregatesFilter<"CollectionCase"> | string | null
     issueDate?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
     dueDate?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
+    reminder1SentAt?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
+    reminder1DueDate?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
+    reminder2SentAt?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
+    reminder2DueDate?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
     tenantId?: StringWithAggregatesFilter<"CollectionCase"> | string
     debtorId?: StringWithAggregatesFilter<"CollectionCase"> | string
     amountOriginal?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -37428,7 +37491,7 @@ export namespace Prisma {
     email?: StringFilter<"Debtor"> | string
     phone?: StringNullableFilter<"Debtor"> | string | null
     address?: StringNullableFilter<"Debtor"> | string | null
-    personType?: StringNullableFilter<"Debtor"> | string | null
+    personType?: EnumPersonTypeFilter<"Debtor"> | $Enums.PersonType
     identificationType?: EnumIdentificationTypeNullableFilter<"Debtor"> | $Enums.IdentificationType | null
     identification?: StringNullableFilter<"Debtor"> | string | null
     totalIncome?: FloatNullableFilter<"Debtor"> | number | null
@@ -37450,7 +37513,7 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    personType?: SortOrderInput | SortOrder
+    personType?: SortOrder
     identificationType?: SortOrderInput | SortOrder
     identification?: SortOrderInput | SortOrder
     totalIncome?: SortOrderInput | SortOrder
@@ -37477,7 +37540,7 @@ export namespace Prisma {
     email?: StringFilter<"Debtor"> | string
     phone?: StringNullableFilter<"Debtor"> | string | null
     address?: StringNullableFilter<"Debtor"> | string | null
-    personType?: StringNullableFilter<"Debtor"> | string | null
+    personType?: EnumPersonTypeFilter<"Debtor"> | $Enums.PersonType
     identificationType?: EnumIdentificationTypeNullableFilter<"Debtor"> | $Enums.IdentificationType | null
     identification?: StringNullableFilter<"Debtor"> | string | null
     totalIncome?: FloatNullableFilter<"Debtor"> | number | null
@@ -37499,7 +37562,7 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    personType?: SortOrderInput | SortOrder
+    personType?: SortOrder
     identificationType?: SortOrderInput | SortOrder
     identification?: SortOrderInput | SortOrder
     totalIncome?: SortOrderInput | SortOrder
@@ -37523,7 +37586,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Debtor"> | string
     phone?: StringNullableWithAggregatesFilter<"Debtor"> | string | null
     address?: StringNullableWithAggregatesFilter<"Debtor"> | string | null
-    personType?: StringNullableWithAggregatesFilter<"Debtor"> | string | null
+    personType?: EnumPersonTypeWithAggregatesFilter<"Debtor"> | $Enums.PersonType
     identificationType?: EnumIdentificationTypeNullableWithAggregatesFilter<"Debtor"> | $Enums.IdentificationType | null
     identification?: StringNullableWithAggregatesFilter<"Debtor"> | string | null
     totalIncome?: FloatNullableWithAggregatesFilter<"Debtor"> | number | null
@@ -37747,8 +37810,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFilter<"PaymentAgreement"> | number
     startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
@@ -37766,7 +37828,6 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
-    complianceStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrderInput | SortOrder
@@ -37786,8 +37847,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFilter<"PaymentAgreement"> | number
     startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
@@ -37805,7 +37865,6 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
-    complianceStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrderInput | SortOrder
@@ -37826,8 +37885,7 @@ export namespace Prisma {
     installmentAmount?: DecimalWithAggregatesFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntWithAggregatesFilter<"PaymentAgreement"> | number
     startDate?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusWithAggregatesFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableWithAggregatesFilter<"PaymentAgreement"> | string | null
@@ -39499,6 +39557,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -39509,7 +39571,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
@@ -39519,6 +39581,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -39529,7 +39595,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
@@ -39539,6 +39605,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -39549,7 +39619,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -39559,6 +39629,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -39569,7 +39643,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -39579,6 +39653,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -39594,6 +39672,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -39607,6 +39689,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -39861,7 +39947,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -39883,7 +39969,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -39901,7 +39987,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39923,7 +40009,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39943,7 +40029,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -39957,7 +40043,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39973,7 +40059,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -40196,11 +40282,10 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
@@ -40213,8 +40298,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -40228,11 +40312,10 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
@@ -40245,8 +40328,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40261,8 +40343,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -40274,8 +40355,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40287,8 +40367,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41811,6 +41890,10 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
+    reminder1SentAt?: SortOrder
+    reminder1DueDate?: SortOrder
+    reminder2SentAt?: SortOrder
+    reminder2DueDate?: SortOrder
     tenantId?: SortOrder
     debtorId?: SortOrder
     amountOriginal?: SortOrder
@@ -41832,6 +41915,10 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
+    reminder1SentAt?: SortOrder
+    reminder1DueDate?: SortOrder
+    reminder2SentAt?: SortOrder
+    reminder2DueDate?: SortOrder
     tenantId?: SortOrder
     debtorId?: SortOrder
     amountOriginal?: SortOrder
@@ -41847,6 +41934,10 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     issueDate?: SortOrder
     dueDate?: SortOrder
+    reminder1SentAt?: SortOrder
+    reminder1DueDate?: SortOrder
+    reminder2SentAt?: SortOrder
+    reminder2DueDate?: SortOrder
     tenantId?: SortOrder
     debtorId?: SortOrder
     amountOriginal?: SortOrder
@@ -42061,6 +42152,13 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
   }
 
+  export type EnumPersonTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PersonType | EnumPersonTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPersonTypeFilter<$PrismaModel> | $Enums.PersonType
+  }
+
   export type EnumIdentificationTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.IdentificationType | EnumIdentificationTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.IdentificationType[] | ListEnumIdentificationTypeFieldRefInput<$PrismaModel> | null
@@ -42142,6 +42240,16 @@ export namespace Prisma {
 
   export type DebtorSumOrderByAggregateInput = {
     totalIncome?: SortOrder
+  }
+
+  export type EnumPersonTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PersonType | EnumPersonTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPersonTypeWithAggregatesFilter<$PrismaModel> | $Enums.PersonType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPersonTypeFilter<$PrismaModel>
+    _max?: NestedEnumPersonTypeFilter<$PrismaModel>
   }
 
   export type EnumIdentificationTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -42262,18 +42370,11 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
-  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
-  export type EnumComplianceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumComplianceStatusFilter<$PrismaModel> | $Enums.ComplianceStatus
+  export type EnumPaymentAgreementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentAgreementStatus | EnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel> | $Enums.PaymentAgreementStatus
   }
 
   export type DebtorNullableScalarRelationFilter = {
@@ -42289,7 +42390,6 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
-    complianceStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42309,7 +42409,6 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
-    complianceStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42323,7 +42422,6 @@ export namespace Prisma {
     installmentsCount?: SortOrder
     startDate?: SortOrder
     status?: SortOrder
-    complianceStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     debtorId?: SortOrder
@@ -42335,24 +42433,14 @@ export namespace Prisma {
     installmentsCount?: SortOrder
   }
 
-  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
+  export type EnumPaymentAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentAgreementStatus | EnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentAgreementStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
-  export type EnumComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.ComplianceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumComplianceStatusFilter<$PrismaModel>
-    _max?: NestedEnumComplianceStatusFilter<$PrismaModel>
+    _min?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel>
   }
 
   export type EnumInstallmentStatusFilter<$PrismaModel = never> = {
@@ -43934,6 +44022,10 @@ export namespace Prisma {
     connect?: VerdictWhereUniqueInput | VerdictWhereUniqueInput[]
   }
 
+  export type EnumPersonTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PersonType
+  }
+
   export type NullableEnumIdentificationTypeFieldUpdateOperationsInput = {
     set?: $Enums.IdentificationType | null
   }
@@ -44180,9 +44272,9 @@ export namespace Prisma {
     update?: XOR<XOR<DebtorUpdateToOneWithWhereWithoutIncomesInput, DebtorUpdateWithoutIncomesInput>, DebtorUncheckedUpdateWithoutIncomesInput>
   }
 
-  export type CollectionCaseCreateNestedOneWithoutAgreementsInput = {
-    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
+  export type CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput = {
+    create?: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutPaymentAgreementsInput
     connect?: CollectionCaseWhereUniqueInput
   }
 
@@ -44220,20 +44312,16 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
-  export type EnumAgreementStatusFieldUpdateOperationsInput = {
-    set?: $Enums.AgreementStatus
+  export type EnumPaymentAgreementStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentAgreementStatus
   }
 
-  export type EnumComplianceStatusFieldUpdateOperationsInput = {
-    set?: $Enums.ComplianceStatus
-  }
-
-  export type CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput = {
-    create?: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutAgreementsInput
-    upsert?: CollectionCaseUpsertWithoutAgreementsInput
+  export type CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput = {
+    create?: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutPaymentAgreementsInput
+    upsert?: CollectionCaseUpsertWithoutPaymentAgreementsInput
     connect?: CollectionCaseWhereUniqueInput
-    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput, CollectionCaseUpdateWithoutAgreementsInput>, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
+    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutPaymentAgreementsInput, CollectionCaseUpdateWithoutPaymentAgreementsInput>, CollectionCaseUncheckedUpdateWithoutPaymentAgreementsInput>
   }
 
   export type InstallmentUpdateManyWithoutPaymentAgreementNestedInput = {
@@ -44725,11 +44813,28 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
   }
 
+  export type NestedEnumPersonTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PersonType | EnumPersonTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPersonTypeFilter<$PrismaModel> | $Enums.PersonType
+  }
+
   export type NestedEnumIdentificationTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.IdentificationType | EnumIdentificationTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.IdentificationType[] | ListEnumIdentificationTypeFieldRefInput<$PrismaModel> | null
     notIn?: $Enums.IdentificationType[] | ListEnumIdentificationTypeFieldRefInput<$PrismaModel> | null
     not?: NestedEnumIdentificationTypeNullableFilter<$PrismaModel> | $Enums.IdentificationType | null
+  }
+
+  export type NestedEnumPersonTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PersonType | EnumPersonTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PersonType[] | ListEnumPersonTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPersonTypeWithAggregatesFilter<$PrismaModel> | $Enums.PersonType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPersonTypeFilter<$PrismaModel>
+    _max?: NestedEnumPersonTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumIdentificationTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -44742,38 +44847,21 @@ export namespace Prisma {
     _max?: NestedEnumIdentificationTypeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
+  export type NestedEnumPaymentAgreementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentAgreementStatus | EnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel> | $Enums.PaymentAgreementStatus
   }
 
-  export type NestedEnumComplianceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumComplianceStatusFilter<$PrismaModel> | $Enums.ComplianceStatus
-  }
-
-  export type NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
+  export type NestedEnumPaymentAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentAgreementStatus | EnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentAgreementStatus[] | ListEnumPaymentAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentAgreementStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ComplianceStatus | EnumComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ComplianceStatus[] | ListEnumComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.ComplianceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumComplianceStatusFilter<$PrismaModel>
-    _max?: NestedEnumComplianceStatusFilter<$PrismaModel>
+    _min?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentAgreementStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumInstallmentStatusFilter<$PrismaModel = never> = {
@@ -44861,6 +44949,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -44870,7 +44962,7 @@ export namespace Prisma {
     debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
@@ -44880,6 +44972,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
@@ -44889,7 +44985,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
@@ -44910,7 +45006,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -44930,7 +45026,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -45183,6 +45279,10 @@ export namespace Prisma {
     referenceNumber?: StringNullableFilter<"CollectionCase"> | string | null
     issueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     dueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder1DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2SentAt?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    reminder2DueDate?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenantId?: StringFilter<"CollectionCase"> | string
     debtorId?: StringFilter<"CollectionCase"> | string
     amountOriginal?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -45220,7 +45320,7 @@ export namespace Prisma {
     email?: StringFilter<"Debtor"> | string
     phone?: StringNullableFilter<"Debtor"> | string | null
     address?: StringNullableFilter<"Debtor"> | string | null
-    personType?: StringNullableFilter<"Debtor"> | string | null
+    personType?: EnumPersonTypeFilter<"Debtor"> | $Enums.PersonType
     identificationType?: EnumIdentificationTypeNullableFilter<"Debtor"> | $Enums.IdentificationType | null
     identification?: StringNullableFilter<"Debtor"> | string | null
     totalIncome?: FloatNullableFilter<"Debtor"> | number | null
@@ -45546,7 +45646,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -45566,7 +45666,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -45839,7 +45939,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -45860,7 +45960,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -46121,7 +46221,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -46142,7 +46242,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47471,7 +47571,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -47492,7 +47592,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -47637,8 +47737,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
@@ -47652,8 +47751,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -47746,7 +47844,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47767,7 +47865,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47930,8 +48028,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFilter<"PaymentAgreement"> | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFilter<"PaymentAgreement"> | number
     startDate?: DateTimeFilter<"PaymentAgreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"PaymentAgreement"> | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFilter<"PaymentAgreement"> | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFilter<"PaymentAgreement"> | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     updatedAt?: DateTimeFilter<"PaymentAgreement"> | Date | string
     debtorId?: StringNullableFilter<"PaymentAgreement"> | string | null
@@ -47988,6 +48085,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -47998,7 +48099,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
@@ -48007,6 +48108,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -48017,7 +48122,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
@@ -48042,6 +48147,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48052,7 +48161,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
@@ -48061,6 +48170,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48071,7 +48184,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
@@ -48080,6 +48193,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -48089,7 +48206,7 @@ export namespace Prisma {
     debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48099,6 +48216,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -48108,7 +48229,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48134,6 +48255,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48143,7 +48268,7 @@ export namespace Prisma {
     debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -48153,6 +48278,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48162,7 +48291,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -48172,6 +48301,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -48181,7 +48314,7 @@ export namespace Prisma {
     debtor: DebtorCreateNestedOneWithoutCollectionCasesInput
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48191,6 +48324,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -48200,7 +48337,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48216,11 +48353,10 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
@@ -48232,8 +48368,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -48293,6 +48428,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48302,7 +48441,7 @@ export namespace Prisma {
     debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -48312,6 +48451,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48321,7 +48464,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -48343,11 +48486,10 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
@@ -48359,8 +48501,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48403,6 +48544,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -48412,7 +48557,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48422,6 +48567,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
@@ -48431,7 +48580,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
@@ -48572,11 +48721,10 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
   }
@@ -48588,8 +48736,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     installments?: InstallmentUncheckedCreateNestedManyWithoutPaymentAgreementInput
@@ -48902,6 +49049,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -48912,7 +49063,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutCollectionCasesInput
     notifications?: NotificationCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyCreateNestedManyWithoutCollectionCaseInput
   }
 
@@ -48921,6 +49072,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -48931,7 +49086,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     notifications?: NotificationUncheckedCreateNestedManyWithoutCollectionCaseInput
     payments?: PaymentUncheckedCreateNestedManyWithoutCollectionCaseInput
-    agreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
+    paymentAgreements?: PaymentAgreementUncheckedCreateNestedManyWithoutCollectionCaseInput
     penalties?: PenaltyUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
@@ -49053,6 +49208,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49063,7 +49222,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
   }
 
@@ -49072,6 +49231,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49082,7 +49245,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
 
@@ -49236,7 +49399,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -49257,7 +49420,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -49290,7 +49453,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49311,7 +49474,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49322,11 +49485,15 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutDebtorNestedInput
   }
 
-  export type CollectionCaseCreateWithoutAgreementsInput = {
+  export type CollectionCaseCreateWithoutPaymentAgreementsInput = {
     id?: string
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
     amountToReceive: Decimal | DecimalJsLike | number | string
@@ -49341,11 +49508,15 @@ export namespace Prisma {
     chatRooms?: ChatRoomCreateNestedManyWithoutCollectionCaseInput
   }
 
-  export type CollectionCaseUncheckedCreateWithoutAgreementsInput = {
+  export type CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput = {
     id?: string
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
@@ -49360,9 +49531,9 @@ export namespace Prisma {
     chatRooms?: ChatRoomUncheckedCreateNestedManyWithoutCollectionCaseInput
   }
 
-  export type CollectionCaseCreateOrConnectWithoutAgreementsInput = {
+  export type CollectionCaseCreateOrConnectWithoutPaymentAgreementsInput = {
     where: CollectionCaseWhereUniqueInput
-    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+    create: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
   }
 
   export type InstallmentCreateWithoutPaymentAgreementInput = {
@@ -49437,7 +49608,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -49458,7 +49629,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -49474,22 +49645,26 @@ export namespace Prisma {
     create: XOR<DebtorCreateWithoutPaymentAgreementsInput, DebtorUncheckedCreateWithoutPaymentAgreementsInput>
   }
 
-  export type CollectionCaseUpsertWithoutAgreementsInput = {
-    update: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<CollectionCaseCreateWithoutAgreementsInput, CollectionCaseUncheckedCreateWithoutAgreementsInput>
+  export type CollectionCaseUpsertWithoutPaymentAgreementsInput = {
+    update: XOR<CollectionCaseUpdateWithoutPaymentAgreementsInput, CollectionCaseUncheckedUpdateWithoutPaymentAgreementsInput>
+    create: XOR<CollectionCaseCreateWithoutPaymentAgreementsInput, CollectionCaseUncheckedCreateWithoutPaymentAgreementsInput>
     where?: CollectionCaseWhereInput
   }
 
-  export type CollectionCaseUpdateToOneWithWhereWithoutAgreementsInput = {
+  export type CollectionCaseUpdateToOneWithWhereWithoutPaymentAgreementsInput = {
     where?: CollectionCaseWhereInput
-    data: XOR<CollectionCaseUpdateWithoutAgreementsInput, CollectionCaseUncheckedUpdateWithoutAgreementsInput>
+    data: XOR<CollectionCaseUpdateWithoutPaymentAgreementsInput, CollectionCaseUncheckedUpdateWithoutPaymentAgreementsInput>
   }
 
-  export type CollectionCaseUpdateWithoutAgreementsInput = {
+  export type CollectionCaseUpdateWithoutPaymentAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49504,11 +49679,15 @@ export namespace Prisma {
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
 
-  export type CollectionCaseUncheckedUpdateWithoutAgreementsInput = {
+  export type CollectionCaseUncheckedUpdateWithoutPaymentAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49572,7 +49751,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49593,7 +49772,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49610,11 +49789,10 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    collectionCase: CollectionCaseCreateNestedOneWithoutAgreementsInput
+    collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
     Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
@@ -49626,8 +49804,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -49685,11 +49862,10 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
     Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
@@ -49701,8 +49877,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49762,6 +49937,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     debtorId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
@@ -49778,7 +49957,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -49870,6 +50049,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49879,7 +50062,7 @@ export namespace Prisma {
     debtor?: DebtorUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -49889,6 +50072,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49898,7 +50085,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -49908,6 +50095,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     debtorId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -49923,7 +50114,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49943,7 +50134,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49962,7 +50153,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50101,7 +50292,7 @@ export namespace Prisma {
     email: string
     phone?: string | null
     address?: string | null
-    personType?: string | null
+    personType?: $Enums.PersonType
     identificationType?: $Enums.IdentificationType | null
     identification?: string | null
     totalIncome?: number | null
@@ -50142,7 +50333,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50162,7 +50353,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50181,7 +50372,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    personType?: NullableStringFieldUpdateOperationsInput | string | null
+    personType?: EnumPersonTypeFieldUpdateOperationsInput | $Enums.PersonType
     identificationType?: NullableEnumIdentificationTypeFieldUpdateOperationsInput | $Enums.IdentificationType | null
     identification?: NullableStringFieldUpdateOperationsInput | string | null
     totalIncome?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50752,8 +50943,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     debtorId?: string | null
@@ -50848,8 +51038,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
@@ -50863,8 +51052,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50878,8 +51066,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     debtorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50990,6 +51177,10 @@ export namespace Prisma {
     referenceNumber?: string | null
     issueDate?: Date | string | null
     dueDate?: Date | string | null
+    reminder1SentAt?: Date | string | null
+    reminder1DueDate?: Date | string | null
+    reminder2SentAt?: Date | string | null
+    reminder2DueDate?: Date | string | null
     tenantId: string
     amountOriginal: Decimal | DecimalJsLike | number | string
     amountDue: Decimal | DecimalJsLike | number | string
@@ -51014,8 +51205,7 @@ export namespace Prisma {
     installmentAmount: Decimal | DecimalJsLike | number | string
     installmentsCount: number
     startDate: Date | string
-    status?: $Enums.AgreementStatus
-    complianceStatus?: $Enums.ComplianceStatus
+    status?: $Enums.PaymentAgreementStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -51041,6 +51231,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountToReceive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -51050,7 +51244,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutCollectionCasesNestedInput
     notifications?: NotificationUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -51060,6 +51254,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -51069,7 +51267,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notifications?: NotificationUncheckedUpdateManyWithoutCollectionCaseNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutCollectionCaseNestedInput
-    agreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
+    paymentAgreements?: PaymentAgreementUncheckedUpdateManyWithoutCollectionCaseNestedInput
     penalties?: PenaltyUncheckedUpdateManyWithoutCollectionCaseNestedInput
     chatRooms?: ChatRoomUncheckedUpdateManyWithoutCollectionCaseNestedInput
   }
@@ -51079,6 +51277,10 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder1DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2SentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reminder2DueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenantId?: StringFieldUpdateOperationsInput | string
     amountOriginal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amountDue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -51118,11 +51320,10 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    collectionCase?: CollectionCaseUpdateOneRequiredWithoutAgreementsNestedInput
+    collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
   }
@@ -51134,8 +51335,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installments?: InstallmentUncheckedUpdateManyWithoutPaymentAgreementNestedInput
@@ -51149,8 +51349,7 @@ export namespace Prisma {
     installmentAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     installmentsCount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    complianceStatus?: EnumComplianceStatusFieldUpdateOperationsInput | $Enums.ComplianceStatus
+    status?: EnumPaymentAgreementStatusFieldUpdateOperationsInput | $Enums.PaymentAgreementStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
