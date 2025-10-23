@@ -1,36 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import { PaymentAgreement } from "@/lib/validations/payment-agreement";
+import { Box, Container, Tab, Tabs, Typography } from "@mui/material";
+import { PaymentAgreementResponse } from "@/lib/validations/payment-agreement";
 import {
   getPaymentAgreements,
   updatePaymentAgreement,
 } from "@/app/actions/payment-agreement";
 import TabPanel from "@/components/ui/tab-panel";
-import AgreementTable from "@/components/agreements/agreement-table";
-import PendingRequestCard from "@/components/agreements/pending-request-card";
 import { AlertService } from "@/lib/alerts";
 import { $Enums } from "@/prisma/generated/prisma";
 import { notifyInfo } from "@/lib/notifications";
 import { useSession } from "next-auth/react";
+import { AgreementTableApprove } from "@/components/agreements/agreement-table-approve";
+import AgreementTable from "@/components/agreements/agreement-table";
 
 const PaymentAgreementsPage = () => {
   const { data: session } = useSession();
   const [value, setValue] = useState(0);
   const [agreementsPending, setAgreementsPending] = useState<
-    PaymentAgreement[]
+    PaymentAgreementResponse[]
   >([]);
   const [agreementsProcessed, setAgreementsProcessed] = useState<
-    PaymentAgreement[]
+    PaymentAgreementResponse[]
   >([]);
 
   useEffect(() => {
@@ -113,42 +104,19 @@ const PaymentAgreementsPage = () => {
 
       <TabPanel value={value} index={0}>
         <Box sx={{ mt: 2 }}>
-          {agreementsPending.length === 0 && (
-            <Paper sx={{ p: 4, textAlign: "center" }}>
-              <TaskAltIcon fontSize="large" color="disabled" />
-              <br />
-              <Typography variant="body1" sx={{ mt: 2 }}>
-                Geen lopende verzoeken om betalingsregelingen.
-              </Typography>
-            </Paper>
-          )}
-
-          <Grid container spacing={2}>
-            {agreementsPending.map((agreement) => (
-              <Grid size={{ xs: 12, sm: 6, md: 12 }} key={agreement.id}>
-                <PendingRequestCard
-                  paymentAgreement={agreement}
-                  onApprove={handleApprove}
-                  onReject={handleReject}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <AgreementTableApprove
+            agreements={agreementsPending}
+            handleApprove={handleApprove}
+            handleReject={handleReject}
+          />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Box sx={{ mt: 2 }}>
-          <Grid container spacing={2}>
-            {agreementsProcessed.map((agreement) => (
-              <Grid size={{ xs: 12, sm: 6, md: 12 }} key={agreement.id}>
-                <PendingRequestCard
-                  paymentAgreement={agreement}
-                  onApprove={handleApprove}
-                  onReject={handleReject}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <AgreementTable
+            agreements={agreementsProcessed}
+            onDelete={fetchAgreements}
+          />
         </Box>
       </TabPanel>
     </Container>

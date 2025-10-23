@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import {
   PaymentAgreement,
   PaymentAgreementCreate,
+  PaymentAgreementResponse,
 } from "@/lib/validations/payment-agreement";
 import { $Enums } from "@/prisma/generated/prisma";
 
@@ -16,9 +17,13 @@ type PaymentAgreementFilter = {
 
 export const getPaymentAgreements = async (
   filter?: Partial<PaymentAgreementFilter>
-): Promise<PaymentAgreement[]> => {
+): Promise<PaymentAgreementResponse[]> => {
   const agreements = await prisma.paymentAgreement.findMany({
     where: { ...filter },
+    include: {
+      collectionCase: true,
+      debtor: true,
+    },
   });
 
   revalidatePath("/dashboard/payment-agreements");
@@ -34,6 +39,19 @@ export const getPaymentAgreements = async (
     createdAt: agreement.createdAt ?? undefined,
     updatedAt: agreement.updatedAt ?? undefined,
     debtorId: agreement.debtorId ?? undefined,
+    collectionCase: {
+      id: agreement.collectionCase.id,
+      referenceNumber: agreement.collectionCase.referenceNumber ?? "",
+      issueDate: agreement.collectionCase.issueDate ?? undefined,
+    },
+    debtor: agreement.debtor
+      ? {
+          id: agreement.debtor.id,
+          fullname: agreement.debtor.fullname,
+          email: agreement.debtor.email ?? undefined,
+          phone: agreement.debtor.phone ?? undefined,
+        }
+      : undefined,
   }));
 };
 

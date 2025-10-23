@@ -361,7 +361,7 @@ model Payment {
   referenceNumber    String?
   updatedAt          DateTime          @updatedAt
   collectionCase     CollectionCase    @relation(fields: [collectionCaseId], references: [id])
-  PaymentAgreement   PaymentAgreement? @relation(fields: [paymentAgreementId], references: [id])
+  paymentAgreement   PaymentAgreement? @relation(fields: [paymentAgreementId], references: [id])
   paymentAgreementId String?
   Installment        Installment[]
 
@@ -457,7 +457,7 @@ model PaymentAgreement {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Debtor    Debtor?  @relation(fields: [debtorId], references: [id])
+  debtor    Debtor?  @relation(fields: [debtorId], references: [id])
   debtorId  String?
 
   @@map("payment_agreement")

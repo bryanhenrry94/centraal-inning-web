@@ -26991,7 +26991,7 @@ export namespace Prisma {
     updatedAt?: boolean
     paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
     Installment?: boolean | Payment$InstallmentArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
@@ -27007,7 +27007,7 @@ export namespace Prisma {
     updatedAt?: boolean
     paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -27021,7 +27021,7 @@ export namespace Prisma {
     updatedAt?: boolean
     paymentAgreementId?: boolean
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectScalar = {
@@ -27039,24 +27039,24 @@ export namespace Prisma {
   export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "method" | "createdAt" | "collectionCaseId" | "paymentDate" | "referenceNumber" | "updatedAt" | "paymentAgreementId", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
     Installment?: boolean | Payment$InstallmentArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
   }
   export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    PaymentAgreement?: boolean | Payment$PaymentAgreementArgs<ExtArgs>
+    paymentAgreement?: boolean | Payment$paymentAgreementArgs<ExtArgs>
   }
 
   export type $PaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Payment"
     objects: {
       collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
-      PaymentAgreement: Prisma.$PaymentAgreementPayload<ExtArgs> | null
+      paymentAgreement: Prisma.$PaymentAgreementPayload<ExtArgs> | null
       Installment: Prisma.$InstallmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -27464,7 +27464,7 @@ export namespace Prisma {
   export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    PaymentAgreement<T extends Payment$PaymentAgreementArgs<ExtArgs> = {}>(args?: Subset<T, Payment$PaymentAgreementArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    paymentAgreement<T extends Payment$paymentAgreementArgs<ExtArgs> = {}>(args?: Subset<T, Payment$paymentAgreementArgs<ExtArgs>>): Prisma__PaymentAgreementClient<$Result.GetResult<Prisma.$PaymentAgreementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     Installment<T extends Payment$InstallmentArgs<ExtArgs> = {}>(args?: Subset<T, Payment$InstallmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -27900,9 +27900,9 @@ export namespace Prisma {
   }
 
   /**
-   * Payment.PaymentAgreement
+   * Payment.paymentAgreement
    */
-  export type Payment$PaymentAgreementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Payment$paymentAgreementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PaymentAgreement
      */
@@ -32896,7 +32896,7 @@ export namespace Prisma {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
     payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
     _count?: boolean | PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentAgreement"]>
 
@@ -32915,7 +32915,7 @@ export namespace Prisma {
     debtorId?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
   }, ExtArgs["result"]["paymentAgreement"]>
 
   export type PaymentAgreementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -32933,7 +32933,7 @@ export namespace Prisma {
     debtorId?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
   }, ExtArgs["result"]["paymentAgreement"]>
 
   export type PaymentAgreementSelectScalar = {
@@ -32957,18 +32957,18 @@ export namespace Prisma {
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
     installments?: boolean | PaymentAgreement$installmentsArgs<ExtArgs>
     payments?: boolean | PaymentAgreement$paymentsArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
     _count?: boolean | PaymentAgreementCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentAgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
   }
   export type PaymentAgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     collectionCase?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-    Debtor?: boolean | PaymentAgreement$DebtorArgs<ExtArgs>
+    debtor?: boolean | PaymentAgreement$debtorArgs<ExtArgs>
   }
 
   export type $PaymentAgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -32978,7 +32978,7 @@ export namespace Prisma {
       collectionCase: Prisma.$CollectionCasePayload<ExtArgs>
       installments: Prisma.$InstallmentPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
-      Debtor: Prisma.$DebtorPayload<ExtArgs> | null
+      debtor: Prisma.$DebtorPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33391,7 +33391,7 @@ export namespace Prisma {
     collectionCase<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     installments<T extends PaymentAgreement$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends PaymentAgreement$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Debtor<T extends PaymentAgreement$DebtorArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$DebtorArgs<ExtArgs>>): Prisma__DebtorClient<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    debtor<T extends PaymentAgreement$debtorArgs<ExtArgs> = {}>(args?: Subset<T, PaymentAgreement$debtorArgs<ExtArgs>>): Prisma__DebtorClient<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -33877,9 +33877,9 @@ export namespace Prisma {
   }
 
   /**
-   * PaymentAgreement.Debtor
+   * PaymentAgreement.debtor
    */
-  export type PaymentAgreement$DebtorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PaymentAgreement$debtorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Debtor
      */
@@ -37489,7 +37489,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
     paymentAgreementId?: StringNullableFilter<"Payment"> | string | null
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
-    PaymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
+    paymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
     Installment?: InstallmentListRelationFilter
   }
 
@@ -37504,7 +37504,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     paymentAgreementId?: SortOrderInput | SortOrder
     collectionCase?: CollectionCaseOrderByWithRelationInput
-    PaymentAgreement?: PaymentAgreementOrderByWithRelationInput
+    paymentAgreement?: PaymentAgreementOrderByWithRelationInput
     Installment?: InstallmentOrderByRelationAggregateInput
   }
 
@@ -37522,7 +37522,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
     paymentAgreementId?: StringNullableFilter<"Payment"> | string | null
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
-    PaymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
+    paymentAgreement?: XOR<PaymentAgreementNullableScalarRelationFilter, PaymentAgreementWhereInput> | null
     Installment?: InstallmentListRelationFilter
   }, "id">
 
@@ -37898,7 +37898,7 @@ export namespace Prisma {
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
     installments?: InstallmentListRelationFilter
     payments?: PaymentListRelationFilter
-    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
+    debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
   }
 
   export type PaymentAgreementOrderByWithRelationInput = {
@@ -37918,7 +37918,7 @@ export namespace Prisma {
     collectionCase?: CollectionCaseOrderByWithRelationInput
     installments?: InstallmentOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
-    Debtor?: DebtorOrderByWithRelationInput
+    debtor?: DebtorOrderByWithRelationInput
   }
 
   export type PaymentAgreementWhereUniqueInput = Prisma.AtLeast<{
@@ -37941,7 +37941,7 @@ export namespace Prisma {
     collectionCase?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
     installments?: InstallmentListRelationFilter
     payments?: PaymentListRelationFilter
-    Debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
+    debtor?: XOR<DebtorNullableScalarRelationFilter, DebtorWhereInput> | null
   }, "id">
 
   export type PaymentAgreementOrderByWithAggregationInput = {
@@ -39959,7 +39959,7 @@ export namespace Prisma {
     referenceNumber?: string | null
     updatedAt?: Date | string
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentsInput
-    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+    paymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
     Installment?: InstallmentCreateNestedManyWithoutPaymentInput
   }
 
@@ -39985,7 +39985,7 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentsNestedInput
-    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+    paymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
     Installment?: InstallmentUpdateManyWithoutPaymentNestedInput
   }
 
@@ -40385,7 +40385,7 @@ export namespace Prisma {
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+    debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateInput = {
@@ -40419,7 +40419,7 @@ export namespace Prisma {
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+    debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateInput = {
@@ -45376,7 +45376,7 @@ export namespace Prisma {
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+    debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutTenantInput = {
@@ -47971,7 +47971,7 @@ export namespace Prisma {
     paymentDate: Date | string
     referenceNumber?: string | null
     updatedAt?: Date | string
-    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+    paymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
     Installment?: InstallmentCreateNestedManyWithoutPaymentInput
   }
 
@@ -48010,7 +48010,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+    debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutCollectionCaseInput = {
@@ -48616,7 +48616,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     installments?: InstallmentCreateNestedManyWithoutPaymentAgreementInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+    debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutPaymentsInput = {
@@ -48753,7 +48753,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+    debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutPaymentsInput = {
@@ -50200,7 +50200,7 @@ export namespace Prisma {
     tenant: TenantCreateNestedOneWithoutPaymentAgreementsInput
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentAgreementsInput
     payments?: PaymentCreateNestedManyWithoutPaymentAgreementInput
-    Debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
+    debtor?: DebtorCreateNestedOneWithoutPaymentAgreementsInput
   }
 
   export type PaymentAgreementUncheckedCreateWithoutInstallmentsInput = {
@@ -50233,7 +50233,7 @@ export namespace Prisma {
     referenceNumber?: string | null
     updatedAt?: Date | string
     collectionCase: CollectionCaseCreateNestedOneWithoutPaymentsInput
-    PaymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
+    paymentAgreement?: PaymentAgreementCreateNestedOneWithoutPaymentsInput
   }
 
   export type PaymentUncheckedCreateWithoutInstallmentInput = {
@@ -50277,7 +50277,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+    debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutInstallmentsInput = {
@@ -50316,7 +50316,7 @@ export namespace Prisma {
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentsNestedInput
-    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+    paymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutInstallmentInput = {
@@ -50724,7 +50724,7 @@ export namespace Prisma {
     collectionCase?: CollectionCaseUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+    debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutTenantInput = {
@@ -51481,7 +51481,7 @@ export namespace Prisma {
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    PaymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
+    paymentAgreement?: PaymentAgreementUpdateOneWithoutPaymentsNestedInput
     Installment?: InstallmentUpdateManyWithoutPaymentNestedInput
   }
 
@@ -51521,7 +51521,7 @@ export namespace Prisma {
     tenant?: TenantUpdateOneRequiredWithoutPaymentAgreementsNestedInput
     installments?: InstallmentUpdateManyWithoutPaymentAgreementNestedInput
     payments?: PaymentUpdateManyWithoutPaymentAgreementNestedInput
-    Debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
+    debtor?: DebtorUpdateOneWithoutPaymentAgreementsNestedInput
   }
 
   export type PaymentAgreementUncheckedUpdateWithoutCollectionCaseInput = {

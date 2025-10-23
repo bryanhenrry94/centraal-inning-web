@@ -6,7 +6,6 @@ import {
   Typography,
   Box,
   Divider,
-  Badge,
   Stack,
 } from "@mui/material";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
@@ -16,7 +15,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import MailIcon from "@mui/icons-material/Mail";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -47,9 +45,6 @@ const Header = () => {
     return (
       <>
         <Stack direction="row" spacing={2} alignItems="center">
-          <Badge badgeContent={4} color="primary">
-            <MailIcon color="info" />
-          </Badge>
           <IconButton onClick={handleOpen} sx={{ ml: 1, p: 0.5 }}>
             <Avatar
               alt={session.user?.name || "User"}

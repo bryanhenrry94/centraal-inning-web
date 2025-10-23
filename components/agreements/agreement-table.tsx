@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/common/utils/general";
 import {
   Box,
   IconButton,
@@ -18,7 +18,7 @@ import MoreIcon from "@mui/icons-material/More";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { PaymentAgreement } from "@/lib/validations/payment-agreement";
+import { PaymentAgreementResponse } from "@/lib/validations/payment-agreement";
 import { useState } from "react";
 import { Installment } from "@/lib/validations/installment";
 import {
@@ -30,14 +30,11 @@ import { notifyInfo } from "@/lib/notifications";
 import PaymentAgreementStatusChip from "../ui/payment-agreement-status-chip";
 
 interface AgreementTableProps {
-  paymentAgreements: PaymentAgreement[];
+  agreements: PaymentAgreementResponse[];
   onDelete?: () => void;
 }
 
-const AgreementTable = ({
-  paymentAgreements,
-  onDelete,
-}: AgreementTableProps) => {
+const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
   const [installments, setInstallments] = useState<Installment[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -70,26 +67,139 @@ const AgreementTable = ({
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="simple table">
+        <Table
+          stickyHeader
+          sx={{
+            "& .MuiTableCell-root": {
+              border: "1px solid #e0e0e0",
+            },
+          }}
+          aria-label="tabla de embargo"
+          size="small"
+        >
           <TableHead>
             <TableRow>
-              <TableCell>Datum</TableCell>
-              <TableCell align="center">Totaal bedrag</TableCell>
-              <TableCell align="center">Aantal termijnen</TableCell>
-              <TableCell align="center">Termijnbedrag</TableCell>
-              <TableCell align="center">Eerste termijn datum</TableCell>
-              <TableCell align="center">Nalevingsstatus</TableCell>
-              <TableCell align="center">Actie</TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Datum
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Naam debiteur
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Referentie
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Totaal bedrag
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Aantal termijnen
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Termijnbedrag
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Eerste termijn datum
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Nalevingsstatus
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Actie
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paymentAgreements?.map((agreement) => (
-              <TableRow
-                key={agreement.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+            {agreements?.map((agreement) => (
+              <TableRow key={agreement.id}>
                 <TableCell component="th" scope="row" align="center">
                   {new Date(agreement.startDate).toLocaleDateString()}
+                </TableCell>
+                <TableCell align="center">
+                  {agreement.debtor?.fullname ?? "N/A"}
+                </TableCell>
+                <TableCell align="center">
+                  {agreement.collectionCase.referenceNumber || "N/A"}
                 </TableCell>
                 <TableCell align="right">
                   {formatCurrency(agreement.totalAmount)}
@@ -101,9 +211,9 @@ const AgreementTable = ({
                   {formatCurrency(agreement.installmentAmount)}
                 </TableCell>
                 <TableCell align="center">
-                  {new Date(agreement.startDate).toLocaleDateString()}
+                  {formatDate(agreement.startDate.toString())}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <PaymentAgreementStatusChip status={agreement.status} />
                 </TableCell>
                 <TableCell align="center">
@@ -191,7 +301,7 @@ const AgreementTable = ({
                       }}
                     >
                       <TableCell component="th" scope="row" align="center">
-                        {new Date(installment.dueDate).toLocaleDateString()}
+                        {formatDate(installment.dueDate.toString())}
                       </TableCell>
                       <TableCell align="center">{installment.number}</TableCell>
                       <TableCell align="right">

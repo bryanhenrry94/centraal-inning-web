@@ -55,6 +55,23 @@ export const getDebtorById = async (id: string): Promise<DebtorBase | null> => {
   }
 };
 
+export const getDebtorByUserId = async (
+  userId: string
+): Promise<DebtorBase | null> => {
+  try {
+    const debtor = await prisma.debtor.findFirst({
+      where: { userId },
+      include: {
+        incomes: true, // Include incomes if needed
+      },
+    });
+
+    return debtor as DebtorBase | null;
+  } catch (error) {
+    throw new Error("Error fetching debtor by user ID");
+  }
+};
+
 export const createDebtor = async (
   debtor: DebtorCreate,
   tenantId: string

@@ -25,7 +25,27 @@ export const PaymentAgreementCreateSchema = PaymentAgreementSchema.omit({
 export const PaymentAgreementUpdateSchema =
   PaymentAgreementCreateSchema.partial();
 
+export const PaymentAgreementResponseSchema = PaymentAgreementSchema.extend({
+  collectionCase: z.object({
+    id: z.string().cuid(),
+    referenceNumber: z.string(),
+    issueDate: z.date().optional().nullable(),
+  }),
+  debtor: z
+    .object({
+      id: z.string().cuid(),
+      fullname: z.string(),
+      email: z.string().email().optional().nullable(),
+      phone: z.string().optional().nullable(),
+    })
+    .nullable()
+    .optional(),
+});
+
 export type PaymentAgreement = z.infer<typeof PaymentAgreementSchema>;
+export type PaymentAgreementResponse = z.infer<
+  typeof PaymentAgreementResponseSchema
+>;
 export type PaymentAgreementCreate = z.infer<
   typeof PaymentAgreementCreateSchema
 >;
