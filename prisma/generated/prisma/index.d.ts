@@ -159,11 +159,12 @@ export type InstallmentStatus = (typeof InstallmentStatus)[keyof typeof Installm
 
 export const PaymentAgreementStatus: {
   PENDING: 'PENDING',
-  ACTIVE: 'ACTIVE',
-  OVERDUE: 'OVERDUE',
-  PAID: 'PAID',
+  IN_NEGOTIATION: 'IN_NEGOTIATION',
+  COUNTEROFFER: 'COUNTEROFFER',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
   CANCELLED: 'CANCELLED',
-  REJECTED: 'REJECTED'
+  CLOSED: 'CLOSED'
 };
 
 export type PaymentAgreementStatus = (typeof PaymentAgreementStatus)[keyof typeof PaymentAgreementStatus]

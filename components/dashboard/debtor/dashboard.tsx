@@ -29,6 +29,7 @@ import { formatCurrency, formatDate } from "@/common/utils/general";
 import CollectionStatusChip from "@/components/ui/collection-status-chip";
 import AgreementTable from "@/components/agreements/agreement-table";
 import {
+  PaymentAgreement,
   PaymentAgreementCreate,
   PaymentAgreementResponse,
 } from "@/lib/validations/payment-agreement";
@@ -36,11 +37,13 @@ import {
   createPaymentAgreement,
   existsPaymentAgreement,
   getPaymentAgreements,
+  updatePaymentAgreement,
 } from "@/app/actions/payment-agreement";
 import { notifyError, notifyInfo } from "@/lib/notifications";
 import TabPanel from "@/components/ui/tab-panel";
 import AgreementForm from "@/components/agreements/agreement-form";
 import { getDebtorByUserId } from "@/app/actions/debtor";
+import { $Enums } from "@/prisma/generated/prisma";
 
 const DashboardDebtor = () => {
   const { data: session } = useSession();
@@ -110,7 +113,7 @@ const DashboardDebtor = () => {
     setValue(newValue);
   };
 
-  const handleAgreementSubmit = async (data: PaymentAgreementCreate) => {
+  const handleAgreementSubmit = async (data: Partial<PaymentAgreement>) => {
     // Implement submission logic here
     try {
       setLoading(true);
@@ -123,7 +126,16 @@ const DashboardDebtor = () => {
         return;
       }
 
-      if (data.startDate < new Date()) {
+      const agreementCreate: PaymentAgreementCreate = {
+        collectionCaseId: collectionCaseSelected.id,
+        totalAmount: Number(data.totalAmount),
+        installmentsCount: Number(data.installmentsCount),
+        installmentAmount: Number(data.installmentAmount),
+        startDate: data.startDate || new Date(),
+        status: data.status || "ACTIVE",
+      };
+
+      if (agreementCreate.startDate < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
       }
@@ -140,15 +152,57 @@ const DashboardDebtor = () => {
         return;
       }
 
-      data.debtorId = debtor.id;
+      agreementCreate.debtorId = debtor.id;
 
-      await createPaymentAgreement(session?.user?.tenantId, data);
+      await createPaymentAgreement(session?.user?.tenantId, agreementCreate);
       await fetchPaymentAgreements();
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");
     } catch (error) {
       console.error("Error creating payment agreement:", error);
       notifyError("Error al crear el acuerdo de pago");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleApprove = async (data: Partial<PaymentAgreement>) => {
+    try {
+      setLoading(true);
+      if (!data.id) {
+        notifyError("Agreement ID is required");
+        return;
+      }
+      await updatePaymentAgreement(data.id, {
+        ...data,
+        status: $Enums.PaymentAgreementStatus.ACCEPTED,
+      });
+      notifyInfo("Payment agreement approved successfully");
+      fetchPaymentAgreements();
+    } catch (error) {
+      console.error("Error approving payment agreement:", error);
+      notifyError("Error al aprobar el acuerdo de pago");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReject = async (data: Partial<PaymentAgreement>) => {
+    try {
+      setLoading(true);
+      if (!data.id) {
+        notifyError("Agreement ID is required");
+        return;
+      }
+      await updatePaymentAgreement(data.id, {
+        ...data,
+        status: $Enums.PaymentAgreementStatus.REJECTED,
+      });
+      notifyInfo("Payment agreement rejected successfully");
+      fetchPaymentAgreements();
+    } catch (error) {
+      console.error("Error rejecting payment agreement:", error);
+      notifyError("Error al rechazar el acuerdo de pago");
     } finally {
       setLoading(false);
     }
@@ -304,6 +358,8 @@ const DashboardDebtor = () => {
           <AgreementTable
             agreements={paymentAgreements}
             onDelete={onDeleteAgreement}
+            onApprove={handleApprove}
+            onReject={handleReject}
           />
         </Box>
       </TabPanel>
@@ -353,18 +409,17 @@ const DashboardDebtor = () => {
           <AgreementForm
             onSubmit={handleAgreementSubmit}
             initialData={{
-              collectionCaseId: collectionCaseSelected?.id || "",
+              ...collectionCaseSelected,
               totalAmount:
                 (collectionCaseSelected?.amountOriginal ?? 0) +
                 (collectionCaseSelected?.amountDue ?? 0),
               installmentsCount: 3,
-              installmentAmount: 0,
               startDate: new Date(
                 new Date().getFullYear(),
                 new Date().getMonth() + 1,
                 0
               ),
-              status: "ACTIVE",
+              status: $Enums.PaymentAgreementStatus.PENDING,
             }}
             loading={loading}
           />

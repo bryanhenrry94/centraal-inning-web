@@ -1,11 +1,14 @@
-import { formatCurrency, formatDate } from "@/common/utils/general";
-import { PaymentAgreementCreate } from "@/lib/validations/payment-agreement";
-import { Box, Button, Slider, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Box, Button, Slider, Typography } from "@mui/material";
+import {
+  PaymentAgreement,
+  PaymentAgreementCreate,
+} from "@/lib/validations/payment-agreement";
+import { formatCurrency, formatDate } from "@/common/utils/general";
 
 interface AgreementFormProps {
-  initialData?: PaymentAgreementCreate;
-  onSubmit: (data: PaymentAgreementCreate) => void;
+  initialData?: Partial<PaymentAgreement>;
+  onSubmit: (data: Partial<PaymentAgreement>) => void;
   loading?: boolean;
 }
 
@@ -14,12 +17,18 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
   initialData,
   loading,
 }) => {
-  const [formData, setFormData] = useState<PaymentAgreementCreate | null>(
+  const [formData, setFormData] = useState<Partial<PaymentAgreement> | null>(
     initialData || null
   );
 
   useEffect(() => {
     if (initialData) {
+      if (!initialData.totalAmount)
+        initialData.totalAmount = Number(initialData.totalAmount);
+
+      if (!initialData.installmentsCount)
+        initialData.installmentsCount = Number(initialData.installmentsCount);
+
       setFormData({
         ...initialData,
         installmentAmount:
@@ -37,42 +46,6 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2 }}>
-        {/* <TextField
-          label="Totaal bedrag:"
-          fullWidth
-          type="number"
-          disabled
-          value={formData?.totalAmount || ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-
-              installmentAmount: formData
-                ? Number(e.target.value) / formData.installmentsCount
-                : 0,
-
-              totalAmount: Number(e.target.value),
-            } as PaymentAgreementCreate)
-          }
-        />
-        <TextField
-          label="Startdatum"
-          fullWidth
-          type="date"
-          InputLabelProps={{ shrink: true }}
-          disabled
-          value={
-            formData?.startDate
-              ? new Date(formData.startDate).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              startDate: new Date(e.target.value),
-            } as PaymentAgreementCreate)
-          }
-        /> */}
         <Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body2" gutterBottom>
@@ -96,7 +69,7 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
                   ...formData,
 
                   installmentAmount: formData
-                    ? formData.totalAmount / Number(newValue)
+                    ? Number(formData.totalAmount) / Number(newValue)
                     : 0,
 
                   installmentsCount: Number(newValue),
@@ -164,7 +137,7 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
               Startdatum:
             </Typography>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              {formatDate(formData?.startDate.toString() || "")}
+              {formatDate(formData?.startDate?.toString() || "")}
             </Typography>
           </Box>
 

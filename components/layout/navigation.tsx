@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
+import NextLink from "next/link";
+import { usePathname } from "next/navigation";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ChatIcon from "@mui/icons-material/Chat";
-import { useTheme } from "@mui/material/styles";
-import NextLink from "next/link";
-import { usePathname } from "next/navigation";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 
 type MenuItem = {
   label: string;
@@ -30,9 +31,9 @@ const menus: MenuItem[] = [
     role: ["ADMIN"],
   },
   {
-    label: "Betalingsovereenkomsten",
+    label: "Overeenkomsten",
     href: "/dashboard/payment-agreements",
-    icon: <ReceiptOutlinedIcon fontSize="small" />,
+    icon: <HandshakeIcon fontSize="small" />,
     role: ["ADMIN"],
   },
   {

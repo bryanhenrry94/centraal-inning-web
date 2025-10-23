@@ -9,7 +9,7 @@ export async function updateCollectionStatus() {
       status: { in: ["PENDING", "IN_PROGRESS"] },
       dueDate: { lt: today },
       payments: { none: {} }, // sin pagos registrados
-      paymentAgreements: { none: { status: "ACTIVE" } }, // sin acuerdos activos (incluye ninguno)
+      paymentAgreements: { none: { status: "ACCEPTED" } }, // sin acuerdos aceptados (incluye ninguno)
     },
     include: {
       debtor: true,

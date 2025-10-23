@@ -1,6 +1,11 @@
+import { $Enums } from "@/prisma/generated/prisma";
 import { Chip } from "@mui/material";
 
-const PaymentAgreementStatusChip = ({ status }: { status: string }) => {
+const PaymentAgreementStatusChip = ({
+  status,
+}: {
+  status: $Enums.PaymentAgreementStatus;
+}) => {
   let label = "Onbekend";
   let color:
     | "default"
@@ -12,29 +17,37 @@ const PaymentAgreementStatusChip = ({ status }: { status: string }) => {
     | "warning" = "default";
 
   switch (status) {
-    case "PENDING":
+    case $Enums.PaymentAgreementStatus.PENDING:
       label = "Open";
       color = "primary";
       break;
-    case "ACTIVE":
-      label = "In Behandeling";
+    case $Enums.PaymentAgreementStatus.IN_NEGOTIATION:
+      label = "In Onderhandeling";
       color = "info";
       break;
-    case "OVERDUE":
-      label = "Verlopen";
+    case $Enums.PaymentAgreementStatus.COUNTEROFFER:
+      label = "Tegenbod";
       color = "warning";
       break;
-    case "PAID":
-      label = "Betaald";
+    case $Enums.PaymentAgreementStatus.ACCEPTED:
+      label = "Geaccepteerd";
       color = "success";
       break;
-    case "REJECTED":
+    case $Enums.PaymentAgreementStatus.REJECTED:
       label = "Afgewezen";
       color = "error";
       break;
-    case "CANCELLED":
+    case $Enums.PaymentAgreementStatus.CANCELLED:
       label = "Geannuleerd";
       color = "error";
+      break;
+    case $Enums.PaymentAgreementStatus.CLOSED:
+      label = "Gesloten";
+      color = "default";
+      break;
+    default:
+      label = "Onbekend";
+      color = "default";
       break;
   }
 

@@ -35,15 +35,18 @@ import TabPanel from "@/components/ui/tab-panel";
 import {
   PaymentAgreement,
   PaymentAgreementCreate,
+  PaymentAgreementResponse,
 } from "@/lib/validations/payment-agreement";
 import {
   createPaymentAgreement,
   existsPaymentAgreement,
-  getPaymentAgreementsByCollection,
+  getPaymentAgreements,
 } from "@/app/actions/payment-agreement";
 import AgreementForm from "@/components/agreements/agreement-form";
 import AgreementTable from "@/components/agreements/agreement-table";
 import { useSession } from "next-auth/react";
+import { getDebtorByUserId } from "@/app/actions/debtor";
+import { $Enums } from "@/prisma/generated/prisma";
 
 const CollectionViewPage: React.FC = () => {
   const router = useRouter();
@@ -58,7 +61,7 @@ const CollectionViewPage: React.FC = () => {
   );
   const [value, setValue] = React.useState(0);
   const [paymentAgreements, setPaymentAgreements] = useState<
-    PaymentAgreement[]
+    PaymentAgreementResponse[]
   >([]);
 
   const [openModalPayment, setOpenModalPayment] = React.useState(false);
@@ -175,7 +178,9 @@ const CollectionViewPage: React.FC = () => {
         return;
       }
 
-      const data = await getPaymentAgreementsByCollection(params.id as string);
+      const data = await getPaymentAgreements({
+        collectionCaseId: params.id as string,
+      });
       if (data) {
         setPaymentAgreements(data);
       }
@@ -187,7 +192,7 @@ const CollectionViewPage: React.FC = () => {
     }
   };
 
-  const handleAgreementSubmit = async (data: PaymentAgreementCreate) => {
+  const handleAgreementSubmit = async (data: Partial<PaymentAgreement>) => {
     // Implement submission logic here
     try {
       setLoading(true);
@@ -198,7 +203,23 @@ const CollectionViewPage: React.FC = () => {
         return;
       }
 
-      if (data.startDate < new Date()) {
+      const debtor = await getDebtorByUserId(collection?.debtorId || "");
+      if (!debtor) {
+        notifyError("No se encontró el deudor asociado al usuario");
+        return;
+      }
+
+      const agreementCreate: PaymentAgreementCreate = {
+        collectionCaseId: data.collectionCaseId || "",
+        totalAmount: Number(data.totalAmount) || 0,
+        installmentsCount: Number(data.installmentsCount) || 0,
+        installmentAmount: Number(data.installmentAmount) || 0,
+        startDate: data.startDate || new Date(),
+        status: data.status || $Enums.PaymentAgreementStatus.PENDING,
+        debtorId: data.debtorId,
+      };
+
+      if (agreementCreate.startDate < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
       }
@@ -209,7 +230,7 @@ const CollectionViewPage: React.FC = () => {
         return;
       }
 
-      await createPaymentAgreement(session?.user?.tenantId, data);
+      await createPaymentAgreement(session?.user?.tenantId, agreementCreate);
       await fetchPaymentAgreements();
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");
@@ -358,7 +379,7 @@ const CollectionViewPage: React.FC = () => {
               NIEUWE OVEREENKOMST
             </Button>
             <AgreementTable
-              paymentAgreements={paymentAgreements}
+              agreements={paymentAgreements}
               onDelete={onDeleteAgreement}
             />
             <Modal

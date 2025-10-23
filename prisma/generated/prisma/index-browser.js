@@ -536,11 +536,12 @@ exports.IdentificationType = exports.$Enums.IdentificationType = {
 
 exports.PaymentAgreementStatus = exports.$Enums.PaymentAgreementStatus = {
   PENDING: 'PENDING',
-  ACTIVE: 'ACTIVE',
-  OVERDUE: 'OVERDUE',
-  PAID: 'PAID',
+  IN_NEGOTIATION: 'IN_NEGOTIATION',
+  COUNTEROFFER: 'COUNTEROFFER',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
   CANCELLED: 'CANCELLED',
-  REJECTED: 'REJECTED'
+  CLOSED: 'CLOSED'
 };
 
 exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {

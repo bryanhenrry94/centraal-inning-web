@@ -490,11 +490,12 @@ enum InstallmentStatus {
 
 enum PaymentAgreementStatus {
   PENDING
-  ACTIVE
-  OVERDUE
-  PAID
-  CANCELLED
+  IN_NEGOTIATION
+  COUNTEROFFER
+  ACCEPTED
   REJECTED
+  CANCELLED
+  CLOSED
 }
 
 enum CalculationTypeEnum {

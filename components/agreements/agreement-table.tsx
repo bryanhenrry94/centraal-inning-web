@@ -14,11 +14,16 @@ import {
   Typography,
 } from "@mui/material";
 
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import MoreIcon from "@mui/icons-material/More";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { PaymentAgreementResponse } from "@/lib/validations/payment-agreement";
+import {
+  PaymentAgreement,
+  PaymentAgreementResponse,
+} from "@/lib/validations/payment-agreement";
 import { useState } from "react";
 import { Installment } from "@/lib/validations/installment";
 import {
@@ -28,13 +33,21 @@ import {
 import { AlertService } from "@/lib/alerts";
 import { notifyInfo } from "@/lib/notifications";
 import PaymentAgreementStatusChip from "../ui/payment-agreement-status-chip";
+import { $Enums } from "@/prisma/generated/prisma";
 
 interface AgreementTableProps {
   agreements: PaymentAgreementResponse[];
   onDelete?: () => void;
+  onApprove?: (data: Partial<PaymentAgreement>) => void;
+  onReject?: (data: Partial<PaymentAgreement>) => void;
 }
 
-const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
+const AgreementTable = ({
+  agreements,
+  onDelete,
+  onApprove,
+  onReject,
+}: AgreementTableProps) => {
   const [installments, setInstallments] = useState<Installment[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -151,7 +164,7 @@ const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
               >
                 Termijnbedrag
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 sx={{
                   minWidth: 50,
                   backgroundColor: "secondary.main",
@@ -162,7 +175,7 @@ const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
                 align="center"
               >
                 Eerste termijn datum
-              </TableCell>
+              </TableCell> */}
               <TableCell
                 sx={{
                   minWidth: 50,
@@ -175,6 +188,30 @@ const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
               >
                 Nalevingsstatus
               </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 100,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Opmerking
+              </TableCell>
+              {/* <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
+                Meer details
+              </TableCell> */}
               <TableCell
                 sx={{
                   minWidth: 50,
@@ -210,26 +247,75 @@ const AgreementTable = ({ agreements, onDelete }: AgreementTableProps) => {
                 <TableCell align="right">
                   {formatCurrency(agreement.installmentAmount)}
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   {formatDate(agreement.startDate.toString())}
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
-                  <PaymentAgreementStatusChip status={agreement.status} />
+                  <PaymentAgreementStatusChip
+                    status={agreement.status as $Enums.PaymentAgreementStatus}
+                  />
                 </TableCell>
+                <TableCell align="center">{agreement.comment || "-"}</TableCell>
+                {/* <TableCell align="center">
+                  <IconButton
+                    onClick={() => handleMoreDetails(agreement.id)}
+                    aria-label="more details"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </TableCell> */}
                 <TableCell align="center">
-                  <Stack direction="row" spacing={1}>
-                    <IconButton>
-                      <MoreIcon
-                        onClick={() => handleMoreDetails(agreement.id)}
-                      />
-                    </IconButton>
-                    {agreement.status === "PENDING" && (
-                      <IconButton>
-                        <DeleteIcon
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    {agreement.status ===
+                      $Enums.PaymentAgreementStatus.PENDING && (
+                      <>
+                        <IconButton
+                          aria-label="delete agreement"
+                          color="error"
                           onClick={() => handleDeleteAgreement(agreement.id)}
-                        />
-                      </IconButton>
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </>
                     )}
+                    {agreement.status ===
+                      $Enums.PaymentAgreementStatus.COUNTEROFFER && (
+                      <>
+                        {onApprove && (
+                          <IconButton
+                            aria-label="approve agreement"
+                            color="primary"
+                            onClick={() => onApprove?.(agreement)}
+                          >
+                            <ThumbUpAltIcon />
+                          </IconButton>
+                        )}
+
+                        {onReject && (
+                          <IconButton
+                            aria-label="reject agreement"
+                            color="secondary"
+                            onClick={() => onReject?.(agreement)}
+                          >
+                            <ThumbDownAltIcon />
+                          </IconButton>
+                        )}
+                      </>
+                    )}
+
+                    {agreement.status !==
+                      $Enums.PaymentAgreementStatus.PENDING &&
+                      agreement.status !==
+                        $Enums.PaymentAgreementStatus.COUNTEROFFER && (
+                        <Typography variant="body2" color="textSecondary">
+                          -
+                        </Typography>
+                      )}
                   </Stack>
                 </TableCell>
               </TableRow>
