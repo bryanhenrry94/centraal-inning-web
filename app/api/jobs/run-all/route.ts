@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
-import { updateCollectionStatus } from "@/lib/jobs/updateCollectionStatus";
-import { sendOverdueNotifications } from "@/lib/jobs/sendOverdueNotifications";
+import { processCollectionCaseWorkflow } from "@/lib/jobs/process_collection_case_workflow";
 
 export async function GET() {
   try {
-    const statusResult = await updateCollectionStatus();
-    const notifResult = await sendOverdueNotifications();
+    const notifResult = await processCollectionCaseWorkflow();
 
     return NextResponse.json({
       success: true,
       message: "Todos los procesos ejecutados correctamente",
       stats: {
-        updated: statusResult.count,
         notified: notifResult.sent,
       },
     });

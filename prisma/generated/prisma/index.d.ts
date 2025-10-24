@@ -220,10 +220,10 @@ export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 
 
 export const CollectionCaseStatus: {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
+  AANMANING: 'AANMANING',
+  SOMMATIE: 'SOMMATIE',
+  INGEBREKESTELLING: 'INGEBREKESTELLING',
+  BLOKKADE: 'BLOKKADE'
 };
 
 export type CollectionCaseStatus = (typeof CollectionCaseStatus)[keyof typeof CollectionCaseStatus]
@@ -20649,10 +20649,6 @@ export namespace Prisma {
     reference_number: string | null
     issue_date: Date | null
     due_date: Date | null
-    reminder1_sent_at: Date | null
-    reminder1_due_date: Date | null
-    reminder2_sent_at: Date | null
-    reminder2_due_date: Date | null
     tenant_id: string | null
     debtor_id: string | null
     amount_original: Decimal | null
@@ -20669,10 +20665,6 @@ export namespace Prisma {
     reference_number: string | null
     issue_date: Date | null
     due_date: Date | null
-    reminder1_sent_at: Date | null
-    reminder1_due_date: Date | null
-    reminder2_sent_at: Date | null
-    reminder2_due_date: Date | null
     tenant_id: string | null
     debtor_id: string | null
     amount_original: Decimal | null
@@ -20689,10 +20681,6 @@ export namespace Prisma {
     reference_number: number
     issue_date: number
     due_date: number
-    reminder1_sent_at: number
-    reminder1_due_date: number
-    reminder2_sent_at: number
-    reminder2_due_date: number
     tenant_id: number
     debtor_id: number
     amount_original: number
@@ -20723,10 +20711,6 @@ export namespace Prisma {
     reference_number?: true
     issue_date?: true
     due_date?: true
-    reminder1_sent_at?: true
-    reminder1_due_date?: true
-    reminder2_sent_at?: true
-    reminder2_due_date?: true
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
@@ -20743,10 +20727,6 @@ export namespace Prisma {
     reference_number?: true
     issue_date?: true
     due_date?: true
-    reminder1_sent_at?: true
-    reminder1_due_date?: true
-    reminder2_sent_at?: true
-    reminder2_due_date?: true
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
@@ -20763,10 +20743,6 @@ export namespace Prisma {
     reference_number?: true
     issue_date?: true
     due_date?: true
-    reminder1_sent_at?: true
-    reminder1_due_date?: true
-    reminder2_sent_at?: true
-    reminder2_due_date?: true
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
@@ -20870,10 +20846,6 @@ export namespace Prisma {
     reference_number: string | null
     issue_date: Date | null
     due_date: Date | null
-    reminder1_sent_at: Date | null
-    reminder1_due_date: Date | null
-    reminder2_sent_at: Date | null
-    reminder2_due_date: Date | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal
@@ -20909,10 +20881,6 @@ export namespace Prisma {
     reference_number?: boolean
     issue_date?: boolean
     due_date?: boolean
-    reminder1_sent_at?: boolean
-    reminder1_due_date?: boolean
-    reminder2_sent_at?: boolean
-    reminder2_due_date?: boolean
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
@@ -20937,10 +20905,6 @@ export namespace Prisma {
     reference_number?: boolean
     issue_date?: boolean
     due_date?: boolean
-    reminder1_sent_at?: boolean
-    reminder1_due_date?: boolean
-    reminder2_sent_at?: boolean
-    reminder2_due_date?: boolean
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
@@ -20959,10 +20923,6 @@ export namespace Prisma {
     reference_number?: boolean
     issue_date?: boolean
     due_date?: boolean
-    reminder1_sent_at?: boolean
-    reminder1_due_date?: boolean
-    reminder2_sent_at?: boolean
-    reminder2_due_date?: boolean
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
@@ -20981,10 +20941,6 @@ export namespace Prisma {
     reference_number?: boolean
     issue_date?: boolean
     due_date?: boolean
-    reminder1_sent_at?: boolean
-    reminder1_due_date?: boolean
-    reminder2_sent_at?: boolean
-    reminder2_due_date?: boolean
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
@@ -20996,7 +20952,7 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reference_number" | "issue_date" | "due_date" | "reminder1_sent_at" | "reminder1_due_date" | "reminder2_sent_at" | "reminder2_due_date" | "tenant_id" | "debtor_id" | "amount_original" | "amount_due" | "amount_to_receive" | "status" | "notification_status" | "created_at" | "updated_at", ExtArgs["result"]["collectionCase"]>
+  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reference_number" | "issue_date" | "due_date" | "tenant_id" | "debtor_id" | "amount_original" | "amount_due" | "amount_to_receive" | "status" | "notification_status" | "created_at" | "updated_at", ExtArgs["result"]["collectionCase"]>
   export type CollectionCaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -21032,10 +20988,6 @@ export namespace Prisma {
       reference_number: string | null
       issue_date: Date | null
       due_date: Date | null
-      reminder1_sent_at: Date | null
-      reminder1_due_date: Date | null
-      reminder2_sent_at: Date | null
-      reminder2_due_date: Date | null
       tenant_id: string
       debtor_id: string
       amount_original: Prisma.Decimal
@@ -21479,10 +21431,6 @@ export namespace Prisma {
     readonly reference_number: FieldRef<"CollectionCase", 'String'>
     readonly issue_date: FieldRef<"CollectionCase", 'DateTime'>
     readonly due_date: FieldRef<"CollectionCase", 'DateTime'>
-    readonly reminder1_sent_at: FieldRef<"CollectionCase", 'DateTime'>
-    readonly reminder1_due_date: FieldRef<"CollectionCase", 'DateTime'>
-    readonly reminder2_sent_at: FieldRef<"CollectionCase", 'DateTime'>
-    readonly reminder2_due_date: FieldRef<"CollectionCase", 'DateTime'>
     readonly tenant_id: FieldRef<"CollectionCase", 'String'>
     readonly debtor_id: FieldRef<"CollectionCase", 'String'>
     readonly amount_original: FieldRef<"CollectionCase", 'Decimal'>
@@ -32853,10 +32801,6 @@ export namespace Prisma {
     reference_number: 'reference_number',
     issue_date: 'issue_date',
     due_date: 'due_date',
-    reminder1_sent_at: 'reminder1_sent_at',
-    reminder1_due_date: 'reminder1_due_date',
-    reminder2_sent_at: 'reminder2_sent_at',
-    reminder2_due_date: 'reminder2_due_date',
     tenant_id: 'tenant_id',
     debtor_id: 'debtor_id',
     amount_original: 'amount_original',
@@ -34544,10 +34488,6 @@ export namespace Prisma {
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
     issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -34571,10 +34511,6 @@ export namespace Prisma {
     reference_number?: SortOrderInput | SortOrder
     issue_date?: SortOrderInput | SortOrder
     due_date?: SortOrderInput | SortOrder
-    reminder1_sent_at?: SortOrderInput | SortOrder
-    reminder1_due_date?: SortOrderInput | SortOrder
-    reminder2_sent_at?: SortOrderInput | SortOrder
-    reminder2_due_date?: SortOrderInput | SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -34601,10 +34537,6 @@ export namespace Prisma {
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
     issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -34628,10 +34560,6 @@ export namespace Prisma {
     reference_number?: SortOrderInput | SortOrder
     issue_date?: SortOrderInput | SortOrder
     due_date?: SortOrderInput | SortOrder
-    reminder1_sent_at?: SortOrderInput | SortOrder
-    reminder1_due_date?: SortOrderInput | SortOrder
-    reminder2_sent_at?: SortOrderInput | SortOrder
-    reminder2_due_date?: SortOrderInput | SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -34656,10 +34584,6 @@ export namespace Prisma {
     reference_number?: StringNullableWithAggregatesFilter<"CollectionCase"> | string | null
     issue_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
     due_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
-    reminder1_sent_at?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
-    reminder1_due_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
-    reminder2_sent_at?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
-    reminder2_due_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
     tenant_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     debtor_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     amount_original?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -36835,10 +36759,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -36860,10 +36780,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -36885,10 +36801,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36910,10 +36822,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36935,10 +36843,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -36955,10 +36859,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36973,10 +36873,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -39085,10 +38981,6 @@ export namespace Prisma {
     reference_number?: SortOrder
     issue_date?: SortOrder
     due_date?: SortOrder
-    reminder1_sent_at?: SortOrder
-    reminder1_due_date?: SortOrder
-    reminder2_sent_at?: SortOrder
-    reminder2_due_date?: SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -39111,10 +39003,6 @@ export namespace Prisma {
     reference_number?: SortOrder
     issue_date?: SortOrder
     due_date?: SortOrder
-    reminder1_sent_at?: SortOrder
-    reminder1_due_date?: SortOrder
-    reminder2_sent_at?: SortOrder
-    reminder2_due_date?: SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -39131,10 +39019,6 @@ export namespace Prisma {
     reference_number?: SortOrder
     issue_date?: SortOrder
     due_date?: SortOrder
-    reminder1_sent_at?: SortOrder
-    reminder1_due_date?: SortOrder
-    reminder2_sent_at?: SortOrder
-    reminder2_due_date?: SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -42099,10 +41983,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -42123,10 +42003,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -42419,10 +42295,6 @@ export namespace Prisma {
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
     issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder1_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_sent_at?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    reminder2_due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -44974,10 +44846,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -44998,10 +44866,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -45038,10 +44902,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45062,10 +44922,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45086,10 +44942,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45110,10 +44962,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -45150,10 +44998,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45174,10 +45018,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45198,10 +45038,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45222,10 +45058,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -45333,10 +45165,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45357,10 +45185,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45457,10 +45281,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45481,10 +45301,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -45964,10 +45780,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45988,10 +45800,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -46123,10 +45931,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46147,10 +45951,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46507,10 +46307,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -46531,10 +46327,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -46749,10 +46541,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46773,10 +46561,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46990,10 +46774,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -47118,10 +46898,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47142,10 +46918,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47166,10 +46938,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48216,10 +47984,6 @@ export namespace Prisma {
     reference_number?: string | null
     issue_date?: Date | string | null
     due_date?: Date | string | null
-    reminder1_sent_at?: Date | string | null
-    reminder1_due_date?: Date | string | null
-    reminder2_sent_at?: Date | string | null
-    reminder2_due_date?: Date | string | null
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -48274,10 +48038,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48298,10 +48058,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48322,10 +48078,6 @@ export namespace Prisma {
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder1_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_sent_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reminder2_due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string

@@ -17,7 +17,7 @@ import {
   DebtorSignUpSchema,
   ITenantSignUp,
 } from "@/lib/validations/signup";
-import { getParameterById } from "./parameter";
+import { getParameter } from "./parameter";
 
 export const signInWithPassword = async (
   params: LoginFormData
@@ -105,8 +105,7 @@ export async function createAccount(
     const validatedData = AuthSignUpSchema.parse(payload);
 
     // Obtener parámetro necesario
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }

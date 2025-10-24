@@ -10,7 +10,7 @@ import {
   BillingInvoiceCreate,
   BillingInvoiceResponse,
 } from "@/lib/validations/billing-invoice";
-import { getParameterById } from "@/app/actions/parameter";
+import { getParameter } from "@/app/actions/parameter";
 import { getNameCountry } from "@/common/utils/general";
 
 interface ActivationInvoiceInput {
@@ -28,8 +28,7 @@ export const createActivationInvoice = async (
   const due_date = addDays(issue_date, 7);
 
   // Obtener parámetro necesario
-  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-  const parameter = await getParameterById(PARAMETER_ID);
+  const parameter = await getParameter();
   if (!parameter) {
     throw new Error("No se encontró el parámetro");
   }
@@ -154,8 +153,7 @@ export const generateInvoicePDF = async (id: string): Promise<Buffer> => {
     throw new Error("Invoice not found");
   }
 
-  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-  const parameter = await getParameterById(PARAMETER_ID);
+  const parameter = await getParameter();
   if (!parameter) {
     throw new Error("No se encontró el parámetro");
   }
@@ -432,8 +430,7 @@ export const getNextInvoiceNumber = async (
   tenant_id: string
 ): Promise<string> => {
   try {
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }

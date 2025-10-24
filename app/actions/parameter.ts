@@ -2,10 +2,12 @@
 import prisma from "@/lib/prisma";
 import { IParamGeneral } from "@/lib/validations/parameter";
 
-export const getParameterById = async (id: string) => {
+export const getParameter = async () => {
+  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
+
   const parameter = await prisma.parameter.findUnique({
     where: {
-      id: id,
+      id: PARAMETER_ID,
     },
   });
 

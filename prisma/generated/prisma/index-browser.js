@@ -321,10 +321,6 @@ exports.Prisma.CollectionCaseScalarFieldEnum = {
   reference_number: 'reference_number',
   issue_date: 'issue_date',
   due_date: 'due_date',
-  reminder1_sent_at: 'reminder1_sent_at',
-  reminder1_due_date: 'reminder1_due_date',
-  reminder2_sent_at: 'reminder2_sent_at',
-  reminder2_due_date: 'reminder2_due_date',
   tenant_id: 'tenant_id',
   debtor_id: 'debtor_id',
   amount_original: 'amount_original',
@@ -479,10 +475,10 @@ exports.CalculationTypeEnum = exports.$Enums.CalculationTypeEnum = {
 };
 
 exports.CollectionCaseStatus = exports.$Enums.CollectionCaseStatus = {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED'
+  AANMANING: 'AANMANING',
+  SOMMATIE: 'SOMMATIE',
+  INGEBREKESTELLING: 'INGEBREKESTELLING',
+  BLOKKADE: 'BLOKKADE'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {

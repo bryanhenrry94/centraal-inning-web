@@ -16,19 +16,20 @@ import SaveIcon from "@mui/icons-material/Save";
 import { CollectionCaseCreate } from "@/lib/validations/collection";
 import { ModalFormDebtor } from "@/components/debtor/modal-debtor-form";
 import { DebtorBase } from "@/lib/validations/debtor";
-import { getParameterById } from "@/app/actions/parameter";
+import { getParameter } from "@/app/actions/parameter";
 import { createCollectionCase } from "@/app/actions/collection";
 import { notifyError, notifySuccess } from "@/lib/notifications";
 import { useTenant } from "@/hooks/useTenant";
 import { getAllDebtorsByTenantId } from "@/app/actions/debtor";
 import { IParamGeneral } from "@/lib/validations/parameter";
+import { $Enums } from "@/prisma/generated/prisma";
 
 const InitialCollectionCaseCreate: CollectionCaseCreate = {
   debtor_id: "",
   amount_original: 0,
   amount_due: 0,
   amount_to_receive: 0,
-  status: "PENDING",
+  status: $Enums.CollectionCaseStatus.AANMANING,
   reference_number: "",
   issue_date: new Date() ?? undefined,
   due_date: new Date() ?? undefined,
@@ -61,10 +62,7 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
 
   const fetchParameter = async () => {
     try {
-      const result = await getParameterById(
-        process.env.NEXT_PUBLIC_PARAMETER_ID ??
-          "67f55fa0-8598-4ec9-9d5e-2fe980d82e6d"
-      );
+      const result = await getParameter();
 
       if (!result) return;
 

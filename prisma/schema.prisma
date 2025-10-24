@@ -279,16 +279,12 @@ model CollectionCase {
   reference_number    String?
   issue_date          DateTime?
   due_date            DateTime? // fecha de vencimiento original
-  reminder1_sent_at   DateTime? // fecha de envío del aviso 1 (Aanmanning)
-  reminder1_due_date  DateTime? // fecha límite de pago para el aviso 1
-  reminder2_sent_at   DateTime? // fecha de envío del aviso 2 (Sommatie)
-  reminder2_due_date  DateTime? // fecha límite de pago para el aviso 2
   tenant_id           String
   debtor_id           String
   amount_original     Decimal                      @db.Decimal(10, 2)
   amount_due          Decimal                      @db.Decimal(10, 2)
   amount_to_receive   Decimal                      @db.Decimal(10, 2)
-  status              CollectionCaseStatus         @default(PENDING)
+  status              CollectionCaseStatus         @default(AANMANING)
   notification_status String?
   created_at          DateTime                     @default(now())
   updated_at          DateTime                     @updatedAt
@@ -519,10 +515,10 @@ enum PaymentMethod {
 }
 
 enum CollectionCaseStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
+  AANMANING
+  SOMMATIE
+  INGEBREKESTELLING
+  BLOKKADE
 }
 
 enum PersonType {

@@ -12,16 +12,14 @@ export const CollectionCaseSchema = z.object({
   reference_number: z.string().optional(),
   issue_date: z.date().optional(),
   due_date: z.date().optional(),
-  reminder1_due_date: z.date().optional(),
-  reminder2_due_date: z.date().optional(),
   status: z
     .enum([
-      $Enums.CollectionCaseStatus.PENDING,
-      $Enums.CollectionCaseStatus.IN_PROGRESS,
-      $Enums.CollectionCaseStatus.COMPLETED,
-      $Enums.CollectionCaseStatus.CANCELLED,
+      $Enums.CollectionCaseStatus.AANMANING,
+      $Enums.CollectionCaseStatus.SOMMATIE,
+      $Enums.CollectionCaseStatus.INGEBREKESTELLING,
+      $Enums.CollectionCaseStatus.BLOKKADE,
     ])
-    .default($Enums.CollectionCaseStatus.PENDING),
+    .default($Enums.CollectionCaseStatus.AANMANING),
   tenant_id: z.string().optional(),
   created_at: z.date(),
   updated_at: z.date(),

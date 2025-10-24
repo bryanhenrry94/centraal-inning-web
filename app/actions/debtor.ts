@@ -11,7 +11,7 @@ import { getUserByEmail } from "@/app/actions/user";
 import { roleEnum } from "@/prisma/generated/prisma";
 import puppeteer from "puppeteer";
 import renderTemplate from "@/common/utils/templateRenderer";
-import { getParameterById } from "./parameter";
+import { getParameter } from "./parameter";
 import FinancialService from "@/common/mail/services/financialService";
 import path from "path";
 
@@ -358,8 +358,7 @@ export const sendFinancialSummaryEmail = async (
 export const generateFinancialReportPDF = async (
   id: string
 ): Promise<Buffer> => {
-  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-  const parameter = await getParameterById(PARAMETER_ID);
+  const parameter = await getParameter();
   if (!parameter) {
     throw new Error("No se encontró el parámetro");
   }

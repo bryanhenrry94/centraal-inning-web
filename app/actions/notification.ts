@@ -1,11 +1,10 @@
 "use server";
 import prisma from "@/lib/prisma";
 import CollectionService from "@/common/mail/services/collectionService";
-import { validateTenantById } from "@/app/actions/tenant";
 import { CollectionCase } from "@/lib/validations/collection";
 import { getCollectionById } from "@/app/actions/collection";
 import { Notification } from "@/lib/validations/notification";
-import { getParameterById } from "@/app/actions/parameter";
+import { getParameter } from "@/app/actions/parameter";
 import { NotificationType } from "@/lib/validations/notification";
 
 import renderTemplate from "@/common/utils/templateRenderer";
@@ -100,8 +99,7 @@ export const sendAanmaning = async (
     }
 
     // Obtiene params de cobranza
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }
@@ -239,10 +237,8 @@ export const sendSommatie = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-
     // Obtiene params de cobranza
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }
@@ -285,7 +281,8 @@ export const sendSommatie = async (
 
     const extraCosts = collection.amount_original * 0.15;
     const calculatedABB = extraCosts * 0.06;
-    const total_amount = collection.amount_original + extraCosts + calculatedABB;
+    const total_amount =
+      collection.amount_original + extraCosts + calculatedABB;
 
     // Data for PDF generation
     const dataReport = {
@@ -350,10 +347,8 @@ export const sendIngebrekestelling = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-
     // Obtiene params de cobranza
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }
@@ -483,10 +478,8 @@ export const sendBlokkade = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-
     // Obtiene params de cobranza
-    const parameter = await getParameterById(PARAMETER_ID);
+    const parameter = await getParameter();
     if (!parameter) {
       throw new Error("No se encontró el parámetro");
     }
@@ -626,23 +619,22 @@ export const sendBetalingsbewijs = async (
 };
 
 export const getNotificationDays = async (
-  status: $Enums.NotificationType,
+  status: $Enums.CollectionCaseStatus,
   person_type: $Enums.PersonType
 ): Promise<number> => {
-  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
-  const _parameter = await getParameterById(PARAMETER_ID);
+  const _parameter = await getParameter();
 
   if (!_parameter) {
     throw new Error("Parameter not found");
   }
 
-  if (status === $Enums.NotificationType.AANMANING) {
+  if (status === $Enums.CollectionCaseStatus.AANMANING) {
     return person_type === $Enums.PersonType.INDIVIDUAL
       ? _parameter.consumer_aanmaning_term_days
       : _parameter.company_aanmaning_term_days;
   }
 
-  if (status === $Enums.NotificationType.SOMMATIE) {
+  if (status === $Enums.CollectionCaseStatus.SOMMATIE) {
     return person_type === $Enums.PersonType.INDIVIDUAL
       ? _parameter.consumer_sommatie_term_days
       : _parameter.company_sommatie_term_days;
