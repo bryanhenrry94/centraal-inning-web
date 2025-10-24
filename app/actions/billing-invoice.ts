@@ -14,8 +14,7 @@ import { getParameterById } from "@/app/actions/parameter";
 import { getNameCountry } from "@/common/utils/general";
 
 interface ActivationInvoiceInput {
-  tenantId: string;
-  planId?: string;
+  tenant_id: string;
   island: string;
   address?: string | null;
   amount: number;
@@ -25,24 +24,31 @@ export const createActivationInvoice = async (
   params: ActivationInvoiceInput
 ) => {
   // Definir valores base
-  const issueDate = new Date();
-  const dueDate = addDays(issueDate, 7);
+  const issue_date = new Date();
+  const due_date = addDays(issue_date, 7);
+
+  // Obtener parámetro necesario
+  const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
+  const parameter = await getParameterById(PARAMETER_ID);
+  if (!parameter) {
+    throw new Error("No se encontró el parámetro");
+  }
 
   // Costo base de activación
   const activationFee = params.amount;
 
   // Generar número de factura único
-  const invoiceNumber = await generateInvoiceNumber();
+  const invoice_number = await generateInvoiceNumber();
 
   // Crear factura principal
   const invoice = await prisma.billingInvoice.create({
     data: {
-      tenantId: params.tenantId,
-      invoiceNumber,
+      tenant_id: params.tenant_id,
+      invoice_number,
       amount: activationFee,
       currency: "USD",
-      issueDate,
-      dueDate,
+      issue_date,
+      due_date,
       description:
         "Factura por activación de cuenta del sistema Centraal Inning",
       status: "unpaid",
@@ -52,14 +58,14 @@ export const createActivationInvoice = async (
   // Crear el detalle de factura
   await prisma.billingInvoiceDetail.create({
     data: {
-      billingInvoiceId: invoice.id,
-      itemDescription: "Registratiekosten",
-      itemQuantity: 1,
-      itemUnitPrice: activationFee,
-      itemTotalPrice: activationFee,
-      itemTaxRate: 0.06, // 6% ejemplo
-      itemTaxAmount: activationFee * 0.06,
-      itemTotalWithTax: activationFee * 1.06,
+      billing_invoice_id: invoice.id,
+      item_description: "Registratiekosten",
+      item_quantity: 1,
+      item_unit_price: activationFee,
+      item_total_price: activationFee,
+      item_tax_rate: parameter.abb_rate / 100, // 6% ejemplo
+      item_tax_amount: activationFee * (parameter.abb_rate / 100),
+      item_total_with_tax: activationFee * (1 + parameter.abb_rate / 100),
     },
   });
 
@@ -73,22 +79,22 @@ export const createCollectionInvoice = async (
   params: ActivationInvoiceInput
 ) => {
   // Definir valores base
-  const issueDate = new Date();
-  const dueDate = addDays(issueDate, 7);
+  const issue_date = new Date();
+  const due_date = addDays(issue_date, 7);
   const activationFee = params.amount; // Costo base de activación
 
   // Generar número de factura único
-  const invoiceNumber = await generateInvoiceNumber();
+  const invoice_number = await generateInvoiceNumber();
 
   // Crear factura principal
   const invoice = await prisma.billingInvoice.create({
     data: {
-      tenantId: params.tenantId,
-      invoiceNumber,
+      tenant_id: params.tenant_id,
+      invoice_number,
       amount: activationFee,
       currency: "USD",
-      issueDate,
-      dueDate,
+      issue_date,
+      due_date,
       description:
         "Factura por activación de cuenta del sistema Centraal Inning",
       status: "unpaid",
@@ -98,14 +104,14 @@ export const createCollectionInvoice = async (
   // Crear el detalle de factura
   await prisma.billingInvoiceDetail.create({
     data: {
-      billingInvoiceId: invoice.id,
-      itemDescription: "Servicekosten",
-      itemQuantity: 1,
-      itemUnitPrice: activationFee,
-      itemTotalPrice: activationFee,
-      itemTaxRate: 0.06, // 6% ejemplo
-      itemTaxAmount: activationFee * 0.06,
-      itemTotalWithTax: activationFee * 1.06,
+      billing_invoice_id: invoice.id,
+      item_description: "Servicekosten",
+      item_quantity: 1,
+      item_unit_price: activationFee,
+      item_total_price: activationFee,
+      item_tax_rate: 0.06, // 6% ejemplo
+      item_tax_amount: activationFee * 0.06,
+      item_total_with_tax: activationFee * 1.06,
     },
   });
 
@@ -117,15 +123,15 @@ export const createCollectionInvoice = async (
 
 export const generateInvoiceNumber = async (): Promise<string> => {
   const lastInvoice = await prisma.billingInvoice.findFirst({
-    orderBy: { createdAt: "desc" },
-    select: { invoiceNumber: true },
+    orderBy: { created_at: "desc" },
+    select: { invoice_number: true },
   });
 
   let nextNumber = 1;
 
-  if (lastInvoice?.invoiceNumber) {
+  if (lastInvoice?.invoice_number) {
     // Aseguramos que solo se tomen los dígitos
-    const numeric = parseInt(lastInvoice.invoiceNumber.replace(/\D/g, ""), 10);
+    const numeric = parseInt(lastInvoice.invoice_number.replace(/\D/g, ""), 10);
     if (!isNaN(numeric)) {
       nextNumber = numeric + 1;
     }
@@ -154,38 +160,38 @@ export const generateInvoicePDF = async (id: string): Promise<Buffer> => {
     throw new Error("No se encontró el parámetro");
   }
 
-  const island = getNameCountry(invoice.tenant.countryCode);
+  const island = getNameCountry(invoice.tenant.country_code);
 
   const data = {
-    invoiceNumber: invoice.invoiceNumber,
-    issueDate: invoice.issueDate.toISOString().split("T")[0],
+    invoice_number: invoice.invoice_number,
+    issue_date: invoice.issue_date.toISOString().split("T")[0],
     customerName: invoice.tenant.name,
     customerAddress: invoice.tenant.address || "N/A",
     customerIsland: island || "N/A",
     description: invoice.description,
-    bankName: parameter.bankName || "MCB",
-    bankAccount: parameter.bankAccount || "418.825.10",
+    bank_name: parameter.bank_name || "MCB",
+    bank_account: parameter.bank_account || "418.825.10",
     details: invoice.details.map((detail) => ({
-      itemDescription: detail.itemDescription,
-      itemQuantity: detail.itemQuantity,
-      itemUnitPrice: detail.itemUnitPrice.toFixed(2),
-      itemTax: detail.itemTaxAmount.toFixed(2),
-      itemSubtotal: detail.itemTotalWithTax.toFixed(2),
+      item_description: detail.item_description,
+      item_quantity: detail.item_quantity,
+      item_unit_price: detail.item_unit_price.toFixed(2),
+      item_tax_rate: detail.item_tax_rate.toFixed(2),
+      item_subtotal: detail.item_total_with_tax.toFixed(2),
     })),
     subtotal: invoice.details
-      .reduce((acc, detail) => acc + detail.itemTotalWithTax, 0)
+      .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
       .toFixed(2),
     tax: invoice.details
-      .reduce((acc, detail) => acc + detail.itemTaxAmount, 0)
+      .reduce((acc, detail) => acc + detail.item_tax_amount, 0)
       .toFixed(2),
     total: invoice.details
-      .reduce((acc, detail) => acc + detail.itemTotalWithTax, 0)
+      .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
       .toFixed(2),
   };
 
   const html = renderTemplate("invoice/invoice", {
     ...data,
-    companyName: "Dazzsoft",
+    company_name: "Dazzsoft",
   });
 
   const browser = await puppeteer.launch({
@@ -213,9 +219,9 @@ export const sendInvoiceEmail = async (id: string): Promise<boolean> => {
 
     if (!createdInvoice) return false;
 
-    if (createdInvoice.tenant?.contactEmail) {
-      const debtorEmail = createdInvoice.tenant.contactEmail;
-      const subject = `FACTUUR - ${createdInvoice.invoiceNumber}`;
+    if (createdInvoice.tenant?.contact_email) {
+      const debtorEmail = createdInvoice.tenant.contact_email;
+      const subject = `FACTUUR - ${createdInvoice.invoice_number}`;
 
       const dataMail = {
         recipientName: createdInvoice.tenant.name || "Customer",
@@ -274,31 +280,31 @@ export const getAllInvoices = async (): Promise<BillingInvoiceResponse[]> => {
       },
     });
 
-    // Map invoices to match the expected type, renaming details to invoiceDetails and ensuring 'island' is present
+    // Map invoices to match the expected type, renaming details to invoice_details and ensuring 'island' is present
     return invoices.map((invoice) => ({
-      tenantId: invoice.tenantId,
+      tenant_id: invoice.tenant_id,
       id: invoice.id,
-      invoiceNumber: invoice.invoiceNumber,
+      invoice_number: invoice.invoice_number,
       amount: invoice.amount,
       currency: invoice.currency,
-      issueDate: invoice.issueDate,
+      issue_date: invoice.issue_date,
       status: invoice.status as "unpaid" | "paid" | "overdue",
-      dueDate: invoice.dueDate,
-      createdAt: invoice.createdAt,
-      updatedAt: invoice.updatedAt,
+      due_date: invoice.due_date,
+      created_at: invoice.created_at,
+      updated_at: invoice.updated_at,
       description: invoice.description,
-      invoiceDetails: invoice.details.map((detail) => ({
+      invoice_details: invoice.details.map((detail) => ({
         id: detail.id,
-        invoiceId: detail.billingInvoiceId ?? invoice.id,
-        itemDescription: detail.itemDescription,
-        itemQuantity: detail.itemQuantity,
-        itemUnitPrice: detail.itemUnitPrice,
-        itemTotalPrice: detail.itemTotalPrice,
-        itemTaxRate: detail.itemTaxRate,
-        itemTaxAmount: detail.itemTaxAmount,
-        itemTotalWithTax: detail.itemTotalWithTax,
-        createdAt: detail.createdAt,
-        updatedAt: detail.updatedAt,
+        invoice_id: detail.billing_invoice_id ?? invoice.id,
+        item_description: detail.item_description,
+        item_quantity: detail.item_quantity,
+        item_unit_price: detail.item_unit_price,
+        item_total_price: detail.item_total_price,
+        item_tax_rate: detail.item_tax_rate,
+        item_tax_amount: detail.item_tax_amount,
+        item_total_with_tax: detail.item_total_with_tax,
+        created_at: detail.created_at,
+        updated_at: detail.updated_at,
       })),
     }));
   } catch (error) {
@@ -330,32 +336,32 @@ export const getInvoiceById = async (
 
 export const createInvoice = async (
   invoice: BillingInvoiceCreate,
-  tenantId: string
+  tenant_id: string
 ): Promise<BillingInvoiceBase> => {
   try {
     console.log("Creating invoice:", invoice);
     const newInvoice = await prisma.billingInvoice.create({
       data: {
-        invoiceNumber: invoice.invoiceNumber,
-        issueDate: invoice.issueDate,
-        dueDate: invoice.dueDate,
+        invoice_number: invoice.invoice_number,
+        issue_date: invoice.issue_date,
+        due_date: invoice.due_date,
         description: invoice.description,
         status: invoice.status,
-        tenantId: tenantId,
+        tenant_id: tenant_id,
         currency: "USD",
         amount: invoice.amount ?? 0,
       },
     });
 
     await prisma.billingInvoiceDetail.createMany({
-      data: (invoice.invoiceDetails ?? []).map((detail) => ({
-        itemDescription: detail.itemDescription,
-        itemQuantity: detail.itemQuantity,
-        itemUnitPrice: detail.itemUnitPrice,
-        itemTotalPrice: detail.itemTotalPrice,
-        itemTaxRate: detail.itemTaxRate,
-        itemTaxAmount: detail.itemTaxAmount,
-        itemTotalWithTax: detail.itemTotalWithTax,
+      data: (invoice.invoice_details ?? []).map((detail) => ({
+        item_description: detail.item_description,
+        item_quantity: detail.item_quantity,
+        item_unit_price: detail.item_unit_price,
+        item_total_price: detail.item_total_price,
+        item_tax_rate: detail.item_tax_rate,
+        item_tax_amount: detail.item_tax_amount,
+        item_total_with_tax: detail.item_total_with_tax,
         invoiceId: newInvoice.id,
       })),
     });
@@ -377,9 +383,9 @@ export const updateInvoice = async (
     const updatedInvoice = await prisma.billingInvoice.update({
       where: { id },
       data: {
-        invoiceNumber: invoice.invoiceNumber,
-        issueDate: invoice.issueDate,
-        dueDate: invoice.dueDate,
+        invoice_number: invoice.invoice_number,
+        issue_date: invoice.issue_date,
+        due_date: invoice.due_date,
         description: invoice.description,
         status: invoice.status,
       },
@@ -387,19 +393,19 @@ export const updateInvoice = async (
 
     // Delete existing invoice details
     await prisma.billingInvoiceDetail.deleteMany({
-      where: { billingInvoiceId: id },
+      where: { billing_invoice_id: id },
     });
 
     // Re-create invoice details
     await prisma.billingInvoiceDetail.createMany({
-      data: (invoice.invoiceDetails ?? []).map((detail) => ({
-        itemDescription: detail.itemDescription,
-        itemQuantity: detail.itemQuantity,
-        itemUnitPrice: detail.itemUnitPrice,
-        itemTotalPrice: detail.itemTotalPrice,
-        itemTaxRate: detail.itemTaxRate,
-        itemTaxAmount: detail.itemTaxAmount,
-        itemTotalWithTax: detail.itemTotalWithTax,
+      data: (invoice.invoice_details ?? []).map((detail) => ({
+        item_description: detail.item_description,
+        item_quantity: detail.item_quantity,
+        item_unit_price: detail.item_unit_price,
+        item_total_price: detail.item_total_price,
+        item_tax_rate: detail.item_tax_rate,
+        item_tax_amount: detail.item_tax_amount,
+        item_total_with_tax: detail.item_total_with_tax,
         invoiceId: updatedInvoice.id,
       })),
     });
@@ -423,7 +429,7 @@ export const deleteInvoice = async (id: string): Promise<boolean> => {
 };
 
 export const getNextInvoiceNumber = async (
-  tenantId: string
+  tenant_id: string
 ): Promise<string> => {
   try {
     const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
@@ -433,21 +439,21 @@ export const getNextInvoiceNumber = async (
     }
 
     const lastInvoice = await prisma.billingInvoice.findFirst({
-      where: { tenantId },
-      orderBy: { createdAt: "desc" },
+      where: { tenant_id },
+      orderBy: { created_at: "desc" },
     });
 
-    let nextNumber = parameter.invoiceSecuence || 1;
-    if (lastInvoice && lastInvoice.invoiceNumber) {
-      const match = lastInvoice.invoiceNumber.match(/(\d+)$/);
+    let nextNumber = parameter.invoice_sequence || 1;
+    if (lastInvoice && lastInvoice.invoice_number) {
+      const match = lastInvoice.invoice_number.match(/(\d+)$/);
       if (match) {
         nextNumber = parseInt(match[1], 10) + 1;
       }
     }
 
-    const nextInvoiceNumber = `${parameter.invoicePrefix || ""}${String(
+    const nextInvoiceNumber = `${parameter.invoice_prefix || ""}${String(
       nextNumber
-    ).padStart(parameter.invoiceNumberLength || 5, "0")}`;
+    ).padStart(parameter.invoice_number_length || 5, "0")}`;
 
     return nextInvoiceNumber;
   } catch (error) {

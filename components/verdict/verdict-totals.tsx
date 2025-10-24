@@ -8,12 +8,12 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
   const { control } = useFormContext();
 
   // const verdictInterest = useWatch({ control, name: "verdictInterest" });
-  const sentenceAmount = useWatch({ control, name: "sentenceAmount" });
+  const sentence_amount = useWatch({ control, name: "sentence_amount" });
   // const verdictEmbargo = useWatch({ control, name: "verdictEmbargo" });
-  const procesalCost = useWatch({ control, name: "procesalCost" });
+  const procesal_cost = useWatch({ control, name: "procesal_cost" });
 
   interface VerdictInterestItem {
-    totalInterest?: number;
+    total_interest?: number;
     // add other fields if needed
   }
 
@@ -23,7 +23,7 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
   }
 
   interface VerdictBailiffItem {
-    serviceCost?: number;
+    service_cost?: number;
     // add other fields if needed
   }
 
@@ -36,15 +36,15 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
     name: "verdictEmbargo",
   });
 
-  const bailiffServices: VerdictBailiffItem[] = useWatch({
+  const bailiff_services: VerdictBailiffItem[] = useWatch({
     control,
-    name: "bailiffServices",
+    name: "bailiff_services",
   });
 
-  const totalInterest: number =
+  const total_interest: number =
     verdictInterest?.reduce(
       (sum: number, item: VerdictInterestItem) =>
-        sum + (item?.totalInterest ?? 0),
+        sum + (item?.total_interest ?? 0),
       0
     ) ?? 0;
 
@@ -55,7 +55,7 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
     ) ?? 0;
 
   const totalBailiffAmount =
-    bailiffServices?.reduce((sum, item) => sum + (item?.serviceCost ?? 0), 0) ??
+    bailiff_services?.reduce((sum, item) => sum + (item?.service_cost ?? 0), 0) ??
     0;
 
   return (
@@ -117,8 +117,8 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
             >
               <Typography>Hoofdsom:</Typography>
               <Typography fontWeight="600">
-                {sentenceAmount
-                  ? formatCurrency(Number(sentenceAmount))
+                {sentence_amount
+                  ? formatCurrency(Number(sentence_amount))
                   : "$0.00"}
               </Typography>
             </Box>
@@ -131,8 +131,8 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
             >
               <Typography>Rente:</Typography>
               <Typography fontWeight="600">
-                {totalInterest
-                  ? formatCurrency(Number(totalInterest))
+                {total_interest
+                  ? formatCurrency(Number(total_interest))
                   : "$0.00"}
               </Typography>
             </Box>
@@ -145,7 +145,7 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
             >
               <Typography>Overige Proceskosten:</Typography>
               <Typography fontWeight="600">
-                {procesalCost ? formatCurrency(Number(procesalCost)) : "$0.00"}
+                {procesal_cost ? formatCurrency(Number(procesal_cost)) : "$0.00"}
               </Typography>
             </Box>
             <Box
@@ -181,11 +181,11 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
                 <Typography variant="h6">Totaal:</Typography>
                 <Typography variant="h6" fontWeight="bold">
                   {formatCurrency(
-                    Number(sentenceAmount ?? 0) +
-                      Number(totalInterest ?? 0) +
+                    Number(sentence_amount ?? 0) +
+                      Number(total_interest ?? 0) +
                       Number(totalBailiffAmount ?? 0) +
                       Number(totalEmbargoAmount ?? 0) +
-                      Number(procesalCost ?? 0)
+                      Number(procesal_cost ?? 0)
                   )}
                 </Typography>
               </Box>

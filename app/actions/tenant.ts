@@ -1,6 +1,7 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { Tenant } from "@/lib/validations/tenant";
+import { $Enums } from "@/prisma/generated/prisma";
 
 export const getTenantByEmail = async (
   email: string
@@ -16,7 +17,7 @@ export const getTenantByEmail = async (
           email: email,
         },
       },
-      isActive: true,
+      is_active: true,
     },
   });
 
@@ -47,19 +48,18 @@ export const getTenantById = async (
     id: tenant.id,
     name: tenant.name,
     subdomain: tenant.subdomain,
-    countryCode: tenant.countryCode,
-    contactEmail: tenant.contactEmail,
+    country_code: tenant.country_code,
+    contact_email: tenant.contact_email,
     address: tenant.address,
     city: tenant.city,
     phone: tenant.phone,
-    numberOfEmployees: tenant.numberOfEmployees,
+    number_of_employees: tenant.number_of_employees,
     website: tenant.website,
-    logoUrl: tenant.logoUrl,
-    isActive: tenant.isActive,
-    termsAccepted: tenant.termsAccepted,
-    planStatus: tenant.planStatus as "pending" | "active" | "suspended",
-    createdAt: tenant.createdAt,
-    updatedAt: tenant.updatedAt,
+    logo_url: tenant.logo_url,
+    is_active: tenant.is_active,
+    terms_accepted: tenant.terms_accepted,
+    created_at: tenant.created_at,
+    updated_at: tenant.updated_at,
   };
 
   return {
@@ -80,8 +80,7 @@ export const getAllTenants = async (): Promise<Tenant[]> => {
 
   return tenants.map((tenant) => ({
     ...tenant,
-    countryCode: tenant.countryCode as "BQ" | "CW" | "AW",
-    planStatus: tenant.planStatus as "pending" | "active" | "suspended",
+    country_code: tenant.country_code as "BQ" | "CW" | "AW",
   }));
 };
 
@@ -94,16 +93,30 @@ export const validaSubdomain = async (subdomain: string) => {
 };
 
 export const generateUniqueSubdomain = async (
-  companyName: string
+  company_name: string
 ): Promise<string> => {
-  let subdomain = companyName.toLowerCase().replace(/\s+/g, "-");
+  // sanitize: lowercase, remove accents/diacritics, remove symbols except spaces and hyphens,
+  // trim, replace spaces with single hyphen and collapse multiple hyphens
+  const sanitizedBase = company_name
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+  // fallback base if sanitization removed everything
+  const base = sanitizedBase || "tenant";
+  let subdomain = base;
+
   let exists = await prisma.tenant.findUnique({
     where: { subdomain },
   });
 
   let suffix = 1;
   while (exists) {
-    subdomain = `${companyName.toLowerCase().replace(/\s+/g, "-")}-${suffix}`;
+    subdomain = `${base}-${suffix}`;
     exists = await prisma.tenant.findUnique({
       where: { subdomain },
     });

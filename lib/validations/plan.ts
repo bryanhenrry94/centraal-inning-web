@@ -5,13 +5,13 @@ export const planSchema = z.object({
   name: z.string().min(1),
   price: z.number(),
   description: z.string().optional(),
-  durationDays: z.number().int().nonnegative(),
-  isActive: z.boolean().default(true),
+  duration_days: z.number().int().nonnegative(),
+  is_active: z.boolean().default(true),
 });
 
 // Schema for creating a Plan (id is omitted because it's generated)
 export const planCreateSchema = planSchema.omit({ id: true }).extend({
-  isActive: z.boolean().optional().default(true),
+  is_active: z.boolean().optional().default(true),
 });
 
 // Schema for updating a Plan (all fields optional)

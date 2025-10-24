@@ -255,19 +255,19 @@ const CollectionTable = () => {
             {collectionCases.map((invoice) => (
               <TableRow key={invoice.id}>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {formatDate(invoice.issueDate?.toString() || "")}
+                  {formatDate(invoice.issue_date?.toString() || "")}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {invoice.debtor?.fullname}
                 </TableCell>
                 <TableCell sx={{ textAlign: "right" }}>
-                  {formatCurrency(invoice.amountOriginal)}
+                  {formatCurrency(invoice.amount_original)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "right" }}>
-                  {formatCurrency(invoice.amountDue)}
+                  {formatCurrency(invoice.amount_due)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "right" }}>
-                  {formatCurrency(invoice.amountToReceive)}
+                  {formatCurrency(invoice.amount_to_receive)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {invoice.status}

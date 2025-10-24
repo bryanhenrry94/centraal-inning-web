@@ -13,7 +13,7 @@ class InvoiceService {
     // 1, Generar HTML desde plantilla
     const html = renderTemplate("invoice/notification", {
       ...data,
-      companyName: "Dazzsoft",
+      company_name: "Dazzsoft",
     });
 
     const mailOptions: EmailOptions = {

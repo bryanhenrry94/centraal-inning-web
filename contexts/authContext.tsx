@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error("Validate slug failed, response is null");
       }
 
-      return { isValid: valid, subdomain: slug };
+      return { is_valid: valid, subdomain: slug };
     } catch (error) {
       throw error;
     } finally {

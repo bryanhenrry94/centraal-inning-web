@@ -11,13 +11,11 @@ import {
   TextField,
   Stack,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import SaveIcon from "@mui/icons-material/Save";
 import { CollectionCaseCreate } from "@/lib/validations/collection";
-import ModalSearchDebtor from "@/components/debtor/modal-debtor-search";
 import { ModalFormDebtor } from "@/components/debtor/modal-debtor-form";
-import { DebtorBase, DebtorCreate } from "@/lib/validations/debtor";
+import { DebtorBase } from "@/lib/validations/debtor";
 import { getParameterById } from "@/app/actions/parameter";
 import { createCollectionCase } from "@/app/actions/collection";
 import { notifyError, notifySuccess } from "@/lib/notifications";
@@ -26,14 +24,14 @@ import { getAllDebtorsByTenantId } from "@/app/actions/debtor";
 import { IParamGeneral } from "@/lib/validations/parameter";
 
 const InitialCollectionCaseCreate: CollectionCaseCreate = {
-  debtorId: "",
-  amountOriginal: 0,
-  amountDue: 0,
-  amountToReceive: 0,
+  debtor_id: "",
+  amount_original: 0,
+  amount_due: 0,
+  amount_to_receive: 0,
   status: "PENDING",
-  referenceNumber: "",
-  issueDate: new Date() ?? undefined,
-  dueDate: new Date() ?? undefined,
+  reference_number: "",
+  issue_date: new Date() ?? undefined,
+  due_date: new Date() ?? undefined,
 };
 
 interface IRegisterInvoiceProps {
@@ -49,10 +47,10 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
   const [loading, setLoading] = useState(false);
 
   const [_parameter, setParameters] = useState<IParamGeneral>();
-  const [_ModalSearchDebtors, setModalSearchDebtors] = useState(false);
+  // const [_ModalSearchDebtors, setModalSearchDebtors] = useState(false);
   const [_ModalFormDebtor, setModalFormDebtor] = useState({
     open: false,
-    debtorId: "",
+    debtor_id: "",
   });
   const [debtors, setDebtors] = useState<DebtorBase[]>([]);
 
@@ -84,14 +82,14 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
     setDebtors(result);
   };
 
-  // const porcCobranza = demo?.porcCobranza ? demo?.porcCobranza : 0;
-  const porcCobranza = _parameter?.porcCobranza ?? 0;
-  const porcAbb = _parameter?.porcAbb ?? 0;
+  // const collection_fee_rate = demo?.collection_fee_rate ? demo?.collection_fee_rate : 0;
+  const collection_fee_rate = _parameter?.collection_fee_rate ?? 0;
+  const abb_rate = _parameter?.abb_rate ?? 0;
 
-  const invoiceAmount = formData.amountOriginal || 0;
+  const invoiceAmount = formData.amount_original || 0;
   const subtotal = Number(invoiceAmount);
-  const cobranza = (subtotal * porcCobranza) / 100; // 0.15
-  const abbValue = (cobranza * porcAbb) / 100;
+  const cobranza = (subtotal * collection_fee_rate) / 100; // 0.15
+  const abbValue = (cobranza * abb_rate) / 100;
   const totalFinal = subtotal - cobranza - abbValue;
 
   const formatUSD = (value: number) =>
@@ -103,17 +101,16 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
     }).format(value);
 
   const handleClickNewDebtor = () => {
-    setModalFormDebtor({ open: true, debtorId: "" });
-    setModalSearchDebtors(false); // Close search
+    setModalFormDebtor({ open: true, debtor_id: formData.debtor_id });
   };
 
-  const handleClickSearchDebtor = () => {
-    setModalSearchDebtors(true);
-  };
-
-  const handleSetDebtor = (debtor: DebtorCreate) => {
-    setModalSearchDebtors(false);
-    setModalFormDebtor({ open: false, debtorId: "" }); // Close form modal]});
+  const handleSetDebtor = (debtor: DebtorBase) => {
+    // consulta y setea el debtor_id en el formulario de factura
+    fetchDebtors();
+    setFormData({
+      ...formData,
+      debtor_id: debtor.id,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -123,7 +120,7 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
       if (!tenant) return;
 
       setLoading(true);
-      // Ensure debtorId is not changed when updating other fields
+      // Ensure debtor_id is not changed when updating other fields
       const newInvoice = await createCollectionCase(formData, tenant?.id);
       setFormData(InitialCollectionCaseCreate);
       console.log("New invoice: ", newInvoice);
@@ -148,11 +145,11 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               size="small"
               variant="outlined"
               type={"text"}
-              value={formData.referenceNumber}
+              value={formData.reference_number}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  referenceNumber: e.target.value,
+                  reference_number: e.target.value,
                 })
               }
               required
@@ -164,13 +161,13 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
                 getOptionLabel={(option) => option?.fullname ?? ""}
                 isOptionEqualToValue={(option, val) => option.id === val.id}
                 value={
-                  debtors.find((debtor) => debtor.id === formData.debtorId) ||
+                  debtors.find((debtor) => debtor.id === formData.debtor_id) ||
                   null
                 }
                 onChange={(_, newValue) => {
                   setFormData({
                     ...formData,
-                    debtorId: newValue ? newValue.id : "",
+                    debtor_id: newValue ? newValue.id : "",
                   });
                 }}
                 fullWidth
@@ -190,15 +187,6 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               />
               <Stack direction="row" spacing={2} alignItems="center">
                 <IconButton
-                  onClick={handleClickSearchDebtor}
-                  sx={{
-                    bgcolor: "background.paper",
-                    borderRadius: 1,
-                  }}
-                >
-                  <SearchIcon />
-                </IconButton>
-                <IconButton
                   onClick={handleClickNewDebtor}
                   sx={{
                     bgcolor: "background.paper",
@@ -216,11 +204,11 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               variant="outlined"
               type="number"
               required
-              value={formData.amountOriginal ?? ""}
+              value={formData.amount_original ?? ""}
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  amountOriginal: Number(e.target.value),
+                  amount_original: Number(e.target.value),
                 });
               }}
             />
@@ -232,16 +220,16 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               InputLabelProps={{ shrink: true }}
               disabled
               value={
-                formData.issueDate
-                  ? formData.issueDate instanceof Date
-                    ? formData.issueDate.toISOString().slice(0, 10)
-                    : new Date(formData.issueDate).toISOString().slice(0, 10)
+                formData.issue_date
+                  ? formData.issue_date instanceof Date
+                    ? formData.issue_date.toISOString().slice(0, 10)
+                    : new Date(formData.issue_date).toISOString().slice(0, 10)
                   : ""
               }
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  issueDate: e.target.value
+                  issue_date: e.target.value
                     ? new Date(e.target.value)
                     : undefined,
                 });
@@ -288,21 +276,12 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
         </form>
       </Box>
 
-      <ModalSearchDebtor
-        open={_ModalSearchDebtors}
-        onClose={() => setModalSearchDebtors(false)}
-        onSelect={handleSetDebtor}
-        onEdit={(id: string) => {
-          console.log("Editar deudor con ID:", id);
-          setModalSearchDebtors(false);
-          setModalFormDebtor({ open: true, debtorId: id }); // Open form modal for editing
-        }}
-      />
-
       <ModalFormDebtor
         open={_ModalFormDebtor.open}
-        onClose={() => setModalFormDebtor({ open: false, debtorId: "" })}
-        id={_ModalFormDebtor.debtorId} // Aquí puedes pasar el ID del deudor si estás editando
+        onClose={() =>
+          setModalFormDebtor({ open: false, debtor_id: formData.debtor_id })
+        }
+        id={_ModalFormDebtor.debtor_id} // Aquí puedes pasar el ID del deudor si estás editando
         onSave={handleSetDebtor}
       />
     </>

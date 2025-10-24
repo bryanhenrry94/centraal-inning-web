@@ -2,12 +2,12 @@ import { z } from "zod";
 
 export const VerdictAttachmentSchema = z.object({
   id: z.string().uuid(),
-  verdictId: z.string().uuid(),
-  filePath: z.string(),
-  fileName: z.string(),
-  fileSize: z.bigint(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  verdict_id: z.string().uuid(),
+  file_path: z.string(),
+  file_name: z.string(),
+  file_size: z.bigint(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
 });
 
 export type VerdictAttachment = z.infer<typeof VerdictAttachmentSchema>;

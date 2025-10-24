@@ -6,14 +6,14 @@ export async function getDashboardStats() {
   try {
     const [totalVerdicts, totalDebtors, totalCollection, facturasRecientes] =
       await Promise.all([
-        // prisma.cliente.count({ where: { tenantId } }),
-        // prisma.producto.count({ where: { tenantId } }),
-        // prisma.factura.count({ where: { tenantId } }),
+        // prisma.cliente.count({ where: { tenant_id } }),
+        // prisma.producto.count({ where: { tenant_id } }),
+        // prisma.factura.count({ where: { tenant_id } }),
         prisma.verdict.count(),
         prisma.debtor.count(),
         prisma.collectionCase.count(),
         prisma.billingInvoice.findMany({
-          // where: { tenantId: process.env.ADMIN_TENANT_ID },
+          // where: { tenant_id: process.env.ADMIN_TENANT_ID },
           include: {
             tenant: true,
           },
@@ -29,8 +29,8 @@ export async function getDashboardStats() {
 
     const facturasDelMes = await prisma.billingInvoice.findMany({
       where: {
-        // tenantId: process.env.ADMIN_TENANT_ID,
-        createdAt: {
+        // tenant_id: process.env.ADMIN_TENANT_ID,
+        created_at: {
           gte: inicioMes,
         },
       },

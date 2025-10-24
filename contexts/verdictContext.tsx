@@ -50,15 +50,15 @@ export const VerdictProvider: React.FC<VerdictProviderProps> = ({
       }, 1000);
 
       const embargoTipo = embargoTipos.find(
-        (tipo) => String(tipo.id) === data.embargoType
+        (tipo) => String(tipo.id) === data.embargo_type
       );
 
       const newEmbargo: VerdictEmbargo = {
         ...data,
         id: crypto.randomUUID(), // Simulate a UUID string ID
-        embargoType: embargoTipo?.nombre || "Desconocido",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        embargo_type: embargoTipo?.nombre || "Desconocido",
+        created_at: new Date(),
+        updated_at: new Date(),
       };
 
       setEmbargoData((prevData) => [...prevData, newEmbargo]);

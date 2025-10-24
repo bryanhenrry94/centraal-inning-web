@@ -5,11 +5,11 @@ export const IdTokenSchema = z.object({
   fullname: z.string(),
   email: z.email(),
   phone: z.string(),
-  tenantId: z.string(),
+  tenant_id: z.string(),
   subdomain: z.string(),
   company: z.string(),
   role: z.string(),
-  emailVerified: z.boolean(),
+  email_verified: z.boolean(),
 });
 
 export const loginSchema = z.object({

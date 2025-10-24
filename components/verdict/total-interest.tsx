@@ -4,7 +4,7 @@ import type { Control } from "react-hook-form";
 
 const TotalInterest: React.FC<{ control: Control<any> }> = ({ control }) => {
   interface VerdictInterestItem {
-    totalInterest?: number;
+    total_interest?: number;
     [key: string]: any;
   }
 
@@ -16,7 +16,7 @@ const TotalInterest: React.FC<{ control: Control<any> }> = ({ control }) => {
   const total: number =
     verdictInterest?.reduce(
       (sum: number, item: VerdictInterestItem) =>
-        sum + (item?.totalInterest ?? 0),
+        sum + (item?.total_interest ?? 0),
       0
     ) ?? 0;
 

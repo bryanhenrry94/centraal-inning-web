@@ -2,34 +2,35 @@ import { z } from "zod";
 
 export const PaymentAgreementSchema = z.object({
   id: z.string().cuid(),
-  collectionCaseId: z.string(),
-  tenantId: z.uuid(),
-  totalAmount: z.number(),
-  installmentAmount: z.number(),
-  installmentsCount: z.number().int(),
-  startDate: z.date(),
+  collection_case_id: z.string(),
+  tenant_id: z.uuid(),
+  total_amount: z.number(),
+  installment_amount: z.number(),
+  installments_count: z.number().int(),
+  start_date: z.date(),
+  end_date: z.date(),
   comment: z.string().optional().nullable(),
   status: z.string(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  debtorId: z.string().nullable().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
+  debtor_id: z.string().nullable().optional(),
 });
 
 export const PaymentAgreementCreateSchema = PaymentAgreementSchema.omit({
   id: true,
-  tenantId: true,
-  createdAt: true,
-  updatedAt: true,
+  tenant_id: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const PaymentAgreementUpdateSchema =
   PaymentAgreementCreateSchema.partial();
 
 export const PaymentAgreementResponseSchema = PaymentAgreementSchema.extend({
-  collectionCase: z.object({
+  collection_case: z.object({
     id: z.string().cuid(),
-    referenceNumber: z.string(),
-    issueDate: z.date().optional().nullable(),
+    reference_number: z.string(),
+    issue_date: z.date().optional().nullable(),
   }),
   debtor: z
     .object({

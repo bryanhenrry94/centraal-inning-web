@@ -61,7 +61,7 @@ export function RecentInvoices({ facturas }: RecentInvoicesProps) {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-slate-900">
-                      #{factura.invoiceNumber}
+                      #{factura.invoice_number}
                     </p>
                     {getEstadoBadge(factura.status)}
                   </div>
@@ -74,7 +74,7 @@ export function RecentInvoices({ facturas }: RecentInvoicesProps) {
                     {formatPrice(factura.amount)}
                   </p>
                   <p className="text-sm text-slate-500">
-                    {formatDate(factura.issueDate)}
+                    {formatDate(factura.issue_date)}
                   </p>
                 </div>
               </Link>

@@ -15,16 +15,9 @@ export const getParameterById = async (id: string) => {
 export const createParameter = async (data: IParamGeneral) => {
   const newParameter = await prisma.parameter.create({
     data: {
-      porcCobranza: data.porcCobranza,
-      porcAbb: data.porcAbb,
-      diasPlazoEmpresaAanmaning: data.diasPlazoEmpresaAanmaning,
-      diasPlazoConsumidorAanmaning: data.diasPlazoConsumidorAanmaning,
-      diasPlazoEmpresaSommatie: data.diasPlazoEmpresaSommatie,
-      diasPlazoConsumidorSommatie: data.diasPlazoConsumidorSommatie,
-      precioEmpresaPequena: data.precioEmpresaPequena,
-      contribucionEmpresaPequenaPfc: data.contribucionEmpresaPequenaPfc,
-      precioEmpresaGrande: data.precioEmpresaGrande,
-      contribucionEmpresaGrandePfc: data.contribucionEmpresaGrandePfc,
+      ...data,
+      created_at: new Date(),
+      updated_at: new Date(),
     },
   });
 
@@ -41,7 +34,7 @@ export const updateParameter = async (
     },
     data: {
       ...data,
-      updatedAt: new Date(),
+      updated_at: new Date(),
     },
   });
 

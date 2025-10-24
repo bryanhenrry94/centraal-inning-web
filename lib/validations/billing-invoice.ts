@@ -7,43 +7,42 @@ import { TenantSchema } from "./tenant";
 
 export const BillingInvoiceBaseSchema = z.object({
   id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  subscriptionId: z.string().uuid().nullable().optional(),
-  invoiceNumber: z.string(),
+  tenant_id: z.string().uuid(),
+  invoice_number: z.string(),
   amount: z.number(),
   currency: z.string().default("USD"),
-  issueDate: z.preprocess(
+  issue_date: z.preprocess(
     (val) =>
       typeof val === "string" || val instanceof Date ? new Date(val) : val,
     z.date()
   ),
-  dueDate: z.preprocess(
+  due_date: z.preprocess(
     (val) =>
       typeof val === "string" || val instanceof Date ? new Date(val) : val,
     z.date().refine((date) => !isNaN(date.getTime()))
   ),
   description: z.string().nullable().optional(),
   status: z.enum(["unpaid", "paid", "overdue"]).default("unpaid"),
-  invoiceDetails: z.array(BillingInvoiceDetailCreateSchema).optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  invoice_details: z.array(BillingInvoiceDetailCreateSchema).optional(),
+  created_at: z.date(),
+  updated_at: z.date(),
 });
 
 export const BillingInvoiceCreateSchema = BillingInvoiceBaseSchema.omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const BillingInvoiceUpdateSchema = BillingInvoiceBaseSchema.pick({
   amount: true,
   currency: true,
-  dueDate: true,
+  due_date: true,
   status: true,
 });
 
 export const BillingInvoiceResponseSchema = BillingInvoiceBaseSchema.extend({
-  invoiceDetails: z.array(BillingInvoiceDetailBaseSchema),
+  invoice_details: z.array(BillingInvoiceDetailBaseSchema),
   payments: z.array(z.any()).optional(), // Replace z.any() with PaymentSchema if available
 });
 

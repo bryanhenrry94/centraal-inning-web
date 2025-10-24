@@ -179,7 +179,7 @@ const CollectionViewPage: React.FC = () => {
       }
 
       const data = await getPaymentAgreements({
-        collectionCaseId: params.id as string,
+        collection_case_id: params.id as string,
       });
       if (data) {
         setPaymentAgreements(data);
@@ -198,28 +198,29 @@ const CollectionViewPage: React.FC = () => {
       setLoading(true);
       console.log("Agreement Data Submitted:", data);
 
-      if (!session?.user?.tenantId) {
+      if (!session?.user?.tenant_id) {
         notifyError("No se pudo obtener la información del inquilino");
         return;
       }
 
-      const debtor = await getDebtorByUserId(collection?.debtorId || "");
+      const debtor = await getDebtorByUserId(collection?.debtor_id || "");
       if (!debtor) {
         notifyError("No se encontró el deudor asociado al usuario");
         return;
       }
 
       const agreementCreate: PaymentAgreementCreate = {
-        collectionCaseId: data.collectionCaseId || "",
-        totalAmount: Number(data.totalAmount) || 0,
-        installmentsCount: Number(data.installmentsCount) || 0,
-        installmentAmount: Number(data.installmentAmount) || 0,
-        startDate: data.startDate || new Date(),
-        status: data.status || $Enums.PaymentAgreementStatus.PENDING,
-        debtorId: data.debtorId,
+        collection_case_id: data.collection_case_id || "",
+        total_amount: Number(data.total_amount) || 0,
+        installments_count: Number(data.installments_count) || 0,
+        installment_amount: Number(data.installment_amount) || 0,
+        start_date: data.start_date || new Date(),
+        end_date: data.end_date || new Date(),
+        status: data.status || $Enums.AgreementStatus.PENDING,
+        debtor_id: data.debtor_id,
       };
 
-      if (agreementCreate.startDate < new Date()) {
+      if (agreementCreate.start_date < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
       }
@@ -230,7 +231,7 @@ const CollectionViewPage: React.FC = () => {
         return;
       }
 
-      await createPaymentAgreement(session?.user?.tenantId, agreementCreate);
+      await createPaymentAgreement(session?.user?.tenant_id, agreementCreate);
       await fetchPaymentAgreements();
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");
@@ -271,7 +272,7 @@ const CollectionViewPage: React.FC = () => {
             <Typography variant="body1" color="text.secondary">
               Datum vordering:{" "}
               {(() => {
-                const d = collection?.issueDate;
+                const d = collection?.issue_date;
                 if (!d) return "N/A";
                 return typeof d === "string"
                   ? new Date(d).toLocaleDateString()
@@ -283,13 +284,13 @@ const CollectionViewPage: React.FC = () => {
               {collection?.debtor.fullname ? collection.debtor.fullname : "N/A"}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Vordering: {formatCurrency(collection?.amountOriginal || 0)}
+              Vordering: {formatCurrency(collection?.amount_original || 0)}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Te betalen: {formatCurrency(collection?.amountDue || 0)}
+              Te betalen: {formatCurrency(collection?.amount_due || 0)}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Te ontvangen: {formatCurrency(collection?.amountToReceive || 0)}
+              Te ontvangen: {formatCurrency(collection?.amount_to_receive || 0)}
             </Typography>
             <Typography variant="body1" color="text.secondary">
               Status: {collection?.status || "N/A"}
@@ -353,14 +354,14 @@ const CollectionViewPage: React.FC = () => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {new Date(payment.paymentDate).toLocaleDateString()}
+                        {new Date(payment.payment_date).toLocaleDateString()}
                       </TableCell>
                       <TableCell align="right">
                         {formatCurrency(payment.amount)}
                       </TableCell>
                       <TableCell align="right">{payment.method}</TableCell>
                       <TableCell align="right">
-                        {payment.referenceNumber || "N/A"}
+                        {payment.reference_number || "N/A"}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -431,11 +432,11 @@ const CollectionViewPage: React.FC = () => {
                 <AgreementForm
                   onSubmit={handleAgreementSubmit}
                   initialData={{
-                    collectionCaseId: params.id as string,
-                    totalAmount: collection?.amountOriginal || 0,
-                    installmentsCount: 0,
-                    installmentAmount: 0,
-                    startDate: new Date(),
+                    collection_case_id: params.id as string,
+                    total_amount: collection?.amount_original || 0,
+                    installments_count: 0,
+                    installment_amount: 0,
+                    start_date: new Date(),
                     status: "ACTIVE",
                   }}
                   loading={loading}
@@ -469,7 +470,7 @@ const CollectionViewPage: React.FC = () => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                        {new Date(notification.createdAt).toLocaleDateString()}
+                        {new Date(notification.created_at).toLocaleDateString()}
                       </TableCell>
                       <TableCell align="right">{notification.title}</TableCell>
                       <TableCell align="right">{notification.type}</TableCell>

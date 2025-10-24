@@ -23,16 +23,16 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
 
   useEffect(() => {
     if (initialData) {
-      if (!initialData.totalAmount)
-        initialData.totalAmount = Number(initialData.totalAmount);
+      if (!initialData.total_amount)
+        initialData.total_amount = Number(initialData.total_amount);
 
-      if (!initialData.installmentsCount)
-        initialData.installmentsCount = Number(initialData.installmentsCount);
+      if (!initialData.installments_count)
+        initialData.installments_count = Number(initialData.installments_count);
 
       setFormData({
         ...initialData,
-        installmentAmount:
-          initialData.totalAmount / initialData.installmentsCount,
+        installment_amount:
+          initialData.total_amount / initialData.installments_count,
       });
     }
   }, [initialData]);
@@ -49,40 +49,40 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
         <Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body2" gutterBottom>
-              Aantal Termijnen:
+              Aflostermijnen:
             </Typography>
             <Typography variant="h6" gutterBottom>
-              {formData?.installmentsCount || 0}
+              {formData?.installments_count || 0}
             </Typography>
           </Box>
           <Box sx={{ width: "100%", px: 1 }}>
             <Slider
-              name="installmentsCount"
+              name="installments_count"
               defaultValue={3}
               step={1}
               min={3}
               max={24}
               valueLabelDisplay="auto"
-              value={formData?.installmentsCount || 0}
+              value={formData?.installments_count || 0}
               onChange={(e, newValue) => {
                 setFormData({
                   ...formData,
 
-                  installmentAmount: formData
-                    ? Number(formData.totalAmount) / Number(newValue)
+                  installment_amount: formData
+                    ? Number(formData.total_amount) / Number(newValue)
                     : 0,
 
-                  installmentsCount: Number(newValue),
+                  installments_count: Number(newValue),
                 } as PaymentAgreementCreate);
               }}
             />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="caption" gutterBottom>
-              3 maanden
+              3 Maanden
             </Typography>
             <Typography variant="caption" gutterBottom>
-              24 maanden
+              24 Maanden
             </Typography>
           </Box>
         </Box>
@@ -104,10 +104,10 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Totaal bedrag:
+              Totaal te bedrag:
             </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              {formatCurrency(formData?.totalAmount || 0)}
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              {formatCurrency(formData?.total_amount || 0)}
             </Typography>
           </Box>
 
@@ -119,10 +119,10 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Kosten:
+              Aflostermijnen:
             </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              {formData?.installmentsCount ?? 0} betalingen
+            <Typography variant="body2">
+              {formData?.installments_count ?? 0}
             </Typography>
           </Box>
 
@@ -136,8 +136,23 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
             <Typography variant="body2" color="text.secondary">
               Startdatum:
             </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              {formatDate(formData?.startDate?.toString() || "")}
+            <Typography variant="body2">
+              {formatDate(formData?.start_date?.toString() || "")}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              Einddatum:
+            </Typography>
+            <Typography variant="body2">
+              {formatDate(formData?.start_date?.toString() || "")}
             </Typography>
           </Box>
 
@@ -152,14 +167,14 @@ const AgreementForm: React.FC<AgreementFormProps> = ({
             }}
           >
             <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-              Betaling per maand:
+              Aflosbedrag:
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
               {formatCurrency(
-                formData?.totalAmount && formData?.installmentsCount
-                  ? formData.totalAmount / formData.installmentsCount
+                formData?.total_amount && formData?.installments_count
+                  ? formData.total_amount / formData.installments_count
                   : 0
-              )}
+              )}{" "}
             </Typography>
           </Box>
         </Box>

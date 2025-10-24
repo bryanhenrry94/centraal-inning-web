@@ -13,7 +13,7 @@ class VerdictService {
     // 1, Generar HTML desde plantilla
     const html = renderTemplate("verdict/Notification", {
       ...data,
-      companyName: "Dazzsoft",
+      company_name: "Dazzsoft",
     });
 
     const mailOptions: EmailOptions = {

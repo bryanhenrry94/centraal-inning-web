@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DebtorCreateSchema, DebtorCreate } from "@/lib/validations/debtor";
 
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
-  Grid,
-  CircularProgress,
+  Box,
+  Stack,
+  IconButton,
+  Modal,
+  Paper,
+  Typography,
 } from "@mui/material";
 import InputHookForm from "@/components/ui/InputHookForm";
 import SelectHookForm from "@/components/ui/SelectHookForm";
@@ -23,6 +23,8 @@ import {
 } from "@/app/actions/debtor";
 import { useTenant } from "@/hooks/useTenant";
 import { notifyError, notifySuccess } from "@/lib/notifications";
+import CloseIcon from "@mui/icons-material/Close";
+import { $Enums } from "@/prisma/generated/prisma";
 
 interface ModalFormDebtorProps {
   open: boolean;
@@ -32,10 +34,10 @@ interface ModalFormDebtorProps {
 }
 
 const identificationTypeOptions = [
-  { value: "DNI", label: "DNI" },
-  { value: "PASSPORT", label: "Passport" },
-  { value: "NIE", label: "NIE" },
-  { value: "OTHER", label: "Other" },
+  { value: $Enums.IdentificationType.DNI, label: "DNI" },
+  { value: $Enums.IdentificationType.PASSPORT, label: "PASPOORT" },
+  { value: $Enums.IdentificationType.NIE, label: "NIE" },
+  { value: $Enums.IdentificationType.OTHER, label: "OTHER " },
 ];
 
 export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
@@ -49,16 +51,20 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
   const [loading, setLoading] = useState(false);
 
   const methods = useForm<DebtorCreate>({
-    // resolver: zodResolver(DebtorCreateSchema),
-    // defaultValues: {
-    //   fullname: "",
-    //   email: "",
-    //   phone: "",
-    //   address: "",
-    //   identification: "",
-    //   identificationType: "DNI",
-    //   personType: "INDIVIDUAL",
-    // },
+    resolver: zodResolver(
+      DebtorCreateSchema
+    ) as unknown as Resolver<DebtorCreate>,
+    defaultValues: {
+      email: "",
+      fullname: "",
+      address: "",
+      phone: "",
+      person_type: $Enums.PersonType.INDIVIDUAL,
+      identification_type: $Enums.IdentificationType.DNI,
+      identification: "",
+      total_income: 0,
+      incomes: [],
+    },
   });
 
   const { handleSubmit, reset } = methods;
@@ -80,10 +86,10 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
       phone: debtor.phone || "",
       address: debtor.address || "",
       identification: debtor.identification,
-      identificationType: debtor.identificationType,
-      personType:
-        debtor.personType === "INDIVIDUAL" || debtor.personType === "COMPANY"
-          ? debtor.personType
+      identification_type: debtor.identification_type,
+      person_type:
+        debtor.person_type === "INDIVIDUAL" || debtor.person_type === "COMPANY"
+          ? debtor.person_type
           : "INDIVIDUAL",
     });
   };
@@ -112,8 +118,8 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
       phone: "",
       address: "",
       identification: "",
-      identificationType: "DNI",
-      personType: "INDIVIDUAL",
+      identification_type: "DNI",
+      person_type: "INDIVIDUAL",
     });
   };
 
@@ -143,71 +149,96 @@ export const ModalFormDebtor: React.FC<ModalFormDebtorProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>{id ? "Edit Debtor" : "Create Debtor"}</DialogTitle>
-      <DialogContent>
-        {loading ? (
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            minHeight={200}
-          >
-            <CircularProgress />
-          </Grid>
-        ) : (
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Paper
+        component="section"
+        sx={{
+          mt: 2,
+          elevation: 1,
+          borderRadius: 1,
+          overflow: "hidden",
+          mb: 2,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 300,
+        }}
+      >
+        <Box
+          sx={{
+            bgcolor: "secondary.main",
+            color: "white",
+            px: 2,
+            py: 1.5,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottom: "1px solid #e0e0e0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+            {"DEBITEUR"}
+          </Typography>
+          <IconButton onClick={onClose} sx={{ color: "white" }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <Box sx={{ p: 2 }}>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} id="debtor-form">
-              <Grid container spacing={2} mt={0.5}>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <SelectHookForm
-                    name="personType"
-                    label="Person Type"
-                    options={personTypeOptions}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <SelectHookForm
-                    name="identificationType"
-                    label="Identification Type"
-                    options={identificationTypeOptions}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <InputHookForm name="identification" label="Identification" />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <InputHookForm name="fullname" label="Full Name" />
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <InputHookForm name="email" label="Email" />
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <InputHookForm name="phone" label="Phone" />
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <InputHookForm name="address" label="Address" />
-                </Grid>
-              </Grid>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <SelectHookForm
+                  name="person_type"
+                  label="Person Type"
+                  options={personTypeOptions}
+                  required={true}
+                />
+                <SelectHookForm
+                  name="identification_type"
+                  label="Identification Type"
+                  options={identificationTypeOptions}
+                />
+                <InputHookForm
+                  name="identification"
+                  label="Identification"
+                  required={true}
+                />
+                <InputHookForm
+                  name="fullname"
+                  label="Full Name"
+                  required={true}
+                />
+                <InputHookForm name="email" label="Email" required={true} />
+                <InputHookForm name="phone" label="Phone" required={true} />
+                <InputHookForm name="address" label="Address" required={true} />
+                <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                  <Button onClick={onClose} color="secondary" fullWidth>
+                    ANNULEREN
+                  </Button>
+                  <Button
+                    type="submit"
+                    form="debtor-form"
+                    color="primary"
+                    variant="contained"
+                    disabled={loading}
+                    fullWidth
+                  >
+                    {id ? "UPDATE" : "SAVE"}
+                  </Button>
+                </Stack>
+              </Box>
             </form>
           </FormProvider>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary">
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          form="debtor-form"
-          color="primary"
-          variant="contained"
-          disabled={loading}
-        >
-          {id ? "Save Changes" : "Create"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </Box>
+      </Paper>
+    </Modal>
   );
 };

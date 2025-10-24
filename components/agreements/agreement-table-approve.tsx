@@ -78,7 +78,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Acties
+                Akkoord / Annuleren
               </TableCell>
               <TableCell
                 sx={{
@@ -108,7 +108,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Totaal bedrag
+                Totaal te bedrag
               </TableCell>
               <TableCell
                 sx={{
@@ -118,7 +118,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Aantal termijnen
+                Aflostermijnen
               </TableCell>
               <TableCell
                 sx={{
@@ -128,7 +128,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Bedrag per termijn
+                Aflosbedrag
               </TableCell>
               <TableCell
                 sx={{
@@ -148,7 +148,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Status
+                Einddatum
               </TableCell>
               <TableCell
                 sx={{
@@ -158,7 +158,7 @@ export const AgreementTableApprove = ({
                 }}
                 align="center"
               >
-                Tegenbod
+                Aanpassen
               </TableCell>
             </TableRow>
           </TableHead>
@@ -180,7 +180,7 @@ export const AgreementTableApprove = ({
                   </IconButton>
                 </TableCell>
                 <TableCell align="center">
-                  {new Date(agreement.createdAt || "").toLocaleDateString()}
+                  {new Date(agreement.created_at || "").toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">
                   {agreement.debtor
@@ -188,21 +188,19 @@ export const AgreementTableApprove = ({
                     : "Sin deudor asignado"}
                 </TableCell>
                 <TableCell align="center">
-                  {formatCurrency(agreement.totalAmount)}
+                  {formatCurrency(agreement.total_amount)}
                 </TableCell>
                 <TableCell align="center">
-                  {agreement.installmentsCount}
+                  {agreement.installments_count}
                 </TableCell>
                 <TableCell align="center">
-                  {formatCurrency(agreement.installmentAmount)}
+                  {formatCurrency(agreement.installment_amount)}
                 </TableCell>
                 <TableCell align="center">
-                  {new Date(agreement.startDate).toLocaleDateString()}
+                  {new Date(agreement.start_date).toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">
-                  <PaymentAgreementStatusChip
-                    status={agreement.status as $Enums.PaymentAgreementStatus}
-                  />
+                  
                 </TableCell>
                 <TableCell align="center">
                   <IconButton>
@@ -256,7 +254,7 @@ export const AgreementTableApprove = ({
             }}
           >
             <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
-              OVEREENKOMST AANPASSEN
+              BETALINGSREGELING AANPASSEN
             </Typography>
             <IconButton sx={{ color: "white" }}>
               <CloseIcon onClick={handleCloseModal} />
@@ -265,7 +263,7 @@ export const AgreementTableApprove = ({
           <AgreementForm
             initialData={{
               ...agreementSelected,
-              status: $Enums.PaymentAgreementStatus.COUNTEROFFER,
+              status: $Enums.AgreementStatus.COUNTEROFFER,
             }}
             onSubmit={handleUpdate}
             loading={loading}

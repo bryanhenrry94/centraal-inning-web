@@ -4,6 +4,7 @@ import {
   DebtorBase,
   DebtorBaseSchema,
   DebtorCreate,
+  DebtorCreateSchema,
   IdentificationType,
 } from "@/lib/validations/debtor";
 import { getUserByEmail } from "@/app/actions/user";
@@ -15,12 +16,12 @@ import FinancialService from "@/common/mail/services/financialService";
 import path from "path";
 
 export const getAllDebtorsByTenantId = async (
-  tenantId: string
+  tenant_id: string
 ): Promise<DebtorBase[]> => {
   try {
     const debtors = await prisma.debtor.findMany({
       where: {
-        tenantId,
+        tenant_id,
       },
     });
 
@@ -56,11 +57,11 @@ export const getDebtorById = async (id: string): Promise<DebtorBase | null> => {
 };
 
 export const getDebtorByUserId = async (
-  userId: string
+  user_id: string
 ): Promise<DebtorBase | null> => {
   try {
     const debtor = await prisma.debtor.findFirst({
-      where: { userId },
+      where: { user_id },
       include: {
         incomes: true, // Include incomes if needed
       },
@@ -74,24 +75,31 @@ export const getDebtorByUserId = async (
 
 export const createDebtor = async (
   debtor: DebtorCreate,
-  tenantId: string
+  tenant_id: string
 ): Promise<DebtorBase> => {
   try {
-    console.log("Creating debtor:", debtor);
+    const debtorFormatted = DebtorCreateSchema.parse(debtor);
+
+    if (!debtorFormatted) {
+      throw new Error("Invalid debtor data");
+    }
+
+    console.log("Creating debtor:", debtorFormatted);
+
     const newDebtor = await prisma.debtor.create({
       data: {
-        identificationType: debtor.identificationType,
-        identification: debtor.identification || "",
-        fullname: debtor.fullname || "",
-        email: debtor.email || "",
-        phone: debtor.phone || "",
-        address: debtor.address || "",
-        personType: debtor.personType || "INDIVIDUAL",
-        tenantId,
-        totalIncome: debtor.totalIncome || 0,
+        identification_type: debtorFormatted.identification_type,
+        identification: debtorFormatted.identification || "",
+        fullname: debtorFormatted.fullname || "",
+        email: debtorFormatted.email || "",
+        phone: debtorFormatted.phone || "",
+        address: debtorFormatted.address || "",
+        person_type: debtorFormatted.person_type || "INDIVIDUAL",
+        tenant_id,
+        total_income: debtorFormatted.total_income || 0,
         incomes: {
-          create: debtor.incomes?.map((income) => ({
-            debtorId: tenantId,
+          create: debtorFormatted.incomes?.map((income) => ({
+            debtor_id: tenant_id,
             source: income.source,
             amount: income.amount,
           })),
@@ -108,7 +116,7 @@ export const createDebtor = async (
 
 export const updateDebtor = async (
   debtor: DebtorCreate,
-  tenantId: string,
+  tenant_id: string,
   id: string
 ): Promise<DebtorBase | null> => {
   try {
@@ -117,22 +125,22 @@ export const updateDebtor = async (
       const debtorResult = await tx.debtor.update({
         where: { id },
         data: {
-          identificationType:
-            (debtor.identificationType as IdentificationType) ||
+          identification_type:
+            (debtor.identification_type as IdentificationType) ||
             IdentificationType.DNI,
           identification: debtor.identification || "",
           fullname: debtor.fullname || "",
           email: debtor.email || "",
           phone: debtor.phone || "",
           address: debtor.address || "",
-          personType: debtor.personType || "INDIVIDUAL",
-          tenantId,
+          person_type: debtor.person_type || "INDIVIDUAL",
+          tenant_id,
         },
       });
 
       // Handle incomes
       const existingIncomes = await tx.debtorIncome.findMany({
-        where: { debtorId: id },
+        where: { debtor_id: id },
       });
 
       const incomingIncomes = debtor.incomes ?? [];
@@ -140,7 +148,7 @@ export const updateDebtor = async (
       // Delete all incomes for this debtor
       await tx.debtorIncome.deleteMany({
         where: {
-          debtorId: id,
+          debtor_id: id,
         },
       });
 
@@ -148,7 +156,7 @@ export const updateDebtor = async (
       for (const income of incomingIncomes) {
         await tx.debtorIncome.create({
           data: {
-            debtorId: id,
+            debtor_id: id,
             source: income.source,
             amount: income.amount,
           },
@@ -166,12 +174,12 @@ export const updateDebtor = async (
 };
 
 export const getDebtorInfo = async (
-  tenantId: string,
+  tenant_id: string,
   identification: string
 ): Promise<DebtorBase> => {
   const debtor = await prisma.debtor.findFirst({
     where: {
-      tenantId: tenantId,
+      tenant_id: tenant_id,
       identification: identification,
     },
     include: {
@@ -181,7 +189,7 @@ export const getDebtorInfo = async (
 
   if (!debtor) {
     throw new Error(
-      `Debtor with ID ${identification} not found for tenant ${tenantId}`
+      `Debtor with ID ${identification} not found for tenant ${tenant_id}`
     );
   }
 
@@ -193,14 +201,14 @@ export const getDebtorInfo = async (
 };
 
 export const createDebtorIfNotExists = async (
-  tenantId: string,
+  tenant_id: string,
   debtor: DebtorCreate
 ): Promise<DebtorCreate> => {
-  let userId: string | null = null;
+  let user_id: string | null = null;
 
   // Check if the debtor already exists
   const existingDebtor = await getDebtorInfo(
-    tenantId,
+    tenant_id,
     debtor.identification ?? ""
   ).catch(() => null);
 
@@ -210,7 +218,7 @@ export const createDebtorIfNotExists = async (
     );
   }
 
-  if (await validaEmailDebtorUserExist(debtor.email || "", tenantId, "")) {
+  if (await validaEmailDebtorUserExist(debtor.email || "", tenant_id, "")) {
     throw new Error(`A user with email ${debtor.email} already exists`);
   }
 
@@ -222,29 +230,29 @@ export const createDebtorIfNotExists = async (
         email: debtor.email,
         fullname: debtor.fullname,
         phone: debtor.phone,
-        tenantId: tenantId,
+        tenant_id: tenant_id,
         role: roleEnum.DEBTOR,
-        isActive: true,
+        is_active: true,
       },
     });
 
-    userId = newUser.id;
+    user_id = newUser.id;
   } else {
-    userId = userExist.id;
+    user_id = userExist.id;
   }
 
   // Create the debtor and link it to the user
   const newDebtor = await prisma.debtor.create({
     data: {
-      tenantId: tenantId,
+      tenant_id: tenant_id,
       identification: debtor.identification,
-      userId: userId, // Assuming the debtor has a userId field to link to the user
+      user_id: user_id, // Assuming the debtor has a user_id field to link to the user
       fullname: debtor.fullname,
       email: debtor.email,
       phone: debtor.phone,
       address: debtor.address,
-      identificationType: debtor.identificationType as IdentificationType,
-      personType: debtor.personType,
+      identification_type: debtor.identification_type as IdentificationType,
+      person_type: debtor.person_type,
     },
   });
 
@@ -257,8 +265,8 @@ export const createDebtorIfNotExists = async (
 
 export const validaEmailDebtorUserExist = async (
   email: string,
-  tenantId: string,
-  debtorId: string
+  tenant_id: string,
+  debtor_id: string
 ): Promise<boolean> => {
   if (email) {
     // Busca el usuario por email y tenant
@@ -272,9 +280,9 @@ export const validaEmailDebtorUserExist = async (
       // Busca si existe un deudor relacionado con ese usuario en el tenant
       const existingDebtor = await prisma.debtor.findFirst({
         where: {
-          tenantId: tenantId,
-          userId: existingUser.id,
-          NOT: debtorId ? { id: debtorId } : undefined,
+          tenant_id: tenant_id,
+          user_id: existingUser.id,
+          NOT: debtor_id ? { id: debtor_id } : undefined,
         },
       });
 
@@ -287,11 +295,11 @@ export const validaEmailDebtorUserExist = async (
 };
 
 export const sendFinancialSummaryEmail = async (
-  debtorId: string
+  debtor_id: string
 ): Promise<boolean> => {
   try {
     const debtor = await prisma.debtor.findUnique({
-      where: { id: debtorId },
+      where: { id: debtor_id },
     });
 
     if (!debtor) return false;
@@ -305,7 +313,7 @@ export const sendFinancialSummaryEmail = async (
         currentYear: new Date().getFullYear(),
       };
 
-      const pdfBuffer = await generateFinancialReportPDF(debtorId);
+      const pdfBuffer = await generateFinancialReportPDF(debtor_id);
 
       if (pdfBuffer) {
         // Guardar el PDF en una ruta temporal
@@ -314,13 +322,13 @@ export const sendFinancialSummaryEmail = async (
         await fs.mkdir(tempDir, { recursive: true });
         const tempFilePath = path.join(
           tempDir,
-          `financieel_overzicht_${debtorId}.pdf`
+          `financieel_overzicht_${debtor_id}.pdf`
         );
         await fs.writeFile(tempFilePath, pdfBuffer);
 
         // Configurar el adjunto usando el archivo temporal
         const attachmentConfig = {
-          filename: `financieel_overzicht_${debtorId}.pdf`,
+          filename: `financieel_overzicht_${debtor_id}.pdf`,
           pdfTemplatePath: tempFilePath,
         };
 
@@ -362,7 +370,7 @@ export const generateFinancialReportPDF = async (
 
   const html = renderTemplate("financial/financial-summary", {
     ...data,
-    companyName: "Dazzsoft",
+    company_name: "Dazzsoft",
   });
 
   const browser = await puppeteer.launch({

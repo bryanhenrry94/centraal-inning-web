@@ -138,7 +138,7 @@ const AgreementTable = ({
                 }}
                 align="center"
               >
-                Totaal bedrag
+                Totaal te bedrag
               </TableCell>
               <TableCell
                 sx={{
@@ -150,7 +150,7 @@ const AgreementTable = ({
                 }}
                 align="center"
               >
-                Aantal termijnen
+                Aflostermijnen
               </TableCell>
               <TableCell
                 sx={{
@@ -162,7 +162,27 @@ const AgreementTable = ({
                 }}
                 align="center"
               >
-                Termijnbedrag
+                Aflosbedrag
+              </TableCell>
+              <TableCell
+                sx={{
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+                align="center"
+              >
+                Startdatum
+              </TableCell>
+              <TableCell
+                sx={{
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+                align="center"
+              >
+                Einddatum
               </TableCell>
               {/* <TableCell
                 sx={{
@@ -186,43 +206,7 @@ const AgreementTable = ({
                 }}
                 align="center"
               >
-                Nalevingsstatus
-              </TableCell>
-              <TableCell
-                sx={{
-                  minWidth: 100,
-                  backgroundColor: "secondary.main",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  border: "1px solid #bdbdbd",
-                }}
-                align="center"
-              >
-                Opmerking
-              </TableCell>
-              {/* <TableCell
-                sx={{
-                  minWidth: 50,
-                  backgroundColor: "secondary.main",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  border: "1px solid #bdbdbd",
-                }}
-                align="center"
-              >
-                Meer details
-              </TableCell> */}
-              <TableCell
-                sx={{
-                  minWidth: 50,
-                  backgroundColor: "secondary.main",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  border: "1px solid #bdbdbd",
-                }}
-                align="center"
-              >
-                Actie
+                Status
               </TableCell>
             </TableRow>
           </TableHead>
@@ -230,41 +214,35 @@ const AgreementTable = ({
             {agreements?.map((agreement) => (
               <TableRow key={agreement.id}>
                 <TableCell component="th" scope="row" align="center">
-                  {new Date(agreement.startDate).toLocaleDateString()}
+                  {formatDate(agreement.start_date.toString())}
                 </TableCell>
                 <TableCell align="center">
                   {agreement.debtor?.fullname ?? "N/A"}
                 </TableCell>
                 <TableCell align="center">
-                  {agreement.collectionCase.referenceNumber || "N/A"}
+                  {agreement.collection_case.reference_number || "N/A"}
                 </TableCell>
                 <TableCell align="right">
-                  {formatCurrency(agreement.totalAmount)}
+                  {formatCurrency(agreement.total_amount)}
                 </TableCell>
                 <TableCell align="center">
-                  {agreement.installmentsCount}
+                  {agreement.installments_count}
                 </TableCell>
                 <TableCell align="right">
-                  {formatCurrency(agreement.installmentAmount)}
+                  {formatCurrency(agreement.installment_amount)}
                 </TableCell>
+                <TableCell align="right"></TableCell>
+                <TableCell align="right"></TableCell>
                 {/* <TableCell align="center">
-                  {formatDate(agreement.startDate.toString())}
+                  {formatDate(agreement.start_date.toString())}
                 </TableCell> */}
                 <TableCell align="center">
                   <PaymentAgreementStatusChip
-                    status={agreement.status as $Enums.PaymentAgreementStatus}
+                    status={agreement.status as $Enums.AgreementStatus}
                   />
                 </TableCell>
-                <TableCell align="center">{agreement.comment || "-"}</TableCell>
+
                 {/* <TableCell align="center">
-                  <IconButton
-                    onClick={() => handleMoreDetails(agreement.id)}
-                    aria-label="more details"
-                  >
-                    <MoreIcon />
-                  </IconButton>
-                </TableCell> */}
-                <TableCell align="center">
                   <Stack
                     direction="row"
                     spacing={1}
@@ -272,7 +250,7 @@ const AgreementTable = ({
                     justifyContent="center"
                   >
                     {agreement.status ===
-                      $Enums.PaymentAgreementStatus.PENDING && (
+                      $Enums.AgreementStatus.PENDING && (
                       <>
                         <IconButton
                           aria-label="delete agreement"
@@ -284,7 +262,7 @@ const AgreementTable = ({
                       </>
                     )}
                     {agreement.status ===
-                      $Enums.PaymentAgreementStatus.COUNTEROFFER && (
+                      $Enums.AgreementStatus.COUNTEROFFER && (
                       <>
                         {onApprove && (
                           <IconButton
@@ -309,15 +287,15 @@ const AgreementTable = ({
                     )}
 
                     {agreement.status !==
-                      $Enums.PaymentAgreementStatus.PENDING &&
+                      $Enums.AgreementStatus.PENDING &&
                       agreement.status !==
-                        $Enums.PaymentAgreementStatus.COUNTEROFFER && (
+                        $Enums.AgreementStatus.COUNTEROFFER && (
                         <Typography variant="body2" color="textSecondary">
                           -
                         </Typography>
                       )}
                   </Stack>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
@@ -387,7 +365,7 @@ const AgreementTable = ({
                       }}
                     >
                       <TableCell component="th" scope="row" align="center">
-                        {formatDate(installment.dueDate.toString())}
+                        {formatDate(installment.due_date.toString())}
                       </TableCell>
                       <TableCell align="center">{installment.number}</TableCell>
                       <TableCell align="right">

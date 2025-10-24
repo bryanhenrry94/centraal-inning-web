@@ -14,6 +14,7 @@ import {
 import { CollectionCase } from "@/lib/validations/collection";
 import { registerPayment } from "@/app/actions/payment";
 import { getAllCollectionCases } from "@/app/actions/collection";
+import { $Enums } from "@/prisma/generated/prisma";
 
 const PaymentForm = ({
   onSubmit,
@@ -41,11 +42,11 @@ const PaymentForm = ({
   } = useForm({
     resolver: zodResolver(PaymentCreateSchema),
     defaultValues: {
-      collectionCaseId: "",
+      collection_case_id: "",
       amount: 0,
-      method: "CASH",
-      referenceNumber: "",
-      paymentDate: new Date().toISOString().slice(0, 16), // Format for datetime-local input
+      method: $Enums.PaymentMethod.TRANSFER,
+      reference_number: "",
+      payment_date: new Date().toISOString().slice(0, 16), // Format for datetime-local input
     },
   });
 
@@ -81,14 +82,14 @@ const PaymentForm = ({
         </Box>
       )}
       <Controller
-        name="collectionCaseId"
+        name="collection_case_id"
         control={control}
         render={({ field }) => (
           <Autocomplete
             options={collections}
             getOptionLabel={(option) =>
               option.id
-                ? `${option.referenceNumber} - Saldo: $${option.amountDue}`
+                ? `${option.reference_number} - Saldo: $${option.amount_due}`
                 : ""
             }
             onChange={(_, value) => field.onChange(value ? value.id : "")}
@@ -97,8 +98,8 @@ const PaymentForm = ({
               <TextField
                 {...params}
                 label="Invoice"
-                error={!!errors.collectionCaseId}
-                helperText={errors.collectionCaseId?.message}
+                error={!!errors.collection_case_id}
+                helperText={errors.collection_case_id?.message}
                 required
               />
             )}
@@ -141,27 +142,27 @@ const PaymentForm = ({
         )}
       />
       <Controller
-        name="referenceNumber"
+        name="reference_number"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
             label="Reference"
-            error={!!errors.referenceNumber}
-            helperText={errors.referenceNumber?.message}
+            error={!!errors.reference_number}
+            helperText={errors.reference_number?.message}
           />
         )}
       />
       <Controller
-        name="paymentDate"
+        name="payment_date"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
             label="Paid At"
             type="datetime-local"
-            error={!!errors.paymentDate}
-            helperText={errors.paymentDate?.message}
+            error={!!errors.payment_date}
+            helperText={errors.payment_date?.message}
             required
             InputLabelProps={{ shrink: true }}
           />

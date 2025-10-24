@@ -42,14 +42,14 @@ export const sendNotification = async (colleccionCaseId: string) => {
     case "SOMMATIE":
       return await sendIngebrekestelling(collection);
     case "INGEBREKESTELLING":
-      // if (collection.debtorId) {
+      // if (collection.debtor_id) {
       //   const contribution: ICreateDebtorContribution = {
-      //     debtorId: collection.debtorId,
+      //     debtor_id: collection.debtor_id,
       //     isPublic: false,
       //     notes: null,
       //   };
 
-      //   await createContribution(tenantId, contribution);
+      //   await createContribution(tenant_id, contribution);
       // }
 
       return await sendBlokkade(collection);
@@ -70,11 +70,11 @@ export const createNotification = async (
     throw new Error("Notification colleccionCaseId is required");
   }
 
-  const notification = await prisma.notification.create({
+  const notification = await prisma.collectionCaseNotification.create({
     data: {
-      collectionCaseId: colleccionCaseId,
+      collection_case_id: colleccionCaseId,
       type,
-      sentAt: new Date(),
+      sent_at: new Date(),
       title,
       message,
     },
@@ -95,7 +95,7 @@ export const sendAanmaning = async (
 ): Promise<string> => {
   try {
     // valida el tenant
-    if (!collection.tenantId) {
+    if (!collection.tenant_id) {
       throw new Error("Tenant ID not found");
     }
 
@@ -108,7 +108,7 @@ export const sendAanmaning = async (
 
     // Obtiene datos del deudor
     const debtor = await prisma.debtor.findUnique({
-      where: { id: collection.debtorId },
+      where: { id: collection.debtor_id },
     });
     if (!debtor) {
       throw new Error("No se encontró el deudor");
@@ -120,19 +120,19 @@ export const sendAanmaning = async (
     }
 
     const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenantId },
+      where: { id: collection.tenant_id },
     });
     if (!tenant) {
       throw new Error("No se encontró el tenant");
     }
 
     // Porcentajes de cobranza y abb
-    const collectionPercentage = parameter.porcCobranza || 15;
-    const abbPercentage = parameter.porcAbb || 6;
+    const collectionPercentage = parameter.collection_fee_rate || 15;
+    const abbPercentage = parameter.abb_rate || 6;
 
     // Calculate additional fees
     const calculatedCollection = parseFloat(
-      ((collection.amountOriginal * collectionPercentage) / 100).toFixed(2)
+      ((collection.amount_original * collectionPercentage) / 100).toFixed(2)
     );
     // Calculate ABB
     const calculatedABB = parseFloat(
@@ -143,21 +143,21 @@ export const sendAanmaning = async (
     const validDays = 14;
 
     // calcula interes
-    const daysLate = collection.dueDate
+    const daysLate = collection.due_date
       ? Math.ceil(
-          (new Date().getTime() - new Date(collection.dueDate).getTime()) /
+          (new Date().getTime() - new Date(collection.due_date).getTime()) /
             (1000 * 3600 * 24)
         )
       : 0;
 
     const subtotaal =
-      collection.amountOriginal + calculatedCollection + calculatedABB + fine;
+      collection.amount_original + calculatedCollection + calculatedABB + fine;
 
     // Interest 5% of total amount
     const interestAmount = parseFloat(((subtotaal * 5) / 100).toFixed(2));
 
     // Total Amount
-    const totalAmount = parseFloat((subtotaal + interestAmount).toFixed(2));
+    const total_amount = parseFloat((subtotaal + interestAmount).toFixed(2));
 
     // Create the notification object
     const params = {
@@ -169,9 +169,9 @@ export const sendAanmaning = async (
 
     const debtorEmail = debtor?.email;
     const templatePath = "collection/Notification";
-    const subject = `Aanmaning - ${collection.referenceNumber}`;
+    const subject = `Aanmaning - ${collection.reference_number}`;
 
-    const island = getNameCountry(tenant?.countryCode);
+    const island = getNameCountry(tenant?.country_code);
 
     // Data for PDF generation
     const dataReport = {
@@ -179,13 +179,13 @@ export const sendAanmaning = async (
       debtorName: debtor?.fullname || "",
       debtorAddress: debtor?.address || "",
       island: island,
-      referenceNumber: collection.referenceNumber,
-      bankName: parameter.bankAccount,
-      accountNumber: parameter.bankAccount,
-      amountOriginal: formatCurrency(collection.amountOriginal),
+      reference_number: collection.reference_number,
+      bankName: parameter.bank_name,
+      accountNumber: parameter.bank_account,
+      amount_original: formatCurrency(collection.amount_original),
       extraCosts: formatCurrency(calculatedCollection),
       calculatedABB: formatCurrency(calculatedABB),
-      totalAmount: formatCurrency(totalAmount),
+      total_amount: formatCurrency(total_amount),
       tenantName: tenant?.name || "Company Name",
     };
     const pdfBuffer = await generatePDF("collection/Aanmaning", dataReport);
@@ -200,13 +200,13 @@ export const sendAanmaning = async (
 
     const tempFilePath = path.join(
       tempDir,
-      `Aanmanning_${collection.referenceNumber}.pdf`
+      `Aanmanning_${collection.reference_number}.pdf`
     );
     await fs.writeFile(tempFilePath, pdfBuffer);
 
     // Configurar el adjunto usando el archivo temporal
     const attachmentConfig = {
-      filename: `Aanmanning_${collection.referenceNumber}.pdf`,
+      filename: `Aanmanning_${collection.reference_number}.pdf`,
       pdfTemplatePath: tempFilePath,
     };
 
@@ -248,7 +248,7 @@ export const sendSommatie = async (
     }
 
     const debtor = await prisma.debtor.findUnique({
-      where: { id: collection.debtorId },
+      where: { id: collection.debtor_id },
     });
     if (!debtor) {
       throw new Error("No se encontró el deudor");
@@ -260,7 +260,7 @@ export const sendSommatie = async (
     }
 
     const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenantId },
+      where: { id: collection.tenant_id },
     });
     if (!tenant) {
       throw new Error("No se encontró el tenant");
@@ -279,13 +279,13 @@ export const sendSommatie = async (
 
     const debtorEmail = debtor?.email;
     const templatePath = "collection/Notification";
-    const subject = `Sommatie - ${collection.referenceNumber}`;
+    const subject = `Sommatie - ${collection.reference_number}`;
 
-    const island = getNameCountry(tenant?.countryCode);
+    const island = getNameCountry(tenant?.country_code);
 
-    const extraCosts = collection.amountOriginal * 0.15;
+    const extraCosts = collection.amount_original * 0.15;
     const calculatedABB = extraCosts * 0.06;
-    const totalAmount = collection.amountOriginal + extraCosts + calculatedABB;
+    const total_amount = collection.amount_original + extraCosts + calculatedABB;
 
     // Data for PDF generation
     const dataReport = {
@@ -293,13 +293,13 @@ export const sendSommatie = async (
       debtorName: debtor?.fullname || "",
       debtorAddress: debtor?.address || "",
       island: island,
-      referenceNumber: collection.referenceNumber,
-      bankName: parameter.bankAccount,
-      accountNumber: parameter.bankAccount,
-      amountOriginal: collection.amountOriginal,
+      reference_number: collection.reference_number,
+      bankName: parameter.bank_account,
+      accountNumber: parameter.bank_account,
+      amount_original: collection.amount_original,
       extraCosts: extraCosts,
       calculatedABB: calculatedABB,
-      totalAmount: totalAmount,
+      total_amount: total_amount,
       tenantName: tenant?.name || "Company Name",
     };
     const pdfBuffer = await generatePDF("collection/Sommatie", dataReport);
@@ -314,13 +314,13 @@ export const sendSommatie = async (
 
     const tempFilePath = path.join(
       tempDir,
-      `Sommatie_${collection.referenceNumber}.pdf`
+      `Sommatie_${collection.reference_number}.pdf`
     );
     await fs.writeFile(tempFilePath, pdfBuffer);
 
     // Configurar el adjunto usando el archivo temporal
     const attachmentConfig = {
-      filename: `Aanmanning_${collection.referenceNumber}.pdf`,
+      filename: `Aanmanning_${collection.reference_number}.pdf`,
       pdfTemplatePath: tempFilePath,
     };
 
@@ -359,7 +359,7 @@ export const sendIngebrekestelling = async (
     }
 
     const debtor = await prisma.debtor.findUnique({
-      where: { id: collection.debtorId },
+      where: { id: collection.debtor_id },
     });
     if (!debtor) {
       throw new Error("No se encontró el deudor");
@@ -371,7 +371,7 @@ export const sendIngebrekestelling = async (
     }
 
     const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenantId },
+      where: { id: collection.tenant_id },
     });
     if (!tenant) {
       throw new Error("No se encontró el tenant");
@@ -390,28 +390,31 @@ export const sendIngebrekestelling = async (
 
     const debtorEmail = debtor?.email;
     const templatePath = "collection/Notification";
-    const subject = `Ingebrekestelling - ${collection.referenceNumber}`;
+    const subject = `Ingebrekestelling - ${collection.reference_number}`;
 
-    const island = getNameCountry(tenant?.countryCode);
+    const island = getNameCountry(tenant?.country_code);
 
-    const firstReminderDate = await prisma.notification.findFirst({
-      where: {
-        collectionCaseId: collection.id,
-        type: "AANMANING",
-      },
-    });
+    const firstReminderDate = await prisma.collectionCaseNotification.findFirst(
+      {
+        where: {
+          collection_case_id: collection.id,
+          type: "AANMANING",
+        },
+      }
+    );
 
     console.log("firstReminderDate", firstReminderDate);
     if (!firstReminderDate) {
       throw new Error("First reminder date not found");
     }
 
-    const secondReminderDate = await prisma.notification.findFirst({
-      where: {
-        collectionCaseId: collection.id,
-        type: "SOMMATIE",
-      },
-    });
+    const secondReminderDate =
+      await prisma.collectionCaseNotification.findFirst({
+        where: {
+          collection_case_id: collection.id,
+          type: "SOMMATIE",
+        },
+      });
 
     console.log("secondReminderDate", secondReminderDate);
     if (!secondReminderDate) {
@@ -424,9 +427,9 @@ export const sendIngebrekestelling = async (
       debtorName: debtor?.fullname || "",
       debtorAddress: debtor?.address || "",
       island: island,
-      firstReminderDate: formatDate(firstReminderDate.sentAt.toString()),
-      secondReminderDate: formatDate(secondReminderDate?.sentAt.toString()),
-      accountNumber: parameter.bankAccount,
+      firstReminderDate: formatDate(firstReminderDate.sent_at.toString()),
+      secondReminderDate: formatDate(secondReminderDate?.sent_at.toString()),
+      accountNumber: parameter.bank_account,
       tenantName: tenant?.name || "Company Name",
     };
     const pdfBuffer = await generatePDF(
@@ -444,13 +447,13 @@ export const sendIngebrekestelling = async (
 
     const tempFilePath = path.join(
       tempDir,
-      `Ingebrekestelling_${collection.referenceNumber}.pdf`
+      `Ingebrekestelling_${collection.reference_number}.pdf`
     );
     await fs.writeFile(tempFilePath, pdfBuffer);
 
     // Configurar el adjunto usando el archivo temporal
     const attachmentConfig = {
-      filename: `Ingebrekestelling_${collection.referenceNumber}.pdf`,
+      filename: `Ingebrekestelling_${collection.reference_number}.pdf`,
       pdfTemplatePath: tempFilePath,
     };
 
@@ -489,7 +492,7 @@ export const sendBlokkade = async (
     }
 
     const debtor = await prisma.debtor.findUnique({
-      where: { id: collection.debtorId },
+      where: { id: collection.debtor_id },
     });
     if (!debtor) {
       throw new Error("No se encontró el deudor");
@@ -501,7 +504,7 @@ export const sendBlokkade = async (
     }
 
     const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenantId },
+      where: { id: collection.tenant_id },
     });
     if (!tenant) {
       throw new Error("No se encontró el tenant");
@@ -520,7 +523,7 @@ export const sendBlokkade = async (
     const templatePath = "collection/Notification";
     const subject = "Financiele Blokkade Notification";
 
-    const island = getNameCountry(tenant?.countryCode);
+    const island = getNameCountry(tenant?.country_code);
 
     // Data for PDF generation
     const dataReport = {
@@ -528,11 +531,11 @@ export const sendBlokkade = async (
       debtorName: debtor?.fullname || "",
       debtorAddress: debtor?.address || "",
       island: island,
-      totalAmount: 0,
+      total_amount: 0,
       amountRegister: 0,
       total: 0,
-      bankName: parameter.bankAccount,
-      accountNumber: parameter.bankAccount,
+      bankName: parameter.bank_account,
+      accountNumber: parameter.bank_account,
     };
 
     const pdfBuffer = await generatePDF(
@@ -550,13 +553,13 @@ export const sendBlokkade = async (
 
     const tempFilePath = path.join(
       tempDir,
-      `FinancieleBlokkade_${collection.referenceNumber}.pdf`
+      `FinancieleBlokkade_${collection.reference_number}.pdf`
     );
     await fs.writeFile(tempFilePath, pdfBuffer);
 
     // Configurar el adjunto usando el archivo temporal
     const attachmentConfig = {
-      filename: `FinancieleBlokkade_${collection.referenceNumber}.pdf`,
+      filename: `FinancieleBlokkade_${collection.reference_number}.pdf`,
       pdfTemplatePath: tempFilePath,
     };
 
@@ -586,24 +589,24 @@ export const sendBetalingsbewijs = async (
   debtorName: string,
   paymentMethod: string,
   paymentAmount: number,
-  referenceNumber: string,
+  reference_number: string,
   email: string,
-  invoiceNumber: string
+  invoice_number: string
 ): Promise<string> => {
   try {
     // Create the notification object
     const notification = {
-      paymentDate: new Date().toISOString(),
+      payment_date: new Date().toISOString(),
       debtorName,
       paymentMethod,
       paymentAmount,
-      referenceNumber,
+      reference_number,
     };
     console.log("notification", notification);
 
     const debtorEmail = email;
     const templatePath = "collection/Betalingsbewijs";
-    const subject = `Betalingsbewijs - ${invoiceNumber}`;
+    const subject = `Betalingsbewijs - ${invoice_number}`;
 
     if (debtorEmail) {
       console.log("debtorEmail", debtorEmail);
@@ -624,7 +627,7 @@ export const sendBetalingsbewijs = async (
 
 export const getNotificationDays = async (
   status: $Enums.NotificationType,
-  personType: $Enums.PersonType
+  person_type: $Enums.PersonType
 ): Promise<number> => {
   const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
   const _parameter = await getParameterById(PARAMETER_ID);
@@ -634,15 +637,15 @@ export const getNotificationDays = async (
   }
 
   if (status === $Enums.NotificationType.AANMANING) {
-    return personType === $Enums.PersonType.INDIVIDUAL
-      ? _parameter.diasPlazoConsumidorAanmaning
-      : _parameter.diasPlazoEmpresaAanmaning;
+    return person_type === $Enums.PersonType.INDIVIDUAL
+      ? _parameter.consumer_aanmaning_term_days
+      : _parameter.company_aanmaning_term_days;
   }
 
   if (status === $Enums.NotificationType.SOMMATIE) {
-    return personType === $Enums.PersonType.INDIVIDUAL
-      ? _parameter.diasPlazoConsumidorSommatie
-      : _parameter.diasPlazoEmpresaSommatie;
+    return person_type === $Enums.PersonType.INDIVIDUAL
+      ? _parameter.consumer_sommatie_term_days
+      : _parameter.company_sommatie_term_days;
   }
 
   return 0;
@@ -653,13 +656,13 @@ export const getLastNotificationDate = async (
   type: "AANMANING" | "SOMMATIE" | "INGEBREKESTELLING"
 ): Promise<Date> => {
   // Fetch the notification collection record based on collection and type
-  const notificationRecord = await prisma.notification.findFirst({
+  const notificationRecord = await prisma.collectionCaseNotification.findFirst({
     where: {
-      collectionCaseId: collection.id,
+      collection_case_id: collection.id,
       type: type, // Replace with the appropriate type if needed
     },
     orderBy: {
-      sentAt: "desc", // Get the most recent notification
+      sent_at: "desc", // Get the most recent notification
     },
   });
 
@@ -669,15 +672,15 @@ export const getLastNotificationDate = async (
     throw new Error(`Notification of type ${type} not found`);
   }
 
-  return notificationRecord.sentAt;
+  return notificationRecord.sent_at;
 };
 
 export const getLastNotificationByCollectionCase = async (
-  collectionCaseId: string
+  collection_case_id: string
 ): Promise<Notification | null> => {
-  const notification = await prisma.notification.findFirst({
-    where: { collectionCaseId },
-    orderBy: { sentAt: "desc" },
+  const notification = await prisma.collectionCaseNotification.findFirst({
+    where: { collection_case_id },
+    orderBy: { sent_at: "desc" },
   });
 
   if (!notification) {
@@ -691,11 +694,11 @@ export const getLastNotificationByCollectionCase = async (
 };
 
 export const getAllNotificationsByCollectionCase = async (
-  collectionCaseId: string
+  collection_case_id: string
 ): Promise<Notification[]> => {
-  const notifications = await prisma.notification.findMany({
-    where: { collectionCaseId },
-    orderBy: { sentAt: "desc" },
+  const notifications = await prisma.collectionCaseNotification.findMany({
+    where: { collection_case_id },
+    orderBy: { sent_at: "desc" },
   });
 
   // Map the Prisma result to your Notification type if needed
@@ -711,7 +714,7 @@ export const generatePDF = async (
 ): Promise<Buffer> => {
   const html = renderTemplate(report, {
     ...data,
-    companyName: "Dazzsoft",
+    company_name: "Dazzsoft",
   });
 
   const browser = await puppeteer.launch({

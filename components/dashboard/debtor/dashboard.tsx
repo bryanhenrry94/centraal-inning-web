@@ -73,7 +73,7 @@ const DashboardDebtor = () => {
   const fetchCollectionCases = async () => {
     try {
       const data = await getAllCollectionCasesByUserId(
-        user?.tenantId as string,
+        user?.tenant_id as string,
         user?.id as string
       );
       setCollectionCases(data);
@@ -92,7 +92,7 @@ const DashboardDebtor = () => {
         return;
       }
 
-      const data = await getPaymentAgreements({ debtorId: debtor.id });
+      const data = await getPaymentAgreements({ debtor_id: debtor.id });
       if (data) {
         setPaymentAgreements(data);
       }
@@ -121,21 +121,22 @@ const DashboardDebtor = () => {
 
       if (!collectionCaseSelected?.id) return;
 
-      if (!session?.user?.tenantId) {
-        notifyError("No se encontró el tenantId del usuario");
+      if (!session?.user?.tenant_id) {
+        notifyError("No se encontró el tenant_id del usuario");
         return;
       }
 
       const agreementCreate: PaymentAgreementCreate = {
-        collectionCaseId: collectionCaseSelected.id,
-        totalAmount: Number(data.totalAmount),
-        installmentsCount: Number(data.installmentsCount),
-        installmentAmount: Number(data.installmentAmount),
-        startDate: data.startDate || new Date(),
+        collection_case_id: collectionCaseSelected.id,
+        total_amount: Number(data.total_amount),
+        installments_count: Number(data.installments_count),
+        installment_amount: Number(data.installment_amount),
+        start_date: data.start_date || new Date(),
+        end_date: data.end_date || new Date(),
         status: data.status || "ACTIVE",
       };
 
-      if (agreementCreate.startDate < new Date()) {
+      if (agreementCreate.start_date < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
       }
@@ -152,9 +153,9 @@ const DashboardDebtor = () => {
         return;
       }
 
-      agreementCreate.debtorId = debtor.id;
+      agreementCreate.debtor_id = debtor.id;
 
-      await createPaymentAgreement(session?.user?.tenantId, agreementCreate);
+      await createPaymentAgreement(session?.user?.tenant_id, agreementCreate);
       await fetchPaymentAgreements();
       handleCloseModalAgreement();
       notifyInfo("Payment agreement submitted successfully");
@@ -175,7 +176,7 @@ const DashboardDebtor = () => {
       }
       await updatePaymentAgreement(data.id, {
         ...data,
-        status: $Enums.PaymentAgreementStatus.ACCEPTED,
+        status: $Enums.AgreementStatus.ACCEPTED,
       });
       notifyInfo("Payment agreement approved successfully");
       fetchPaymentAgreements();
@@ -196,7 +197,7 @@ const DashboardDebtor = () => {
       }
       await updatePaymentAgreement(data.id, {
         ...data,
-        status: $Enums.PaymentAgreementStatus.REJECTED,
+        status: $Enums.AgreementStatus.REJECTED,
       });
       notifyInfo("Payment agreement rejected successfully");
       fetchPaymentAgreements();
@@ -213,12 +214,9 @@ const DashboardDebtor = () => {
       <Typography variant="h4" gutterBottom>
         Mijn schulden
       </Typography>
-      <Typography variant="body1" gutterBottom>
-        Bekijk uw openstaande schulden en vraag betalingsregelingen aan.
-      </Typography>
 
       <Suspense fallback={<h1>Loading collection cases...</h1>}>
-        <TableContainer component={Paper} sx={{ mt: 4 }}>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table
             stickyHeader
             sx={{
@@ -253,30 +251,6 @@ const DashboardDebtor = () => {
                   }}
                   align="center"
                 >
-                  Vervaldatum
-                </TableCell>
-                <TableCell
-                  sx={{
-                    minWidth: 50,
-                    backgroundColor: "secondary.main",
-                    color: "#fff",
-                    fontWeight: "bold",
-                    border: "1px solid #bdbdbd",
-                  }}
-                  align="center"
-                >
-                  Bedrag
-                </TableCell>
-                <TableCell
-                  sx={{
-                    minWidth: 50,
-                    backgroundColor: "secondary.main",
-                    color: "#fff",
-                    fontWeight: "bold",
-                    border: "1px solid #bdbdbd",
-                  }}
-                  align="center"
-                >
                   Status
                 </TableCell>
                 <TableCell
@@ -289,7 +263,7 @@ const DashboardDebtor = () => {
                   }}
                   align="center"
                 >
-                  Overeenkomst
+                  Datum
                 </TableCell>
                 <TableCell
                   sx={{
@@ -301,7 +275,43 @@ const DashboardDebtor = () => {
                   }}
                   align="center"
                 >
-                  Acties
+                  Reactietermijn
+                </TableCell>
+                <TableCell
+                  sx={{
+                    minWidth: 50,
+                    backgroundColor: "secondary.main",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    border: "1px solid #bdbdbd",
+                  }}
+                  align="center"
+                >
+                  Totaal te bedrag
+                </TableCell>
+                <TableCell
+                  sx={{
+                    minWidth: 50,
+                    backgroundColor: "secondary.main",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    border: "1px solid #bdbdbd",
+                  }}
+                  align="center"
+                >
+                  Betalingsregeling
+                </TableCell>
+                <TableCell
+                  sx={{
+                    minWidth: 50,
+                    backgroundColor: "secondary.main",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    border: "1px solid #bdbdbd",
+                  }}
+                  align="center"
+                >
+                  Overzicht
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -309,18 +319,22 @@ const DashboardDebtor = () => {
               {collectionCases.map((caseItem) => (
                 <TableRow key={caseItem.id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {caseItem.referenceNumber}
+                    {caseItem.reference_number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {formatDate(caseItem.dueDate?.toString() || "")}
+                    Aanmanning
+                    {/* <CollectionStatusChip status={"AANMANNING"} /> */}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {formatDate(caseItem.issue_date?.toString() || "")}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {formatDate(caseItem.due_date?.toString() || "")}
                   </TableCell>
                   <TableCell sx={{ textAlign: "right" }}>
                     {formatCurrency(
-                      caseItem.amountOriginal + caseItem.amountDue
+                      caseItem.amount_original + caseItem.amount_due
                     )}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <CollectionStatusChip status={caseItem.status} />
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <Button
@@ -410,16 +424,16 @@ const DashboardDebtor = () => {
             onSubmit={handleAgreementSubmit}
             initialData={{
               ...collectionCaseSelected,
-              totalAmount:
-                (collectionCaseSelected?.amountOriginal ?? 0) +
-                (collectionCaseSelected?.amountDue ?? 0),
-              installmentsCount: 3,
-              startDate: new Date(
+              total_amount:
+                (collectionCaseSelected?.amount_original ?? 0) +
+                (collectionCaseSelected?.amount_due ?? 0),
+              installments_count: 3,
+              start_date: new Date(
                 new Date().getFullYear(),
                 new Date().getMonth() + 1,
                 0
               ),
-              status: $Enums.PaymentAgreementStatus.PENDING,
+              status: $Enums.AgreementStatus.PENDING,
             }}
             loading={loading}
           />

@@ -1,35 +1,43 @@
 import { z } from "zod";
 import { DebtorSchema } from "@/lib/validations/debtor";
 import { PaymentSchema } from "@/lib/validations/payment";
+import { $Enums } from "@/prisma/generated/prisma";
 
 export const CollectionCaseSchema = z.object({
   id: z.cuid(),
-  debtorId: z.string(),
-  amountOriginal: z.number(),
-  amountDue: z.number(),
-  amountToReceive: z.number(),
-  referenceNumber: z.string().optional(),
-  issueDate: z.date().optional(),
-  dueDate: z.date().optional(),
+  debtor_id: z.string(),
+  amount_original: z.number(),
+  amount_due: z.number(),
+  amount_to_receive: z.number(),
+  reference_number: z.string().optional(),
+  issue_date: z.date().optional(),
+  due_date: z.date().optional(),
+  reminder1_due_date: z.date().optional(),
+  reminder2_due_date: z.date().optional(),
   status: z
-    .enum(["PENDING", "IN_PROGRESS", "PAID", "OVERDUE", "CANCELLED"])
-    .default("PENDING"),
-  tenantId: z.string().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+    .enum([
+      $Enums.CollectionCaseStatus.PENDING,
+      $Enums.CollectionCaseStatus.IN_PROGRESS,
+      $Enums.CollectionCaseStatus.COMPLETED,
+      $Enums.CollectionCaseStatus.CANCELLED,
+    ])
+    .default($Enums.CollectionCaseStatus.PENDING),
+  tenant_id: z.string().optional(),
+  created_at: z.date(),
+  updated_at: z.date(),
 });
 
 export const CollectionCaseCreateSchema = CollectionCaseSchema.omit({
   id: true,
-  tenantId: true,
-  createdAt: true,
-  updatedAt: true,
+  tenant_id: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const CollectionCaseUpdateSchema = CollectionCaseSchema.partial().omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const CollectionCaseResponseSchema = CollectionCaseSchema.extend({

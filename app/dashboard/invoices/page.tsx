@@ -388,11 +388,11 @@ const InvoicesPage: React.FC = () => {
               {invoices?.map((invoice: BillingInvoiceResponse) => (
                 <TableRow key={invoice.id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {invoice.invoiceNumber}
+                    {invoice.invoice_number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {invoice.issueDate
-                      ? new Date(invoice.issueDate).toLocaleDateString(
+                    {invoice.issue_date
+                      ? new Date(invoice.issue_date).toLocaleDateString(
                           "es-ES",
                           {
                             day: "2-digit",
@@ -403,26 +403,26 @@ const InvoicesPage: React.FC = () => {
                       : ""}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {invoice.tenantId}
+                    {invoice.tenant_id}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {formatCurrency(
-                      invoice.invoiceDetails
-                        .map((d) => d.itemTotalPrice)
+                      invoice.invoice_details
+                        .map((d) => d.item_total_price)
                         .reduce((a, b) => a + b, 0)
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {formatCurrency(
-                      invoice.invoiceDetails
-                        .map((d) => d.itemTaxAmount)
+                      invoice.invoice_details
+                        .map((d) => d.item_tax_amount)
                         .reduce((a, b) => a + b, 0)
                     )}
                   </TableCell>
                   <TableCell>
                     {formatCurrency(
-                      invoice.invoiceDetails
-                        .map((d) => d.itemTotalWithTax)
+                      invoice.invoice_details
+                        .map((d) => d.item_total_with_tax)
                         .reduce((a, b) => a + b, 0)
                     )}
                   </TableCell>

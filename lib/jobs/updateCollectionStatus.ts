@@ -6,10 +6,10 @@ export async function updateCollectionStatus() {
   // Buscar cobranzas que estén vencidas y sin pago
   const overdueCollections = await prisma.collectionCase.findMany({
     where: {
-      status: { in: ["PENDING", "IN_PROGRESS"] },
-      dueDate: { lt: today },
+      status: { in: ["PENDING"] },
+      due_date: { lt: today },
       payments: { none: {} }, // sin pagos registrados
-      paymentAgreements: { none: { status: "ACCEPTED" } }, // sin acuerdos aceptados (incluye ninguno)
+      agreements: { none: { status: "ACCEPTED" } }, // sin acuerdos aceptados (incluye ninguno)
     },
     include: {
       debtor: true,
@@ -23,7 +23,7 @@ export async function updateCollectionStatus() {
       id: { in: overdueCollections.map((c) => c.id) },
     },
     data: {
-      status: "OVERDUE",
+      status: "IN_PROGRESS",
     },
   });
 

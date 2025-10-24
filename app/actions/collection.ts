@@ -18,10 +18,10 @@ import {
 import { getParameterById } from "./parameter";
 
 export const getAllCollectionCases = async (
-  tenantId: string
+  tenant_id: string
 ): Promise<CollectionCaseResponse[]> => {
   const collectionCases = await prisma.collectionCase.findMany({
-    where: { tenantId },
+    where: { tenant_id },
     include: {
       debtor: true,
     },
@@ -29,42 +29,32 @@ export const getAllCollectionCases = async (
 
   return collectionCases.map((collection) => ({
     id: collection.id,
-    referenceNumber: collection.referenceNumber || undefined,
-    issueDate: collection.issueDate ?? undefined,
-    dueDate: collection.dueDate ?? undefined,
-    tenantId: collection.tenantId ?? undefined,
-    debtorId: collection.debtorId,
-    amountOriginal: collection.amountOriginal.toDecimalPlaces(2).toNumber(),
-    amountDue: collection.amountDue.toDecimalPlaces(2).toNumber(),
-    amountToReceive: collection.amountToReceive.toDecimalPlaces(2).toNumber(),
-    status: collection.status as
-      | "PENDING"
-      | "IN_PROGRESS"
-      | "PAID"
-      | "OVERDUE"
-      | "CANCELLED",
-    createdAt: collection.createdAt,
-    updatedAt: collection.updatedAt,
+    reference_number: collection.reference_number || undefined,
+    issue_date: collection.issue_date ?? undefined,
+    due_date: collection.due_date ?? undefined,
+    tenant_id: collection.tenant_id ?? undefined,
+    debtor_id: collection.debtor_id,
+    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
+    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
+    amount_to_receive: collection.amount_to_receive
+      .toDecimalPlaces(2)
+      .toNumber(),
+    status: collection.status as $Enums.CollectionCaseStatus,
+    created_at: collection.created_at,
+    updated_at: collection.updated_at,
     debtor: {
       id: collection.debtor?.id ?? "",
       fullname: collection.debtor?.fullname ?? "",
       email: collection.debtor?.email ?? "",
-      identificationType: collection.debtor?.identificationType as
-        | "DNI"
-        | "PASSPORT"
-        | "NIE"
-        | "CIF"
-        | "KVK"
-        | "OTHER",
+      identification_type: collection.debtor
+        ?.identification_type as $Enums.IdentificationType,
       ...(collection.debtor?.phone ? { phone: collection.debtor.phone } : {}),
       ...(collection.debtor?.address
         ? { address: collection.debtor.address }
         : {}),
-      ...(collection.debtor?.personType
+      ...(collection.debtor?.person_type
         ? {
-            personType: collection.debtor.personType as
-              | "INDIVIDUAL"
-              | "COMPANY",
+            person_type: collection.debtor.person_type as $Enums.PersonType,
           }
         : {}),
       ...(collection.debtor?.identification
@@ -75,16 +65,16 @@ export const getAllCollectionCases = async (
 };
 
 export const getAllCollectionCasesByUserId = async (
-  tenantId: string,
-  userId: string
+  tenant_id: string,
+  user_id: string
 ): Promise<CollectionCaseResponse[]> => {
   const debtor = await prisma.debtor.findFirst({
-    where: { userId: userId },
+    where: { user_id: user_id },
   });
   if (!debtor) throw new Error("Debtor not found");
 
   const collectionCases = await prisma.collectionCase.findMany({
-    where: { tenantId, debtorId: debtor.id },
+    where: { tenant_id, debtor_id: debtor.id },
     include: {
       debtor: true,
     },
@@ -92,42 +82,32 @@ export const getAllCollectionCasesByUserId = async (
 
   return collectionCases.map((collection) => ({
     id: collection.id,
-    referenceNumber: collection.referenceNumber || undefined,
-    issueDate: collection.issueDate ?? undefined,
-    dueDate: collection.dueDate ?? undefined,
-    tenantId: collection.tenantId ?? undefined,
-    debtorId: collection.debtorId,
-    amountOriginal: collection.amountOriginal.toDecimalPlaces(2).toNumber(),
-    amountDue: collection.amountDue.toDecimalPlaces(2).toNumber(),
-    amountToReceive: collection.amountToReceive.toDecimalPlaces(2).toNumber(),
-    status: collection.status as
-      | "PENDING"
-      | "IN_PROGRESS"
-      | "PAID"
-      | "OVERDUE"
-      | "CANCELLED",
-    createdAt: collection.createdAt,
-    updatedAt: collection.updatedAt,
+    reference_number: collection.reference_number || undefined,
+    issue_date: collection.issue_date ?? undefined,
+    due_date: collection.due_date ?? undefined,
+    tenant_id: collection.tenant_id ?? undefined,
+    debtor_id: collection.debtor_id,
+    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
+    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
+    amount_to_receive: collection.amount_to_receive
+      .toDecimalPlaces(2)
+      .toNumber(),
+    status: collection.status as $Enums.CollectionCaseStatus,
+    created_at: collection.created_at,
+    updated_at: collection.updated_at,
     debtor: {
       id: collection.debtor?.id ?? "",
       fullname: collection.debtor?.fullname ?? "",
       email: collection.debtor?.email ?? "",
-      identificationType: collection.debtor?.identificationType as
-        | "DNI"
-        | "PASSPORT"
-        | "NIE"
-        | "CIF"
-        | "KVK"
-        | "OTHER",
+      identification_type: collection.debtor
+        ?.identification_type as $Enums.IdentificationType,
       ...(collection.debtor?.phone ? { phone: collection.debtor.phone } : {}),
       ...(collection.debtor?.address
         ? { address: collection.debtor.address }
         : {}),
-      ...(collection.debtor?.personType
+      ...(collection.debtor?.person_type
         ? {
-            personType: collection.debtor.personType as
-              | "INDIVIDUAL"
-              | "COMPANY",
+            person_type: collection.debtor.person_type as $Enums.PersonType,
           }
         : {}),
       ...(collection.debtor?.identification
@@ -148,22 +128,21 @@ export const getCollectionById = async (
   return {
     ...collection,
     id: collection.id,
-    referenceNumber: collection.referenceNumber || undefined,
-    issueDate: collection.issueDate ?? undefined,
-    dueDate: collection.dueDate ?? undefined,
-    tenantId: collection.tenantId ?? undefined,
-    debtorId: collection.debtorId,
-    amountOriginal: collection.amountOriginal.toDecimalPlaces(2).toNumber(),
-    amountDue: collection.amountDue.toDecimalPlaces(2).toNumber(),
-    amountToReceive: collection.amountToReceive.toDecimalPlaces(2).toNumber(),
-    status: collection.status as
-      | "PENDING"
-      | "IN_PROGRESS"
-      | "PAID"
-      | "OVERDUE"
-      | "CANCELLED",
-    createdAt: collection.createdAt,
-    updatedAt: collection.updatedAt,
+    reference_number: collection.reference_number || undefined,
+    issue_date: collection.issue_date ?? undefined,
+    due_date: collection.due_date ?? undefined,
+    reminder1_due_date: collection.reminder1_due_date ?? undefined,
+    reminder2_due_date: collection.reminder2_due_date ?? undefined,
+    tenant_id: collection.tenant_id ?? undefined,
+    debtor_id: collection.debtor_id,
+    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
+    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
+    amount_to_receive: collection.amount_to_receive
+      .toDecimalPlaces(2)
+      .toNumber(),
+    status: collection.status as $Enums.CollectionCaseStatus,
+    created_at: collection.created_at ?? undefined,
+    updated_at: collection.updated_at ?? undefined,
   };
 };
 
@@ -179,22 +158,21 @@ export const getCollectionViewById = async (
   return {
     ...collection,
     id: collection.id,
-    referenceNumber: collection.referenceNumber || undefined,
-    issueDate: collection.issueDate ?? undefined,
-    dueDate: collection.dueDate ?? undefined,
-    tenantId: collection.tenantId ?? undefined,
-    debtorId: collection.debtorId,
-    amountOriginal: collection.amountOriginal.toDecimalPlaces(2).toNumber(),
-    amountDue: collection.amountDue.toDecimalPlaces(2).toNumber(),
-    amountToReceive: collection.amountToReceive.toDecimalPlaces(2).toNumber(),
-    status: collection.status as
-      | "PENDING"
-      | "IN_PROGRESS"
-      | "PAID"
-      | "OVERDUE"
-      | "CANCELLED",
-    createdAt: collection.createdAt,
-    updatedAt: collection.updatedAt,
+    reference_number: collection.reference_number || undefined,
+    issue_date: collection.issue_date ?? undefined,
+    reminder1_due_date: collection.reminder1_due_date ?? undefined,
+    reminder2_due_date: collection.reminder2_due_date ?? undefined,
+    due_date: collection.due_date ?? undefined,
+    tenant_id: collection.tenant_id ?? undefined,
+    debtor_id: collection.debtor_id,
+    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
+    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
+    amount_to_receive: collection.amount_to_receive
+      .toDecimalPlaces(2)
+      .toNumber(),
+    status: collection.status as $Enums.CollectionCaseStatus,
+    created_at: collection.created_at,
+    updated_at: collection.updated_at,
     payments:
       collection.payments.map((payment) => ({
         ...payment,
@@ -202,39 +180,27 @@ export const getCollectionViewById = async (
           typeof payment.amount === "object" && "toNumber" in payment.amount
             ? payment.amount.toNumber()
             : Number(payment.amount),
-        method: payment.method as
-          | "CASH"
-          | "TRANSFER"
-          | "CREDIT_CARD"
-          | "CHECK"
-          | "OTHER",
-        paymentDate:
-          payment.paymentDate instanceof Date
-            ? payment.paymentDate.toISOString()
-            : payment.paymentDate,
-        referenceNumber: payment.referenceNumber ?? undefined,
-        createdAt: payment.createdAt,
+        method: payment.method as $Enums.PaymentMethod,
+        payment_date:
+          payment.payment_date instanceof Date
+            ? payment.payment_date.toISOString()
+            : payment.payment_date,
+        reference_number: payment.reference_number ?? undefined,
+        created_at: payment.created_at,
       })) ?? undefined,
     debtor: {
       id: collection.debtor?.id ?? "",
       fullname: collection.debtor?.fullname ?? "",
       email: collection.debtor?.email ?? "",
-      identificationType: collection.debtor?.identificationType as
-        | "DNI"
-        | "PASSPORT"
-        | "NIE"
-        | "CIF"
-        | "KVK"
-        | "OTHER",
+      identification_type: collection.debtor
+        ?.identification_type as $Enums.IdentificationType,
       ...(collection.debtor?.phone ? { phone: collection.debtor.phone } : {}),
       ...(collection.debtor?.address
         ? { address: collection.debtor.address }
         : {}),
-      ...(collection.debtor?.personType
+      ...(collection.debtor?.person_type
         ? {
-            personType: collection.debtor.personType as
-              | "INDIVIDUAL"
-              | "COMPANY",
+            person_type: collection.debtor.person_type as $Enums.PersonType,
           }
         : {}),
       ...(collection.debtor?.identification
@@ -246,14 +212,13 @@ export const getCollectionViewById = async (
 
 export const createCollectionCase = async (
   data: Partial<CollectionCaseCreate>,
-  tenantId: string
+  tenant_id: string
 ) => {
   const parsedData = CollectionCaseCreateSchema.parse(data);
 
   // Obtener el tenant
   const tenant = await prisma.tenant.findUnique({
-    where: { id: tenantId },
-    include: { plan: true },
+    where: { id: tenant_id },
   });
   if (!tenant) throw new Error("Tenant not found");
 
@@ -266,80 +231,75 @@ export const createCollectionCase = async (
 
   // Obtener el deudor
   const debtor = await prisma.debtor.findUnique({
-    where: { id: parsedData.debtorId },
+    where: { id: parsedData.debtor_id },
   });
   if (!debtor) throw new Error("Debtor not found");
 
   // Calcular montos
-  const amountOriginal = parsedData.amountOriginal ?? 0;
-  const comision = (amountOriginal * parameter.porcCobranza) / 100; // 15% de comisión
-  const abb = (comision * parameter.porcAbb) / 100; // 6% de impuesto sobre la comisión
-  const amountDue = comision + abb;
-  const amountToReceive = amountOriginal - amountDue;
+  const amount_original = parsedData.amount_original ?? 0;
+  const comision = (amount_original * parameter.collection_fee_rate) / 100; // 15% de comisión
+  const abb = (comision * parameter.abb_rate) / 100; // 6% de impuesto sobre la comisión
+  const amount_due = comision + abb;
+  const amount_to_receive = amount_original - amount_due;
 
   // Obtener los días de notificación según el estado de la ultima notificacion y tipo de persona
   const dayReminderOne = await getNotificationDays(
     $Enums.NotificationType.AANMANING,
-    debtor.personType
+    debtor.person_type
   );
 
   // Obtener los días de notificación según el estado de la ultima notificacion y tipo de persona
   const dayReminderTwo = await getNotificationDays(
     $Enums.NotificationType.SOMMATIE,
-    debtor.personType
+    debtor.person_type
   );
 
   // Calcular las fechas de recordatorio
   const today = new Date();
   const addDays = (date: Date, days: number) =>
     new Date(date.getTime() + Math.round(days) * 24 * 60 * 60 * 1000);
-  const reminder1DueDate = addDays(today, Number(dayReminderOne) || 0);
-  const reminder2DueDate = addDays(today, Number(dayReminderTwo) || 0);
+  const reminder1_due_date = addDays(today, Number(dayReminderOne) || 0);
+  const reminder2_due_date = addDays(today, Number(dayReminderTwo) || 0);
 
   // La fecha de vencimiento se suma los dias del primer recordatorio a la fecha de hoy
-  const dueDate = addDays(today, Number(dayReminderOne) || 0);
+  const due_date = addDays(today, Number(dayReminderOne) || 0);
 
   // Crear el caso de cobranza
   const newCollectionCase = await prisma.collectionCase.create({
     data: {
-      debtorId: parsedData.debtorId || "",
-      referenceNumber: parsedData.referenceNumber || "",
-      issueDate: parsedData.issueDate
-        ? new Date(parsedData.issueDate)
+      debtor_id: parsedData.debtor_id || "",
+      reference_number: parsedData.reference_number || "",
+      issue_date: parsedData.issue_date
+        ? new Date(parsedData.issue_date)
         : undefined,
-      dueDate: dueDate,
-      reminder1DueDate: reminder1DueDate,
-      reminder1SentAt: null,
-      reminder2DueDate: reminder2DueDate,
-      reminder2SentAt: null,
-      amountOriginal: amountOriginal,
-      amountDue: amountDue,
-      amountToReceive: amountToReceive,
+      due_date: due_date,
+      reminder1_due_date: reminder1_due_date,
+      reminder1_sent_at: null,
+      reminder2_due_date: reminder2_due_date,
+      reminder2_sent_at: null,
+      amount_original: amount_original,
+      amount_due: amount_due,
+      amount_to_receive: amount_to_receive,
       status:
-        (parsedData.status as $Enums.CollectionStatus) ||
-        $Enums.CollectionStatus.PENDING,
-      tenantId: tenantId,
+        (parsedData.status as $Enums.CollectionCaseStatus) ||
+        $Enums.CollectionCaseStatus.PENDING,
+      tenant_id: tenant_id,
     },
   });
 
   // Crear room para el chat de la colección
   await prisma.chatRoom.create({
     data: {
-      tenantId: tenant.id,
-      collectionCaseId: newCollectionCase.id,
-      name: `${debtor.fullname} ${newCollectionCase.referenceNumber}`,
+      tenant_id: tenant.id,
+      collection_case_id: newCollectionCase.id,
+      name: `${debtor.fullname} ${newCollectionCase.reference_number}`,
     },
   });
 
-  const firstPlan = tenant.plan;
-  if (!firstPlan)
-    throw new Error("Tenant does not have an active subscription");
-
   // // Envia la factura de la comisión al cliente
   await createCollectionInvoice({
-    tenantId: tenant.id,
-    planId: firstPlan.id,
-    island: tenant.countryCode,
+    tenant_id: tenant.id,
+    island: tenant.country_code,
     address: tenant.address,
     amount: comision,
   });
@@ -376,13 +336,13 @@ export const deleteCollection = async (id: string) => {
   return { message: "Collection deleted successfully" };
 };
 
-export const processCollection = async (tenantId: string) => {
+export const processCollection = async (tenant_id: string) => {
   // consulta todas las facturas del tenant y las procesa segun su estado
   const collections = await prisma.collectionCase.findMany({
     where: {
-      tenantId,
-      status: { not: $Enums.CollectionStatus.PAID },
-      amountToReceive: { gt: 0 },
+      tenant_id,
+      status: { not: $Enums.CollectionCaseStatus.COMPLETED },
+      amount_to_receive: { gt: 0 },
     },
     include: { debtor: true },
   });
@@ -391,22 +351,23 @@ export const processCollection = async (tenantId: string) => {
 
   // recorre las facturas y dependiendo de su estado notifica al deudor
   for (const collection of collections) {
-    if (!collection.dueDate) continue; // si no tiene fecha de vencimiento, no hacer nada
+    if (!collection.due_date) continue; // si no tiene fecha de vencimiento, no hacer nada
 
-    if (collection.dueDate < today) {
+    if (collection.due_date < today) {
       // si la factura esta vencida y no esta pagada, se actualiza su estado a OVERDUE
       await prisma.collectionCase.update({
         where: { id: collection.id },
-        data: { status: $Enums.CollectionStatus.OVERDUE },
+        data: { status: $Enums.CollectionCaseStatus.IN_PROGRESS },
       });
 
       // tiene notificaciones
-      const recentNotifications = await prisma.notification.findMany({
-        where: {
-          collectionCaseId: collection.id,
-          sentAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }, // ultimos 7 dias
-        },
-      });
+      const recentNotifications =
+        await prisma.collectionCaseNotification.findMany({
+          where: {
+            collection_case_id: collection.id,
+            sent_at: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }, // ultimos 7 dias
+          },
+        });
 
       if (recentNotifications.length > 0) {
         // ya se envio una notificacion en los ultimos 7 dias, no hacer nada
@@ -414,31 +375,32 @@ export const processCollection = async (tenantId: string) => {
       }
 
       // obtiene la ultima notificacion enviada
-      const lastNotification = await prisma.notification.findFirst({
-        where: {
-          collectionCaseId: collection.id,
-        },
-        orderBy: {
-          sentAt: "desc",
-        },
-      });
+      const lastNotification =
+        await prisma.collectionCaseNotification.findFirst({
+          where: {
+            collection_case_id: collection.id,
+          },
+          orderBy: {
+            sent_at: "desc",
+          },
+        });
 
       // si no hay notificaciones o la ultima es mayor a 7 dias, crear una nueva notificacion
       if (
         !lastNotification ||
-        (today.getTime() - lastNotification.sentAt.getTime()) /
+        (today.getTime() - lastNotification.sent_at.getTime()) /
           (1000 * 60 * 60 * 24) >=
           7
       ) {
         if (!lastNotification) {
           // crear una nueva notificacion
-          await prisma.notification.create({
+          await prisma.collectionCaseNotification.create({
             data: {
               type: "AANMANING",
               title: "Primer aviso de pago",
-              message: `Su factura con referencia ${collection.referenceNumber} ha vencido. Por favor, realice el pago lo antes posible.`,
-              collectionCaseId: collection.id,
-              sentAt: new Date(),
+              message: `Su factura con referencia ${collection.reference_number} ha vencido. Por favor, realice el pago lo antes posible.`,
+              collection_case_id: collection.id,
+              sent_at: new Date(),
             },
           });
         } else {
@@ -463,13 +425,13 @@ export const processCollection = async (tenantId: string) => {
           }
 
           // crear una nueva notificacion de tipo siguiente
-          await prisma.notification.create({
+          await prisma.collectionCaseNotification.create({
             data: {
-              collectionCaseId: collection.id,
+              collection_case_id: collection.id,
               type: type_notification,
               title: `Aviso de ${type_notification}`,
-              message: `Su factura con referencia ${collection.referenceNumber} ha vencido. Por favor, realice el pago lo antes posible.`,
-              sentAt: new Date(),
+              message: `Su factura con referencia ${collection.reference_number} ha vencido. Por favor, realice el pago lo antes posible.`,
+              sent_at: new Date(),
             },
           });
         }
@@ -480,7 +442,7 @@ export const processCollection = async (tenantId: string) => {
       // si la factura no esta vencida, se mantiene en PENDING
       await prisma.collectionCase.update({
         where: { id: collection.id },
-        data: { status: $Enums.CollectionStatus.PENDING },
+        data: { status: $Enums.CollectionCaseStatus.PENDING },
       });
       // aqui se podria enviar un recordatorio al deudor
     }

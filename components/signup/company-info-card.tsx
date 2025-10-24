@@ -44,18 +44,18 @@ export default function AccountInfoCard(props: AccountInfoCardProps) {
         required
       />
       <TextField
-        name="contactEmail"
+        name="contact_email"
         fullWidth
         label="Contact E-mail"
         placeholder="Contact E-mail"
-        value={initial.company?.contactEmail || ""}
+        value={initial.company?.contact_email || ""}
         type="text"
         onChange={(e) =>
           setFormData({
             ...initial,
             company: {
               ...initial.company,
-              contactEmail: e.target.value,
+              contact_email: e.target.value,
             },
           })
         }
@@ -128,12 +128,22 @@ export default function AccountInfoCard(props: AccountInfoCardProps) {
         </Typography>
         <Box sx={{ width: "100%" }}>
           <Slider
-            name="numberOfEmployees"
+            name="number_of_employees"
             defaultValue={1}
             step={1}
             marks={marks}
             min={1}
             max={100}
+            value={initial.company?.number_of_employees || 1}
+            onChange={(_, value) =>
+              setFormData({
+                ...initial,
+                company: {
+                  ...initial.company,
+                  number_of_employees: value as number,
+                },
+              })
+            }
             valueLabelDisplay="auto"
           />
         </Box>

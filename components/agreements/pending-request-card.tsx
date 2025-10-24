@@ -21,13 +21,13 @@ import PaymentAgreementStatusChip from "../ui/payment-agreement-status-chip";
 import { $Enums } from "@/prisma/generated/prisma";
 
 interface PendingRequestCardProps {
-  paymentAgreement: PaymentAgreement;
+  collectionCaseAgreement: PaymentAgreement;
   onApprove?: (id: string) => void;
   onReject?: (id: string) => void;
 }
 
 const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
-  paymentAgreement,
+  collectionCaseAgreement,
   onApprove,
   onReject,
 }) => {
@@ -38,19 +38,19 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
     // Fetch collection case details if needed
     const fetchCollectionCase = async () => {
       const data = await getCollectionViewById(
-        paymentAgreement.collectionCaseId
+        collectionCaseAgreement.collection_case_id
       );
       setCollectionCase(data);
     };
     fetchCollectionCase();
-  }, [paymentAgreement.collectionCaseId]);
+  }, [collectionCaseAgreement.collection_case_id]);
 
   const handleApprove = () => {
-    onApprove?.(paymentAgreement.id);
+    onApprove?.(collectionCaseAgreement.id);
   };
 
   const handleReject = () => {
-    onReject?.(paymentAgreement.id);
+    onReject?.(collectionCaseAgreement.id);
   };
 
   return (
@@ -64,7 +64,7 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
       >
         <Box>
           <Typography variant="h5">
-            Referencia #{collectionCase?.referenceNumber}
+            Referencia #{collectionCase?.reference_number}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <PersonIcon />
@@ -74,7 +74,7 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
           </Box>
         </Box>
         <PaymentAgreementStatusChip
-          status={paymentAgreement.status as $Enums.PaymentAgreementStatus}
+          status={collectionCaseAgreement.status as $Enums.AgreementStatus}
         />
       </Box>
 
@@ -83,7 +83,7 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="body1">Monto total</Typography>
             <Typography variant="h6">
-              {formatCurrency(paymentAgreement.totalAmount)}
+              {formatCurrency(collectionCaseAgreement.total_amount)}
             </Typography>
           </Box>
         </Grid>
@@ -91,7 +91,7 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="body1">Cuotas</Typography>
             <Typography variant="h6">
-              {paymentAgreement.installmentsCount}
+              {collectionCaseAgreement.installments_count}
             </Typography>
           </Box>
         </Grid>
@@ -99,16 +99,16 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="body1">Monto mensual</Typography>
             <Typography variant="h6">
-              {formatCurrency(paymentAgreement.installmentAmount)}
+              {formatCurrency(collectionCaseAgreement.installment_amount)}
             </Typography>
           </Box>
         </Grid>
       </Grid>
 
       <Typography variant="body1">
-        Fecha primer pago: {formatDate(paymentAgreement.startDate.toString())}
+        Fecha primer pago: {formatDate(collectionCaseAgreement.start_date.toString())}
       </Typography>
-      {paymentAgreement.status === "PENDING" && (
+      {collectionCaseAgreement.status === "PENDING" && (
         <Box sx={{ width: "100%", mt: 2 }}>
           <Stack direction="row" spacing={1}>
             <Button

@@ -15,7 +15,7 @@ const InterestCell: React.FC<InterestCellProps> = ({ control, index }) => {
     name: `verdictInterest.${index}`,
   });
 
-  const [totalInterest, setTotalInterest] = useState(0);
+  const [total_interest, setTotalInterest] = useState(0);
   const {
     setValue,
     formState: { errors },
@@ -27,43 +27,43 @@ const InterestCell: React.FC<InterestCellProps> = ({ control, index }) => {
     const calculate = async () => {
       if (
         !item ||
-        !item.baseAmount ||
-        !item.interestType ||
-        !item.calculationStart ||
-        !item.calculationEnd
+        !item.base_amount ||
+        !item.interest_type ||
+        !item.calculation_start ||
+        !item.calculation_end
       )
         return;
 
       const details = await calculateInterestDetail(
-        item.interestType,
-        item.baseAmount,
-        item.calculatedInterest,
-        item.calculationStart,
-        item.calculationEnd
+        item.interest_type,
+        item.base_amount,
+        item.calculated_interest,
+        item.calculation_start,
+        item.calculation_end
       );
 
       const total = details?.reduce((acc, curr) => acc + curr.interest, 0) || 0;
 
       setValue(`verdictInterest.${index}.details`, details);
-      setValue(`verdictInterest.${index}.totalInterest`, total);
+      setValue(`verdictInterest.${index}.total_interest`, total);
 
       setTotalInterest(total); // para mostrar en el campo
     };
 
     calculate();
-  }, [index, item.baseAmount, setValue]);
+  }, [index, item.base_amount, setValue]);
 
   return (
     <Controller
-      name={`verdictInterest.${index}.totalInterest`}
+      name={`verdictInterest.${index}.total_interest`}
       control={control}
       render={({ field }) => (
         <TextField
           {...field}
-          value={totalInterest.toFixed(2)}
+          value={total_interest.toFixed(2)}
           size="small"
-          error={!!errors.verdictInterest?.[index]?.totalInterest}
-          helperText={errors.verdictInterest?.[index]?.totalInterest?.message}
+          error={!!errors.verdictInterest?.[index]?.total_interest}
+          helperText={errors.verdictInterest?.[index]?.total_interest?.message}
           InputProps={{
             readOnly: true,
           }}

@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { DebtorIncomeCreateSchema } from "./debtor-incomes";
 import { UserSchema } from "@/lib/validations/user";
+import { $Enums } from "@/prisma/generated/prisma";
 
 // Esquema base para Debtor con validaciones en español
 export const DebtorBaseSchema = z.object({
   id: z.uuid({ message: "El identificador debe ser un UUID válido." }),
-  tenantId: z.string(),
-  userId: z.string().optional(),
+  tenant_id: z.string(),
+  user_id: z.string().optional(),
   fullname: z.string().min(3, {
     message: "El nombre completo debe tener al menos 3 caracteres.",
   }),
@@ -20,39 +21,49 @@ export const DebtorBaseSchema = z.object({
     .string()
     .max(255, { message: "La dirección no debe exceder 255 caracteres." })
     .optional(),
-  personType: z
-    .enum(["INDIVIDUAL", "COMPANY"], {
+  person_type: z
+    .enum([$Enums.PersonType.INDIVIDUAL, $Enums.PersonType.COMPANY], {
       message: "El tipo de persona debe ser 'natural' o 'empresa'.",
     })
     .optional(),
-  identificationType: z
-    .enum(["DNI", "PASSPORT", "NIE", "CIF", "KVK", "OTHER"], {
-      message:
-        "El tipo de identificación debe ser 'DNI', 'PASSPORT', 'NIE', 'CIF', 'KVK' o 'OTHER'.",
-    })
+  identification_type: z
+    .enum(
+      [
+        $Enums.IdentificationType.DNI,
+        $Enums.IdentificationType.PASSPORT,
+        $Enums.IdentificationType.NIE,
+        $Enums.IdentificationType.CIF,
+        $Enums.IdentificationType.KVK,
+        $Enums.IdentificationType.OTHER,
+      ],
+      {
+        message:
+          "El tipo de identificación debe ser 'DNI', 'PASSPORT', 'NIE', 'CIF', 'KVK' o 'OTHER'.",
+      }
+    )
     .optional(),
   identification: z
     .string()
     .max(13, { message: "La identificación no debe exceder 13 caracteres." })
     .optional(),
-  totalIncome: z
+  total_income: z
     .preprocess(
       (val) => (typeof val === "string" ? Number(val) : val),
       z.number()
     )
     .optional(),
   incomes: z.array(DebtorIncomeCreateSchema).optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
 });
 
 // Esquema para crear un Debtor (CRUD), omitiendo campos automáticos y relacionales
 export const DebtorCreateSchema = DebtorBaseSchema.omit({
   id: true,
-  tenantId: true,
-  userId: true,
-  createdAt: true,
-  updatedAt: true,
+  tenant_id: true,
+  user_id: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const DebtorResponseSchema = DebtorBaseSchema.extend({
@@ -60,12 +71,12 @@ export const DebtorResponseSchema = DebtorBaseSchema.extend({
 });
 
 export const DebtorSchema = DebtorBaseSchema.omit({
-  tenantId: true,
-  userId: true,
-  totalIncome: true,
+  tenant_id: true,
+  user_id: true,
+  total_income: true,
   incomes: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 // Enum de tipos de identificación

@@ -38,22 +38,22 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
   };
 
   useEffect(() => {
-    const loadMessagesForRoom = async (roomId: string) => {
-      socket.emit("load_messages", { room: roomId });
+    const loadMessagesForRoom = async (room_id: string) => {
+      socket.emit("load_messages", { room: room_id });
 
-      const messages: IChatMessage[] = await getMessagesByRoomId(roomId);
+      const messages: IChatMessage[] = await getMessagesByRoomId(room_id);
       setMessages(
         messages.map((msg) => ({
           id: msg.id ?? `${Date.now()}_${Math.random()}`,
-          roomId: msg.roomId,
-          senderId: msg.senderId,
+          room_id: msg.room_id,
+          sender_id: msg.sender_id,
           message: msg.message,
-          fileUrl: msg.fileUrl,
-          fileName: msg.fileName,
+          file_url: msg.file_url,
+          file_name: msg.file_name,
           sender: msg.sender,
-          timestamp: msg.timestamp ?? msg.createdAt,
-          createdAt: msg.createdAt,
-          updatedAt: msg.updatedAt,
+          timestamp: msg.timestamp ?? msg.created_at,
+          created_at: msg.created_at,
+          updated_at: msg.updated_at,
         }))
       );
     };
@@ -75,20 +75,20 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         const s = d?.sender;
         if (s && typeof s === "object") {
           return {
-            id: s.id ?? d?.senderId ?? "",
+            id: s.id ?? d?.sender_id ?? "",
             fullname:
               s.fullname ??
               d?.fullname ??
-              String(s.id ?? d?.senderId ?? "Usuario"),
+              String(s.id ?? d?.sender_id ?? "Usuario"),
             email: s.email ?? d?.email ?? "",
           };
         }
         // when sender is a string or missing, derive reasonable defaults
-        const senderId = d?.senderId ?? (typeof s === "string" ? s : "");
+        const sender_id = d?.sender_id ?? (typeof s === "string" ? s : "");
         const fullname = d?.fullname ?? (typeof s === "string" ? s : "Usuario");
         const email = d?.email ?? "";
         return {
-          id: senderId,
+          id: sender_id,
           fullname,
           email,
         };
@@ -96,21 +96,21 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
 
       return {
         id: d.id ?? `${Date.now()}_${Math.random()}`,
-        roomId: d.roomId ?? room.id,
-        senderId:
-          d.senderId ??
+        room_id: d.room_id ?? room.id,
+        sender_id:
+          d.sender_id ??
           (typeof d.sender === "string" ? d.sender : resolvedSender.id),
         sender: resolvedSender,
         message: d.message ?? "",
-        fileUrl: d.fileUrl ?? null,
-        fileName: d.fileName ?? null,
+        file_url: d.file_url ?? null,
+        file_name: d.file_name ?? null,
         timestamp: d.timestamp
           ? new Date(d.timestamp)
-          : d.createdAt
-          ? new Date(d.createdAt)
+          : d.created_at
+          ? new Date(d.created_at)
           : new Date(),
-        createdAt: d.createdAt ? new Date(d.createdAt) : new Date(),
-        updatedAt: d.updatedAt ? new Date(d.updatedAt) : new Date(),
+        created_at: d.created_at ? new Date(d.created_at) : new Date(),
+        updated_at: d.updated_at ? new Date(d.updated_at) : new Date(),
       };
     };
 
@@ -123,7 +123,7 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         ...prev,
         normalizeToChatMessage({
           message,
-          createdAt: new Date(),
+          created_at: new Date(),
           // minimal fields to satisfy IChatMessage
           id: `${Date.now()}_join`,
         }),
@@ -140,16 +140,16 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
       }
     });
 
-    socket.on("file", ({ sender, fileName, fileUrl }) => {
+    socket.on("file", ({ sender, file_name, file_url }) => {
       setMessages((prev) => [
         ...prev,
         normalizeToChatMessage({
           sender,
-          senderId: typeof sender === "string" ? sender : sender?.id ?? "",
-          fileUrl,
-          fileName,
-          message: `Archivo: ${fileName}`,
-          createdAt: new Date(),
+          sender_id: typeof sender === "string" ? sender : sender?.id ?? "",
+          file_url,
+          file_name,
+          message: `Archivo: ${file_name}`,
+          created_at: new Date(),
         }),
       ]);
     });
@@ -180,10 +180,10 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
     const reader = new FileReader();
     reader.onload = () => {
       const fileData = {
-        roomId: room.id,
-        senderId: sender.id,
-        fileName: file.name,
-        fileUrl: reader.result,
+        room_id: room.id,
+        sender_id: sender.id,
+        file_name: file.name,
+        file_url: reader.result,
       };
 
       socket.emit("file", fileData);
@@ -191,28 +191,28 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         ...prev,
         {
           id: `${Date.now()}_${Math.random()}`,
-          roomId: room.id,
-          senderId: sender.id,
-          message: `Archivo: ${file.name}`,
-          fileUrl: reader.result as string,
-          fileName: file.name,
+          room_id: room.id,
+          sender_id: sender.id,
+          message: `File: ${file.name}`,
+          file_url: reader.result as string,
+          file_name: file.name,
           sender: {
             id: sender.id,
             fullname: sender.fullname,
             email: sender.email,
           },
           timestamp: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
       ]);
 
       saveMessage({
-        roomId: room.id,
-        senderId: sender.id,
+        room_id: room.id,
+        sender_id: sender.id,
         message: `Archivo: ${file.name}`,
-        fileUrl: reader.result as string,
-        fileName: file.name,
+        file_url: reader.result as string,
+        file_name: file.name,
         sender: {
           id: sender.id,
           fullname: sender.fullname,
@@ -225,8 +225,8 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
 
   const handleMessage = (message: string) => {
     const data: IChatMessageCreate = {
-      roomId: room.id,
-      senderId: sender?.id,
+      room_id: room.id,
+      sender_id: sender?.id,
       message,
       sender: {
         id: sender.id,
@@ -238,21 +238,21 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
       ...prev,
       {
         id: `${Date.now()}_${Math.random()}`,
-        roomId: room.id,
-        senderId: sender.id,
+        room_id: room.id,
+        sender_id: sender.id,
         message,
         fullname: sender.fullname,
         email: sender.email,
-        fileUrl: null,
-        fileName: null,
+        file_url: null,
+        file_name: null,
         sender: {
           id: sender.id,
           fullname: sender.fullname,
           email: sender.email,
         },
         timestamp: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ]);
     saveMessage(data);
@@ -295,12 +295,12 @@ function ChatWindow({ room, sender }: ChatWindowProps) {
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
-            sender={message.senderId}
+            sender={message.sender_id}
             fullname={message?.sender.fullname || "Usuario"}
             message={message.message}
-            isOwnMessage={message.senderId === sender?.id}
-            fileUrl={message.fileUrl ?? ""}
-            fileName={message.fileName ?? ""}
+            isOwnMessage={message.sender_id === sender?.id}
+            file_url={message.file_url ?? ""}
+            file_name={message.file_name ?? ""}
           />
         ))}
         <div ref={messagesEndRef} />

@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
 // mui
 import {
   Box,
   Typography,
   Paper,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   TableContainer,
   Table,
   TableHead,
@@ -15,34 +11,11 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-// actions
-import { getPlanById } from "@/app/actions/plan";
 // hooks
 import { useTenant } from "@/hooks/useTenant";
-import { Plan } from "@/lib/validations/plan";
-import { formatCurrency } from "@/common/utils/general";
 
 export const AccountForm = () => {
   const { tenant } = useTenant();
-  const [plan, setPlan] = useState<Plan | null>(null);
-
-  useEffect(() => {
-    if (tenant) {
-      // Fetch the billing plan for the tenant
-      const fetchPlan = async () => {
-        if (!tenant.planId) return null;
-
-        const data = await getPlanById(tenant.planId);
-        if (!data) {
-          setPlan(null);
-          return;
-        }
-        setPlan({ ...data, description: data.description ?? undefined });
-      };
-
-      fetchPlan();
-    }
-  }, [tenant]);
 
   if (!tenant) {
     return (
@@ -90,7 +63,7 @@ export const AccountForm = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>E-mailadres voor contact:</TableCell>
-                    <TableCell>{tenant.contactEmail ?? ""}</TableCell>
+                    <TableCell>{tenant.contact_email ?? ""}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Telefoon:</TableCell>
@@ -110,58 +83,23 @@ export const AccountForm = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>Land (code):</TableCell>
-                    <TableCell>{tenant.countryCode ?? ""}</TableCell>
+                    <TableCell>{tenant.country_code ?? ""}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Aantal medewerkers:</TableCell>
                     <TableCell>
-                      {tenant.numberOfEmployees != null
-                        ? String(tenant.numberOfEmployees)
+                      {tenant.number_of_employees != null
+                        ? String(tenant.number_of_employees)
                         : ""}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Actief:</TableCell>
-                    <TableCell>{tenant.isActive ? "Ja" : "Nee"}</TableCell>
+                    <TableCell>{tenant.is_active ? "Ja" : "Nee"}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
-          </Paper>
-        </Grid>
-
-        {/* Plan contratado */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Paper variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Gecontracteerd plan
-            </Typography>
-
-            <Typography variant="subtitle1">
-              {tenant?.plan?.name ?? "Niet toegewezen"}
-              {tenant?.plan?.description
-                ? ` - ${tenant?.plan?.description}`
-                : ""}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
-              Prijs:{" "}
-              {tenant?.plan ? formatCurrency(tenant.plan.price) : "Onbekend"}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
-              Status: {tenant?.planStatus ?? "Onbekend"}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
-              Plan expiration:{" "}
-              {tenant.planExpiresAt ? (
-                <>
-                  {tenant.planExpiresAt instanceof Date
-                    ? tenant.planExpiresAt.toLocaleString()
-                    : tenant.planExpiresAt}
-                </>
-              ) : (
-                "Onbekend"
-              )}
-            </Typography>
           </Paper>
         </Grid>
       </Grid>

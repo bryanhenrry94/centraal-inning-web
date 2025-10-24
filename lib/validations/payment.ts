@@ -1,18 +1,12 @@
 import { z } from "zod";
 
-export const PaymentMethodEnum = z.enum([
-  "CASH",
-  "TRANSFER",
-  "CREDIT_CARD",
-  "CHECK",
-  "OTHER",
-]);
+export const PaymentMethodEnum = z.enum(["TRANSFER", "CREDIT_CARD"]);
 export type PaymentMethod = z.infer<typeof PaymentMethodEnum>;
 
 export const PaymentSchema = z.object({
   id: z.string(),
-  collectionCaseId: z.string(),
-  paymentDate: z
+  collection_case_id: z.string(),
+  payment_date: z
     .union([z.string(), z.date()])
     .transform((date) => (date instanceof Date ? date.toISOString() : date)),
   amount: z.preprocess(
@@ -20,15 +14,15 @@ export const PaymentSchema = z.object({
     z.number()
   ),
   method: PaymentMethodEnum,
-  referenceNumber: z.string().optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  reference_number: z.string().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
 });
 
 export const PaymentCreateSchema = PaymentSchema.omit({
   id: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export type Payment = z.infer<typeof PaymentSchema>;

@@ -2,29 +2,6 @@ import prisma from "@/lib/prisma";
 import { hash } from "bcryptjs";
 
 async function main() {
-  // 🔹 Crear planes base
-  await prisma.plan.upsert({
-    where: { name: "Free" },
-    update: {},
-    create: {
-      name: "Free",
-      price: 0,
-      description: "Plan gratuito con funciones básicas",
-      durationDays: 30,
-    },
-  });
-
-  await prisma.plan.upsert({
-    where: { name: "Pro" },
-    update: {},
-    create: {
-      name: "Pro",
-      price: 25,
-      description: "Plan profesional con todas las funciones",
-      durationDays: 30,
-    },
-  });
-
   // 🔹 Crear tenant base (ejemplo)
   await prisma.tenant.upsert({
     where: { id: "0874303e-6795-46ef-8416-5d76bba8071b" },
@@ -32,20 +9,19 @@ async function main() {
     create: {
       id: "0874303e-6795-46ef-8416-5d76bba8071b",
       name: "Centraal Inning",
+      legal_name: "Centraal Inning N.V.",
+      kvk: "12345678",
       subdomain: "admin",
-      contactEmail: "info@centraalinning.com",
-      countryCode: "BQ", // Código de país de Bonaire
+      contact_email: "info@centraalinning.com",
+      country_code: "BQ", // Código de país de Bonaire
       address: "",
       city: "",
-      logoUrl: "",
-      numberOfEmployees: 0,
+      logo_url: "",
+      number_of_employees: 0,
       phone: "",
       website: "https://centraalinning.com",
-      planId: null,
-      planStatus: "active",
-      planExpiresAt: null,
-      termsAccepted: true,
-      isActive: true,
+      terms_accepted: true,
+      is_active: true,
     },
   });
 
@@ -54,36 +30,36 @@ async function main() {
     update: {},
     create: {
       id: "0874303e-6795-46ef-8416-5d76bba8071b",
-      porcCobranza: 15,
-      porcAbb: 6,
-      diasPlazoEmpresaAanmaning: 5,
-      diasPlazoConsumidorAanmaning: 14,
-      diasPlazoEmpresaSommatie: 7,
-      diasPlazoConsumidorSommatie: 16,
-      precioEmpresaPequena: 100,
-      contribucionEmpresaPequenaPfc: 0,
-      precioEmpresaGrande: 0,
-      contribucionEmpresaGrandePfc: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      multaAanmaningEmpresa: 0,
-      multaAanmaningNatural: 0,
-      multaSommatieEmpresa: 0,
-      multaSommatieNatural: 0,
-      limiteDiasReaccionEmpresa: 0,
-      multaNoReaccionEmpresa: 0,
-      multaNoReaccionNatural: 0,
-      multaAcuerdoPagoEmpresa: 0,
-      multaAcuerdoPagoNatural: 0,
-      invoiceNumberLength: 8,
-      invoicePrefix: "FACTUUR",
-      invoiceSecuence: 0,
-      bankAccount: "418.825.10",
-      bankName: "MCB",
+      collection_fee_rate: 15,
+      abb_rate: 6,
+      company_aanmaning_term_days: 5,
+      consumer_aanmaning_term_days: 14,
+      company_sommatie_term_days: 7,
+      consumer_sommatie_term_days: 16,
+      small_company_price: 100,
+      small_company_pfc_contribution: 0,
+      large_company_price: 200,
+      large_company_pfc_contribution: 0,
+      company_aanmaning_penalty: 0,
+      natural_aanmaning_penalty: 0,
+      company_sommatie_penalty: 0,
+      natural_sommatie_penalty: 0,
+      company_reaction_limit_days: 0,
+      company_no_reaction_penalty: 0,
+      natural_no_reaction_penalty: 0,
+      company_payment_agreement_fee: 0,
+      natural_payment_agreement_fee: 0,
+      invoice_number_length: 8,
+      invoice_prefix: "FACTUUR",
+      invoice_sequence: 0,
+      bank_account: "418.825.10",
+      bank_name: "MCB",
+      created_at: new Date(),
+      updated_at: new Date(),
     },
   });
 
-  const passwordHash = await hash("@M1n0T4ur0", 10);
+  const password_hash = await hash("@M1n0T4ur0", 10);
 
   await prisma.user.upsert({
     where: { id: "28112419-5c53-47c5-b109-a29d02c1bb5d" },
@@ -91,12 +67,12 @@ async function main() {
     create: {
       id: "28112419-5c53-47c5-b109-a29d02c1bb5d",
       email: "bryanhenrry94@gmail.com",
-      passwordHash: passwordHash,
+      password_hash: password_hash,
       fullname: "Bryan Henrry",
       phone: "+59998765432",
-      tenantId: "0874303e-6795-46ef-8416-5d76bba8071b",
-      role: "SUPERADMIN",
-      isActive: true,
+      tenant_id: "0874303e-6795-46ef-8416-5d76bba8071b",
+      role: "PLATFORM_OWNER",
+      is_active: true,
     },
   });
 

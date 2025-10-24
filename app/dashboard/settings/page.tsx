@@ -81,7 +81,7 @@ const SettingPage = () => {
         />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <UserTable tenantId={user?.tenantId || ""} />
+        <UserTable tenant_id={user?.tenant_id || ""} />
       </TabPanel>
       <TabPanel value={value} index={3}></TabPanel>
     </Container>

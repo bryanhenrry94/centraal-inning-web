@@ -7,7 +7,7 @@ class AuthMailService {
   static async sendWelcomeEmail(to: string, name: string): Promise<void> {
     const templateParam = {
       clientName: name,
-      companyName: process.env.COMPANY_NAME || "",
+      company_name: process.env.COMPANY_NAME || "",
       emailSuport: process.env.SUPPORT_EMAIL || "",
     };
     const html = renderTemplate("auth/welcome", templateParam);
@@ -22,7 +22,7 @@ class AuthMailService {
 
   static async sendVerificationEmail(to: string, link: string): Promise<void> {
     const templateParam = {
-      companyName: process.env.COMPANY_NAME || "",
+      company_name: process.env.COMPANY_NAME || "",
       emailSupport: process.env.SUPPORT_EMAIL || "",
       link: link,
     };
@@ -38,7 +38,7 @@ class AuthMailService {
 
   static async sendResetPasswordEmail(to: string, link: string): Promise<void> {
     const templateParam = {
-      companyName: process.env.COMPANY_NAME || "",
+      company_name: process.env.COMPANY_NAME || "",
       link: link,
     };
     // const html = renderTemplate("auth/reset-password", templateParam);
@@ -60,7 +60,7 @@ class AuthMailService {
   ): Promise<void> {
     const templateParam = {
       guestName: name,
-      companyName: subdomain || "",
+      company_name: subdomain || "",
       url: link,
     };
     // const html = renderTemplate("company/invitacion-company", templateParam);

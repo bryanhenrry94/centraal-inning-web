@@ -17,19 +17,20 @@ import fs from "fs/promises";
 import renderTemplate from "@/common/utils/templateRenderer";
 import { formatCurrency } from "@/common/utils/general";
 import { VerdictAttachment } from "@/lib/validations/verdict-attachments";
+import { $Enums } from "@/prisma/generated/prisma";
 
 export const getAllVerdicts = async (
-  tenantId: string
+  tenant_id: string
 ): Promise<VerdictResponse[]> => {
   try {
     const verdicts = await prisma.verdict.findMany({
       where: {
-        tenantId,
+        tenant_id,
       },
       include: {
         debtor: true,
-        verdictEmbargo: true,
-        verdictInterest: {
+        verdict_embargo: true,
+        verdict_interest: {
           include: {
             details: true,
           },
@@ -40,53 +41,48 @@ export const getAllVerdicts = async (
     // Map the verdicts to match the VerdictResponse type
     const mappedVerdicts: VerdictResponse[] = verdicts.map((verdict) => ({
       ...verdict,
-      procesalCost:
-        verdict.procesalCost === null ? undefined : verdict.procesalCost,
+      procesal_cost:
+        verdict.procesal_cost === null ? undefined : verdict.procesal_cost,
       debtor: verdict.debtor
         ? {
             ...verdict.debtor,
-            userId:
-              verdict.debtor.userId === null
+            user_id:
+              verdict.debtor.user_id === null
                 ? undefined
-                : verdict.debtor.userId,
+                : verdict.debtor.user_id,
             phone:
               verdict.debtor.phone === null ? undefined : verdict.debtor.phone,
             address:
               verdict.debtor.address === null
                 ? undefined
                 : verdict.debtor.address,
-            personType:
-              verdict.debtor.personType === null
+            person_type:
+              verdict.debtor.person_type === null
                 ? "INDIVIDUAL"
-                : (verdict.debtor.personType as "INDIVIDUAL" | "COMPANY"),
-            identificationType:
-              verdict.debtor.identificationType === null
+                : (verdict.debtor.person_type as $Enums.PersonType),
+            identification_type:
+              verdict.debtor.identification_type === null
                 ? "OTHER"
-                : (verdict.debtor.identificationType as
-                    | "DNI"
-                    | "PASSPORT"
-                    | "NIE"
-                    | "CIF"
-                    | "KVK"
-                    | "OTHER"),
+                : (verdict.debtor
+                    .identification_type as $Enums.IdentificationType),
             identification:
               verdict.debtor.identification === null
                 ? undefined
                 : verdict.debtor.identification,
-            totalIncome:
-              verdict.debtor.totalIncome === null
+            total_income:
+              verdict.debtor.total_income === null
                 ? undefined
-                : verdict.debtor.totalIncome,
+                : verdict.debtor.total_income,
           }
         : verdict.debtor,
-      verdictInterest: verdict.verdictInterest.map((vi) => ({
-        interestType: vi.interestType,
-        baseAmount: vi.baseAmount,
-        calculationStart: vi.calculationStart,
-        calculationEnd: vi.calculationEnd,
-        totalInterest: vi.totalInterest,
+      verdict_interest: verdict.verdict_interest.map((vi) => ({
+        interest_type: vi.interest_type,
+        base_amount: vi.base_amount,
+        calculation_start: vi.calculation_start,
+        calculation_end: vi.calculation_end,
+        total_interest: vi.total_interest,
         details: vi.details,
-        calculatedInterest: vi.calculatedInterest ?? undefined,
+        calculated_interest: vi.calculated_interest ?? undefined,
       })),
     }));
 
@@ -105,14 +101,14 @@ export const getVerdictById = async (
       where: { id },
       include: {
         debtor: true,
-        verdictEmbargo: true,
-        verdictInterest: {
+        verdict_embargo: true,
+        verdict_interest: {
           include: {
             details: true,
           },
         },
         attachments: true,
-        bailiffServices: true,
+        bailiff_services: true,
       },
     });
 
@@ -120,29 +116,29 @@ export const getVerdictById = async (
     if (!verdict) return null;
     return {
       ...verdict,
-      procesalCost: verdict.procesalCost ?? undefined,
-      sentenceDate: verdict.sentenceDate,
+      procesal_cost: verdict.procesal_cost ?? undefined,
+      sentence_date: verdict.sentence_date,
       debtor: verdict.debtor
         ? {
             ...verdict.debtor,
-            userId:
-              verdict.debtor.userId === null
+            user_id:
+              verdict.debtor.user_id === null
                 ? undefined
-                : verdict.debtor.userId,
+                : verdict.debtor.user_id,
             phone:
               verdict.debtor.phone === null ? undefined : verdict.debtor.phone,
             address:
               verdict.debtor.address === null
                 ? undefined
                 : verdict.debtor.address,
-            personType:
-              verdict.debtor.personType === null
+            person_type:
+              verdict.debtor.person_type === null
                 ? undefined
-                : (verdict.debtor.personType as "INDIVIDUAL" | "COMPANY"),
-            identificationType:
-              verdict.debtor.identificationType === null
+                : (verdict.debtor.person_type as "INDIVIDUAL" | "COMPANY"),
+            identification_type:
+              verdict.debtor.identification_type === null
                 ? "OTHER"
-                : (verdict.debtor.identificationType as
+                : (verdict.debtor.identification_type as
                     | "DNI"
                     | "PASSPORT"
                     | "NIE"
@@ -153,20 +149,20 @@ export const getVerdictById = async (
               verdict.debtor.identification === null
                 ? undefined
                 : verdict.debtor.identification,
-            totalIncome:
-              verdict.debtor.totalIncome === null
+            total_income:
+              verdict.debtor.total_income === null
                 ? undefined
-                : verdict.debtor.totalIncome,
+                : verdict.debtor.total_income,
           }
         : verdict.debtor,
-      verdictInterest: verdict.verdictInterest.map((vi) => ({
-        interestType: vi.interestType,
-        baseAmount: vi.baseAmount,
-        calculationStart: vi.calculationStart,
-        calculationEnd: vi.calculationEnd,
-        totalInterest: vi.totalInterest,
+      verdict_interest: verdict.verdict_interest.map((vi) => ({
+        interest_type: vi.interest_type,
+        base_amount: vi.base_amount,
+        calculation_start: vi.calculation_start,
+        calculation_end: vi.calculation_end,
+        total_interest: vi.total_interest,
         details: vi.details,
-        calculatedInterest: vi.calculatedInterest ?? undefined,
+        calculated_interest: vi.calculated_interest ?? undefined,
       })),
     };
   } catch (error) {
@@ -176,11 +172,11 @@ export const getVerdictById = async (
 };
 
 export const getAttachmentsByVerdictId = async (
-  verdictId: string
+  verdict_id: string
 ): Promise<VerdictAttachment[]> => {
   try {
     const attachments = await prisma.verdictAttachment.findMany({
-      where: { verdictId },
+      where: { verdict_id },
     });
     return attachments;
   } catch (error) {
@@ -191,7 +187,7 @@ export const getAttachmentsByVerdictId = async (
 
 export const createVerdict = async (
   data: VerdictCreate,
-  tenantId: string
+  tenant_id: string
 ): Promise<VerdictResponse | null> => {
   try {
     console.log("iniciando transaccion verdict");
@@ -200,30 +196,30 @@ export const createVerdict = async (
       // create new verdict
       const newVerdict = await tx.verdict.create({
         data: {
-          invoiceNumber: data.invoiceNumber,
-          creditorName: data.creditorName,
-          debtorId: data.debtorId,
-          registrationNumber: data.registrationNumber,
-          sentenceAmount: data.sentenceAmount,
-          sentenceDate: data.sentenceDate,
-          procesalCost: data.procesalCost,
-          tenantId: tenantId,
+          invoice_number: data.invoice_number,
+          creditor_name: data.creditor_name,
+          debtor_id: data.debtor_id,
+          registration_number: data.registration_number,
+          sentence_amount: data.sentence_amount,
+          sentence_date: data.sentence_date,
+          procesal_cost: data.procesal_cost,
+          tenant_id: tenant_id,
         },
       });
 
       // if verdict interest exists
-      if (data.verdictInterest) {
-        for (const item of data.verdictInterest) {
+      if (data.verdict_interest) {
+        for (const item of data.verdict_interest) {
           // create verdict interest
-          const verdictInterest = await tx.verdictInterest.create({
+          const verdict_interest = await tx.verdictInterest.create({
             data: {
-              interestType: item.interestType,
-              baseAmount: item.baseAmount,
-              calculatedInterest: item.calculatedInterest,
-              calculationStart: item.calculationStart,
-              calculationEnd: item.calculationEnd,
-              totalInterest: item.totalInterest,
-              verdictId: newVerdict.id,
+              interest_type: item.interest_type,
+              base_amount: item.base_amount,
+              calculated_interest: item.calculated_interest,
+              calculation_start: item.calculation_start,
+              calculation_end: item.calculation_end,
+              total_interest: item.total_interest,
+              verdict_id: newVerdict.id,
             },
           });
 
@@ -231,27 +227,27 @@ export const createVerdict = async (
           await tx.verdictInterestDetails.createMany({
             data: item.details.map((detail) => ({
               ...detail,
-              verdictInterestId: verdictInterest.id,
+              verdict_interest_id: verdict_interest.id,
             })),
           });
         }
       }
 
       // if verdict embargo exists
-      if (data.verdictEmbargo) {
-        for (const item of data.verdictEmbargo) {
+      if (data.verdict_embargo) {
+        for (const item of data.verdict_embargo) {
           // create verdict embargo
           await tx.verdictEmbargo.create({
             data: {
-              verdictId: newVerdict.id,
-              companyName: item.companyName,
-              companyPhone: item.companyPhone,
-              companyEmail: item.companyEmail,
-              companyAddress: item.companyAddress,
-              embargoType: item.embargoType,
-              embargoDate: item.embargoDate,
-              embargoAmount: item.embargoAmount,
-              totalAmount: item.totalAmount,
+              verdict_id: newVerdict.id,
+              company_name: item.company_name,
+              company_phone: item.company_phone,
+              company_email: item.company_email,
+              company_address: item.company_address,
+              embargo_type: item.embargo_type,
+              embargo_date: item.embargo_date,
+              embargo_amount: item.embargo_amount,
+              total_amount: item.total_amount,
             },
           });
         }
@@ -280,32 +276,32 @@ export const updateVerdict = async (
       const verdict = await prisma.verdict.update({
         where: { id },
         data: {
-          invoiceNumber: data.invoiceNumber,
-          creditorName: data.creditorName,
-          debtorId: data.debtorId,
-          registrationNumber: data.registrationNumber,
-          sentenceAmount: data.sentenceAmount,
-          sentenceDate: data.sentenceDate,
-          procesalCost: data.procesalCost,
-          bailiffId: data.bailiffId ?? null,
+          invoice_number: data.invoice_number,
+          creditor_name: data.creditor_name,
+          debtor_id: data.debtor_id,
+          registration_number: data.registration_number,
+          sentence_amount: data.sentence_amount,
+          sentence_date: data.sentence_date,
+          procesal_cost: data.procesal_cost,
+          bailiff_id: data.bailiff_id ?? null,
         },
       });
 
       // if verdict interest exists
-      if (data.verdictInterest) {
+      if (data.verdict_interest) {
         // elimina los detalles de interest
         // Obtener los IDs de los verdictInterest relacionados a este veredicto
         const verdictInterestIds = (
           await tx.verdictInterest.findMany({
-            where: { verdictId: verdict.id },
+            where: { verdict_id: verdict.id },
             select: { id: true },
           })
         ).map((vi) => vi.id);
 
-        // Eliminar los detalles relacionados a esos verdictInterest
+        // Eliminar los detalles relacionados a esos verdict_interest
         await tx.verdictInterestDetails.deleteMany({
           where: {
-            verdictInterestId: {
+            verdict_interest_id: {
               in: verdictInterestIds,
             },
           },
@@ -313,20 +309,20 @@ export const updateVerdict = async (
 
         // Eliminar los intereses existentes relacionados al veredicto
         await tx.verdictInterest.deleteMany({
-          where: { verdictId: verdict.id },
+          where: { verdict_id: verdict.id },
         });
 
-        for (const item of data.verdictInterest) {
+        for (const item of data.verdict_interest) {
           // create verdict interest
-          const verdictInterest = await tx.verdictInterest.create({
+          const verdict_interest = await tx.verdictInterest.create({
             data: {
-              interestType: item.interestType,
-              baseAmount: item.baseAmount,
-              calculatedInterest: item.calculatedInterest,
-              calculationStart: item.calculationStart,
-              calculationEnd: item.calculationEnd,
-              totalInterest: item.totalInterest,
-              verdictId: verdict.id,
+              interest_type: item.interest_type,
+              base_amount: item.base_amount,
+              calculated_interest: item.calculated_interest,
+              calculation_start: item.calculation_start,
+              calculation_end: item.calculation_end,
+              total_interest: item.total_interest,
+              verdict_id: verdict.id,
             },
           });
 
@@ -334,18 +330,18 @@ export const updateVerdict = async (
           await tx.verdictInterestDetails.createMany({
             data: item.details.map((detail) => ({
               ...detail,
-              verdictInterestId: verdictInterest.id,
+              verdict_interest_id: verdict_interest.id,
             })),
           });
         }
       }
 
       // if verdict embargo exists
-      if (data.verdictEmbargo) {
+      if (data.verdict_embargo) {
         // elimina los detalles de embargo
         const verdictEmbargoIds = (
           await tx.verdictEmbargo.findMany({
-            where: { verdictId: verdict.id },
+            where: { verdict_id: verdict.id },
             select: { id: true },
           })
         ).map((vi) => vi.id);
@@ -358,34 +354,34 @@ export const updateVerdict = async (
           },
         });
 
-        for (const item of data.verdictEmbargo) {
+        for (const item of data.verdict_embargo) {
           // create verdict embargo
           await tx.verdictEmbargo.create({
             data: {
-              verdictId: verdict.id,
-              companyName: item.companyName,
-              companyPhone: item.companyPhone,
-              companyEmail: item.companyEmail,
-              companyAddress: item.companyAddress,
-              embargoType: item.embargoType,
-              embargoDate: item.embargoDate,
-              embargoAmount: item.embargoAmount,
-              totalAmount: item.totalAmount,
+              verdict_id: verdict.id,
+              company_name: item.company_name,
+              company_phone: item.company_phone,
+              company_email: item.company_email,
+              company_address: item.company_address,
+              embargo_type: item.embargo_type,
+              embargo_date: item.embargo_date,
+              embargo_amount: item.embargo_amount,
+              total_amount: item.total_amount,
             },
           });
         }
       }
 
-      if (data.bailiffServices) {
+      if (data.bailiff_services) {
         await tx.verdictBailiffServices.deleteMany({
-          where: { verdictId: verdict.id },
+          where: { verdict_id: verdict.id },
         });
 
-        for (const item of data.bailiffServices) {
+        for (const item of data.bailiff_services) {
           await tx.verdictBailiffServices.create({
             data: {
               ...item,
-              verdictId: verdict.id,
+              verdict_id: verdict.id,
             },
           });
         }
@@ -402,43 +398,43 @@ export const updateVerdict = async (
 };
 
 export const calculateInterestDetail = async (
-  interestType: number,
-  baseAmount: number,
-  calculatedInterest: number,
-  calculationStart: Date,
-  calculationEnd: Date
+  interest_type: number,
+  base_amount: number,
+  calculated_interest: number,
+  calculation_start: Date,
+  calculation_end: Date
 ): Promise<VerdictInterestDetailCreate[]> => {
   try {
     const verdictInterestDetails: VerdictInterestDetailCreate[] = [];
 
     // Validar los parámetros de entrada
     if (
-      interestType === 0 ||
-      baseAmount === 0 ||
-      !calculationStart ||
-      !calculationEnd
+      interest_type === 0 ||
+      base_amount === 0 ||
+      !calculation_start ||
+      !calculation_end
     ) {
       return [];
     }
 
     // obtener el tipo de interés
-    const objInterestType = await getInterestTypeById(interestType);
+    const objInterestType = await getInterestTypeById(interest_type);
 
     if (!objInterestType) {
       return [];
     }
 
-    // Asegurarse de que calculationStart y calculationEnd sean Date
+    // Asegurarse de que calculation_start y calculation_end sean Date
     let fechaInicio =
-      calculationStart instanceof Date
-        ? calculationStart
-        : new Date(calculationStart);
+      calculation_start instanceof Date
+        ? calculation_start
+        : new Date(calculation_start);
     const fechaFinCalculo =
-      calculationEnd instanceof Date
-        ? calculationEnd
-        : new Date(calculationEnd);
+      calculation_end instanceof Date
+        ? calculation_end
+        : new Date(calculation_end);
 
-    let montoCalculo = baseAmount;
+    let montoCalculo = base_amount;
 
     // Ordenar los details por fecha ascendente
     const details: InterestDetail[] = (objInterestType.details || [])
@@ -490,27 +486,27 @@ export const calculateInterestDetail = async (
 
       const proporcional = (tasaAnual / 365) * dias;
 
-      // Interés compuesto: baseAmount * (1 + proporcional/100) - baseAmount
-      const calculatedInterest =
-        baseAmount * Math.pow(1 + proporcional / 100, 1) - baseAmount;
+      // Interés compuesto: base_amount * (1 + proporcional/100) - base_amount
+      const calculated_interest =
+        base_amount * Math.pow(1 + proporcional / 100, 1) - base_amount;
 
-      const total = baseAmount + calculatedInterest;
+      const total = base_amount + calculated_interest;
 
       const detalle: VerdictInterestDetailCreate = {
         period: `#${tramoIndex}`,
-        periodStart: fechaInicio,
-        periodEnd: fechaFinTramo,
+        period_start: fechaInicio,
+        period_end: fechaFinTramo,
         days: dias,
-        annualRate: tasaAnual,
-        proportionalRate: proporcional,
-        baseAmount: Math.round(baseAmount * 100) / 100,
-        interest: Math.round(calculatedInterest * 100) / 100,
+        annual_rate: tasaAnual,
+        proportional_rate: proporcional,
+        base_amount: Math.round(base_amount * 100) / 100,
+        interest: Math.round(calculated_interest * 100) / 100,
         total: Math.round(total * 100) / 100,
       };
 
       verdictInterestDetails.push(detalle);
 
-      // Actualizar baseAmount para el siguiente tramo (interés compuesto)
+      // Actualizar base_amount para el siguiente tramo (interés compuesto)
       montoCalculo = total;
       fechaInicio = fechaFinTramo;
       tramoIndex++;
@@ -527,15 +523,15 @@ export const deleteVerdict = async (id: string): Promise<boolean> => {
     return await prisma.$transaction(async (tx) => {
       const verdictInterestIds = (
         await tx.verdictInterest.findMany({
-          where: { verdictId: id },
+          where: { verdict_id: id },
           select: { id: true },
         })
       ).map((vi) => vi.id);
 
-      // Eliminar los detalles relacionados a esos verdictInterest
+      // Eliminar los detalles relacionados a esos verdict_interest
       await tx.verdictInterestDetails.deleteMany({
         where: {
-          verdictInterestId: {
+          verdict_interest_id: {
             in: verdictInterestIds,
           },
         },
@@ -543,12 +539,12 @@ export const deleteVerdict = async (id: string): Promise<boolean> => {
 
       // Eliminar los intereses existentes relacionados al veredicto
       await tx.verdictInterest.deleteMany({
-        where: { verdictId: id },
+        where: { verdict_id: id },
       });
 
       const verdictEmbargoIds = (
         await tx.verdictEmbargo.findMany({
-          where: { verdictId: id },
+          where: { verdict_id: id },
           select: { id: true },
         })
       ).map((vi) => vi.id);
@@ -585,12 +581,12 @@ export const handleSendMailNotificationDebtor = async (
     if (!createdVerdict) return false;
 
     const debtor = await prisma.debtor.findUnique({
-      where: { id: createdVerdict.debtorId },
+      where: { id: createdVerdict.debtor_id },
     });
 
     if (debtor?.email) {
       const debtorEmail = debtor?.email;
-      const subject = `Kennisgeving van vonnis - ${createdVerdict.registrationNumber}`;
+      const subject = `Kennisgeving van vonnis - ${createdVerdict.registration_number}`;
 
       const dataMail = {
         recipientName: debtor.fullname || "Schuldenaar",
@@ -602,9 +598,9 @@ export const handleSendMailNotificationDebtor = async (
       const dataAttachment = {
         date: new Date().toISOString().split("T")[0],
         debtorName: debtor.fullname,
-        reference: createdVerdict.registrationNumber,
-        sentenceDate: createdVerdict.sentenceDate.toISOString().split("T")[0],
-        sentenceAmount: formatCurrency(createdVerdict.sentenceAmount),
+        reference: createdVerdict.registration_number,
+        sentence_date: createdVerdict.sentence_date.toISOString().split("T")[0],
+        sentence_amount: formatCurrency(createdVerdict.sentence_amount),
         bankAccountNumber: "114.588.06",
       };
 
@@ -619,11 +615,11 @@ export const handleSendMailNotificationDebtor = async (
         htmlAttachment
       );
 
-      if (result.success && result.filePath) {
+      if (result.success && result.file_path) {
         const absolutePath = path.join(
           process.cwd(),
           "public",
-          result.filePath
+          result.file_path
         );
 
         const attachmentConfig = {
@@ -666,28 +662,28 @@ export const handleSendMailNotificationCreditor = async (
     if (!createdVerdict) return false;
 
     const debtor = await prisma.debtor.findUnique({
-      where: { id: createdVerdict.debtorId },
+      where: { id: createdVerdict.debtor_id },
     });
 
     if (debtor?.email) {
       const debtorEmail = debtor?.email;
-      const subject = `FACTUUR - ${createdVerdict.invoiceNumber}`;
+      const subject = `FACTUUR - ${createdVerdict.invoice_number}`;
 
       const dataMail = {
-        recipientName: createdVerdict.creditorName || "Schuldenaar",
+        recipientName: createdVerdict.creditor_name || "Schuldenaar",
         currentYear: new Date().getFullYear(),
         messageBody:
           "Er is een nieuw vonnis tegen u geregistreerd in het Centraal Incassoplatform (CI). U kunt de details van dit vonnis veilig bekijken door in te loggen op het CI-platform:",
       };
 
       const dataAttachment = {
-        invoiceNumber: createdVerdict.invoiceNumber,
-        creditorName: createdVerdict.creditorName,
+        invoice_number: createdVerdict.invoice_number,
+        creditor_name: createdVerdict.creditor_name,
         debtorName: debtor.fullname,
         date: new Date().toISOString().split("T")[0],
         bailiffAmount: formatCurrency(250),
         cioAmount: formatCurrency(150),
-        totalAmount: formatCurrency(400),
+        total_amount: formatCurrency(400),
       };
 
       // 1, Generar HTML desde plantilla
@@ -701,11 +697,11 @@ export const handleSendMailNotificationCreditor = async (
         htmlAttachment
       );
 
-      if (result.success && result.filePath) {
+      if (result.success && result.file_path) {
         const absolutePath = path.join(
           process.cwd(),
           "public",
-          result.filePath
+          result.file_path
         );
 
         const attachmentConfig = {
@@ -756,9 +752,9 @@ export const handleSendMailNotificationBailiff = async (
     const dataAttachment = {
       date: new Date().toISOString().split("T")[0],
       bailiffName: createdVerdict.bailiff.fullname,
-      creditorName: createdVerdict.creditorName,
-      reference: createdVerdict.registrationNumber,
-      dateVerdict: createdVerdict.sentenceDate.toISOString().split("T")[0],
+      creditor_name: createdVerdict.creditor_name,
+      reference: createdVerdict.registration_number,
+      dateVerdict: createdVerdict.sentence_date.toISOString().split("T")[0],
     };
 
     // 1, Generar HTML desde plantilla
@@ -782,8 +778,8 @@ export const handleSendMailNotificationBailiff = async (
         "Er is een nieuw vonnis voor u beschikbaar. Log in op het CI-platform om de details te bekijken:",
     };
 
-    if (result.success && result.filePath) {
-      const absolutePath = path.join(process.cwd(), "public", result.filePath);
+    if (result.success && result.file_path) {
+      const absolutePath = path.join(process.cwd(), "public", result.file_path);
       console.log("Generated PDF path:", absolutePath);
 
       const attachmentConfig = {
@@ -810,13 +806,13 @@ export const handleSendMailNotificationBailiff = async (
 
 export const UploadAttachmentToVerdict = async (
   file: File,
-  verdictId: string,
+  verdict_id: string,
   subdomain: string
 ) => {
   try {
     const fd = new FormData();
     fd.append("file", file);
-    fd.append("verdictId", verdictId);
+    fd.append("verdict_id", verdict_id);
 
     const URL = `${protocol}://${rootDomain}/api/verdicts/upload`;
 
@@ -849,10 +845,10 @@ export const UploadAttachmentToVerdict = async (
     // Actualiza la ruta del archivo en la base de datos
     await prisma.verdictAttachment.create({
       data: {
-        verdictId,
-        filePath: data.url,
-        fileName: file.name,
-        fileSize: file.size,
+        verdict_id,
+        file_path: data.url,
+        file_name: file.name,
+        file_size: file.size,
       },
     });
 
@@ -891,14 +887,14 @@ export const requestVerdictApproval = async (id: string): Promise<boolean> => {
 export const GenerateReportApprovalFromHTML = async (
   slug: string,
   html: string
-): Promise<{ success: boolean; filePath?: string }> => {
+): Promise<{ success: boolean; file_path?: string }> => {
   const filename = "bailiff_report.pdf";
 
   // Definir paths de forma clara
   const publicPath = path.join("uploads", slug, "verdict");
   const absolutePath = path.resolve(process.cwd(), "public", publicPath);
   const pdfPath = path.join(absolutePath, filename);
-  const filePath = path.join("/", publicPath, filename); // para guardar en DB (URL relativa)
+  const file_path = path.join("/", publicPath, filename); // para guardar en DB (URL relativa)
 
   try {
     // Crear carpeta y generar PDF en paralelo
@@ -907,10 +903,10 @@ export const GenerateReportApprovalFromHTML = async (
 
     return {
       success: true,
-      filePath: filePath,
+      file_path: file_path,
     };
   } catch (error) {
-    console.error("❌ Error al generar reporte:", error);
+    console.error("Error al generar reporte:", error);
     return { success: false };
   }
 };
@@ -931,7 +927,7 @@ export const DeleteVerdictAttachment = async (id: string): Promise<boolean> => {
     const absoluteFilePath = path.join(
       process.cwd(),
       "public",
-      attachment.filePath
+      attachment.file_path
     );
 
     // Eliminar el archivo del sistema de archivos
@@ -957,7 +953,7 @@ export const DeleteVerdictAttachment = async (id: string): Promise<boolean> => {
 
 export const DownloadVerdictAttachment = async (
   id: string
-): Promise<{ success: boolean; file?: string; fileName?: string }> => {
+): Promise<{ success: boolean; file?: string; file_name?: string }> => {
   try {
     // Buscar el attachment en la base de datos
     const attachment = await prisma.verdictAttachment.findUnique({
@@ -973,7 +969,7 @@ export const DownloadVerdictAttachment = async (
     const absoluteFilePath = path.join(
       process.cwd(),
       "public",
-      attachment.filePath
+      attachment.file_path
     );
 
     console.log("Attempting to read file at:", absoluteFilePath);
@@ -993,7 +989,7 @@ export const DownloadVerdictAttachment = async (
     return {
       success: true,
       file: fileBase64,
-      fileName: attachment.fileName,
+      file_name: attachment.file_name,
     };
   } catch (error) {
     console.error("Error downloading verdict attachment:", error);

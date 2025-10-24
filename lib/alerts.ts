@@ -34,12 +34,12 @@ export class AlertService {
       text: message,
       icon: "warning",
       buttons: {
+        confirm: {
+          text: confirmButtonText,
+        },
         cancel: {
           text: cancelButtonText,
           visible: true,
-        },
-        confirm: {
-          text: confirmButtonText,
         },
       },
       dangerMode: true,

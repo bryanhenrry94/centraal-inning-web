@@ -8,22 +8,22 @@ export const SenderSchema = z.object({
 
 export const ChatMessageSchema = z.object({
   id: z.string(),
-  roomId: z.string(),
-  senderId: z.string(),
+  room_id: z.string(),
+  sender_id: z.string(),
   sender: SenderSchema,
   message: z.string(),
-  fileUrl: z.string().nullable().optional(),
-  fileName: z.string().nullable().optional(),
+  file_url: z.string().nullable().optional(),
+  file_name: z.string().nullable().optional(),
   timestamp: z.coerce.date(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
 });
 
 export const ChatMessageCreateSchema = ChatMessageSchema.omit({
   id: true,
   timestamp: true,
-  createdAt: true,
-  updatedAt: true,
+  created_at: true,
+  updated_at: true,
 });
 
 export const ChatMessageResponseSchema = ChatMessageSchema.extend({
@@ -33,11 +33,11 @@ export const ChatMessageResponseSchema = ChatMessageSchema.extend({
 
 export const ChatRoomSchema = z.object({
   id: z.string(),
-  tenantId: z.string(),
-  collectionCaseId: z.string(),
+  tenant_id: z.string(),
+  collection_case_id: z.string(),
   name: z.string(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
   messages: z.array(ChatMessageSchema),
 });
 

@@ -19,14 +19,17 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit";
 import { getAllDebtors } from "@/app/actions/debtor";
-import { DebtorCreate as DebtorCreateBase } from "@/lib/validations/debtor";
+import {
+  DebtorBase,
+  DebtorCreate as DebtorCreateBase,
+} from "@/lib/validations/debtor";
 
 type DebtorCreate = DebtorCreateBase & { id: string };
 
 type ModalSearchDebtorProps = {
   open: boolean;
   onClose: () => void;
-  onSelect: (debtor: DebtorCreate) => void;
+  onSelect: (debtor: DebtorBase) => void;
   onEdit: (id: string) => void;
 };
 
@@ -49,7 +52,7 @@ const ModalSearchDebtor: React.FC<ModalSearchDebtorProps> = ({
   onEdit,
 }) => {
   const [search, setSearch] = useState("");
-  const [debtors, setDebtors] = useState<DebtorCreate[]>([]);
+  const [debtors, setDebtors] = useState<DebtorBase[]>([]);
 
   useEffect(() => {
     // Simulate fetching debtors

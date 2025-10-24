@@ -54,13 +54,13 @@ const TermsAndConditionsCard = (props: AccountInfoCardProps) => {
         {/* Check para aceptar los términos */}
         <Box display="flex" alignItems="center" marginTop={2}>
           <Checkbox
-            checked={initial.company.termsAccepted}
+            checked={initial.company.terms_accepted}
             onChange={(e) =>
               setFormData({
                 ...initial,
                 company: {
                   ...initial.company,
-                  termsAccepted: e.target.checked,
+                  terms_accepted: e.target.checked,
                 },
               })
             }

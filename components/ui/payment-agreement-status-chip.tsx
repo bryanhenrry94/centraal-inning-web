@@ -4,7 +4,7 @@ import { Chip } from "@mui/material";
 const PaymentAgreementStatusChip = ({
   status,
 }: {
-  status: $Enums.PaymentAgreementStatus;
+  status: $Enums.AgreementStatus;
 }) => {
   let label = "Onbekend";
   let color:
@@ -17,31 +17,31 @@ const PaymentAgreementStatusChip = ({
     | "warning" = "default";
 
   switch (status) {
-    case $Enums.PaymentAgreementStatus.PENDING:
+    case $Enums.AgreementStatus.PENDING:
       label = "Open";
       color = "primary";
       break;
-    case $Enums.PaymentAgreementStatus.IN_NEGOTIATION:
+    case $Enums.AgreementStatus.IN_NEGOTIATION:
       label = "In Onderhandeling";
       color = "info";
       break;
-    case $Enums.PaymentAgreementStatus.COUNTEROFFER:
+    case $Enums.AgreementStatus.COUNTEROFFER:
       label = "Tegenbod";
       color = "warning";
       break;
-    case $Enums.PaymentAgreementStatus.ACCEPTED:
+    case $Enums.AgreementStatus.ACCEPTED:
       label = "Geaccepteerd";
       color = "success";
       break;
-    case $Enums.PaymentAgreementStatus.REJECTED:
+    case $Enums.AgreementStatus.REJECTED:
       label = "Afgewezen";
       color = "error";
       break;
-    case $Enums.PaymentAgreementStatus.CANCELLED:
+    case $Enums.AgreementStatus.CANCELLED:
       label = "Geannuleerd";
       color = "error";
       break;
-    case $Enums.PaymentAgreementStatus.CLOSED:
+    case $Enums.AgreementStatus.CLOSED:
       label = "Gesloten";
       color = "default";
       break;

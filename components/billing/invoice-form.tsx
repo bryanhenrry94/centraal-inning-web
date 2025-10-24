@@ -84,7 +84,7 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
 
   const { fields, append, remove } = useFieldArray<BillingInvoiceCreate>({
     control,
-    name: "invoiceDetails",
+    name: "invoice_details",
   });
 
   const onSubmit = async (data: BillingInvoiceCreate) => {
@@ -127,16 +127,18 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
     <TableRow key={item.id}>
       <TableCell sx={{ textAlign: "center" }}>
         <Controller
-          name={`invoiceDetails.${index}.itemQuantity`}
+          name={`invoice_details.${index}.item_quantity`}
           control={control}
-          defaultValue={item.itemQuantity ?? 0}
+          defaultValue={item.item_quantity ?? 0}
           render={({ field }) => (
             <TextField
               {...field}
               type="number"
               size="small"
-              error={!!errors.invoiceDetails?.[index]?.itemQuantity}
-              helperText={errors.invoiceDetails?.[index]?.itemQuantity?.message}
+              error={!!errors.invoice_details?.[index]?.item_quantity}
+              helperText={
+                errors.invoice_details?.[index]?.item_quantity?.message
+              }
               // slotProps={{ input: { min: 1 } }}
               fullWidth
             />
@@ -145,16 +147,16 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
       </TableCell>
       <TableCell sx={{ textAlign: "center" }}>
         <Controller
-          name={`invoiceDetails.${index}.itemDescription`}
+          name={`invoice_details.${index}.item_description`}
           control={control}
-          defaultValue={item.itemDescription ?? ""}
+          defaultValue={item.item_description ?? ""}
           render={({ field }) => (
             <TextField
               {...field}
               size="small"
-              error={!!errors.invoiceDetails?.[index]?.itemDescription}
+              error={!!errors.invoice_details?.[index]?.item_description}
               helperText={
-                errors.invoiceDetails?.[index]?.itemDescription?.message
+                errors.invoice_details?.[index]?.item_description?.message
               }
               fullWidth
             />
@@ -163,41 +165,42 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
       </TableCell>
       <TableCell sx={{ textAlign: "center" }}>
         <Controller
-          name={`invoiceDetails.${index}.itemUnitPrice`}
+          name={`invoice_details.${index}.item_unit_price`}
           control={control}
-          defaultValue={item.itemUnitPrice ?? 0}
+          defaultValue={item.item_unit_price ?? 0}
           render={({ field }) => (
             <TextField
               {...field}
               type="number"
               size="small"
-              error={!!errors.invoiceDetails?.[index]?.itemUnitPrice}
+              error={!!errors.invoice_details?.[index]?.item_unit_price}
               helperText={
-                errors.invoiceDetails?.[index]?.itemUnitPrice?.message
+                errors.invoice_details?.[index]?.item_unit_price?.message
               }
               onChange={(e) => {
                 const value = parseFloat(e.target.value) || 0;
 
                 const quantity =
-                  methods.getValues(`invoiceDetails.${index}.itemQuantity`) ||
+                  methods.getValues(`invoice_details.${index}.item_quantity`) ||
                   0;
                 const taxRate =
-                  methods.getValues(`invoiceDetails.${index}.itemTaxRate`) || 0;
+                  methods.getValues(`invoice_details.${index}.item_tax_rate`) ||
+                  0;
 
                 const totalPrice = Number(value) * Number(quantity);
                 const taxAmount = (Number(totalPrice) * Number(taxRate)) / 100;
                 const totalWithTax = Number(totalPrice) + Number(taxAmount);
 
                 methods.setValue(
-                  `invoiceDetails.${index}.itemTotalPrice`,
+                  `invoice_details.${index}.item_total_price`,
                   Number(totalPrice.toFixed(2))
                 );
                 methods.setValue(
-                  `invoiceDetails.${index}.itemTaxAmount`,
+                  `invoice_details.${index}.item_tax_amount`,
                   Number(taxAmount.toFixed(2))
                 );
                 methods.setValue(
-                  `invoiceDetails.${index}.itemTotalWithTax`,
+                  `invoice_details.${index}.item_total_with_tax`,
                   Number(totalWithTax.toFixed(2))
                 );
 
@@ -210,17 +213,17 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
       </TableCell>
       <TableCell sx={{ textAlign: "center" }}>
         <Controller
-          name={`invoiceDetails.${index}.itemTaxAmount`}
+          name={`invoice_details.${index}.item_tax_amount`}
           control={control}
-          defaultValue={item.itemTaxAmount ?? 0}
+          defaultValue={item.item_tax_amount ?? 0}
           render={({ field }) => (
             <TextField
               {...field}
               type="number"
               size="small"
-              error={!!errors.invoiceDetails?.[index]?.itemTaxAmount}
+              error={!!errors.invoice_details?.[index]?.item_tax_amount}
               helperText={
-                errors.invoiceDetails?.[index]?.itemTaxAmount?.message
+                errors.invoice_details?.[index]?.item_tax_amount?.message
               }
               fullWidth
             />
@@ -229,17 +232,17 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
       </TableCell>
       <TableCell sx={{ textAlign: "center" }}>
         <Controller
-          name={`invoiceDetails.${index}.itemTotalWithTax`}
+          name={`invoice_details.${index}.item_total_with_tax`}
           control={control}
-          defaultValue={item?.itemTotalWithTax ?? 0}
+          defaultValue={item?.item_total_with_tax ?? 0}
           render={({ field }) => (
             <TextField
               {...field}
               type="number"
               size="small"
-              error={!!errors.invoiceDetails?.[index]?.itemTotalWithTax}
+              error={!!errors.invoice_details?.[index]?.item_total_with_tax}
               helperText={
-                errors.invoiceDetails?.[index]?.itemTotalWithTax?.message
+                errors.invoice_details?.[index]?.item_total_with_tax?.message
               }
               slotProps={{ input: { readOnly: true } }}
               fullWidth
@@ -265,7 +268,7 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
         if (data) {
           reset({
             ...data,
-            invoiceDetails: data.invoiceDetails || [],
+            invoice_details: data.invoice_details || [],
           });
         } else {
           notifyError("No se encontró la factura");
@@ -277,9 +280,9 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
         if (!tenant) return;
         const nextInvoiceNumber = await getNextInvoiceNumber(tenant.id);
         reset({
-          invoiceNumber: nextInvoiceNumber,
-          issueDate: new Date(),
-          invoiceDetails: [],
+          invoice_number: nextInvoiceNumber,
+          issue_date: new Date(),
+          invoice_details: [],
         });
       };
       fetchNextInvoiceNumber();
@@ -291,18 +294,18 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
   }, [tenant]);
 
   const TotalComponent: React.FC<{ control: any }> = ({ control }) => {
-    const dataInvoiceDetails = useWatch({ control, name: "invoiceDetails" });
+    const dataInvoice_details = useWatch({ control, name: "invoice_details" });
     const subtotal =
-      (dataInvoiceDetails as BillingInvoiceDetailBase[] | undefined)?.reduce(
+      (dataInvoice_details as BillingInvoiceDetailBase[] | undefined)?.reduce(
         (sum: number, item: BillingInvoiceDetailBase) =>
           sum +
-          (Number(item?.itemTotalPrice) + Number(item?.itemTaxAmount) || 0),
+          (Number(item?.item_total_price) + Number(item?.item_tax_amount) || 0),
         0
       ) ?? 0;
     const totalTax =
-      (dataInvoiceDetails as BillingInvoiceDetailBase[] | undefined)?.reduce(
+      (dataInvoice_details as BillingInvoiceDetailBase[] | undefined)?.reduce(
         (sum: number, item: BillingInvoiceDetailBase) =>
-          sum + (Number(item?.itemTaxAmount) || 0),
+          sum + (Number(item?.item_tax_amount) || 0),
         0
       ) ?? 0;
     const total = subtotal + totalTax;
@@ -448,7 +451,7 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
               >
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <Controller
-                    name="tenantId"
+                    name="tenant_id"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
@@ -459,8 +462,8 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                         select
                         sx={{ width: 200 }}
                         size="small"
-                        error={!!errors.tenantId}
-                        helperText={errors.tenantId?.message}
+                        error={!!errors.tenant_id}
+                        helperText={errors.tenant_id?.message}
                         required
                       >
                         {tenants.map((tenant) => (
@@ -483,7 +486,7 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                     }}
                   >
                     <Controller
-                      name="invoiceNumber"
+                      name="invoice_number"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
@@ -492,14 +495,14 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                           {...field}
                           sx={{ maxWidth: 400 }}
                           size="small"
-                          error={!!errors.invoiceNumber}
-                          helperText={errors.invoiceNumber?.message}
+                          error={!!errors.invoice_number}
+                          helperText={errors.invoice_number?.message}
                           required
                         />
                       )}
                     />
                     <Controller
-                      name="issueDate"
+                      name="issue_date"
                       control={control}
                       defaultValue={new Date()}
                       render={({ field }) => (
@@ -517,8 +520,8 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                           size="small"
                           type="date"
                           slotProps={{ inputLabel: { shrink: true } }}
-                          error={!!errors.issueDate}
-                          helperText={errors.issueDate?.message}
+                          error={!!errors.issue_date}
+                          helperText={errors.issue_date?.message}
                           required
                         />
                       )}
@@ -623,13 +626,13 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
                       variant="outlined"
                       onClick={() =>
                         append({
-                          itemDescription: "",
-                          itemQuantity: 0,
-                          itemUnitPrice: 0,
-                          itemTotalPrice: 0,
-                          itemTaxRate: 6,
-                          itemTaxAmount: 0,
-                          itemTotalWithTax: 0,
+                          item_description: "",
+                          item_quantity: 0,
+                          item_unit_price: 0,
+                          item_total_price: 0,
+                          item_tax_rate: 6,
+                          item_tax_amount: 0,
+                          item_total_with_tax: 0,
                         })
                       }
                       sx={{ textTransform: "none" }}

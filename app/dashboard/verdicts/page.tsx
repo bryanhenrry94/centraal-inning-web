@@ -450,11 +450,11 @@ const VerdictsPage: React.FC = () => {
               ).map((verdict: VerdictResponse) => (
                 <TableRow key={verdict.id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {verdict.registrationNumber}
+                    {verdict.registration_number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {verdict.sentenceDate
-                      ? new Date(verdict.sentenceDate).toLocaleDateString(
+                    {verdict.sentence_date
+                      ? new Date(verdict.sentence_date).toLocaleDateString(
                           "es-ES",
                           {
                             day: "2-digit",
@@ -465,50 +465,52 @@ const VerdictsPage: React.FC = () => {
                       : ""}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {verdict.invoiceNumber}
+                    {verdict.invoice_number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {verdict.debtor?.fullname}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {formatCurrency(verdict.sentenceAmount)}
+                    {formatCurrency(verdict.sentence_amount)}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {formatCurrency(
-                      verdict.verdictInterest.reduce(
-                        (acc, curr) => Number(acc) + Number(curr.totalInterest),
+                      verdict.verdict_interest.reduce(
+                        (acc, curr) =>
+                          Number(acc) + Number(curr.total_interest),
                         0
                       )
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {formatCurrency(
-                      (verdict.bailiffServices ?? []).reduce(
-                        (acc, curr) => Number(acc) + Number(curr.serviceCost),
+                      (verdict.bailiff_services ?? []).reduce(
+                        (acc, curr) => Number(acc) + Number(curr.service_cost),
                         0
                       ) +
-                        verdict.verdictEmbargo.reduce(
+                        verdict.verdict_embargo.reduce(
                           (acc, curr) =>
-                            Number(acc) + Number(curr.embargoAmount),
+                            Number(acc) + Number(curr.embargo_amount),
                           0
                         )
                     )}
                   </TableCell>
                   <TableCell>
                     {formatCurrency(
-                      Number(verdict.sentenceAmount) +
-                        verdict.verdictInterest.reduce(
+                      Number(verdict.sentence_amount) +
+                        verdict.verdict_interest.reduce(
                           (acc, curr) =>
-                            Number(acc) + Number(curr.totalInterest),
+                            Number(acc) + Number(curr.total_interest),
                           0
                         ) +
-                        (verdict.bailiffServices ?? []).reduce(
-                          (acc, curr) => Number(acc) + Number(curr.serviceCost),
+                        (verdict.bailiff_services ?? []).reduce(
+                          (acc, curr) =>
+                            Number(acc) + Number(curr.service_cost),
                           0
                         ) +
-                        verdict.verdictEmbargo.reduce(
+                        verdict.verdict_embargo.reduce(
                           (acc, curr) =>
-                            Number(acc) + Number(curr.embargoAmount),
+                            Number(acc) + Number(curr.embargo_amount),
                           0
                         )
                     )}

@@ -10,7 +10,7 @@ export enum NotificationType {
 
 export const NotificationSchema = z.object({
   id: z.string(), // cuid
-  collectionCaseId: z.string(),
+  collection_case_id: z.string(),
   type: z.enum([
     NotificationType.AANMANING,
     NotificationType.SOMMATIE,
@@ -19,13 +19,13 @@ export const NotificationSchema = z.object({
   ]),
   title: z.string(),
   message: z.string(),
-  sentAt: z.date(),
+  sent_at: z.date(),
   read: z.boolean(),
-  createdAt: z.date(),
+  created_at: z.date(),
 });
 
 export const NotificationResponseSchema = NotificationSchema.extend({
-  collectionCase: CollectionCaseSchema,
+  collection_case: CollectionCaseSchema,
 });
 
 export type Notification = z.infer<typeof NotificationSchema>;

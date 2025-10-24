@@ -38,11 +38,11 @@ const TotalCell = ({ control, index }: { control: any; index: number }) => {
 
   useEffect(() => {
     const total =
-      Number(item.embargoAmount ?? 0) + Number(item.bailiffAmount ?? 0);
+      Number(item.embargo_amount ?? 0) + Number(item.bailiffAmount ?? 0);
 
     setTotal(total);
-    setValue(`verdictEmbargo.${index}.totalAmount`, total);
-  }, [item.embargoAmount, item.bailiffAmount]);
+    setValue(`verdictEmbargo.${index}.total_amount`, total);
+  }, [item.embargo_amount, item.bailiffAmount]);
 
   return (
     <TextField
@@ -96,10 +96,10 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
   }> = ({ item, index }) => {
     return (
       <TableRow key={item.id}>
-        {/* companyName */}
+        {/* company_name */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.companyName`}
+            name={`verdictEmbargo.${index}.company_name`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -108,18 +108,18 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 fullWidth
                 type="text"
                 placeholder="Ej: Urbano Company"
-                error={!!errors.verdictEmbargo?.[index]?.companyName}
+                error={!!errors.verdictEmbargo?.[index]?.company_name}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.companyName?.message
+                  errors.verdictEmbargo?.[index]?.company_name?.message
                 }
               />
             )}
           />
         </TableCell>
-        {/* companyPhone */}
+        {/* company_phone */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.companyPhone`}
+            name={`verdictEmbargo.${index}.company_phone`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -128,18 +128,18 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 fullWidth
                 size="small"
                 placeholder="Ej: 123456789"
-                error={!!errors.verdictEmbargo?.[index]?.companyPhone}
+                error={!!errors.verdictEmbargo?.[index]?.company_phone}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.companyPhone?.message
+                  errors.verdictEmbargo?.[index]?.company_phone?.message
                 }
               />
             )}
           />
         </TableCell>
-        {/* companyEmail */}
+        {/* company_email */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.companyEmail`}
+            name={`verdictEmbargo.${index}.company_email`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -148,18 +148,18 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 fullWidth
                 size="small"
                 placeholder="Ej: pepito@example.com"
-                error={!!errors.verdictEmbargo?.[index]?.companyEmail}
+                error={!!errors.verdictEmbargo?.[index]?.company_email}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.companyEmail?.message
+                  errors.verdictEmbargo?.[index]?.company_email?.message
                 }
               />
             )}
           />
         </TableCell>
-        {/* companyAddress */}
+        {/* company_address */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.companyAddress`}
+            name={`verdictEmbargo.${index}.company_address`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -168,30 +168,30 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 fullWidth
                 size="small"
                 placeholder="Ej: Calle Falsa 123"
-                error={!!errors.verdictEmbargo?.[index]?.companyAddress}
+                error={!!errors.verdictEmbargo?.[index]?.company_address}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.companyAddress?.message
+                  errors.verdictEmbargo?.[index]?.company_address?.message
                 }
               />
             )}
           />
         </TableCell>
-        {/* embargoType */}
+        {/* embargo_type */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.embargoType`}
+            name={`verdictEmbargo.${index}.embargo_type`}
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                id="outlined-select-embargoType"
+                id="outlined-select-embargo_type"
                 select
                 value={field.value ?? ""}
                 fullWidth
                 size="small"
-                error={!!errors.verdictEmbargo?.[index]?.embargoType}
+                error={!!errors.verdictEmbargo?.[index]?.embargo_type}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.embargoType?.message
+                  errors.verdictEmbargo?.[index]?.embargo_type?.message
                 }
               >
                 {embargoTipos.map((option) => (
@@ -203,10 +203,10 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
             )}
           />
         </TableCell>
-        {/* embargoDate */}
+        {/* embargo_date */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.embargoDate`}
+            name={`verdictEmbargo.${index}.embargo_date`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -215,9 +215,9 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 fullWidth
                 size="small"
                 slotProps={{ inputLabel: { shrink: true } }}
-                error={!!errors.verdictEmbargo?.[index]?.embargoDate}
+                error={!!errors.verdictEmbargo?.[index]?.embargo_date}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.embargoDate?.message
+                  errors.verdictEmbargo?.[index]?.embargo_date?.message
                 }
                 value={
                   field.value
@@ -235,10 +235,10 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
             )}
           />
         </TableCell>
-        {/* embargoAmount */}
+        {/* embargo_amount */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictEmbargo.${index}.embargoAmount`}
+            name={`verdictEmbargo.${index}.embargo_amount`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -248,9 +248,9 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 type="number"
                 placeholder="0.00"
                 inputProps={{ step: "any" }}
-                error={!!errors.verdictEmbargo?.[index]?.embargoAmount}
+                error={!!errors.verdictEmbargo?.[index]?.embargo_amount}
                 helperText={
-                  errors.verdictEmbargo?.[index]?.embargoAmount?.message
+                  errors.verdictEmbargo?.[index]?.embargo_amount?.message
                 }
                 value={field.value ?? ""} // si es null/undefined → ""
                 onChange={(e) => {
@@ -261,7 +261,7 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
             )}
           />
         </TableCell>
-        {/* totalAmount */}
+        {/* total_amount */}
         <TableCell sx={{ textAlign: "center" }}>
           <TotalCell control={control} index={index} />
         </TableCell>
@@ -415,17 +415,17 @@ const EmbargoSection: React.FC<EmbargoSectionProps> = () => {
                 onClick={() =>
                   append({
                     id: Date.now().toString(),
-                    verdictId: "",
-                    companyName: "",
-                    companyPhone: "",
-                    companyEmail: "",
-                    companyAddress: "",
-                    embargoType: "",
-                    embargoDate: new Date(),
-                    embargoAmount: 0,
-                    totalAmount: 0,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
+                    verdict_id: "",
+                    company_name: "",
+                    company_phone: "",
+                    company_email: "",
+                    company_address: "",
+                    embargo_type: "",
+                    embargo_date: new Date(),
+                    embargo_amount: 0,
+                    total_amount: 0,
+                    created_at: new Date(),
+                    updated_at: new Date(),
                   })
                 }
                 sx={{ textTransform: "none" }}

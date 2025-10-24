@@ -5,14 +5,14 @@ import { IChatMessage, IChatMessageCreate } from "@/lib/validations/chat";
 
 export const createChatRoom = async (
   name: string,
-  collectionCaseId: string,
-  tenantId: string
+  collection_case_id: string,
+  tenant_id: string
 ) => {
   await prisma.chatRoom.create({
     data: {
       name,
-      collectionCaseId,
-      tenantId,
+      collection_case_id,
+      tenant_id,
     },
   });
   revalidatePath("/dashboard/chat");
@@ -30,11 +30,11 @@ export const deleteChatRoom = async (chatRoomId: string) => {
 export const saveMessage = async (params: IChatMessageCreate) => {
   await prisma.chatMessage.create({
     data: {
-      roomId: params.roomId,
-      senderId: params.senderId,
+      room_id: params.room_id,
+      sender_id: params.sender_id,
       message: params.message,
-      fileUrl: params.fileUrl,
-      fileName: params.fileName,
+      file_url: params.file_url,
+      file_name: params.file_name,
     },
   });
   revalidatePath("/dashboard/chat");
@@ -49,10 +49,10 @@ export const deleteMessage = async (messageId: string) => {
   revalidatePath("/dashboard/chat");
 };
 
-export const getAllChatRoomsByTenantId = async (tenantId: string) => {
+export const getAllChatRoomsByTenantId = async (tenant_id: string) => {
   return await prisma.chatRoom.findMany({
     where: {
-      tenantId,
+      tenant_id,
     },
     include: {
       messages: {
@@ -60,12 +60,12 @@ export const getAllChatRoomsByTenantId = async (tenantId: string) => {
           sender: true,
         },
         orderBy: {
-          createdAt: "asc",
+          created_at: "asc",
         },
       },
     },
     orderBy: {
-      updatedAt: "desc",
+      updated_at: "desc",
     },
   });
 };
@@ -81,7 +81,7 @@ export const getChatRoomById = async (chatRoomId: string) => {
           sender: true,
         },
         orderBy: {
-          createdAt: "asc",
+          created_at: "asc",
         },
       },
     },
@@ -93,26 +93,26 @@ export const getMessagesByRoomId = async (
 ): Promise<IChatMessage[]> => {
   const messages = await prisma.chatMessage.findMany({
     where: {
-      roomId: chatRoomId,
+      room_id: chatRoomId,
     },
     include: {
       sender: true,
     },
     orderBy: {
-      createdAt: "asc",
+      created_at: "asc",
     },
   });
 
   return messages.map((msg) => ({
     id: msg.id,
-    roomId: msg.roomId,
-    senderId: msg.senderId,
+    room_id: msg.room_id,
+    sender_id: msg.sender_id,
     message: msg.message,
-    fileUrl: msg.fileUrl,
-    fileName: msg.fileName,
-    timestamp: msg.createdAt,
-    createdAt: msg.createdAt,
-    updatedAt: msg.updatedAt,
+    file_url: msg.file_url,
+    file_name: msg.file_name,
+    timestamp: msg.created_at,
+    created_at: msg.created_at,
+    updated_at: msg.updated_at,
     sender: {
       id: msg.sender.id,
       fullname: msg.sender.fullname ? msg.sender.fullname : "Usuario",

@@ -96,344 +96,324 @@ exports.Prisma.TenantScalarFieldEnum = {
   id: 'id',
   name: 'name',
   subdomain: 'subdomain',
-  contactEmail: 'contactEmail',
-  countryCode: 'countryCode',
+  contact_email: 'contact_email',
+  country_code: 'country_code',
+  kvk: 'kvk',
+  legal_name: 'legal_name',
   address: 'address',
   city: 'city',
-  logoUrl: 'logoUrl',
-  numberOfEmployees: 'numberOfEmployees',
+  logo_url: 'logo_url',
+  number_of_employees: 'number_of_employees',
   phone: 'phone',
   website: 'website',
-  planId: 'planId',
-  planStatus: 'planStatus',
-  planExpiresAt: 'planExpiresAt',
-  termsAccepted: 'termsAccepted',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.TenantRegistryScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  kvk: 'kvk',
-  crib: 'crib',
-  taxId: 'taxId',
-  vatNumber: 'vatNumber',
-  legalName: 'legalName',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  terms_accepted: 'terms_accepted',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  passwordHash: 'passwordHash',
+  password_hash: 'password_hash',
   fullname: 'fullname',
   phone: 'phone',
-  tenantId: 'tenantId',
+  tenant_id: 'tenant_id',
   role: 'role',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.ParameterScalarFieldEnum = {
   id: 'id',
-  porcCobranza: 'porcCobranza',
-  porcAbb: 'porcAbb',
-  diasPlazoEmpresaAanmaning: 'diasPlazoEmpresaAanmaning',
-  diasPlazoConsumidorAanmaning: 'diasPlazoConsumidorAanmaning',
-  diasPlazoEmpresaSommatie: 'diasPlazoEmpresaSommatie',
-  diasPlazoConsumidorSommatie: 'diasPlazoConsumidorSommatie',
-  precioEmpresaPequena: 'precioEmpresaPequena',
-  contribucionEmpresaPequenaPfc: 'contribucionEmpresaPequenaPfc',
-  precioEmpresaGrande: 'precioEmpresaGrande',
-  contribucionEmpresaGrandePfc: 'contribucionEmpresaGrandePfc',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  multaAanmaningEmpresa: 'multaAanmaningEmpresa',
-  multaAanmaningNatural: 'multaAanmaningNatural',
-  multaSommatieEmpresa: 'multaSommatieEmpresa',
-  multaSommatieNatural: 'multaSommatieNatural',
-  limiteDiasReaccionEmpresa: 'limiteDiasReaccionEmpresa',
-  multaNoReaccionEmpresa: 'multaNoReaccionEmpresa',
-  multaNoReaccionNatural: 'multaNoReaccionNatural',
-  multaAcuerdoPagoEmpresa: 'multaAcuerdoPagoEmpresa',
-  multaAcuerdoPagoNatural: 'multaAcuerdoPagoNatural',
-  invoiceNumberLength: 'invoiceNumberLength',
-  invoicePrefix: 'invoicePrefix',
-  invoiceSecuence: 'invoiceSecuence',
-  bankAccount: 'bankAccount',
-  bankName: 'bankName'
+  collection_fee_rate: 'collection_fee_rate',
+  abb_rate: 'abb_rate',
+  company_aanmaning_term_days: 'company_aanmaning_term_days',
+  consumer_aanmaning_term_days: 'consumer_aanmaning_term_days',
+  company_sommatie_term_days: 'company_sommatie_term_days',
+  consumer_sommatie_term_days: 'consumer_sommatie_term_days',
+  small_company_price: 'small_company_price',
+  small_company_pfc_contribution: 'small_company_pfc_contribution',
+  large_company_price: 'large_company_price',
+  large_company_pfc_contribution: 'large_company_pfc_contribution',
+  company_aanmaning_penalty: 'company_aanmaning_penalty',
+  natural_aanmaning_penalty: 'natural_aanmaning_penalty',
+  company_sommatie_penalty: 'company_sommatie_penalty',
+  natural_sommatie_penalty: 'natural_sommatie_penalty',
+  company_reaction_limit_days: 'company_reaction_limit_days',
+  company_no_reaction_penalty: 'company_no_reaction_penalty',
+  natural_no_reaction_penalty: 'natural_no_reaction_penalty',
+  company_payment_agreement_fee: 'company_payment_agreement_fee',
+  natural_payment_agreement_fee: 'natural_payment_agreement_fee',
+  invoice_number_length: 'invoice_number_length',
+  invoice_prefix: 'invoice_prefix',
+  invoice_sequence: 'invoice_sequence',
+  bank_account: 'bank_account',
+  bank_name: 'bank_name',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.VerdictScalarFieldEnum = {
   id: 'id',
-  invoiceNumber: 'invoiceNumber',
-  creditorName: 'creditorName',
-  debtorId: 'debtorId',
-  registrationNumber: 'registrationNumber',
-  sentenceAmount: 'sentenceAmount',
-  sentenceDate: 'sentenceDate',
+  invoice_number: 'invoice_number',
+  creditor_name: 'creditor_name',
+  debtor_id: 'debtor_id',
+  registration_number: 'registration_number',
+  sentence_amount: 'sentence_amount',
+  sentence_date: 'sentence_date',
   status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  procesalCost: 'procesalCost',
-  tenantId: 'tenantId',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  procesal_cost: 'procesal_cost',
+  tenant_id: 'tenant_id',
   notes: 'notes',
-  bailiffId: 'bailiffId'
+  bailiff_id: 'bailiff_id'
 };
 
 exports.Prisma.VerdictInterestScalarFieldEnum = {
   id: 'id',
-  interestType: 'interestType',
-  baseAmount: 'baseAmount',
-  calculatedInterest: 'calculatedInterest',
-  calculationStart: 'calculationStart',
-  calculationEnd: 'calculationEnd',
-  totalInterest: 'totalInterest',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  verdictId: 'verdictId'
+  interest_type: 'interest_type',
+  base_amount: 'base_amount',
+  calculated_interest: 'calculated_interest',
+  calculation_start: 'calculation_start',
+  calculation_end: 'calculation_end',
+  total_interest: 'total_interest',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  verdict_id: 'verdict_id'
 };
 
 exports.Prisma.VerdictInterestDetailsScalarFieldEnum = {
   id: 'id',
   period: 'period',
-  periodStart: 'periodStart',
-  periodEnd: 'periodEnd',
+  period_start: 'period_start',
+  period_end: 'period_end',
   days: 'days',
-  annualRate: 'annualRate',
-  proportionalRate: 'proportionalRate',
-  baseAmount: 'baseAmount',
+  annual_rate: 'annual_rate',
+  proportional_rate: 'proportional_rate',
+  base_amount: 'base_amount',
   interest: 'interest',
   total: 'total',
-  verdictInterestId: 'verdictInterestId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  verdict_interest_id: 'verdict_interest_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.VerdictEmbargoScalarFieldEnum = {
   id: 'id',
-  verdictId: 'verdictId',
-  companyName: 'companyName',
-  companyPhone: 'companyPhone',
-  companyEmail: 'companyEmail',
-  companyAddress: 'companyAddress',
-  embargoType: 'embargoType',
-  embargoDate: 'embargoDate',
-  embargoAmount: 'embargoAmount',
-  totalAmount: 'totalAmount',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  verdict_id: 'verdict_id',
+  company_name: 'company_name',
+  company_phone: 'company_phone',
+  company_email: 'company_email',
+  company_address: 'company_address',
+  embargo_type: 'embargo_type',
+  embargo_date: 'embargo_date',
+  embargo_amount: 'embargo_amount',
+  total_amount: 'total_amount',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.VerdictBailiffServicesScalarFieldEnum = {
   id: 'id',
-  verdictId: 'verdictId',
-  serviceType: 'serviceType',
-  serviceCost: 'serviceCost',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  verdict_id: 'verdict_id',
+  service_type: 'service_type',
+  service_cost: 'service_cost',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.VerdictAttachmentScalarFieldEnum = {
   id: 'id',
-  verdictId: 'verdictId',
-  filePath: 'filePath',
-  fileSize: 'fileSize',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  fileName: 'fileName'
+  verdict_id: 'verdict_id',
+  file_path: 'file_path',
+  file_size: 'file_size',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  file_name: 'file_name'
 };
 
 exports.Prisma.InterestTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  calculationType: 'calculationType'
+  calculation_type: 'calculation_type'
 };
 
 exports.Prisma.InterestDetailScalarFieldEnum = {
   id: 'id',
   date: 'date',
   rate: 'rate',
-  interestTypeId: 'interestTypeId'
+  interest_type_id: 'interest_type_id'
 };
 
 exports.Prisma.BillingInvoiceScalarFieldEnum = {
   id: 'id',
-  tenantId: 'tenantId',
-  invoiceNumber: 'invoiceNumber',
+  tenant_id: 'tenant_id',
+  invoice_number: 'invoice_number',
   amount: 'amount',
   currency: 'currency',
-  issueDate: 'issueDate',
-  dueDate: 'dueDate',
+  issue_date: 'issue_date',
+  due_date: 'due_date',
   description: 'description',
   status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.BillingInvoiceDetailScalarFieldEnum = {
   id: 'id',
-  itemDescription: 'itemDescription',
-  itemQuantity: 'itemQuantity',
-  itemUnitPrice: 'itemUnitPrice',
-  itemTotalPrice: 'itemTotalPrice',
-  itemTaxRate: 'itemTaxRate',
-  itemTaxAmount: 'itemTaxAmount',
-  itemTotalWithTax: 'itemTotalWithTax',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  billingInvoiceId: 'billingInvoiceId'
+  item_description: 'item_description',
+  item_quantity: 'item_quantity',
+  item_unit_price: 'item_unit_price',
+  item_total_price: 'item_total_price',
+  item_tax_rate: 'item_tax_rate',
+  item_tax_amount: 'item_tax_amount',
+  item_total_with_tax: 'item_total_with_tax',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  billing_invoice_id: 'billing_invoice_id'
 };
 
 exports.Prisma.BillingPaymentScalarFieldEnum = {
   id: 'id',
-  paymentDate: 'paymentDate',
+  payment_date: 'payment_date',
   amount: 'amount',
-  paymentMethod: 'paymentMethod',
-  transactionId: 'transactionId',
+  payment_method: 'payment_method',
+  transaction_id: 'transaction_id',
   status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  billingInvoiceId: 'billingInvoiceId'
-};
-
-exports.Prisma.PlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  price: 'price',
-  description: 'description',
-  durationDays: 'durationDays',
-  isActive: 'isActive'
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  billing_invoice_id: 'billing_invoice_id'
 };
 
 exports.Prisma.CollectionCaseScalarFieldEnum = {
   id: 'id',
-  referenceNumber: 'referenceNumber',
-  issueDate: 'issueDate',
-  dueDate: 'dueDate',
-  reminder1SentAt: 'reminder1SentAt',
-  reminder1DueDate: 'reminder1DueDate',
-  reminder2SentAt: 'reminder2SentAt',
-  reminder2DueDate: 'reminder2DueDate',
-  tenantId: 'tenantId',
-  debtorId: 'debtorId',
-  amountOriginal: 'amountOriginal',
-  amountDue: 'amountDue',
-  amountToReceive: 'amountToReceive',
+  reference_number: 'reference_number',
+  issue_date: 'issue_date',
+  due_date: 'due_date',
+  reminder1_sent_at: 'reminder1_sent_at',
+  reminder1_due_date: 'reminder1_due_date',
+  reminder2_sent_at: 'reminder2_sent_at',
+  reminder2_due_date: 'reminder2_due_date',
+  tenant_id: 'tenant_id',
+  debtor_id: 'debtor_id',
+  amount_original: 'amount_original',
+  amount_due: 'amount_due',
+  amount_to_receive: 'amount_to_receive',
   status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  notification_status: 'notification_status',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
-exports.Prisma.PenaltyScalarFieldEnum = {
+exports.Prisma.CollectionCasePenaltyScalarFieldEnum = {
   id: 'id',
-  collectionCaseId: 'collectionCaseId',
+  collection_case_id: 'collection_case_id',
   description: 'description',
   amount: 'amount',
-  dateApplied: 'dateApplied',
-  isPaid: 'isPaid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  date_applied: 'date_applied',
+  is_paid: 'is_paid',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
-exports.Prisma.NotificationScalarFieldEnum = {
+exports.Prisma.CollectionCaseNotificationScalarFieldEnum = {
   id: 'id',
-  collectionCaseId: 'collectionCaseId',
+  collection_case_id: 'collection_case_id',
   type: 'type',
   title: 'title',
   message: 'message',
-  sentAt: 'sentAt',
+  sent_at: 'sent_at',
   read: 'read',
-  createdAt: 'createdAt'
+  created_at: 'created_at'
 };
 
-exports.Prisma.PaymentScalarFieldEnum = {
+exports.Prisma.CollectionCasePaymentScalarFieldEnum = {
   id: 'id',
-  amount: 'amount',
   method: 'method',
-  createdAt: 'createdAt',
-  collectionCaseId: 'collectionCaseId',
-  paymentDate: 'paymentDate',
-  referenceNumber: 'referenceNumber',
-  updatedAt: 'updatedAt',
-  paymentAgreementId: 'paymentAgreementId'
+  amount: 'amount',
+  collection_case_id: 'collection_case_id',
+  payment_date: 'payment_date',
+  reference_number: 'reference_number',
+  agreement_id: 'agreement_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.DebtorScalarFieldEnum = {
   id: 'id',
-  tenantId: 'tenantId',
-  userId: 'userId',
+  tenant_id: 'tenant_id',
+  user_id: 'user_id',
   fullname: 'fullname',
   email: 'email',
   phone: 'phone',
   address: 'address',
-  personType: 'personType',
-  identificationType: 'identificationType',
+  person_type: 'person_type',
+  identification_type: 'identification_type',
   identification: 'identification',
-  totalIncome: 'totalIncome',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  total_income: 'total_income',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.ChatRoomScalarFieldEnum = {
   id: 'id',
-  tenantId: 'tenantId',
-  collectionCaseId: 'collectionCaseId',
+  tenant_id: 'tenant_id',
+  collection_case_id: 'collection_case_id',
   name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.ChatMessageScalarFieldEnum = {
   id: 'id',
-  roomId: 'roomId',
-  senderId: 'senderId',
+  room_id: 'room_id',
+  sender_id: 'sender_id',
   message: 'message',
-  fileUrl: 'fileUrl',
-  fileName: 'fileName',
+  file_url: 'file_url',
+  file_name: 'file_name',
   timestamp: 'timestamp',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.DebtorIncomeScalarFieldEnum = {
   id: 'id',
-  debtorId: 'debtorId',
+  debtor_id: 'debtor_id',
   amount: 'amount',
   source: 'source',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
-exports.Prisma.PaymentAgreementScalarFieldEnum = {
+exports.Prisma.CollectionCaseAgreementScalarFieldEnum = {
   id: 'id',
-  collectionCaseId: 'collectionCaseId',
-  totalAmount: 'totalAmount',
-  installmentAmount: 'installmentAmount',
-  installmentsCount: 'installmentsCount',
-  startDate: 'startDate',
+  collection_case_id: 'collection_case_id',
+  debtor_id: 'debtor_id',
+  total_amount: 'total_amount',
+  installment_amount: 'installment_amount',
+  installments_count: 'installments_count',
+  start_date: 'start_date',
+  end_date: 'end_date',
   status: 'status',
-  tenantId: 'tenantId',
+  tenant_id: 'tenant_id',
   comment: 'comment',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  debtorId: 'debtorId'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
-exports.Prisma.InstallmentScalarFieldEnum = {
+exports.Prisma.CollectionCaseAgreementInstallmentScalarFieldEnum = {
   id: 'id',
-  paymentAgreementId: 'paymentAgreementId',
+  agreement_id: 'agreement_id',
   number: 'number',
-  dueDate: 'dueDate',
+  due_date: 'due_date',
   amount: 'amount',
   status: 'status',
-  paymentId: 'paymentId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  payment_id: 'payment_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -456,7 +436,7 @@ exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {
   OVERDUE: 'OVERDUE'
 };
 
-exports.PaymentAgreementStatus = exports.$Enums.PaymentAgreementStatus = {
+exports.AgreementStatus = exports.$Enums.AgreementStatus = {
   PENDING: 'PENDING',
   IN_NEGOTIATION: 'IN_NEGOTIATION',
   COUNTEROFFER: 'COUNTEROFFER',
@@ -495,25 +475,22 @@ exports.IdentificationType = exports.$Enums.IdentificationType = {
 };
 
 exports.roleEnum = exports.$Enums.roleEnum = {
-  SUPERADMIN: 'SUPERADMIN',
-  ADMIN: 'ADMIN',
+  PLATFORM_OWNER: 'PLATFORM_OWNER',
+  TENANT_ADMIN: 'TENANT_ADMIN',
+  AGENT: 'AGENT',
   DEBTOR: 'DEBTOR',
   BAILIFF: 'BAILIFF'
 };
 
 exports.PaymentMethod = exports.$Enums.PaymentMethod = {
-  CASH: 'CASH',
   TRANSFER: 'TRANSFER',
-  CREDIT_CARD: 'CREDIT_CARD',
-  CHECK: 'CHECK',
-  OTHER: 'OTHER'
+  CREDIT_CARD: 'CREDIT_CARD'
 };
 
-exports.CollectionStatus = exports.$Enums.CollectionStatus = {
+exports.CollectionCaseStatus = exports.$Enums.CollectionCaseStatus = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
-  PAID: 'PAID',
-  OVERDUE: 'OVERDUE',
+  COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
 };
 
@@ -524,7 +501,6 @@ exports.PersonType = exports.$Enums.PersonType = {
 
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
-  TenantRegistry: 'TenantRegistry',
   User: 'User',
   Parameter: 'Parameter',
   Verdict: 'Verdict',
@@ -538,17 +514,16 @@ exports.Prisma.ModelName = {
   BillingInvoice: 'BillingInvoice',
   BillingInvoiceDetail: 'BillingInvoiceDetail',
   BillingPayment: 'BillingPayment',
-  Plan: 'Plan',
   CollectionCase: 'CollectionCase',
-  Penalty: 'Penalty',
-  Notification: 'Notification',
-  Payment: 'Payment',
+  CollectionCasePenalty: 'CollectionCasePenalty',
+  CollectionCaseNotification: 'CollectionCaseNotification',
+  CollectionCasePayment: 'CollectionCasePayment',
   Debtor: 'Debtor',
   ChatRoom: 'ChatRoom',
   ChatMessage: 'ChatMessage',
   DebtorIncome: 'DebtorIncome',
-  PaymentAgreement: 'PaymentAgreement',
-  Installment: 'Installment'
+  CollectionCaseAgreement: 'CollectionCaseAgreement',
+  CollectionCaseAgreementInstallment: 'CollectionCaseAgreementInstallment'
 };
 /**
  * Create the Client
@@ -597,13 +572,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Tenant {\n  id                String    @id @default(uuid())\n  name              String\n  subdomain         String    @unique\n  contactEmail      String\n  countryCode       String\n  address           String?\n  city              String?\n  logoUrl           String?\n  numberOfEmployees Int?\n  phone             String?\n  website           String?\n  planId            String? // FK opcional\n  plan              Plan?     @relation(fields: [planId], references: [id])\n  planStatus        String    @default(\"pending\")\n  planExpiresAt     DateTime?\n  termsAccepted     Boolean   @default(false)\n  isActive          Boolean   @default(false)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  billingInvoice    BillingInvoice[]\n  collectionCases   CollectionCase[]\n  debtors           Debtor[]\n  registry          TenantRegistry?\n  verdicts          Verdict[]\n  users             User[]\n  chatRooms         ChatRoom[]\n  paymentAgreements PaymentAgreement[]\n\n  @@map(\"tenant\")\n}\n\nmodel TenantRegistry {\n  id        String   @id @default(uuid())\n  tenantId  String   @unique\n  kvk       String?\n  crib      String?\n  taxId     String?\n  vatNumber String?\n  legalName String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  tenant    Tenant   @relation(fields: [tenantId], references: [id])\n\n  @@map(\"tenant_registry\")\n}\n\nmodel User {\n  id              String        @id @default(uuid())\n  email           String        @db.VarChar(80)\n  passwordHash    String?       @db.VarChar(120)\n  fullname        String?       @db.VarChar(80)\n  phone           String?       @db.VarChar(25)\n  tenantId        String\n  tenant          Tenant        @relation(fields: [tenantId], references: [id])\n  role            roleEnum      @default(ADMIN)\n  isActive        Boolean       @default(true)\n  createdAt       DateTime      @default(now())\n  updatedAt       DateTime      @updatedAt\n  debtors         Debtor[]\n  verdictBailiffs Verdict[]     @relation(\"UserToVerdictBailiff\")\n  messages        ChatMessage[]\n\n  @@map(\"user\")\n}\n\nmodel Parameter {\n  id                            String   @id @default(uuid())\n  porcCobranza                  Float    @default(0)\n  porcAbb                       Float    @default(0)\n  diasPlazoEmpresaAanmaning     Int      @default(0)\n  diasPlazoConsumidorAanmaning  Int      @default(0)\n  diasPlazoEmpresaSommatie      Int      @default(0)\n  diasPlazoConsumidorSommatie   Int      @default(0)\n  precioEmpresaPequena          Float    @default(0)\n  contribucionEmpresaPequenaPfc Float    @default(0)\n  precioEmpresaGrande           Float    @default(0)\n  contribucionEmpresaGrandePfc  Float    @default(0)\n  createdAt                     DateTime @default(now())\n  updatedAt                     DateTime @updatedAt\n  multaAanmaningEmpresa         Float    @default(0)\n  multaAanmaningNatural         Float    @default(0)\n  multaSommatieEmpresa          Float    @default(0)\n  multaSommatieNatural          Float    @default(0)\n  limiteDiasReaccionEmpresa     Int      @default(0)\n  multaNoReaccionEmpresa        Float    @default(0)\n  multaNoReaccionNatural        Float    @default(0)\n  multaAcuerdoPagoEmpresa       Float    @default(0)\n  multaAcuerdoPagoNatural       Float    @default(0)\n  invoiceNumberLength           Int      @default(8)\n  invoicePrefix                 String   @default(\"\")\n  invoiceSecuence               Int      @default(0)\n  bankAccount                   String   @default(\"\")\n  bankName                      String   @default(\"\")\n\n  @@map(\"parameter\")\n}\n\nmodel Verdict {\n  id                 String                   @id @default(uuid())\n  invoiceNumber      String                   @db.VarChar(100)\n  creditorName       String                   @db.VarChar(100)\n  debtorId           String\n  registrationNumber String                   @db.VarChar(100)\n  sentenceAmount     Float\n  sentenceDate       DateTime\n  status             VerdictStatus            @default(DRAFT)\n  createdAt          DateTime                 @default(now())\n  updatedAt          DateTime                 @updatedAt\n  procesalCost       Float?                   @default(0)\n  tenantId           String\n  notes              String?\n  bailiffId          String?\n  bailiff            User?                    @relation(\"UserToVerdictBailiff\", fields: [bailiffId], references: [id])\n  debtor             Debtor                   @relation(fields: [debtorId], references: [id])\n  tenant             Tenant                   @relation(fields: [tenantId], references: [id])\n  attachments        VerdictAttachment[]\n  bailiffServices    VerdictBailiffServices[]\n  verdictEmbargo     VerdictEmbargo[]\n  verdictInterest    VerdictInterest[]\n\n  @@map(\"verdict\")\n}\n\nmodel VerdictInterest {\n  id                 String                   @id @default(uuid())\n  interestType       Int\n  baseAmount         Float\n  calculatedInterest Float?\n  calculationStart   DateTime\n  calculationEnd     DateTime\n  totalInterest      Float\n  createdAt          DateTime                 @default(now())\n  updatedAt          DateTime                 @updatedAt\n  verdictId          String?\n  verdict            Verdict?                 @relation(fields: [verdictId], references: [id])\n  details            VerdictInterestDetails[]\n\n  @@map(\"verdict_interest\")\n}\n\nmodel VerdictInterestDetails {\n  id                String          @id @default(uuid())\n  period            String\n  periodStart       DateTime\n  periodEnd         DateTime\n  days              Int\n  annualRate        Float\n  proportionalRate  Float\n  baseAmount        Float\n  interest          Float\n  total             Float\n  verdictInterestId String\n  createdAt         DateTime        @default(now())\n  updatedAt         DateTime        @updatedAt\n  verdictInterest   VerdictInterest @relation(fields: [verdictInterestId], references: [id])\n\n  @@map(\"verdict_interest_details\")\n}\n\nmodel VerdictEmbargo {\n  id             String   @id @default(uuid())\n  verdictId      String\n  companyName    String\n  companyPhone   String\n  companyEmail   String\n  companyAddress String\n  embargoType    String\n  embargoDate    DateTime\n  embargoAmount  Float\n  totalAmount    Float\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n  verdict        Verdict  @relation(fields: [verdictId], references: [id])\n\n  @@map(\"verdict_embargo\")\n}\n\nmodel VerdictBailiffServices {\n  id          String   @id @default(uuid())\n  verdictId   String\n  serviceType String\n  serviceCost Float\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n  verdict     Verdict  @relation(fields: [verdictId], references: [id])\n\n  @@map(\"verdict_bailiff_services\")\n}\n\nmodel VerdictAttachment {\n  id        String   @id @default(uuid())\n  verdictId String\n  filePath  String\n  fileSize  BigInt\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  fileName  String\n  verdict   Verdict  @relation(fields: [verdictId], references: [id])\n\n  @@map(\"verdict_attachment\")\n}\n\nmodel InterestType {\n  id              Int                 @id @default(autoincrement())\n  name            String\n  calculationType CalculationTypeEnum\n  details         InterestDetail[]\n\n  @@map(\"interest_type\")\n}\n\nmodel InterestDetail {\n  id             Int          @id @default(autoincrement())\n  date           String\n  rate           Float\n  interestTypeId Int\n  interestType   InterestType @relation(fields: [interestTypeId], references: [id])\n\n  @@map(\"interest_detail\")\n}\n\nmodel BillingInvoice {\n  id            String                 @id @default(uuid())\n  tenantId      String\n  invoiceNumber String                 @unique\n  amount        Float\n  currency      String                 @default(\"USD\")\n  issueDate     DateTime\n  dueDate       DateTime\n  description   String?\n  status        String                 @default(\"unpaid\")\n  createdAt     DateTime               @default(now())\n  updatedAt     DateTime               @updatedAt\n  tenant        Tenant                 @relation(fields: [tenantId], references: [id])\n  details       BillingInvoiceDetail[]\n  payments      BillingPayment[]\n\n  @@map(\"billing_invoice\")\n}\n\nmodel BillingInvoiceDetail {\n  id               String          @id @default(uuid())\n  itemDescription  String\n  itemQuantity     Int\n  itemUnitPrice    Float\n  itemTotalPrice   Float\n  itemTaxRate      Float\n  itemTaxAmount    Float\n  itemTotalWithTax Float\n  createdAt        DateTime        @default(now())\n  updatedAt        DateTime        @updatedAt\n  billingInvoiceId String?\n  billingInvoice   BillingInvoice? @relation(fields: [billingInvoiceId], references: [id])\n\n  @@map(\"billing_invoice_detail\")\n}\n\nmodel BillingPayment {\n  id               String          @id @default(uuid())\n  paymentDate      DateTime\n  amount           Float\n  paymentMethod    String\n  transactionId    String?\n  status           String\n  createdAt        DateTime        @default(now())\n  updatedAt        DateTime        @updatedAt\n  billingInvoiceId String?\n  BillingInvoice   BillingInvoice? @relation(fields: [billingInvoiceId], references: [id])\n\n  @@map(\"billing_payment\")\n}\n\nmodel Plan {\n  id           String   @id @default(cuid())\n  name         String   @unique // free, basic, pro\n  price        Float\n  description  String?\n  durationDays Int // duración del plan en días\n  isActive     Boolean  @default(true)\n  tenants      Tenant[]\n\n  @@map(\"plan\")\n}\n\nmodel CollectionCase {\n  id                String             @id @default(cuid())\n  referenceNumber   String?\n  issueDate         DateTime?\n  dueDate           DateTime? // fecha de vencimiento original\n  reminder1SentAt   DateTime? // fecha de envío del aviso 1 (Aanmanning)\n  reminder1DueDate  DateTime? // fecha límite de pago para el aviso 1\n  reminder2SentAt   DateTime? // fecha de envío del aviso 2 (Sommatie)\n  reminder2DueDate  DateTime? // fecha límite de pago para el aviso 2\n  tenantId          String\n  debtorId          String\n  amountOriginal    Decimal            @db.Decimal(10, 2)\n  amountDue         Decimal            @db.Decimal(10, 2)\n  amountToReceive   Decimal            @db.Decimal(10, 2)\n  status            CollectionStatus   @default(PENDING)\n  createdAt         DateTime           @default(now())\n  updatedAt         DateTime           @updatedAt\n  debtor            Debtor             @relation(fields: [debtorId], references: [id])\n  tenant            Tenant             @relation(fields: [tenantId], references: [id])\n  notifications     Notification[]\n  payments          Payment[]\n  paymentAgreements PaymentAgreement[]\n  penalties         Penalty[]\n  chatRooms         ChatRoom[]\n\n  @@map(\"collection_case\")\n}\n\nmodel Penalty {\n  id               String         @id @default(cuid())\n  collectionCaseId String\n  description      String?\n  amount           Decimal        @db.Decimal(10, 2)\n  dateApplied      DateTime       @default(now())\n  isPaid           Boolean        @default(false)\n  createdAt        DateTime       @default(now())\n  updatedAt        DateTime       @updatedAt\n  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])\n\n  @@map(\"penalty\")\n}\n\nmodel Notification {\n  id               String           @id @default(cuid())\n  collectionCaseId String\n  type             NotificationType\n  title            String\n  message          String\n  sentAt           DateTime         @default(now())\n  read             Boolean          @default(false)\n  createdAt        DateTime         @default(now())\n  collectionCase   CollectionCase   @relation(fields: [collectionCaseId], references: [id])\n\n  @@map(\"notification\")\n}\n\nmodel Payment {\n  id                 String            @id @default(cuid())\n  amount             Decimal           @db.Decimal(10, 2)\n  method             PaymentMethod\n  createdAt          DateTime          @default(now())\n  collectionCaseId   String\n  paymentDate        DateTime\n  referenceNumber    String?\n  updatedAt          DateTime          @updatedAt\n  collectionCase     CollectionCase    @relation(fields: [collectionCaseId], references: [id])\n  paymentAgreement   PaymentAgreement? @relation(fields: [paymentAgreementId], references: [id])\n  paymentAgreementId String?\n  Installment        Installment[]\n\n  @@map(\"payment\")\n}\n\nmodel Debtor {\n  id                 String              @id @default(uuid())\n  tenantId           String\n  userId             String?\n  fullname           String\n  email              String\n  phone              String?\n  address            String?\n  personType         PersonType          @default(INDIVIDUAL)\n  identificationType IdentificationType?\n  identification     String?\n  totalIncome        Float?\n  createdAt          DateTime            @default(now())\n  updatedAt          DateTime            @updatedAt\n  collectionCases    CollectionCase[]\n  tenant             Tenant              @relation(fields: [tenantId], references: [id])\n  user               User?               @relation(fields: [userId], references: [id])\n  incomes            DebtorIncome[]\n  paymentAgreements  PaymentAgreement[]\n  verdicts           Verdict[]\n\n  @@unique([tenantId, email])\n  @@unique([tenantId, identification])\n  @@map(\"debtor\")\n}\n\nmodel ChatRoom {\n  id               String         @id @default(cuid())\n  tenantId         String\n  tenant           Tenant         @relation(fields: [tenantId], references: [id])\n  collectionCaseId String\n  collectionCase   CollectionCase @relation(fields: [collectionCaseId], references: [id])\n  name             String\n  createdAt        DateTime       @default(now())\n  updatedAt        DateTime       @updatedAt\n  messages         ChatMessage[]\n\n  @@map(\"chat_room\")\n}\n\nmodel ChatMessage {\n  id     String   @id @default(cuid())\n  roomId String\n  room   ChatRoom @relation(fields: [roomId], references: [id])\n\n  senderId String\n  sender   User    @relation(fields: [senderId], references: [id])\n  message  String\n  fileUrl  String?\n  fileName String?\n\n  timestamp DateTime @default(now())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"chat_message\")\n}\n\nmodel DebtorIncome {\n  id        String   @id @default(uuid())\n  debtorId  String\n  amount    Float\n  source    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  debtor    Debtor   @relation(fields: [debtorId], references: [id])\n\n  @@map(\"debtor_incomes\")\n}\n\nmodel PaymentAgreement {\n  id                String                 @id @default(cuid())\n  collectionCaseId  String\n  totalAmount       Decimal                @db.Decimal(10, 2)\n  installmentAmount Decimal                @db.Decimal(10, 2)\n  installmentsCount Int\n  startDate         DateTime\n  status            PaymentAgreementStatus @default(PENDING)\n  tenantId          String\n  tenant            Tenant                 @relation(fields: [tenantId], references: [id])\n  comment           String?\n\n  // Relaciones\n  collectionCase CollectionCase @relation(fields: [collectionCaseId], references: [id])\n  installments   Installment[]\n  payments       Payment[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  debtor    Debtor?  @relation(fields: [debtorId], references: [id])\n  debtorId  String?\n\n  @@map(\"payment_agreement\")\n}\n\nmodel Installment {\n  id                 String            @id @default(cuid())\n  paymentAgreementId String\n  number             Int\n  dueDate            DateTime\n  amount             Decimal           @db.Decimal(10, 2)\n  status             InstallmentStatus @default(PENDING)\n  paymentId          String? // si se pagó, relaciona con Payment\n\n  // Relaciones\n  paymentAgreement PaymentAgreement @relation(fields: [paymentAgreementId], references: [id])\n  payment          Payment?         @relation(fields: [paymentId], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"installment\")\n}\n\nenum InstallmentStatus {\n  PENDING\n  PAID\n  OVERDUE\n}\n\nenum PaymentAgreementStatus {\n  PENDING\n  IN_NEGOTIATION\n  COUNTEROFFER\n  ACCEPTED\n  REJECTED\n  CANCELLED\n  CLOSED\n}\n\nenum CalculationTypeEnum {\n  FIXED\n  VARIABLE\n}\n\nenum VerdictStatus {\n  DRAFT\n  PENDING\n  APPROVED\n  REJECTED\n}\n\nenum NotificationType {\n  AANMANING\n  SOMMATIE\n  INGEBREKESTELLING\n  BLOKKADE\n}\n\nenum IdentificationType {\n  DNI\n  PASSPORT\n  NIE\n  CIF\n  KVK\n  OTHER\n}\n\nenum roleEnum {\n  SUPERADMIN\n  ADMIN\n  DEBTOR\n  BAILIFF\n}\n\nenum PaymentMethod {\n  CASH\n  TRANSFER\n  CREDIT_CARD\n  CHECK\n  OTHER\n}\n\nenum CollectionStatus {\n  PENDING\n  IN_PROGRESS\n  PAID\n  OVERDUE\n  CANCELLED\n}\n\nenum PersonType {\n  INDIVIDUAL\n  COMPANY\n}\n",
-  "inlineSchemaHash": "71592b8e1facb31399a7553a011b2bc8fad80cf606b75b9a9a4a0af94fe0a291",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Tenant {\n  id                  String  @id @default(uuid())\n  name                String\n  subdomain           String  @unique\n  contact_email       String\n  country_code        String\n  kvk                 String?\n  legal_name          String?\n  address             String?\n  city                String?\n  logo_url            String?\n  number_of_employees Int?\n  phone               String?\n  website             String?\n  terms_accepted      Boolean @default(false)\n  is_active           Boolean @default(false)\n\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  billing_invoice  BillingInvoice[]\n  collection_cases CollectionCase[]\n  debtors          Debtor[]\n  verdicts         Verdict[]\n  users            User[]\n  chat_rooms       ChatRoom[]\n  agreements       CollectionCaseAgreement[]\n\n  @@map(\"tenant\")\n}\n\nmodel User {\n  id               String        @id @default(uuid())\n  email            String        @db.VarChar(80)\n  password_hash    String?       @db.VarChar(120)\n  fullname         String?       @db.VarChar(80)\n  phone            String?       @db.VarChar(25)\n  tenant_id        String\n  tenant           Tenant        @relation(fields: [tenant_id], references: [id])\n  role             roleEnum      @default(TENANT_ADMIN)\n  is_active        Boolean       @default(true)\n  created_at       DateTime      @default(now())\n  updated_at       DateTime      @updatedAt\n  debtors          Debtor[]\n  verdict_bailiffs Verdict[]     @relation(\"UserToVerdictBailiff\")\n  messages         ChatMessage[]\n\n  @@map(\"user\")\n}\n\nmodel Parameter {\n  id String @id @default(uuid())\n\n  collection_fee_rate Float @default(0)\n  abb_rate            Float @default(0)\n\n  company_aanmaning_term_days  Int @default(0)\n  consumer_aanmaning_term_days Int @default(0)\n  company_sommatie_term_days   Int @default(0)\n  consumer_sommatie_term_days  Int @default(0)\n\n  small_company_price            Float @default(0)\n  small_company_pfc_contribution Float @default(0)\n  large_company_price            Float @default(0)\n  large_company_pfc_contribution Float @default(0)\n\n  company_aanmaning_penalty Float @default(0)\n  natural_aanmaning_penalty Float @default(0)\n  company_sommatie_penalty  Float @default(0)\n  natural_sommatie_penalty  Float @default(0)\n\n  company_reaction_limit_days Int   @default(0)\n  company_no_reaction_penalty Float @default(0)\n  natural_no_reaction_penalty Float @default(0)\n\n  company_payment_agreement_fee Float @default(0)\n  natural_payment_agreement_fee Float @default(0)\n\n  invoice_number_length Int    @default(8)\n  invoice_prefix        String @default(\"\")\n  invoice_sequence      Int    @default(0)\n\n  bank_account String @default(\"\")\n  bank_name    String @default(\"\")\n\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  @@map(\"parameter\")\n}\n\nmodel Verdict {\n  id                  String                   @id @default(uuid())\n  invoice_number      String                   @db.VarChar(100)\n  creditor_name       String                   @db.VarChar(100)\n  debtor_id           String\n  registration_number String                   @db.VarChar(100)\n  sentence_amount     Float\n  sentence_date       DateTime\n  status              VerdictStatus            @default(DRAFT)\n  created_at          DateTime                 @default(now())\n  updated_at          DateTime                 @updatedAt\n  procesal_cost       Float?                   @default(0)\n  tenant_id           String\n  notes               String?\n  bailiff_id          String?\n  bailiff             User?                    @relation(\"UserToVerdictBailiff\", fields: [bailiff_id], references: [id])\n  debtor              Debtor                   @relation(fields: [debtor_id], references: [id])\n  tenant              Tenant                   @relation(fields: [tenant_id], references: [id])\n  attachments         VerdictAttachment[]\n  bailiff_services    VerdictBailiffServices[]\n  verdict_embargo     VerdictEmbargo[]\n  verdict_interest    VerdictInterest[]\n\n  @@map(\"verdict\")\n}\n\nmodel VerdictInterest {\n  id                  String                   @id @default(uuid())\n  interest_type       Int\n  base_amount         Float\n  calculated_interest Float?\n  calculation_start   DateTime\n  calculation_end     DateTime\n  total_interest      Float\n  created_at          DateTime                 @default(now())\n  updated_at          DateTime                 @updatedAt\n  verdict_id          String?\n  verdict             Verdict?                 @relation(fields: [verdict_id], references: [id])\n  details             VerdictInterestDetails[]\n\n  @@map(\"verdict_interest\")\n}\n\nmodel VerdictInterestDetails {\n  id                  String          @id @default(uuid())\n  period              String\n  period_start        DateTime\n  period_end          DateTime\n  days                Int\n  annual_rate         Float\n  proportional_rate   Float\n  base_amount         Float\n  interest            Float\n  total               Float\n  verdict_interest_id String\n  created_at          DateTime        @default(now())\n  updated_at          DateTime        @updatedAt\n  verdict_interest    VerdictInterest @relation(fields: [verdict_interest_id], references: [id])\n\n  @@map(\"verdict_interest_details\")\n}\n\nmodel VerdictEmbargo {\n  id              String   @id @default(uuid())\n  verdict_id      String\n  company_name    String\n  company_phone   String\n  company_email   String\n  company_address String\n  embargo_type    String\n  embargo_date    DateTime\n  embargo_amount  Float\n  total_amount    Float\n  created_at      DateTime @default(now())\n  updated_at      DateTime @updatedAt\n  verdict         Verdict  @relation(fields: [verdict_id], references: [id])\n\n  @@map(\"verdict_embargo\")\n}\n\nmodel VerdictBailiffServices {\n  id           String   @id @default(uuid())\n  verdict_id   String\n  service_type String\n  service_cost Float\n  created_at   DateTime @default(now())\n  updated_at   DateTime @updatedAt\n  verdict      Verdict  @relation(fields: [verdict_id], references: [id])\n\n  @@map(\"verdict_bailiff_services\")\n}\n\nmodel VerdictAttachment {\n  id         String   @id @default(uuid())\n  verdict_id String\n  file_path  String\n  file_size  BigInt\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n  file_name  String\n  verdict    Verdict  @relation(fields: [verdict_id], references: [id])\n\n  @@map(\"verdict_attachment\")\n}\n\nmodel InterestType {\n  id               Int                 @id @default(autoincrement())\n  name             String\n  calculation_type CalculationTypeEnum\n  details          InterestDetail[]\n\n  @@map(\"interest_type\")\n}\n\nmodel InterestDetail {\n  id               Int          @id @default(autoincrement())\n  date             String\n  rate             Float\n  interest_type_id Int\n  interest_type    InterestType @relation(fields: [interest_type_id], references: [id])\n\n  @@map(\"interest_detail\")\n}\n\nmodel BillingInvoice {\n  id             String                 @id @default(uuid())\n  tenant_id      String\n  invoice_number String                 @unique\n  amount         Float\n  currency       String                 @default(\"USD\")\n  issue_date     DateTime\n  due_date       DateTime\n  description    String?\n  status         String                 @default(\"unpaid\")\n  created_at     DateTime               @default(now())\n  updated_at     DateTime               @updatedAt\n  tenant         Tenant                 @relation(fields: [tenant_id], references: [id])\n  details        BillingInvoiceDetail[]\n  payments       BillingPayment[]\n\n  @@map(\"billing_invoice\")\n}\n\nmodel BillingInvoiceDetail {\n  id                  String          @id @default(uuid())\n  item_description    String\n  item_quantity       Int\n  item_unit_price     Float\n  item_total_price    Float\n  item_tax_rate       Float\n  item_tax_amount     Float\n  item_total_with_tax Float\n  created_at          DateTime        @default(now())\n  updated_at          DateTime        @updatedAt\n  billing_invoice_id  String?\n  billing_invoice     BillingInvoice? @relation(fields: [billing_invoice_id], references: [id])\n\n  @@map(\"billing_invoice_detail\")\n}\n\nmodel BillingPayment {\n  id                 String          @id @default(uuid())\n  payment_date       DateTime\n  amount             Float\n  payment_method     String\n  transaction_id     String?\n  status             String\n  created_at         DateTime        @default(now())\n  updated_at         DateTime        @updatedAt\n  billing_invoice_id String?\n  billing_invoice    BillingInvoice? @relation(fields: [billing_invoice_id], references: [id])\n\n  @@map(\"billing_payment\")\n}\n\nmodel CollectionCase {\n  id                  String                       @id @default(cuid())\n  reference_number    String?\n  issue_date          DateTime?\n  due_date            DateTime? // fecha de vencimiento original\n  reminder1_sent_at   DateTime? // fecha de envío del aviso 1 (Aanmanning)\n  reminder1_due_date  DateTime? // fecha límite de pago para el aviso 1\n  reminder2_sent_at   DateTime? // fecha de envío del aviso 2 (Sommatie)\n  reminder2_due_date  DateTime? // fecha límite de pago para el aviso 2\n  tenant_id           String\n  debtor_id           String\n  amount_original     Decimal                      @db.Decimal(10, 2)\n  amount_due          Decimal                      @db.Decimal(10, 2)\n  amount_to_receive   Decimal                      @db.Decimal(10, 2)\n  status              CollectionCaseStatus         @default(PENDING)\n  notification_status String?\n  created_at          DateTime                     @default(now())\n  updated_at          DateTime                     @updatedAt\n  debtor              Debtor                       @relation(fields: [debtor_id], references: [id])\n  tenant              Tenant                       @relation(fields: [tenant_id], references: [id])\n  notifications       CollectionCaseNotification[]\n  payments            CollectionCasePayment[]\n  agreements          CollectionCaseAgreement[]\n  penalties           CollectionCasePenalty[]\n  chat_rooms          ChatRoom[]\n\n  @@map(\"collection_case\")\n}\n\nmodel CollectionCasePenalty {\n  id                 String         @id @default(cuid())\n  collection_case_id String\n  description        String?\n  amount             Decimal        @db.Decimal(10, 2)\n  date_applied       DateTime       @default(now())\n  is_paid            Boolean        @default(false)\n  created_at         DateTime       @default(now())\n  updated_at         DateTime       @updatedAt\n  collection_case    CollectionCase @relation(fields: [collection_case_id], references: [id])\n\n  @@map(\"collection_case_penalty\")\n}\n\nmodel CollectionCaseNotification {\n  id                 String           @id @default(cuid())\n  collection_case_id String\n  type               NotificationType\n  title              String\n  message            String\n  sent_at            DateTime         @default(now())\n  read               Boolean          @default(false)\n  created_at         DateTime         @default(now())\n  collection_case    CollectionCase   @relation(fields: [collection_case_id], references: [id])\n\n  @@map(\"collection_case_notification\")\n}\n\nmodel CollectionCasePayment {\n  id                 String                               @id @default(cuid())\n  method             PaymentMethod\n  amount             Decimal                              @db.Decimal(10, 2)\n  collection_case_id String\n  payment_date       DateTime\n  reference_number   String?\n  agreement_id       String?\n  created_at         DateTime                             @default(now())\n  updated_at         DateTime                             @updatedAt\n  collection_case    CollectionCase                       @relation(fields: [collection_case_id], references: [id])\n  agreement          CollectionCaseAgreement?             @relation(fields: [agreement_id], references: [id])\n  installments       CollectionCaseAgreementInstallment[]\n\n  @@map(\"collection_case_payment\")\n}\n\nmodel Debtor {\n  id                  String                    @id @default(uuid())\n  tenant_id           String\n  user_id             String?\n  fullname            String\n  email               String\n  phone               String?\n  address             String?\n  person_type         PersonType                @default(INDIVIDUAL)\n  identification_type IdentificationType?\n  identification      String?\n  total_income        Float?\n  created_at          DateTime                  @default(now())\n  updated_at          DateTime                  @updatedAt\n  collection_cases    CollectionCase[]\n  tenant              Tenant                    @relation(fields: [tenant_id], references: [id])\n  user                User?                     @relation(fields: [user_id], references: [id])\n  incomes             DebtorIncome[]\n  payment_agreements  CollectionCaseAgreement[]\n  verdicts            Verdict[]\n\n  @@unique([tenant_id, email])\n  @@unique([tenant_id, identification])\n  @@map(\"debtor\")\n}\n\nmodel ChatRoom {\n  id                 String         @id @default(cuid())\n  tenant_id          String\n  tenant             Tenant         @relation(fields: [tenant_id], references: [id])\n  collection_case_id String\n  collection_case    CollectionCase @relation(fields: [collection_case_id], references: [id])\n  name               String\n  created_at         DateTime       @default(now())\n  updated_at         DateTime       @updatedAt\n  messages           ChatMessage[]\n\n  @@map(\"chat_room\")\n}\n\nmodel ChatMessage {\n  id      String   @id @default(cuid())\n  room_id String\n  room    ChatRoom @relation(fields: [room_id], references: [id])\n\n  sender_id String\n  sender    User    @relation(fields: [sender_id], references: [id])\n  message   String\n  file_url  String?\n  file_name String?\n\n  timestamp  DateTime @default(now())\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  @@map(\"chat_message\")\n}\n\nmodel DebtorIncome {\n  id         String   @id @default(uuid())\n  debtor_id  String\n  amount     Float\n  source     String\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n  debtor     Debtor   @relation(fields: [debtor_id], references: [id])\n\n  @@map(\"debtor_incomes\")\n}\n\nmodel CollectionCaseAgreement {\n  id                 String          @id @default(cuid())\n  collection_case_id String\n  debtor_id          String?\n  total_amount       Decimal         @db.Decimal(10, 2)\n  installment_amount Decimal         @db.Decimal(10, 2)\n  installments_count Int\n  start_date         DateTime\n  end_date           DateTime\n  status             AgreementStatus @default(PENDING)\n  tenant_id          String\n  tenant             Tenant          @relation(fields: [tenant_id], references: [id])\n  comment            String?\n  created_at         DateTime        @default(now())\n  updated_at         DateTime        @updatedAt\n\n  // Relaciones\n  debtor          Debtor?                              @relation(fields: [debtor_id], references: [id])\n  collection_case CollectionCase                       @relation(fields: [collection_case_id], references: [id])\n  installments    CollectionCaseAgreementInstallment[]\n  payments        CollectionCasePayment[]\n\n  @@map(\"collection_case_agreement\")\n}\n\nmodel CollectionCaseAgreementInstallment {\n  id           String            @id @default(cuid())\n  agreement_id String\n  number       Int\n  due_date     DateTime\n  amount       Decimal           @db.Decimal(10, 2)\n  status       InstallmentStatus @default(PENDING)\n  payment_id   String? // si se pagó, relaciona con CollectionCasePayment\n  created_at   DateTime          @default(now())\n  updated_at   DateTime          @updatedAt\n\n  // Relaciones\n  agreement CollectionCaseAgreement @relation(fields: [agreement_id], references: [id])\n  payment   CollectionCasePayment?  @relation(fields: [payment_id], references: [id])\n\n  @@map(\"collection_case_agreement_installment\")\n}\n\nenum InstallmentStatus {\n  PENDING\n  PAID\n  OVERDUE\n}\n\nenum AgreementStatus {\n  PENDING\n  IN_NEGOTIATION\n  COUNTEROFFER\n  ACCEPTED\n  REJECTED\n  CANCELLED\n  CLOSED\n}\n\nenum CalculationTypeEnum {\n  FIXED\n  VARIABLE\n}\n\nenum VerdictStatus {\n  DRAFT\n  PENDING\n  APPROVED\n  REJECTED\n}\n\nenum NotificationType {\n  AANMANING\n  SOMMATIE\n  INGEBREKESTELLING\n  BLOKKADE\n}\n\nenum IdentificationType {\n  DNI\n  PASSPORT\n  NIE\n  CIF\n  KVK\n  OTHER\n}\n\nenum roleEnum {\n  PLATFORM_OWNER\n  TENANT_ADMIN\n  AGENT\n  DEBTOR\n  BAILIFF\n}\n\nenum PaymentMethod {\n  TRANSFER\n  CREDIT_CARD\n}\n\nenum CollectionCaseStatus {\n  PENDING\n  IN_PROGRESS\n  COMPLETED\n  CANCELLED\n}\n\nenum PersonType {\n  INDIVIDUAL\n  COMPANY\n}\n",
+  "inlineSchemaHash": "25bd2d19cf9d374923c3644232a440b0239c92a38004b7dcf383465095f5adf6",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Tenant\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subdomain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contactEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"countryCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"numberOfEmployees\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"planId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"plan\",\"kind\":\"object\",\"type\":\"Plan\",\"relationName\":\"PlanToTenant\"},{\"name\":\"planStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"planExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"termsAccepted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billingInvoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToTenant\"},{\"name\":\"collectionCases\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToTenant\"},{\"name\":\"debtors\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToTenant\"},{\"name\":\"registry\",\"kind\":\"object\",\"type\":\"TenantRegistry\",\"relationName\":\"TenantToTenantRegistry\"},{\"name\":\"verdicts\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"TenantToVerdict\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"TenantToUser\"},{\"name\":\"chatRooms\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatRoomToTenant\"},{\"name\":\"paymentAgreements\",\"kind\":\"object\",\"type\":\"PaymentAgreement\",\"relationName\":\"PaymentAgreementToTenant\"}],\"dbName\":\"tenant\"},\"TenantRegistry\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kvk\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"crib\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"taxId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"vatNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"legalName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"TenantToTenantRegistry\"}],\"dbName\":\"tenant_registry\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"TenantToUser\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"roleEnum\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtors\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToUser\"},{\"name\":\"verdictBailiffs\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"UserToVerdictBailiff\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"ChatMessage\",\"relationName\":\"ChatMessageToUser\"}],\"dbName\":\"user\"},\"Parameter\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"porcCobranza\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"porcAbb\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"diasPlazoEmpresaAanmaning\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"diasPlazoConsumidorAanmaning\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"diasPlazoEmpresaSommatie\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"diasPlazoConsumidorSommatie\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"precioEmpresaPequena\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"contribucionEmpresaPequenaPfc\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"precioEmpresaGrande\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"contribucionEmpresaGrandePfc\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"multaAanmaningEmpresa\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaAanmaningNatural\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaSommatieEmpresa\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaSommatieNatural\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"limiteDiasReaccionEmpresa\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"multaNoReaccionEmpresa\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaNoReaccionNatural\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaAcuerdoPagoEmpresa\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"multaAcuerdoPagoNatural\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"invoiceNumberLength\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"invoicePrefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoiceSecuence\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bankAccount\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bankName\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"parameter\"},\"Verdict\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoiceNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creditorName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"registrationNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sentenceAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"sentenceDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"VerdictStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"procesalCost\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bailiffId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bailiff\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVerdictBailiff\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToVerdict\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"TenantToVerdict\"},{\"name\":\"attachments\",\"kind\":\"object\",\"type\":\"VerdictAttachment\",\"relationName\":\"VerdictToVerdictAttachment\"},{\"name\":\"bailiffServices\",\"kind\":\"object\",\"type\":\"VerdictBailiffServices\",\"relationName\":\"VerdictToVerdictBailiffServices\"},{\"name\":\"verdictEmbargo\",\"kind\":\"object\",\"type\":\"VerdictEmbargo\",\"relationName\":\"VerdictToVerdictEmbargo\"},{\"name\":\"verdictInterest\",\"kind\":\"object\",\"type\":\"VerdictInterest\",\"relationName\":\"VerdictToVerdictInterest\"}],\"dbName\":\"verdict\"},\"VerdictInterest\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interestType\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"baseAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"calculatedInterest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"calculationStart\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"calculationEnd\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalInterest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdictId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictInterest\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"VerdictInterestDetails\",\"relationName\":\"VerdictInterestToVerdictInterestDetails\"}],\"dbName\":\"verdict_interest\"},\"VerdictInterestDetails\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"period\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"periodStart\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"periodEnd\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"annualRate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"proportionalRate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"baseAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"interest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"verdictInterestId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdictInterest\",\"kind\":\"object\",\"type\":\"VerdictInterest\",\"relationName\":\"VerdictInterestToVerdictInterestDetails\"}],\"dbName\":\"verdict_interest_details\"},\"VerdictEmbargo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdictId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"embargoType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"embargoDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"embargoAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictEmbargo\"}],\"dbName\":\"verdict_embargo\"},\"VerdictBailiffServices\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdictId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serviceType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serviceCost\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictBailiffServices\"}],\"dbName\":\"verdict_bailiff_services\"},\"VerdictAttachment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdictId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filePath\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileSize\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"fileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictAttachment\"}],\"dbName\":\"verdict_attachment\"},\"InterestType\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"calculationType\",\"kind\":\"enum\",\"type\":\"CalculationTypeEnum\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"InterestDetail\",\"relationName\":\"InterestDetailToInterestType\"}],\"dbName\":\"interest_type\"},\"InterestDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"date\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"interestTypeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"interestType\",\"kind\":\"object\",\"type\":\"InterestType\",\"relationName\":\"InterestDetailToInterestType\"}],\"dbName\":\"interest_detail\"},\"BillingInvoice\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoiceNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"issueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"dueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"BillingInvoiceToTenant\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"BillingInvoiceDetail\",\"relationName\":\"BillingInvoiceToBillingInvoiceDetail\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"BillingPayment\",\"relationName\":\"BillingInvoiceToBillingPayment\"}],\"dbName\":\"billing_invoice\"},\"BillingInvoiceDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"itemDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"itemQuantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"itemUnitPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"itemTotalPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"itemTaxRate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"itemTaxAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"itemTotalWithTax\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billingInvoiceId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"billingInvoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToBillingInvoiceDetail\"}],\"dbName\":\"billing_invoice_detail\"},\"BillingPayment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"paymentMethod\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billingInvoiceId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"BillingInvoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToBillingPayment\"}],\"dbName\":\"billing_payment\"},\"Plan\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"durationDays\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"tenants\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"PlanToTenant\"}],\"dbName\":\"plan\"},\"CollectionCase\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"referenceNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"issueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"dueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder1SentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder1DueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder2SentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder2DueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amountOriginal\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"amountDue\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"amountToReceive\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"CollectionStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"CollectionCaseToDebtor\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"CollectionCaseToTenant\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"CollectionCaseToNotification\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"CollectionCaseToPayment\"},{\"name\":\"paymentAgreements\",\"kind\":\"object\",\"type\":\"PaymentAgreement\",\"relationName\":\"CollectionCaseToPaymentAgreement\"},{\"name\":\"penalties\",\"kind\":\"object\",\"type\":\"Penalty\",\"relationName\":\"CollectionCaseToPenalty\"},{\"name\":\"chatRooms\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatRoomToCollectionCase\"}],\"dbName\":\"collection_case\"},\"Penalty\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collectionCaseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"dateApplied\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isPaid\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collectionCase\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToPenalty\"}],\"dbName\":\"penalty\"},\"Notification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collectionCaseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"NotificationType\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"read\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collectionCase\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToNotification\"}],\"dbName\":\"notification\"},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"method\",\"kind\":\"enum\",\"type\":\"PaymentMethod\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collectionCaseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"referenceNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collectionCase\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToPayment\"},{\"name\":\"paymentAgreement\",\"kind\":\"object\",\"type\":\"PaymentAgreement\",\"relationName\":\"PaymentToPaymentAgreement\"},{\"name\":\"paymentAgreementId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Installment\",\"kind\":\"object\",\"type\":\"Installment\",\"relationName\":\"InstallmentToPayment\"}],\"dbName\":\"payment\"},\"Debtor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personType\",\"kind\":\"enum\",\"type\":\"PersonType\"},{\"name\":\"identificationType\",\"kind\":\"enum\",\"type\":\"IdentificationType\"},{\"name\":\"identification\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"totalIncome\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collectionCases\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToDebtor\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"DebtorToTenant\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DebtorToUser\"},{\"name\":\"incomes\",\"kind\":\"object\",\"type\":\"DebtorIncome\",\"relationName\":\"DebtorToDebtorIncome\"},{\"name\":\"paymentAgreements\",\"kind\":\"object\",\"type\":\"PaymentAgreement\",\"relationName\":\"DebtorToPaymentAgreement\"},{\"name\":\"verdicts\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"DebtorToVerdict\"}],\"dbName\":\"debtor\"},\"ChatRoom\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"ChatRoomToTenant\"},{\"name\":\"collectionCaseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collectionCase\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"ChatRoomToCollectionCase\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"ChatMessage\",\"relationName\":\"ChatMessageToChatRoom\"}],\"dbName\":\"chat_room\"},\"ChatMessage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatMessageToChatRoom\"},{\"name\":\"senderId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sender\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ChatMessageToUser\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"chat_message\"},\"DebtorIncome\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToDebtorIncome\"}],\"dbName\":\"debtor_incomes\"},\"PaymentAgreement\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collectionCaseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"installmentAmount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"installmentsCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PaymentAgreementStatus\"},{\"name\":\"tenantId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"PaymentAgreementToTenant\"},{\"name\":\"comment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collectionCase\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToPaymentAgreement\"},{\"name\":\"installments\",\"kind\":\"object\",\"type\":\"Installment\",\"relationName\":\"InstallmentToPaymentAgreement\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToPaymentAgreement\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToPaymentAgreement\"},{\"name\":\"debtorId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"payment_agreement\"},\"Installment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentAgreementId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dueDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"InstallmentStatus\"},{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentAgreement\",\"kind\":\"object\",\"type\":\"PaymentAgreement\",\"relationName\":\"InstallmentToPaymentAgreement\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"InstallmentToPayment\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"installment\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Tenant\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subdomain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kvk\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"legal_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logo_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number_of_employees\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"terms_accepted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billing_invoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToTenant\"},{\"name\":\"collection_cases\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToTenant\"},{\"name\":\"debtors\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToTenant\"},{\"name\":\"verdicts\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"TenantToVerdict\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"TenantToUser\"},{\"name\":\"chat_rooms\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatRoomToTenant\"},{\"name\":\"agreements\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreement\",\"relationName\":\"CollectionCaseAgreementToTenant\"}],\"dbName\":\"tenant\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"TenantToUser\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"roleEnum\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtors\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToUser\"},{\"name\":\"verdict_bailiffs\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"UserToVerdictBailiff\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"ChatMessage\",\"relationName\":\"ChatMessageToUser\"}],\"dbName\":\"user\"},\"Parameter\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collection_fee_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"abb_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"company_aanmaning_term_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"consumer_aanmaning_term_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"company_sommatie_term_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"consumer_sommatie_term_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"small_company_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"small_company_pfc_contribution\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"large_company_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"large_company_pfc_contribution\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"company_aanmaning_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"natural_aanmaning_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"company_sommatie_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"natural_sommatie_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"company_reaction_limit_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"company_no_reaction_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"natural_no_reaction_penalty\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"company_payment_agreement_fee\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"natural_payment_agreement_fee\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"invoice_number_length\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"invoice_prefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoice_sequence\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bank_account\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bank_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"parameter\"},\"Verdict\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoice_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creditor_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtor_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"registration_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sentence_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"sentence_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"VerdictStatus\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"procesal_cost\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bailiff_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bailiff\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVerdictBailiff\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToVerdict\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"TenantToVerdict\"},{\"name\":\"attachments\",\"kind\":\"object\",\"type\":\"VerdictAttachment\",\"relationName\":\"VerdictToVerdictAttachment\"},{\"name\":\"bailiff_services\",\"kind\":\"object\",\"type\":\"VerdictBailiffServices\",\"relationName\":\"VerdictToVerdictBailiffServices\"},{\"name\":\"verdict_embargo\",\"kind\":\"object\",\"type\":\"VerdictEmbargo\",\"relationName\":\"VerdictToVerdictEmbargo\"},{\"name\":\"verdict_interest\",\"kind\":\"object\",\"type\":\"VerdictInterest\",\"relationName\":\"VerdictToVerdictInterest\"}],\"dbName\":\"verdict\"},\"VerdictInterest\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interest_type\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"base_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"calculated_interest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"calculation_start\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"calculation_end\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"total_interest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictInterest\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"VerdictInterestDetails\",\"relationName\":\"VerdictInterestToVerdictInterestDetails\"}],\"dbName\":\"verdict_interest\"},\"VerdictInterestDetails\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"period\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"period_start\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"period_end\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"annual_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"proportional_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"base_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"interest\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"verdict_interest_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict_interest\",\"kind\":\"object\",\"type\":\"VerdictInterest\",\"relationName\":\"VerdictInterestToVerdictInterestDetails\"}],\"dbName\":\"verdict_interest_details\"},\"VerdictEmbargo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"embargo_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"embargo_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"embargo_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictEmbargo\"}],\"dbName\":\"verdict_embargo\"},\"VerdictBailiffServices\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"service_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"service_cost\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictBailiffServices\"}],\"dbName\":\"verdict_bailiff_services\"},\"VerdictAttachment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_size\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"file_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verdict\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"VerdictToVerdictAttachment\"}],\"dbName\":\"verdict_attachment\"},\"InterestType\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"calculation_type\",\"kind\":\"enum\",\"type\":\"CalculationTypeEnum\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"InterestDetail\",\"relationName\":\"InterestDetailToInterestType\"}],\"dbName\":\"interest_type\"},\"InterestDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"date\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"interest_type_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"interest_type\",\"kind\":\"object\",\"type\":\"InterestType\",\"relationName\":\"InterestDetailToInterestType\"}],\"dbName\":\"interest_detail\"},\"BillingInvoice\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invoice_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"issue_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"due_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"BillingInvoiceToTenant\"},{\"name\":\"details\",\"kind\":\"object\",\"type\":\"BillingInvoiceDetail\",\"relationName\":\"BillingInvoiceToBillingInvoiceDetail\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"BillingPayment\",\"relationName\":\"BillingInvoiceToBillingPayment\"}],\"dbName\":\"billing_invoice\"},\"BillingInvoiceDetail\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"item_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"item_quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"item_unit_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"item_total_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"item_tax_rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"item_tax_amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"item_total_with_tax\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billing_invoice_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"billing_invoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToBillingInvoiceDetail\"}],\"dbName\":\"billing_invoice_detail\"},\"BillingPayment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payment_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"payment_method\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transaction_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"billing_invoice_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"billing_invoice\",\"kind\":\"object\",\"type\":\"BillingInvoice\",\"relationName\":\"BillingInvoiceToBillingPayment\"}],\"dbName\":\"billing_payment\"},\"CollectionCase\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"reference_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"issue_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"due_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder1_sent_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder1_due_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder2_sent_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reminder2_due_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtor_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount_original\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"amount_due\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"amount_to_receive\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"CollectionCaseStatus\"},{\"name\":\"notification_status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"CollectionCaseToDebtor\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"CollectionCaseToTenant\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"CollectionCaseNotification\",\"relationName\":\"CollectionCaseToCollectionCaseNotification\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"CollectionCasePayment\",\"relationName\":\"CollectionCaseToCollectionCasePayment\"},{\"name\":\"agreements\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreement\",\"relationName\":\"CollectionCaseToCollectionCaseAgreement\"},{\"name\":\"penalties\",\"kind\":\"object\",\"type\":\"CollectionCasePenalty\",\"relationName\":\"CollectionCaseToCollectionCasePenalty\"},{\"name\":\"chat_rooms\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatRoomToCollectionCase\"}],\"dbName\":\"collection_case\"},\"CollectionCasePenalty\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collection_case_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"date_applied\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"is_paid\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collection_case\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToCollectionCasePenalty\"}],\"dbName\":\"collection_case_penalty\"},\"CollectionCaseNotification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collection_case_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"NotificationType\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sent_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"read\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collection_case\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToCollectionCaseNotification\"}],\"dbName\":\"collection_case_notification\"},\"CollectionCasePayment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"method\",\"kind\":\"enum\",\"type\":\"PaymentMethod\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"collection_case_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payment_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reference_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agreement_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collection_case\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToCollectionCasePayment\"},{\"name\":\"agreement\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreement\",\"relationName\":\"CollectionCaseAgreementToCollectionCasePayment\"},{\"name\":\"installments\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreementInstallment\",\"relationName\":\"CollectionCaseAgreementInstallmentToCollectionCasePayment\"}],\"dbName\":\"collection_case_payment\"},\"Debtor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"person_type\",\"kind\":\"enum\",\"type\":\"PersonType\"},{\"name\":\"identification_type\",\"kind\":\"enum\",\"type\":\"IdentificationType\"},{\"name\":\"identification\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"total_income\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"collection_cases\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToDebtor\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"DebtorToTenant\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DebtorToUser\"},{\"name\":\"incomes\",\"kind\":\"object\",\"type\":\"DebtorIncome\",\"relationName\":\"DebtorToDebtorIncome\"},{\"name\":\"payment_agreements\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreement\",\"relationName\":\"CollectionCaseAgreementToDebtor\"},{\"name\":\"verdicts\",\"kind\":\"object\",\"type\":\"Verdict\",\"relationName\":\"DebtorToVerdict\"}],\"dbName\":\"debtor\"},\"ChatRoom\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"ChatRoomToTenant\"},{\"name\":\"collection_case_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collection_case\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"ChatRoomToCollectionCase\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"ChatMessage\",\"relationName\":\"ChatMessageToChatRoom\"}],\"dbName\":\"chat_room\"},\"ChatMessage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"ChatRoom\",\"relationName\":\"ChatMessageToChatRoom\"},{\"name\":\"sender_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sender\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ChatMessageToUser\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"file_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"chat_message\"},\"DebtorIncome\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtor_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"DebtorToDebtorIncome\"}],\"dbName\":\"debtor_incomes\"},\"CollectionCaseAgreement\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"collection_case_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"debtor_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"total_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"installment_amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"installments_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"start_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AgreementStatus\"},{\"name\":\"tenant_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tenant\",\"kind\":\"object\",\"type\":\"Tenant\",\"relationName\":\"CollectionCaseAgreementToTenant\"},{\"name\":\"comment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"debtor\",\"kind\":\"object\",\"type\":\"Debtor\",\"relationName\":\"CollectionCaseAgreementToDebtor\"},{\"name\":\"collection_case\",\"kind\":\"object\",\"type\":\"CollectionCase\",\"relationName\":\"CollectionCaseToCollectionCaseAgreement\"},{\"name\":\"installments\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreementInstallment\",\"relationName\":\"CollectionCaseAgreementToCollectionCaseAgreementInstallment\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"CollectionCasePayment\",\"relationName\":\"CollectionCaseAgreementToCollectionCasePayment\"}],\"dbName\":\"collection_case_agreement\"},\"CollectionCaseAgreementInstallment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agreement_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"due_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"InstallmentStatus\"},{\"name\":\"payment_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agreement\",\"kind\":\"object\",\"type\":\"CollectionCaseAgreement\",\"relationName\":\"CollectionCaseAgreementToCollectionCaseAgreementInstallment\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"CollectionCasePayment\",\"relationName\":\"CollectionCaseAgreementInstallmentToCollectionCasePayment\"}],\"dbName\":\"collection_case_agreement_installment\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

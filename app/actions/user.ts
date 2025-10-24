@@ -52,10 +52,10 @@ export const updateUserProfile = async (
   return updatedUser;
 };
 
-export const getUsersByTenantId = async (tenantId: string): Promise<User[]> => {
+export const getUsersByTenantId = async (tenant_id: string): Promise<User[]> => {
   const users = await prisma.user.findMany({
     where: {
-      tenantId: tenantId,
+      tenant_id: tenant_id,
     },
   });
 
@@ -63,15 +63,15 @@ export const getUsersByTenantId = async (tenantId: string): Promise<User[]> => {
 };
 
 export const updateUserActiveStatus = async (
-  userId: string,
-  isActive: boolean
+  user_id: string,
+  is_active: boolean
 ): Promise<User> => {
   const updatedUser = await prisma.user.update({
     where: {
-      id: userId,
+      id: user_id,
     },
     data: {
-      isActive: isActive,
+      is_active: is_active,
     },
   });
 

@@ -15,7 +15,7 @@ class CollectionService {
       // 1, Generar HTML desde plantilla
       const html = renderTemplate(templatePath, {
         ...data,
-        companyName: "Dazzsoft",
+        company_name: "Dazzsoft",
       });
 
       const mailOptions: EmailOptions = {

@@ -69,8 +69,8 @@
           alt="Logo Sistema Central"
         />
         <div class="header-text">
-          <div><strong>FACTUUR {{invoiceNumber}}</strong></div>
-          <div>Partijen: {{creditorName}} vs {{debtorName}}</div>
+          <div><strong>FACTUUR {{invoice_number}}</strong></div>
+          <div>Partijen: {{creditor_name}} vs {{debtorName}}</div>
           <div style="margin-top: 5px; border-top: 1px solid #eee">
             Datum: {{date}}
           </div>
@@ -79,7 +79,7 @@
 
       <!-- Contenido -->
       <div class="content" style="margin-top: 30px">
-        <p>Geachte heer <strong>{{creditorName}}</strong>,</p>
+        <p>Geachte heer <strong>{{creditor_name}}</strong>,</p>
         <p style="margin-top: 0px">
           Hierbij ontvangt u de kosten voor de uitvoering van uw vonnis, in
           aansluiting op uw registratie in het Centraal Incassoplatform (CI).
@@ -97,7 +97,7 @@
           met de betaling van de debiteur.
         </p>
         <p>
-          <strong> Totaal verschuldigd bedrag: USD {{totalAmount}} </strong>
+          <strong> Totaal verschuldigd bedrag: USD {{total_amount}} </strong>
         </p>
       </div>
 

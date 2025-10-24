@@ -42,7 +42,7 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 4, md: 12 }}>
           <Controller
-            name="invoiceNumber"
+            name="invoice_number"
             control={control}
             render={({ field }) => (
               <TextField
@@ -51,15 +51,15 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 fullWidth
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.invoiceNumber}
-                helperText={errors.invoiceNumber?.message}
+                error={!!errors.invoice_number}
+                helperText={errors.invoice_number?.message}
               />
             )}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 8, md: 3 }}>
           <Controller
-            name="creditorName"
+            name="creditor_name"
             control={control}
             render={({ field }) => (
               <TextField
@@ -68,8 +68,8 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 fullWidth
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.creditorName}
-                helperText={errors.creditorName?.message}
+                error={!!errors.creditor_name}
+                helperText={errors.creditor_name?.message}
               />
             )}
           />
@@ -77,7 +77,7 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
         <Grid size={{ xs: 12, sm: 8, md: 3 }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Controller
-              name="debtorId"
+              name="debtor_id"
               control={control}
               render={({ field: { onChange, value, ref } }) => (
                 <Autocomplete
@@ -95,10 +95,10 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                         email: newValue?.email,
                         phone: newValue?.phone || "",
                         address: newValue?.address || "",
-                        identificationType: "DNI",
+                        identification_type: "DNI",
                         identification: newValue?.identification || "",
-                        tenantId: newValue?.tenantId || "",
-                        totalIncome: newValue?.totalIncome ?? 0,
+                        tenant_id: newValue?.tenant_id || "",
+                        total_income: newValue?.total_income ?? 0,
                       };
 
                       onSelectDebtor(debtorSelected);
@@ -119,8 +119,8 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                       size="small"
                       label="Naam Schuldenaar"
                       fullWidth
-                      error={!!errors.debtorId}
-                      helperText={errors.debtorId?.message}
+                      error={!!errors.debtor_id}
+                      helperText={errors.debtor_id?.message}
                     />
                   )}
                 />
@@ -137,7 +137,7 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
         </Grid>
         <Grid size={{ xs: 12, sm: 4, md: 2 }}>
           <Controller
-            name="registrationNumber"
+            name="registration_number"
             control={control}
             render={({ field }) => (
               <TextField
@@ -146,15 +146,15 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 fullWidth
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.registrationNumber}
-                helperText={errors.registrationNumber?.message}
+                error={!!errors.registration_number}
+                helperText={errors.registration_number?.message}
               />
             )}
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 4, md: 2 }}>
           <Controller
-            name="sentenceAmount"
+            name="sentence_amount"
             control={control}
             render={({ field }) => (
               <TextField
@@ -164,15 +164,15 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 fullWidth
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.sentenceAmount}
-                helperText={errors.sentenceAmount?.message}
+                error={!!errors.sentence_amount}
+                helperText={errors.sentence_amount?.message}
               />
             )}
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 4, md: 2 }}>
           <Controller
-            name="sentenceDate"
+            name="sentence_date"
             control={control}
             render={({ field }) => (
               <TextField
@@ -182,8 +182,8 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 size="small"
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.sentenceDate}
-                helperText={errors.sentenceDate?.message}
+                error={!!errors.sentence_date}
+                helperText={errors.sentence_date?.message}
                 slotProps={{
                   inputLabel: { shrink: true },
                 }}
@@ -193,7 +193,7 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
         </Grid>
         <Grid size={{ xs: 6, sm: 4, md: 3 }}>
           <Controller
-            name="procesalCost"
+            name="procesal_cost"
             control={control}
             render={({ field }) => (
               <TextField
@@ -203,8 +203,8 @@ const VerdictSectionForm: React.FC<VerdictSectionFormProps> = ({
                 fullWidth
                 {...field}
                 value={field.value ?? ""}
-                error={!!errors.procesalCost}
-                helperText={errors.procesalCost?.message}
+                error={!!errors.procesal_cost}
+                helperText={errors.procesal_cost?.message}
               />
             )}
           />

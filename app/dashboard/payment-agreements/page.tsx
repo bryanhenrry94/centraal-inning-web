@@ -35,15 +35,15 @@ const PaymentAgreementsPage = () => {
   }, []);
 
   const fetchAgreements = async () => {
-    if (!session?.user?.tenantId) return;
+    if (!session?.user?.tenant_id) return;
 
     const pending = await getPaymentAgreements({
-      tenantId: session.user.tenantId,
+      tenant_id: session.user.tenant_id,
       status: "PENDING",
     });
 
     const processed = await getPaymentAgreements({
-      tenantId: session.user.tenantId,
+      tenant_id: session.user.tenant_id,
     });
 
     setAgreementsPending(pending);
@@ -56,14 +56,14 @@ const PaymentAgreementsPage = () => {
 
   const handleApprove = (id: string) => {
     AlertService.showConfirm(
-      "¿Estás seguro?",
-      "Esta acción aprobará el acuerdo de pago.",
-      "Sí, aprobar",
-      "Cancelar"
+      "¿Wilt u deze betalingsregeling accepteren?",
+      "",
+      "JA",
+      "NEE"
     ).then(async (confirmed) => {
       if (confirmed) {
         await updatePaymentAgreement(id, {
-          status: $Enums.PaymentAgreementStatus.ACCEPTED,
+          status: $Enums.AgreementStatus.ACCEPTED,
         });
         await notifyInfo("Acuerdo de pago aprobado con éxito.");
         await fetchAgreements();
@@ -72,17 +72,16 @@ const PaymentAgreementsPage = () => {
   };
 
   const handleReject = (id: string) => {
-    AlertService.showConfirmWithInput(
-      "¿Estás seguro?",
-      "Esta acción rechazará el acuerdo de pago.",
-      "Sí, rechazar",
-      "Cancelar"
-    ).then(async (value) => {
-      if (value) {
+    AlertService.showConfirm(
+      "¿Bent u zeker dat u deze wilt annuleren?",
+      "",
+      "JA",
+      "NEE"
+    ).then(async (confirmed) => {
+      if (confirmed) {
         console.log("Rejection reason:", value);
         await updatePaymentAgreement(id, {
-          status: $Enums.PaymentAgreementStatus.REJECTED,
-          comment: value,
+          status: $Enums.AgreementStatus.REJECTED,
         });
         await notifyInfo("Acuerdo de pago rechazado");
         await fetchAgreements();
@@ -101,40 +100,40 @@ const PaymentAgreementsPage = () => {
         return;
       }
 
-      if (!data.collectionCaseId) {
+      if (!data.collection_case_id) {
         notifyError("Collection Case ID is required");
         return;
       }
 
-      if (!data.startDate) {
+      if (!data.start_date) {
         notifyError("Start date is required");
         return;
       }
 
-      if (data.startDate < new Date()) {
+      if (data.start_date < new Date()) {
         notifyError("La fecha de inicio debe ser mayor a la fecha actual");
         return;
       }
 
-      if (!data.debtorId) {
+      if (!data.debtor_id) {
         notifyError("Debtor ID is required");
         return;
       }
 
-      const exists = await existsPaymentAgreement(data.collectionCaseId);
+      const exists = await existsPaymentAgreement(data.collection_case_id);
       if (exists) {
         notifyError("Ya existe un acuerdo de pago para esta collection");
         return;
       }
 
       const agreementUpdate: PaymentAgreementUpdate = {
-        collectionCaseId: data.collectionCaseId || "",
-        totalAmount: Number(data.totalAmount),
-        installmentsCount: Number(data.installmentsCount),
-        installmentAmount: Number(data.installmentAmount),
-        startDate: data.startDate,
-        debtorId: data.debtorId,
-        status: data.status || $Enums.PaymentAgreementStatus.COUNTEROFFER,
+        collection_case_id: data.collection_case_id || "",
+        total_amount: Number(data.total_amount),
+        installments_count: Number(data.installments_count),
+        installment_amount: Number(data.installment_amount),
+        start_date: data.start_date,
+        debtor_id: data.debtor_id,
+        status: data.status || $Enums.AgreementStatus.COUNTEROFFER,
       };
 
       await updatePaymentAgreement(data.id, agreementUpdate);
@@ -151,13 +150,18 @@ const PaymentAgreementsPage = () => {
 
   return (
     <Container maxWidth="lg">
-      <Typography variant="h4" gutterBottom>
-        Beheer van betalingsovereenkomsten
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Beheer en beheer de verzoeken om betalingsregelingen van debiteuren
-      </Typography>
-      <Box sx={{ width: "100%", mt: 4 }}>
+      <Box
+        sx={{
+          width: "100%",
+          mt: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          BETALINGSREGELING
+        </Typography>
         <Tabs value={value} onChange={handleChange} aria-label="example tabs">
           <Tab
             value={0}

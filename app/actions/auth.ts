@@ -11,7 +11,13 @@ import AuthMailService from "@/common/mail/services/authService";
 import { createActivationInvoice } from "./billing-invoice";
 import { $Enums } from "@/prisma/generated/prisma";
 import { generateUniqueSubdomain } from "./tenant";
-import { AuthSignUpSchema, ITenantSignUp } from "@/lib/validations/signup";
+import {
+  AuthSignUpSchema,
+  DebtorSignUp,
+  DebtorSignUpSchema,
+  ITenantSignUp,
+} from "@/lib/validations/signup";
+import { getParameterById } from "./parameter";
 
 export const signInWithPassword = async (
   params: LoginFormData
@@ -40,12 +46,12 @@ export const signInWithPassword = async (
     throw new Error("Invalid subdomain");
   }
 
-  // Buscar el usuario por email y tenantId
+  // Buscar el usuario por email y tenant_id
   const user = await prisma.user.findFirst({
     where: {
       email,
-      isActive: true,
-      tenantId: tenant.id,
+      is_active: true,
+      tenant_id: tenant.id,
     },
   });
 
@@ -53,12 +59,12 @@ export const signInWithPassword = async (
     throw new Error("Invalid email or user not found in this tenant");
   }
 
-  if (!user.passwordHash) {
+  if (!user.password_hash) {
     throw new Error("User has no password set");
   }
 
   // Verificar la contraseña
-  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+  const isPasswordValid = await bcrypt.compare(password, user.password_hash);
   if (!isPasswordValid) {
     throw new Error("Credentials are invalid");
   }
@@ -68,11 +74,11 @@ export const signInWithPassword = async (
     fullname: user.fullname || "",
     email: user.email,
     phone: user.phone || "",
-    tenantId: tenant.id,
+    tenant_id: tenant.id,
     subdomain: tenant.subdomain,
     company: tenant.name,
     role: user.role || "",
-    emailVerified: user.isActive || false,
+    email_verified: user.is_active || false,
   };
 
   revalidatePath("/auth/login");
@@ -85,7 +91,7 @@ export const emailExists = async (email: string): Promise<boolean> => {
   }
 
   const user = await prisma.user.findFirst({
-    where: { email: email, isActive: true },
+    where: { email: email, is_active: true },
   });
 
   return !!user;
@@ -98,70 +104,68 @@ export async function createAccount(
     // ✅ 1. Validar datos de entrada
     const validatedData = AuthSignUpSchema.parse(payload);
 
+    // Obtener parámetro necesario
+    const PARAMETER_ID = process.env.NEXT_PUBLIC_PARAMETER_ID || "";
+    const parameter = await getParameterById(PARAMETER_ID);
+    if (!parameter) {
+      throw new Error("No se encontró el parámetro");
+    }
+
     // ✅ 2. Crear Tenant, User y Subscription en transacción
     const result = await prisma.$transaction(async (tx) => {
       const subdomain = await generateUniqueSubdomain(
         validatedData.company.name
       );
 
-      const plan = await tx.plan.findFirst({
-        where: { isActive: true },
-      });
-
-      if (!plan) throw new Error("No active subscription plan found");
-
-      const planExpiresAt = new Date(
-        Date.now() + plan.durationDays * 24 * 60 * 60 * 1000
-      );
-
       const tenant = await tx.tenant.create({
         data: {
           name: validatedData.company.name,
           subdomain,
-          countryCode: validatedData.company.country,
-          contactEmail: validatedData.company.contactEmail,
-          isActive: true,
-          address: validatedData.company.address,
-          numberOfEmployees: validatedData.company.numberOfEmployees,
-          termsAccepted: validatedData.company.termsAccepted,
-
-          planId: plan.id,
-          planExpiresAt: planExpiresAt,
-          planStatus: "active",
-        },
-      });
-
-      await tx.tenantRegistry.create({
-        data: {
-          tenantId: tenant.id,
           kvk: validatedData.company.kvk,
+          legal_name: validatedData.company.name,
+          country_code: validatedData.company.country,
+          contact_email: validatedData.company.contact_email,
+          is_active: true,
+          address: validatedData.company.address,
+          number_of_employees: validatedData.company.number_of_employees,
+          terms_accepted: validatedData.company.terms_accepted,
         },
       });
 
-      const passwordHash = await hash(validatedData.user.password, 10);
+      const password_hash = await hash(validatedData.user.password, 10);
 
       const user = await tx.user.create({
         data: {
           email: validatedData.user.email,
           fullname: validatedData.user.fullname,
-          passwordHash,
+          password_hash,
           phone: validatedData.user.phone,
-          role: $Enums.roleEnum.ADMIN,
-          tenantId: tenant.id,
-          isActive: true,
+          role: $Enums.roleEnum.TENANT_ADMIN,
+          tenant_id: tenant.id,
+          is_active: true,
         },
       });
 
-      return { tenant, user, plan };
+      return { tenant, user };
     });
+
+    let pricePlan = 0;
+
+    if (
+      payload.company.number_of_employees &&
+      payload.company.number_of_employees > 50
+    ) {
+      pricePlan = parameter.large_company_price;
+    } else {
+      pricePlan = parameter.small_company_price;
+    }
 
     // ✅ 3. Crear factura de activación (fuera de la transacción)
     await createActivationInvoice({
-      tenantId: result.tenant.id,
-      planId: result.plan.id,
+      tenant_id: result.tenant.id,
       island: validatedData.company.country,
       address: validatedData.company.address,
-      amount: result.plan.price,
+      amount: pricePlan,
     });
 
     // ✅ 4. Enviar correo de bienvenida (no bloqueante)
@@ -179,3 +183,74 @@ export async function createAccount(
     return { status: false, subdomain: "", error: error.message };
   }
 }
+
+export const createAccountDebtor = async (
+  payload: DebtorSignUp
+): Promise<{ status: boolean; subdomain?: string; error?: string }> => {
+  try {
+    // ✅ 1. Validar datos de entrada
+    const validatedData = DebtorSignUpSchema.parse(payload);
+
+    const collection_case = await prisma.collectionCase.findFirst({
+      where: { reference_number: validatedData.reference_number },
+    });
+    if (!collection_case) {
+      throw new Error("Invalid reference number");
+    }
+
+    // Buscar el tenant demo
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: collection_case.tenant_id },
+    });
+
+    if (!tenant) {
+      throw new Error("Tenant not found");
+    }
+
+    const debtor = await prisma.debtor.findUnique({
+      where: {
+        id: collection_case.debtor_id,
+      },
+    });
+
+    if (!debtor) {
+      throw new Error("Debtor not found with the provided email");
+    }
+
+    if (debtor.user_id) {
+      throw new Error("Debtor already has an associated user account");
+    }
+
+    const password_hash = await hash(validatedData.password, 10);
+
+    // ✅ 2. Crear usuario deudor
+    const user = await prisma.user.create({
+      data: {
+        email: validatedData.email,
+        fullname: validatedData.fullname,
+        password_hash,
+        role: $Enums.roleEnum.DEBTOR,
+        tenant_id: tenant.id,
+        is_active: true,
+      },
+    });
+
+    // 3. Actualizar información del deudor si es necesario
+    await prisma.debtor.update({
+      where: { id: debtor.id },
+      data: {
+        fullname: validatedData.fullname,
+        email: validatedData.email,
+        user_id: user.id, // Asignar el user_id si es necesario
+      },
+    });
+
+    // ✅ 3. Revalidar caché si es necesario
+    revalidatePath("/auth/signup");
+
+    return { status: true, subdomain: tenant.subdomain };
+  } catch (error: any) {
+    console.error("Error creating debtor account:", error);
+    return { status: false, error: error.message };
+  }
+};

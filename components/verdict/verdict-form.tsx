@@ -140,17 +140,17 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
       z.infer<typeof VerdictCreateForm>
     >,
     defaultValues: {
-      invoiceNumber: "",
-      creditorName: "",
-      debtorId: "",
-      registrationNumber: "",
-      sentenceAmount: 0,
-      sentenceDate: new Date(),
-      procesalCost: 0,
-      bailiffId: null,
-      verdictInterest: [],
-      verdictEmbargo: [],
-      bailiffServices: [],
+      invoice_number: "",
+      creditor_name: "",
+      debtor_id: "",
+      registration_number: "",
+      sentence_amount: 0,
+      sentence_date: new Date(),
+      procesal_cost: 0,
+      bailiff_id: null,
+      verdict_interest: [],
+      verdict_embargo: [],
+      bailiff_services: [],
     },
   });
 
@@ -258,7 +258,7 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = data.fileName ?? "documento.pdf";
+      link.download = data.file_name ?? "documento.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -539,7 +539,7 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
                                 scope="row"
                                 align="left"
                               >
-                                {attachment.fileName ? (
+                                {attachment.file_name ? (
                                   <Typography
                                     variant="body2"
                                     sx={{ fontWeight: 500 }}
@@ -552,7 +552,7 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
                                       color: "#1976d2",
                                     }}
                                   >
-                                    {attachment.fileName}
+                                    {attachment.file_name}
                                   </Typography>
                                 ) : (
                                   "No hay archivo cargado"
@@ -560,14 +560,14 @@ const VerdictFormPage: React.FC<VerdictFormPageProps> = ({ id }) => {
                               </TableCell>
                               {/* <TableCell align="center">
                                 {`${(
-                                  Number(attachment.fileSize || 0) /
+                                  Number(attachment.file_size || 0) /
                                   (1024 * 1024)
                                 ).toFixed(2)} MB`}
                               </TableCell> */}
                               <TableCell align="center">
-                                {attachment.createdAt
+                                {attachment.created_at
                                   ? new Date(
-                                      attachment.createdAt
+                                      attachment.created_at
                                     ).toLocaleDateString("es-ES", {
                                       year: "numeric",
                                       month: "2-digit",

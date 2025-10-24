@@ -8,9 +8,9 @@ declare module "next-auth" {
   interface User extends IdTokenInput {
     name?: string;
     phone?: string;
-    tenantId: string;
+    tenant_id: string;
     role: string;
-    emailVerified?: boolean;
+    email_verified?: boolean;
   }
   interface Session {
     user?: User;
@@ -50,9 +50,9 @@ export const authOptions: AuthOptions = {
             return {
               ...response.data,
               role: response.data.role ?? "",
-              tenantId: response.data.tenantId ?? "",
+              tenant_id: response.data.tenant_id ?? "",
               name: response.data.fullname ?? "",
-              emailVerified: response.data.emailVerified ?? false,
+              email_verified: response.data.email_verified ?? false,
             };
           } else {
             return null;
@@ -76,8 +76,8 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.name = user.name;
         token.phone = user.phone;
-        token.tenantId = user.tenantId;
-        token.emailVerified = user.emailVerified;
+        token.tenant_id = user.tenant_id;
+        token.email_verified = user.email_verified;
         // Agrega aquí cualquier otra propiedad de iIdToken si es necesario
       }
       return token;
@@ -89,8 +89,8 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.phone = token.phone as string;
-        session.user.tenantId = token.tenantId as string;
-        session.user.emailVerified = token.emailVerified as boolean;
+        session.user.tenant_id = token.tenant_id as string;
+        session.user.email_verified = token.email_verified as boolean;
         // Agrega aquí cualquier otra propiedad si es necesario
       }
       return session;

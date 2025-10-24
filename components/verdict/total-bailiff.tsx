@@ -2,15 +2,15 @@ import { Typography } from "@mui/material";
 import { useWatch } from "react-hook-form";
 
 const TotalBailiff: React.FC<{ control: any }> = ({ control }) => {
-  const bailiffServices = useWatch({ control, name: "bailiffServices" });
+  const bailiff_services = useWatch({ control, name: "bailiff_services" });
   interface VerdictBailiffItem {
-    serviceCost?: number;
+    service_cost?: number;
     // Add other properties if needed
   }
 
   const total =
-    (bailiffServices as VerdictBailiffItem[] | undefined)?.reduce(
-      (sum: number, item: VerdictBailiffItem) => sum + (item?.serviceCost ?? 0),
+    (bailiff_services as VerdictBailiffItem[] | undefined)?.reduce(
+      (sum: number, item: VerdictBailiffItem) => sum + (item?.service_cost ?? 0),
       0
     ) ?? 0;
 

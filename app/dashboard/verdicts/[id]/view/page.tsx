@@ -49,36 +49,36 @@ const CustomInterestRow: React.FC<{
 }> = ({ item, interests }) => {
   return (
     <TableRow key={item.id}>
-      {/* interestType */}
+      {/* interest_type */}
       <TableCell sx={{ textAlign: "center" }}>
-        {interests.find((i) => i.id === item.interestType)?.name ?? ""}
+        {interests.find((i) => i.id === item.interest_type)?.name ?? ""}
       </TableCell>
-      {/* calculationStart */}
+      {/* calculation_start */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatDate(item.calculationStart.toString())}
+        {formatDate(item.calculation_start.toString())}
       </TableCell>
-      {/* calculationEnd */}
+      {/* calculation_end */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatDate(item.calculationEnd.toString())}
+        {formatDate(item.calculation_end.toString())}
       </TableCell>
-      {/* baseAmount */}
+      {/* base_amount */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatCurrency(item.baseAmount || 0)}
+        {formatCurrency(item.base_amount || 0)}
       </TableCell>
-      {/* totalInterest */}
+      {/* total_interest */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatCurrency(item.totalInterest || 0)}
+        {formatCurrency(item.total_interest || 0)}
       </TableCell>
       {/* total */}
       <TableCell sx={{ textAlign: "center" }}>
         {formatCurrency(
-          Number(item.baseAmount) + Number(item.totalInterest) || 0
+          Number(item.base_amount) + Number(item.total_interest) || 0
         )}
       </TableCell>
-      {/* calculatedInterest */}
+      {/* calculated_interest */}
       <TableCell sx={{ textAlign: "center" }}>
-        {item.calculatedInterest
-          ? formatCurrency(item.calculatedInterest || 0)
+        {item.calculated_interest
+          ? formatCurrency(item.calculated_interest || 0)
           : "-"}
       </TableCell>
     </TableRow>
@@ -91,25 +91,25 @@ const CustomEmbargoRow: React.FC<{
 }> = ({ item, embargoTypes }) => {
   return (
     <TableRow key={item.id}>
-      {/* companyName */}
-      <TableCell sx={{ textAlign: "center" }}>{item.companyName}</TableCell>
-      {/* companyPhone */}
-      <TableCell sx={{ textAlign: "center" }}>{item.companyPhone}</TableCell>
-      {/* companyEmail */}
-      <TableCell sx={{ textAlign: "center" }}>{item.companyEmail}</TableCell>
-      {/* companyAddress */}
-      <TableCell sx={{ textAlign: "center" }}>{item.companyAddress}</TableCell>
-      {/* embargoType */}
+      {/* company_name */}
+      <TableCell sx={{ textAlign: "center" }}>{item.company_name}</TableCell>
+      {/* company_phone */}
+      <TableCell sx={{ textAlign: "center" }}>{item.company_phone}</TableCell>
+      {/* company_email */}
+      <TableCell sx={{ textAlign: "center" }}>{item.company_email}</TableCell>
+      {/* company_address */}
+      <TableCell sx={{ textAlign: "center" }}>{item.company_address}</TableCell>
+      {/* embargo_type */}
       <TableCell sx={{ textAlign: "center" }}>
-        {embargoTypes.find((i) => i.id === item.embargoType)?.nombre ?? ""}
+        {embargoTypes.find((i) => i.id === item.embargo_type)?.nombre ?? ""}
       </TableCell>
-      {/* embargoDate */}
+      {/* embargo_date */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatDate(item.embargoDate.toString())}
+        {formatDate(item.embargo_date.toString())}
       </TableCell>
-      {/* embargoAmount */}
+      {/* embargo_amount */}
       <TableCell sx={{ textAlign: "center" }}>
-        {formatCurrency(item.embargoAmount || 0)}
+        {formatCurrency(item.embargo_amount || 0)}
       </TableCell>
     </TableRow>
   );
@@ -119,8 +119,8 @@ const VerdictPageView: React.FC = () => {
   const params = useParams();
   const id = (params.id as string) || "";
   const [verdict, setVerdict] = React.useState<VerdictResponse | null>(null);
-  const [totalInterest, setTotalInterest] = React.useState<number>(0);
-  const [procesalCost, setProcesalCost] = React.useState<number>(0);
+  const [total_interest, setTotalInterest] = React.useState<number>(0);
+  const [procesal_cost, setProcesalCost] = React.useState<number>(0);
   const [interesTipos, setInteresTipos] = React.useState<InterestType[]>([]);
   const router = useRouter();
 
@@ -150,17 +150,17 @@ const VerdictPageView: React.FC = () => {
         if (verdict) {
           setVerdict(verdict);
 
-          const _totalInterest = verdict?.verdictInterest.reduce(
-            (acc, curr) => acc + (curr.totalInterest || 0),
+          const _totalInterest = verdict?.verdict_interest.reduce(
+            (acc, curr) => acc + (curr.total_interest || 0),
             0
           );
 
-          const _procesalCost = verdict?.procesalCost || 0;
+          const _procesalCost = verdict?.procesal_cost || 0;
 
           // Calcula totales
           setTotalInterest(_totalInterest);
           setProcesalCost(_procesalCost);
-          setTotal(verdict.sentenceAmount + _totalInterest + _procesalCost);
+          setTotal(verdict.sentence_amount + _totalInterest + _procesalCost);
         }
       };
       fetchVerdict();
@@ -275,7 +275,7 @@ const VerdictPageView: React.FC = () => {
                         Número de Factura
                       </Typography>
                       <Typography variant="body1">
-                        {verdict?.invoiceNumber ?? ""}
+                        {verdict?.invoice_number ?? ""}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, sm: 8, md: 3 }}>
@@ -287,7 +287,7 @@ const VerdictPageView: React.FC = () => {
                         Nombre del acreedor
                       </Typography>
                       <Typography variant="body1">
-                        {verdict?.creditorName ?? ""}
+                        {verdict?.creditor_name ?? ""}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, sm: 8, md: 3 }}>
@@ -311,7 +311,7 @@ const VerdictPageView: React.FC = () => {
                         Número de registro
                       </Typography>
                       <Typography variant="body1">
-                        {verdict?.registrationNumber ?? ""}
+                        {verdict?.registration_number ?? ""}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 6, sm: 4, md: 2 }}>
@@ -323,7 +323,7 @@ const VerdictPageView: React.FC = () => {
                         Monto Sentencia
                       </Typography>
                       <Typography variant="body1">
-                        {formatCurrency(verdict?.sentenceAmount || 0)}
+                        {formatCurrency(verdict?.sentence_amount || 0)}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 6, sm: 4, md: 2 }}>
@@ -336,8 +336,8 @@ const VerdictPageView: React.FC = () => {
                       </Typography>
                       <Typography variant="body1">
                         {formatDate(
-                          verdict?.sentenceDate
-                            ? verdict.sentenceDate.toString()
+                          verdict?.sentence_date
+                            ? verdict.sentence_date.toString()
                             : ""
                         )}
                       </Typography>
@@ -351,7 +351,7 @@ const VerdictPageView: React.FC = () => {
                         Costo Procesal
                       </Typography>
                       <Typography variant="body1">
-                        {formatCurrency(procesalCost)}
+                        {formatCurrency(procesal_cost)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -486,7 +486,7 @@ const VerdictPageView: React.FC = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {verdict?.verdictInterest.length === 0 && (
+                      {verdict?.verdict_interest.length === 0 && (
                         <TableRow key="no-interest-row">
                           <TableCell colSpan={8} align="center">
                             <Typography variant="body2" color="textSecondary">
@@ -495,7 +495,7 @@ const VerdictPageView: React.FC = () => {
                           </TableCell>
                         </TableRow>
                       )}
-                      {verdict?.verdictInterest.map((item, index) => {
+                      {verdict?.verdict_interest.map((item, index) => {
                         const field = item as IVerdictInterest;
 
                         return (
@@ -671,7 +671,7 @@ const VerdictPageView: React.FC = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {verdict?.verdictEmbargo.length === 0 && (
+                      {verdict?.verdict_embargo.length === 0 && (
                         <TableRow key="no-interest-row">
                           <TableCell colSpan={8} align="center">
                             <Typography variant="body2" color="textSecondary">
@@ -680,7 +680,7 @@ const VerdictPageView: React.FC = () => {
                           </TableCell>
                         </TableRow>
                       )}
-                      {verdict?.verdictEmbargo.map((item, index) => {
+                      {verdict?.verdict_embargo.map((item, index) => {
                         const field = item as VerdictEmbargo;
 
                         return (
@@ -728,7 +728,7 @@ const VerdictPageView: React.FC = () => {
                     >
                       <Typography>Monto Sentencia:</Typography>
                       <Typography fontWeight="600">
-                        {formatCurrency(verdict?.sentenceAmount || 0)}
+                        {formatCurrency(verdict?.sentence_amount || 0)}
                       </Typography>
                     </Box>
                     <Box
@@ -740,7 +740,7 @@ const VerdictPageView: React.FC = () => {
                     >
                       <Typography>Total Interés:</Typography>
                       <Typography fontWeight="600">
-                        {formatCurrency(totalInterest)}
+                        {formatCurrency(total_interest)}
                       </Typography>
                     </Box>
 
@@ -753,7 +753,7 @@ const VerdictPageView: React.FC = () => {
                     >
                       <Typography>Costo Procesal:</Typography>
                       <Typography fontWeight="600">
-                        {formatCurrency(procesalCost)}
+                        {formatCurrency(procesal_cost)}
                       </Typography>
                     </Box>
                     <Box

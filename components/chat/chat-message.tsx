@@ -18,8 +18,8 @@ interface ChatMessageProps {
   sender: string;
   fullname: string;
   isOwnMessage: boolean;
-  fileUrl?: string;
-  fileName?: string;
+  file_url?: string;
+  file_name?: string;
 }
 
 const ChatMessage = ({
@@ -27,8 +27,8 @@ const ChatMessage = ({
   message,
   fullname,
   isOwnMessage,
-  fileUrl,
-  fileName,
+  file_url,
+  file_name,
 }: ChatMessageProps) => {
   const isSystemMessage = sender === "System";
   const theme = useTheme();
@@ -112,7 +112,7 @@ const ChatMessage = ({
               {fullname}
             </Typography>
 
-            {fileUrl ? (
+            {file_url ? (
               <Box
                 sx={{
                   display: "flex",
@@ -140,7 +140,7 @@ const ChatMessage = ({
                       color: isOwnMessage ? "#fff" : "text.primary",
                     }}
                   >
-                    {fileName}
+                    {file_name}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     Archivo adjunto
@@ -148,8 +148,8 @@ const ChatMessage = ({
                 </Box>
                 <IconButton
                   component="a"
-                  href={fileUrl}
-                  download={fileName}
+                  href={file_url}
+                  download={file_name}
                   sx={{
                     color: isOwnMessage ? "#fff" : "primary.main",
                   }}

@@ -41,10 +41,10 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
   } = useFormContext<Verdict>();
 
   const { fields, append, remove } = useFieldArray<{
-    bailiffServices: VerdictBailiffServices[];
+    bailiff_services: VerdictBailiffServices[];
   }>({
     // control,
-    name: "bailiffServices",
+    name: "bailiff_services",
   });
 
   useEffect(() => {
@@ -81,10 +81,10 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
   }> = ({ item, index }) => {
     return (
       <TableRow key={item.id}>
-        {/* serviceType */}
+        {/* service_type */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`bailiffServices.${index}.serviceType`}
+            name={`bailiff_services.${index}.service_type`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -93,18 +93,18 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
                 fullWidth
                 type="text"
                 placeholder="Voorbeeld: Betekening Vonnis"
-                error={!!errors.bailiffServices?.[index]?.serviceType}
+                error={!!errors.bailiff_services?.[index]?.service_type}
                 helperText={
-                  errors.bailiffServices?.[index]?.serviceType?.message
+                  errors.bailiff_services?.[index]?.service_type?.message
                 }
               />
             )}
           />
         </TableCell>
-        {/* companyPhone */}
+        {/* company_phone */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`bailiffServices.${index}.serviceCost`}
+            name={`bailiff_services.${index}.service_cost`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -113,9 +113,9 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
                 fullWidth
                 size="small"
                 placeholder="Ej: $45.00"
-                error={!!errors.bailiffServices?.[index]?.serviceCost}
+                error={!!errors.bailiff_services?.[index]?.service_cost}
                 helperText={
-                  errors.bailiffServices?.[index]?.serviceCost?.message
+                  errors.bailiff_services?.[index]?.service_cost?.message
                 }
               />
             )}
@@ -144,7 +144,7 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
         <Grid size={{ xs: 6, sm: 4, md: 4 }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Controller
-              name="bailiffId"
+              name="bailiff_id"
               control={control}
               render={({ field: { onChange, value, ref } }) => (
                 <Autocomplete
@@ -170,8 +170,8 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
                       size="small"
                       label="Selecteer een Deurwaarder"
                       fullWidth
-                      error={!!errors.bailiffId}
-                      helperText={errors.bailiffId?.message}
+                      error={!!errors.bailiff_id}
+                      helperText={errors.bailiff_id?.message}
                     />
                   )}
                 />
@@ -249,11 +249,11 @@ const BailiffSection: React.FC<BailiffSectionProps> = () => {
                   onClick={() =>
                     append({
                       id: Date.now().toString(),
-                      verdictId: "",
-                      serviceType: "",
-                      serviceCost: 0,
-                      createdAt: new Date(),
-                      updatedAt: new Date(),
+                      verdict_id: "",
+                      service_type: "",
+                      service_cost: 0,
+                      created_at: new Date(),
+                      updated_at: new Date(),
                     })
                   }
                   sx={{ textTransform: "none" }}

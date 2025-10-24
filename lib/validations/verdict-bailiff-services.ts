@@ -2,22 +2,22 @@ import { z } from "zod";
 
 export const VerdictBailiffServicesSchema = z.object({
   id: z.string().uuid(),
-  verdictId: z.string().uuid(),
-  serviceType: z.string(),
-  serviceCost: z.preprocess(
+  verdict_id: z.string().uuid(),
+  service_type: z.string(),
+  service_cost: z.preprocess(
     (val) => (typeof val === "string" ? Number(val) : val),
     z.number()
   ),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  created_at: z.date(),
+  updated_at: z.date(),
 });
 
 export const VerdictBailiffServicesCreateSchema =
   VerdictBailiffServicesSchema.omit({
     id: true,
-    verdictId: true,
-    createdAt: true,
-    updatedAt: true,
+    verdict_id: true,
+    created_at: true,
+    updated_at: true,
   });
 
 export type VerdictBailiffServicesCreate = z.infer<

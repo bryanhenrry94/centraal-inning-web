@@ -15,13 +15,13 @@ export function useTenant() {
     async function fetchTenant() {
       setLoading(true);
       try {
-        if (!session?.user?.tenantId) {
+        if (!session?.user?.tenant_id) {
           setTenant(null);
           setLoading(false);
           return;
         }
 
-        const res = await getTenantById(session?.user?.tenantId);
+        const res = await getTenantById(session?.user?.tenant_id);
 
         if (!res?.tenant) {
           setTenant(null);
@@ -37,7 +37,7 @@ export function useTenant() {
       }
     }
 
-    if (session?.user?.tenantId?.trim()) {
+    if (session?.user?.tenant_id?.trim()) {
       fetchTenant();
     }
   }, [status, session]);

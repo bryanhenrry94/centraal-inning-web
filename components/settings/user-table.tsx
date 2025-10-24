@@ -18,7 +18,7 @@ import { AlertService } from "@/lib/alerts";
 import { notifyError } from "@/lib/notifications";
 
 type Props = {
-  tenantId: string;
+  tenant_id: string;
   // opcional: lista inicial para renderizar inmediatamente sin esperar fetch
   initialUsers?: User[];
   // opcional: callback cuando la lista cambia
@@ -26,7 +26,7 @@ type Props = {
 };
 
 export default function UserTable({
-  tenantId,
+  tenant_id,
   initialUsers = [],
   onChange,
 }: Props) {
@@ -39,12 +39,12 @@ export default function UserTable({
     if (initialUsers.length === 0) {
       fetchUsers();
     }
-  }, [tenantId]);
+  }, [tenant_id]);
 
   async function fetchUsers() {
     setLoading(true);
     try {
-      const users = await getUsersByTenantId(tenantId);
+      const users = await getUsersByTenantId(tenant_id);
       setUsers(users);
       onChange?.(users);
     } catch (err: any) {
@@ -57,7 +57,7 @@ export default function UserTable({
   async function toggleActive(user: User) {
     setUpdating((s) => ({ ...s, [user.id]: true }));
     try {
-      const confirmText = user.isActive
+      const confirmText = user.is_active
         ? `U wilt de gebruiker deactiveren ${user.email}?`
         : `U wilt de gebruiker ${user.email} activeren?`;
 
@@ -70,7 +70,7 @@ export default function UserTable({
         if (confirmed) {
           const updatedUser = await updateUserActiveStatus(
             user.id,
-            !user.isActive
+            !user.is_active
           );
 
           if (!updatedUser) {
@@ -128,21 +128,21 @@ export default function UserTable({
                   <TableCell>{user.fullname ?? "—"}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role ?? "—"}</TableCell>
-                  <TableCell>{user.isActive ? "Actief" : "Inactief"}</TableCell>
+                  <TableCell>{user.is_active ? "Actief" : "Inactief"}</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"
                       size="small"
                       onClick={() => toggleActive(user)}
                       disabled={!!updating[user.id]}
-                      aria-pressed={user.isActive}
+                      aria-pressed={user.is_active}
                       aria-label={`${
-                        user.isActive ? "Deactiveren" : "Activeren"
+                        user.is_active ? "Deactiveren" : "Activeren"
                       } gebruiker ${user.email}`}
                     >
                       {updating[user.id] ? (
                         <CircularProgress size={16} />
-                      ) : user.isActive ? (
+                      ) : user.is_active ? (
                         "Deactiveren"
                       ) : (
                         "Activeren"

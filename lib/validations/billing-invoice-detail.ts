@@ -2,32 +2,32 @@ import { z } from "zod";
 
 export const BillingInvoiceDetailBaseSchema = z.object({
   id: z.string().uuid(),
-  invoiceId: z.string(),
-  itemDescription: z.string(),
-  itemQuantity: z.preprocess(
+  invoice_id: z.string(),
+  item_description: z.string(),
+  item_quantity: z.preprocess(
     (val) =>
       typeof val === "string" || typeof val === "number" ? Number(val) : val,
     z.number().int()
   ),
-  itemUnitPrice: z.preprocess(
+  item_unit_price: z.preprocess(
     (val) =>
       typeof val === "string" || typeof val === "number" ? Number(val) : val,
     z.number().min(0)
   ),
-  itemTotalPrice: z.number(),
-  itemTaxRate: z.number(),
-  itemTaxAmount: z.number(),
-  itemTotalWithTax: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  item_total_price: z.number(),
+  item_tax_rate: z.number(),
+  item_tax_amount: z.number(),
+  item_total_with_tax: z.number(),
+  created_at: z.date(),
+  updated_at: z.date(),
 });
 
 export const BillingInvoiceDetailCreateSchema =
   BillingInvoiceDetailBaseSchema.omit({
     id: true,
-    invoiceId: true,
-    createdAt: true,
-    updatedAt: true,
+    invoice_id: true,
+    created_at: true,
+    updated_at: true,
   });
 
 export type BillingInvoiceDetailBase = z.infer<

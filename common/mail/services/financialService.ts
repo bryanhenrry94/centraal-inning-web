@@ -13,7 +13,7 @@ class FinancialService {
     // 1, Generar HTML desde plantilla
     const html = renderTemplate("financial/notification", {
       ...data,
-      companyName: "Dazzsoft",
+      company_name: "Dazzsoft",
     });
 
     const mailOptions: EmailOptions = {

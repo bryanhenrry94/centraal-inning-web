@@ -9,6 +9,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ChatIcon from "@mui/icons-material/Chat";
 import HandshakeIcon from "@mui/icons-material/Handshake";
+import { $Enums } from "@/prisma/generated/prisma";
 
 type MenuItem = {
   label: string;
@@ -22,37 +23,37 @@ const menus: MenuItem[] = [
     label: "Dashboard",
     href: "/dashboard",
     icon: <DashboardIcon fontSize="small" />,
-    role: ["ADMIN", "SUPERADMIN", "DEBTOR"],
+    role: [$Enums.roleEnum.TENANT_ADMIN, $Enums.roleEnum.PLATFORM_OWNER, $Enums.roleEnum.DEBTOR],
   },
   {
     label: "Verzameltaken",
     href: "/dashboard/collections",
     icon: <ReceiptOutlinedIcon fontSize="small" />,
-    role: ["ADMIN"],
+    role: [$Enums.roleEnum.TENANT_ADMIN],
   },
   {
-    label: "Overeenkomsten",
+    label: "Betalingsregeling",
     href: "/dashboard/payment-agreements",
     icon: <HandshakeIcon fontSize="small" />,
-    role: ["ADMIN"],
+    role: [$Enums.roleEnum.TENANT_ADMIN],
   },
   {
     label: "Vonnis",
     href: "/dashboard/verdicts",
     icon: <GavelIcon fontSize="small" />,
-    role: ["ADMIN"],
+    role: [$Enums.roleEnum.TENANT_ADMIN],
   },
   {
     label: "Invoices",
     href: "/dashboard/invoices",
     icon: <ReceiptOutlinedIcon fontSize="small" />,
-    role: ["SUPERADMIN"],
+    role: [$Enums.roleEnum.PLATFORM_OWNER],
   },
   {
     label: "Chat",
     href: "/dashboard/chat",
     icon: <ChatIcon fontSize="small" />,
-    role: ["ADMIN", "DEBTOR"],
+    role: [$Enums.roleEnum.TENANT_ADMIN, $Enums.roleEnum.DEBTOR],
   },
 ];
 

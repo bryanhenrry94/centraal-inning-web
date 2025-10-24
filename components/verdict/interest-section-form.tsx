@@ -70,7 +70,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
     setValue,
   } = useFormContext<{
     verdictInterest: IVerdictInterestCreate[];
-    totalInterest?: number;
+    total_interest?: number;
   }>();
 
   const { fields, append, remove } = useFieldArray<{
@@ -109,10 +109,10 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
 
     return (
       <>
-        {interesTipos.find((tipo) => tipo.id === Number(item.interestType))
-          ?.calculationType === "FIXED" ? (
+        {interesTipos.find((tipo) => tipo.id === Number(item.interest_type))
+          ?.calculation_type === "FIXED" ? (
           <Controller
-            name={`verdictInterest.${index}.calculatedInterest`}
+            name={`verdictInterest.${index}.calculated_interest`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -122,9 +122,9 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                 type="number"
                 placeholder="0.00"
                 inputProps={{ step: "any" }}
-                error={!!errors.verdictInterest?.[index]?.calculatedInterest}
+                error={!!errors.verdictInterest?.[index]?.calculated_interest}
                 helperText={
-                  errors.verdictInterest?.[index]?.calculatedInterest?.message
+                  errors.verdictInterest?.[index]?.calculated_interest?.message
                 }
               />
             )}
@@ -151,22 +151,22 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
   }> = ({ item, index }) => {
     return (
       <TableRow key={item.id}>
-        {/* interestType */}
+        {/* interest_type */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictInterest.${index}.interestType`}
+            name={`verdictInterest.${index}.interest_type`}
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                id="outlined-select-interestType"
+                id="outlined-select-interest_type"
                 select
                 value={field.value ?? ""}
                 fullWidth
                 size="small"
-                error={!!errors.verdictInterest?.[index]?.interestType}
+                error={!!errors.verdictInterest?.[index]?.interest_type}
                 helperText={
-                  errors.verdictInterest?.[index]?.interestType?.message
+                  errors.verdictInterest?.[index]?.interest_type?.message
                 }
               >
                 {interesTipos.map((option) => (
@@ -179,10 +179,10 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
           />
         </TableCell>
 
-        {/* calculationStart */}
+        {/* calculation_start */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictInterest.${index}.calculationStart`}
+            name={`verdictInterest.${index}.calculation_start`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -191,9 +191,9 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                 fullWidth
                 size="small"
                 slotProps={{ inputLabel: { shrink: true } }}
-                error={!!errors.verdictInterest?.[index]?.calculationStart}
+                error={!!errors.verdictInterest?.[index]?.calculation_start}
                 helperText={
-                  errors.verdictInterest?.[index]?.calculationStart?.message
+                  errors.verdictInterest?.[index]?.calculation_start?.message
                 }
                 value={
                   field.value
@@ -211,10 +211,10 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
             )}
           />
         </TableCell>
-        {/* calculationEnd */}
+        {/* calculation_end */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictInterest.${index}.calculationEnd`}
+            name={`verdictInterest.${index}.calculation_end`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -223,9 +223,9 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                 fullWidth
                 size="small"
                 slotProps={{ inputLabel: { shrink: true } }}
-                error={!!errors.verdictInterest?.[index]?.calculationEnd}
+                error={!!errors.verdictInterest?.[index]?.calculation_end}
                 helperText={
-                  errors.verdictInterest?.[index]?.calculationEnd?.message
+                  errors.verdictInterest?.[index]?.calculation_end?.message
                 }
                 value={
                   field.value
@@ -243,10 +243,10 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
             )}
           />
         </TableCell>
-        {/* baseAmount */}
+        {/* base_amount */}
         <TableCell sx={{ textAlign: "center" }}>
           <Controller
-            name={`verdictInterest.${index}.baseAmount`}
+            name={`verdictInterest.${index}.base_amount`}
             control={control}
             render={({ field }) => (
               <TextField
@@ -256,9 +256,9 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                 type="number"
                 placeholder="0.00"
                 inputProps={{ step: "any" }}
-                error={!!errors.verdictInterest?.[index]?.baseAmount}
+                error={!!errors.verdictInterest?.[index]?.base_amount}
                 helperText={
-                  errors.verdictInterest?.[index]?.baseAmount?.message
+                  errors.verdictInterest?.[index]?.base_amount?.message
                 }
                 value={field.value ?? ""} // si es null/undefined → ""
                 onChange={(e) => {
@@ -270,7 +270,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
           />
         </TableCell>
 
-        {/* totalInterest */}
+        {/* total_interest */}
         <TableCell sx={{ textAlign: "center" }}>
           <InterestCell control={control} index={index} />
         </TableCell>
@@ -278,7 +278,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
         <TableCell sx={{ textAlign: "center" }}>
           <TotalCell control={control} index={index} />
         </TableCell>
-        {/* calculatedInterest */}
+        {/* calculated_interest */}
         {/* <TableCell sx={{ textAlign: "center" }}>
           <CalculatedInterestCell control={control} index={index} />
         </TableCell> */}
@@ -428,12 +428,12 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                   size="small"
                   onClick={() =>
                     append({
-                      interestType: 1,
-                      baseAmount: 0,
-                      calculatedInterest: 0,
-                      calculationStart: new Date(),
-                      calculationEnd: new Date(),
-                      totalInterest: 0,
+                      interest_type: 1,
+                      base_amount: 0,
+                      calculated_interest: 0,
+                      calculation_start: new Date(),
+                      calculation_end: new Date(),
+                      total_interest: 0,
                       details: [],
                     })
                   }
@@ -516,7 +516,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
             <Table
               stickyHeader
               sx={{ minWidth: 900, bgcolor: "white" }}
-              aria-label="tabla de calculatedInterest"
+              aria-label="tabla de calculated_interest"
               size="small"
             >
               <TableHead>
@@ -636,16 +636,16 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                       {row.period}
                     </TableCell>
                     <TableCell align="center">
-                      {row.periodStart.toLocaleDateString("es-ES")}
+                      {row.period_start.toLocaleDateString("es-ES")}
                     </TableCell>
                     <TableCell align="center">
-                      {row.periodEnd.toLocaleDateString("es-ES")}
+                      {row.period_end.toLocaleDateString("es-ES")}
                     </TableCell>
                     <TableCell align="center">{row.days}</TableCell>
                     <TableCell align="center">
                       <TextField
                         type="number"
-                        value={Number(row.annualRate).toFixed(2)}
+                        value={Number(row.annual_rate).toFixed(2)}
                         size="small"
                         fullWidth
                         disabled // Deshabilitado para evitar edición accidental
@@ -653,10 +653,10 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                       />
                     </TableCell>
                     <TableCell align="center">
-                      {Number(row.proportionalRate).toFixed(8)}
+                      {Number(row.proportional_rate).toFixed(8)}
                     </TableCell>
                     <TableCell align="center" sx={{ textAlign: "right" }}>
-                      {`$ ${Number(row.baseAmount).toFixed(2)}`}
+                      {`$ ${Number(row.base_amount).toFixed(2)}`}
                     </TableCell>
                     <TableCell align="center" sx={{ textAlign: "right" }}>
                       {`$ ${Number(row.interest).toFixed(2)}`}

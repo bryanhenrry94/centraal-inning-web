@@ -28,7 +28,7 @@ const sampleData = [
     installment: 1,
     amount: 300,
     paidAmount: 300,
-    dueDate: "2025-08-01",
+    due_date: "2025-08-01",
     status: "paid",
   },
   {
@@ -39,7 +39,7 @@ const sampleData = [
     installment: 2,
     amount: 300,
     paidAmount: 0,
-    dueDate: "2025-09-01",
+    due_date: "2025-09-01",
     status: "late",
   },
   {
@@ -50,7 +50,7 @@ const sampleData = [
     installment: null,
     amount: 1200,
     paidAmount: 600,
-    dueDate: "2025-09-15",
+    due_date: "2025-09-15",
     status: "partially_paid",
   },
   {
@@ -61,7 +61,7 @@ const sampleData = [
     installment: null,
     amount: 800,
     paidAmount: 800,
-    dueDate: "2025-09-20",
+    due_date: "2025-09-20",
     status: "paid",
   },
 ];
@@ -171,7 +171,7 @@ export default function AccountsPage() {
                   <TableCell align="right">
                     ${(row.amount - row.paidAmount).toFixed(2)}
                   </TableCell>
-                  <TableCell>{row.dueDate}</TableCell>
+                  <TableCell>{row.due_date}</TableCell>
                   <TableCell>
                     <StatusChip status={row.status} />
                   </TableCell>
