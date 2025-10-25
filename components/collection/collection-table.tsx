@@ -27,7 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CollectionForm from "./collection-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { formatCurrency, formatDate } from "@/common/utils/general";
-import { getAllCollectionCases } from "@/app/actions/collection";
+import { getAllCollectionCases } from "@/app/actions/collection-case";
 import { notifyError } from "@/lib/notifications";
 
 const CollectionTable = () => {
@@ -47,7 +47,10 @@ const CollectionTable = () => {
 
     try {
       setLoading(true);
-      const data = await getAllCollectionCases(tenant.id);
+      const params = {
+        tenant_id: tenant.id,
+      };
+      const data = await getAllCollectionCases(params);
       setCollectionCases(data);
     } catch (error) {
       console.error("Error fetching collection cases:", error);
@@ -279,10 +282,10 @@ const CollectionTable = () => {
                   {formatCurrency(invoice.amount_original)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "right" }}>
-                  {formatCurrency(invoice.amount_due)}
+                  {formatCurrency(invoice.fee_amount + invoice.abb_amount)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "right" }}>
-                  {formatCurrency(invoice.amount_to_receive)}
+                  {formatCurrency(invoice.total_to_receive)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {invoice.status}

@@ -123,6 +123,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.TenantScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  code: 'code',
   subdomain: 'subdomain',
   contact_email: 'contact_email',
   country_code: 'country_code',
@@ -138,6 +139,20 @@ exports.Prisma.TenantScalarFieldEnum = {
   is_active: 'is_active',
   created_at: 'created_at',
   updated_at: 'updated_at'
+};
+
+exports.Prisma.TenantInvitationScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  email: 'email',
+  fullname: 'fullname',
+  token: 'token',
+  role: 'role',
+  debtor_id: 'debtor_id',
+  created_at: 'created_at',
+  expires_at: 'expires_at',
+  used: 'used',
+  used_at: 'used_at'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -324,21 +339,26 @@ exports.Prisma.CollectionCaseScalarFieldEnum = {
   tenant_id: 'tenant_id',
   debtor_id: 'debtor_id',
   amount_original: 'amount_original',
-  amount_due: 'amount_due',
-  amount_to_receive: 'amount_to_receive',
+  fee_rate: 'fee_rate',
+  fee_amount: 'fee_amount',
+  abb_rate: 'abb_rate',
+  abb_amount: 'abb_amount',
+  total_fined: 'total_fined',
+  total_due: 'total_due',
+  total_to_receive: 'total_to_receive',
+  total_paid: 'total_paid',
+  balance: 'balance',
   status: 'status',
-  notification_status: 'notification_status',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
-exports.Prisma.CollectionCasePenaltyScalarFieldEnum = {
+exports.Prisma.CollectionCaseFineScalarFieldEnum = {
   id: 'id',
   collection_case_id: 'collection_case_id',
   description: 'description',
   amount: 'amount',
-  date_applied: 'date_applied',
-  is_paid: 'is_paid',
+  applied_at: 'applied_at',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -454,6 +474,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.InvitationRole = exports.$Enums.InvitationRole = {
+  DEBTOR: 'DEBTOR',
+  AGENT: 'AGENT',
+  SHERIFF: 'SHERIFF'
+};
+
 exports.roleEnum = exports.$Enums.roleEnum = {
   PLATFORM_OWNER: 'PLATFORM_OWNER',
   TENANT_ADMIN: 'TENANT_ADMIN',
@@ -525,6 +551,7 @@ exports.InstallmentStatus = exports.$Enums.InstallmentStatus = {
 
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
+  TenantInvitation: 'TenantInvitation',
   User: 'User',
   Parameter: 'Parameter',
   Verdict: 'Verdict',
@@ -539,7 +566,7 @@ exports.Prisma.ModelName = {
   BillingInvoiceDetail: 'BillingInvoiceDetail',
   BillingPayment: 'BillingPayment',
   CollectionCase: 'CollectionCase',
-  CollectionCasePenalty: 'CollectionCasePenalty',
+  CollectionCaseFine: 'CollectionCaseFine',
   CollectionCaseNotification: 'CollectionCaseNotification',
   CollectionCasePayment: 'CollectionCasePayment',
   Debtor: 'Debtor',

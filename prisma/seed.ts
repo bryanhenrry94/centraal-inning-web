@@ -8,6 +8,7 @@ async function main() {
     update: {},
     create: {
       id: "0874303e-6795-46ef-8416-5d76bba8071b",
+      code: "CENTRAAL", // Código único para el tenant
       name: "Centraal Inning",
       legal_name: "Centraal Inning N.V.",
       kvk: "12345678",

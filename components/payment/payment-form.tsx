@@ -13,7 +13,7 @@ import {
 } from "@/lib/validations/payment";
 import { CollectionCase } from "@/lib/validations/collection";
 import { registerPayment } from "@/app/actions/payment";
-import { getAllCollectionCases } from "@/app/actions/collection";
+import { getAllCollectionCases } from "@/app/actions/collection-case";
 import { $Enums } from "@/prisma/generated/prisma";
 
 const PaymentForm = ({
@@ -28,7 +28,11 @@ const PaymentForm = ({
     // Fetch collections from the API or any other source
     const fetchInvoices = async () => {
       if (!tenant) return;
-      const data = await getAllCollectionCases(tenant.id);
+
+      const params = {
+        tenant_id: tenant.id,
+      };
+      const data = await getAllCollectionCases(params);
       setCollections(data);
     };
 
@@ -89,7 +93,7 @@ const PaymentForm = ({
             options={collections}
             getOptionLabel={(option) =>
               option.id
-                ? `${option.reference_number} - Saldo: $${option.amount_due}`
+                ? `${option.reference_number} - Saldo: $${option.balance}`
                 : ""
             }
             onChange={(_, value) => field.onChange(value ? value.id : "")}

@@ -26,10 +26,14 @@ export const registerPayment = async (payload: PaymentCreate) => {
       where: { id: payload.collection_case_id },
     });
     if (collectionCase) {
-      const newBalance = Number(collectionCase.amount_due) - totalPaid;
+      const newBalance = Number(collectionCase.total_due) - totalPaid;
+
       await prisma.collectionCase.update({
         where: { id: payload.collection_case_id },
-        data: { amount_due: newBalance },
+        data: {
+          total_paid: totalPaid,
+          balance: newBalance,
+        },
       });
     }
   }

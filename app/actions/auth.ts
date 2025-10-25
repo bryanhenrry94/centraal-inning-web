@@ -18,6 +18,7 @@ import {
   ITenantSignUp,
 } from "@/lib/validations/signup";
 import { getParameter } from "./parameter";
+import { CountryList } from "@/common/data";
 
 export const signInWithPassword = async (
   params: LoginFormData
@@ -116,9 +117,12 @@ export async function createAccount(
         validatedData.company.name
       );
 
+      const code = await generateCode(validatedData.company.country);
+
       const tenant = await tx.tenant.create({
         data: {
           name: validatedData.company.name,
+          code: code,
           subdomain,
           kvk: validatedData.company.kvk,
           legal_name: validatedData.company.name,
@@ -252,4 +256,17 @@ export const createAccountDebtor = async (
     console.error("Error creating debtor account:", error);
     return { status: false, error: error.message };
   }
+};
+
+const generateCode = async (country_code: string): Promise<string> => {
+  const island = CountryList.find((c) => c.value === country_code);
+  const prefix = island?.label.toUpperCase().slice(0, 3) || "XXX";
+  const last_sequence = await prisma.tenant.count({
+    where: {
+      country_code,
+    },
+  });
+
+  const new_sequence = last_sequence + 1;
+  return `CI${prefix}-${new_sequence.toString().padStart(3, "0")}`;
 };

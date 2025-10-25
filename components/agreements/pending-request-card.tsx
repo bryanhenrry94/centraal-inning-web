@@ -13,7 +13,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import PersonIcon from "@mui/icons-material/Person";
 // action & validations
-import { getCollectionViewById } from "@/app/actions/collection";
+import { getCollectionViewById } from "@/app/actions/collection-case";
 import { CollectionCaseView } from "@/lib/validations/collection";
 import { PaymentAgreement } from "@/lib/validations/payment-agreement";
 import { formatCurrency, formatDate } from "@/common/utils/general";

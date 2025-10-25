@@ -278,3 +278,50 @@ export const hasAgreement = async (collectionId: string): Promise<boolean> => {
     return false;
   }
 };
+
+// tiene pagos al dia del acuerdo de pago
+export const hasPaymentsUpToDate = async (
+  collectionId: string
+): Promise<boolean> => {
+  try {
+    const agreement = await prisma.collectionCaseAgreement.findFirst({
+      where: {
+        collection_case_id: collectionId,
+        status: $Enums.AgreementStatus.ACCEPTED,
+      },
+      include: {
+        installments: true,
+      },
+    });
+
+    if (!agreement) return false;
+
+    const today = new Date();
+    for (const installment of agreement.installments) {
+      if (
+        installment.due_date <= today &&
+        installment.status !== $Enums.InstallmentStatus.PAID
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const cancelAgreementsByCollectionCase = async (
+  collection_case_id: string
+) => {
+  await prisma.collectionCaseAgreement.updateMany({
+    where: {
+      collection_case_id,
+      status: $Enums.AgreementStatus.ACCEPTED,
+    },
+    data: {
+      status: $Enums.AgreementStatus.CANCELLED,
+    },
+  });
+};

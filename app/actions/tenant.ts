@@ -1,7 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { Tenant } from "@/lib/validations/tenant";
-import { $Enums } from "@/prisma/generated/prisma";
 
 export const getTenantByEmail = async (
   email: string

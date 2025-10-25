@@ -5,13 +5,21 @@ import { $Enums } from "@/prisma/generated/prisma";
 
 export const CollectionCaseSchema = z.object({
   id: z.cuid(),
-  debtor_id: z.string(),
-  amount_original: z.number(),
-  amount_due: z.number(),
-  amount_to_receive: z.number(),
   reference_number: z.string().optional(),
   issue_date: z.date(),
   due_date: z.date(),
+  tenant_id: z.string(),
+  debtor_id: z.string(),
+  amount_original: z.number(),
+  fee_rate: z.number(),
+  fee_amount: z.number(),
+  abb_rate: z.number(),
+  abb_amount: z.number(),
+  total_fined: z.number().default(0),
+  total_due: z.number().default(0),
+  total_to_receive: z.number().default(0),
+  total_paid: z.number().default(0),
+  balance: z.number().default(0),
   status: z
     .enum([
       $Enums.CollectionCaseStatus.AANMANING,
@@ -20,7 +28,6 @@ export const CollectionCaseSchema = z.object({
       $Enums.CollectionCaseStatus.BLOKKADE,
     ])
     .default($Enums.CollectionCaseStatus.AANMANING),
-  tenant_id: z.string().optional(),
   created_at: z.date(),
   updated_at: z.date(),
 });

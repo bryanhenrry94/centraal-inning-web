@@ -17,64 +17,17 @@ import {
 } from "@/app/actions/notification";
 import { getParameter } from "./parameter";
 
-export const getAllCollectionCases = async (
-  tenant_id: string
-): Promise<CollectionCaseResponse[]> => {
-  const collectionCases = await prisma.collectionCase.findMany({
-    where: { tenant_id },
-    include: {
-      debtor: true,
-    },
-  });
-
-  return collectionCases.map((collection) => ({
-    id: collection.id,
-    reference_number: collection.reference_number || undefined,
-    issue_date: collection.issue_date ?? undefined,
-    due_date: collection.due_date ?? undefined,
-    tenant_id: collection.tenant_id ?? undefined,
-    debtor_id: collection.debtor_id,
-    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
-    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
-    amount_to_receive: collection.amount_to_receive
-      .toDecimalPlaces(2)
-      .toNumber(),
-    status: collection.status as $Enums.CollectionCaseStatus,
-    created_at: collection.created_at,
-    updated_at: collection.updated_at,
-    debtor: {
-      id: collection.debtor?.id ?? "",
-      fullname: collection.debtor?.fullname ?? "",
-      email: collection.debtor?.email ?? "",
-      identification_type: collection.debtor
-        ?.identification_type as $Enums.IdentificationType,
-      ...(collection.debtor?.phone ? { phone: collection.debtor.phone } : {}),
-      ...(collection.debtor?.address
-        ? { address: collection.debtor.address }
-        : {}),
-      ...(collection.debtor?.person_type
-        ? {
-            person_type: collection.debtor.person_type as $Enums.PersonType,
-          }
-        : {}),
-      ...(collection.debtor?.identification
-        ? { identification: collection.debtor.identification }
-        : {}),
-    },
-  }));
+type CollectionCaseFilter = {
+  tenant_id: string;
+  status?: $Enums.CollectionCaseStatus;
+  debtor_id?: string;
 };
 
-export const getAllCollectionCasesByUserId = async (
-  tenant_id: string,
-  user_id: string
+export const getAllCollectionCases = async (
+  params: CollectionCaseFilter
 ): Promise<CollectionCaseResponse[]> => {
-  const debtor = await prisma.debtor.findFirst({
-    where: { user_id: user_id },
-  });
-  if (!debtor) throw new Error("Debtor not found");
-
   const collectionCases = await prisma.collectionCase.findMany({
-    where: { tenant_id, debtor_id: debtor.id },
+    where: { ...params },
     include: {
       debtor: true,
     },
@@ -82,16 +35,21 @@ export const getAllCollectionCasesByUserId = async (
 
   return collectionCases.map((collection) => ({
     id: collection.id,
-    reference_number: collection.reference_number || undefined,
-    issue_date: collection.issue_date ?? undefined,
-    due_date: collection.due_date ?? undefined,
-    tenant_id: collection.tenant_id ?? undefined,
+    reference_number: collection.reference_number || "",
+    issue_date: collection.issue_date,
+    due_date: collection.due_date,
+    tenant_id: collection.tenant_id,
     debtor_id: collection.debtor_id,
-    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
-    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
-    amount_to_receive: collection.amount_to_receive
-      .toDecimalPlaces(2)
-      .toNumber(),
+    amount_original: Number(collection.amount_original),
+    fee_rate: Number(collection.fee_rate),
+    fee_amount: Number(collection.fee_amount),
+    abb_rate: Number(collection.abb_rate),
+    abb_amount: Number(collection.abb_amount),
+    total_fined: Number(collection.total_fined),
+    total_due: Number(collection.total_due),
+    total_to_receive: Number(collection.total_to_receive),
+    total_paid: Number(collection.total_paid),
+    balance: Number(collection.balance),
     status: collection.status as $Enums.CollectionCaseStatus,
     created_at: collection.created_at,
     updated_at: collection.updated_at,
@@ -126,21 +84,25 @@ export const getCollectionById = async (
   if (!collection) throw new Error("Collection not found");
 
   return {
-    ...collection,
     id: collection.id,
-    reference_number: collection.reference_number || undefined,
-    issue_date: collection.issue_date ?? undefined,
-    due_date: collection.due_date ?? undefined,
-    tenant_id: collection.tenant_id ?? undefined,
+    reference_number: collection.reference_number || "",
+    issue_date: collection.issue_date,
+    due_date: collection.due_date,
+    tenant_id: collection.tenant_id,
     debtor_id: collection.debtor_id,
-    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
-    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
-    amount_to_receive: collection.amount_to_receive
-      .toDecimalPlaces(2)
-      .toNumber(),
+    amount_original: Number(collection.amount_original),
+    fee_rate: Number(collection.fee_rate),
+    fee_amount: Number(collection.fee_amount),
+    abb_rate: Number(collection.abb_rate),
+    abb_amount: Number(collection.abb_amount),
+    total_fined: Number(collection.total_fined),
+    total_due: Number(collection.total_due),
+    total_to_receive: Number(collection.total_to_receive),
+    total_paid: Number(collection.total_paid),
+    balance: Number(collection.balance),
     status: collection.status as $Enums.CollectionCaseStatus,
-    created_at: collection.created_at ?? undefined,
-    updated_at: collection.updated_at ?? undefined,
+    created_at: collection.created_at,
+    updated_at: collection.updated_at,
   };
 };
 
@@ -156,16 +118,21 @@ export const getCollectionViewById = async (
   return {
     ...collection,
     id: collection.id,
-    reference_number: collection.reference_number || undefined,
-    issue_date: collection.issue_date ?? undefined,
-    due_date: collection.due_date ?? undefined,
-    tenant_id: collection.tenant_id ?? undefined,
+    reference_number: collection.reference_number || "",
+    issue_date: collection.issue_date,
+    due_date: collection.due_date,
+    tenant_id: collection.tenant_id,
     debtor_id: collection.debtor_id,
-    amount_original: collection.amount_original.toDecimalPlaces(2).toNumber(),
-    amount_due: collection.amount_due.toDecimalPlaces(2).toNumber(),
-    amount_to_receive: collection.amount_to_receive
-      .toDecimalPlaces(2)
-      .toNumber(),
+    amount_original: Number(collection.amount_original),
+    fee_rate: Number(collection.fee_rate),
+    fee_amount: Number(collection.fee_amount),
+    abb_rate: Number(collection.abb_rate),
+    abb_amount: Number(collection.abb_amount),
+    total_fined: Number(collection.total_fined),
+    total_due: Number(collection.total_due),
+    total_to_receive: Number(collection.total_to_receive),
+    total_paid: Number(collection.total_paid),
+    balance: Number(collection.balance),
     status: collection.status as $Enums.CollectionCaseStatus,
     created_at: collection.created_at,
     updated_at: collection.updated_at,
@@ -234,12 +201,26 @@ export const createCollectionCase = async (
   });
   if (!debtor) throw new Error("Debtor not found");
 
+  const fee_rate = parameter.collection_fee_rate;
+  const abb_rate = parameter.abb_rate;
+
   // Calcular montos
-  const amount_original = parsedData.amount_original ?? 0;
-  const comision = (amount_original * parameter.collection_fee_rate) / 100; // 15% de comisión
-  const abb = (comision * parameter.abb_rate) / 100; // 6% de impuesto sobre la comisión
-  const amount_due = comision + abb;
-  const amount_to_receive = amount_original - amount_due;
+  const fee_amount = Number(
+    ((parsedData.amount_original * fee_rate) / 100).toFixed(2)
+  );
+  const abb_amount = Number(((fee_amount * abb_rate) / 100).toFixed(2));
+
+  // total con impuestos y multas
+  const total_due = Number(
+    (parsedData.amount_original + fee_amount + abb_amount).toFixed(2)
+  );
+
+  // neto después de retención
+  const total_to_receive = Number(
+    (parsedData.amount_original - fee_amount - abb_amount).toFixed(2)
+  );
+
+  const balance = parsedData.amount_original + fee_amount + abb_amount;
 
   // Calcular fechas de recordatorio
   const day_term = await getNotificationDays(
@@ -261,9 +242,16 @@ export const createCollectionCase = async (
       reference_number: parsedData.reference_number || "",
       issue_date: parsedData.issue_date,
       due_date: due_date,
-      amount_original: amount_original,
-      amount_due: amount_due,
-      amount_to_receive: amount_to_receive,
+      amount_original: parsedData.amount_original,
+      fee_rate: fee_rate,
+      fee_amount: fee_amount,
+      abb_rate: abb_rate,
+      abb_amount: abb_amount,
+      total_fined: 0, // total de multas
+      total_due: total_due, // total con impuestos y multas
+      total_to_receive: total_to_receive, // neto después de retención
+      total_paid: 0,
+      balance: balance,
       status:
         (parsedData.status as $Enums.CollectionCaseStatus) ||
         $Enums.CollectionCaseStatus.AANMANING,
@@ -285,7 +273,7 @@ export const createCollectionCase = async (
     tenant_id: tenant.id,
     island: tenant.country_code,
     address: tenant.address,
-    amount: comision,
+    amount: fee_amount,
   });
 
   // Envia una notificación al deudor del aviso de AANMANING
@@ -313,31 +301,7 @@ export const updateCollection = async (
   return updatedCollection;
 };
 
-export const deleteCollection = async (id: string) => {
-  await prisma.collectionCase.delete({
-    where: { id },
-  });
-  return { message: "Collection deleted successfully" };
-};
-
-export const getNextCollectionStatus = async (
-  currentStatus: $Enums.CollectionCaseStatus
-): Promise<$Enums.CollectionCaseStatus | null> => {
-  switch (currentStatus) {
-    case $Enums.CollectionCaseStatus.AANMANING:
-      return $Enums.CollectionCaseStatus.SOMMATIE;
-    case $Enums.CollectionCaseStatus.SOMMATIE:
-      return $Enums.CollectionCaseStatus.INGEBREKESTELLING;
-    case $Enums.CollectionCaseStatus.INGEBREKESTELLING:
-      return $Enums.CollectionCaseStatus.BLOKKADE;
-    case $Enums.CollectionCaseStatus.BLOKKADE:
-      return null;
-    default:
-      return null;
-  }
-};
-
-export const updateCollectionStatus = async (
+export const updateCollectionStatusAndSendNotification = async (
   id: string,
   status: $Enums.CollectionCaseStatus
 ) => {
@@ -349,4 +313,6 @@ export const updateCollectionStatus = async (
       status: status,
     },
   });
+
+  await sendNotification(id);
 };

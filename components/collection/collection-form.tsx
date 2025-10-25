@@ -17,7 +17,7 @@ import { CollectionCaseCreate } from "@/lib/validations/collection";
 import { ModalFormDebtor } from "@/components/debtor/modal-debtor-form";
 import { DebtorBase } from "@/lib/validations/debtor";
 import { getParameter } from "@/app/actions/parameter";
-import { createCollectionCase } from "@/app/actions/collection";
+import { createCollectionCase } from "@/app/actions/collection-case";
 import { notifyError, notifySuccess } from "@/lib/notifications";
 import { useTenant } from "@/hooks/useTenant";
 import { getAllDebtorsByTenantId } from "@/app/actions/debtor";
@@ -26,13 +26,20 @@ import { $Enums } from "@/prisma/generated/prisma";
 
 const InitialCollectionCaseCreate: CollectionCaseCreate = {
   debtor_id: "",
-  amount_original: 0,
-  amount_due: 0,
-  amount_to_receive: 0,
-  status: $Enums.CollectionCaseStatus.AANMANING,
   reference_number: "",
-  issue_date: new Date() ?? undefined,
-  due_date: new Date() ?? undefined,
+  issue_date: new Date(),
+  due_date: new Date(),
+  amount_original: 0,
+  fee_rate: 0,
+  fee_amount: 0,
+  abb_rate: 0,
+  abb_amount: 0,
+  total_fined: 0,
+  total_due: 0,
+  total_paid: 0,
+  total_to_receive: 0,
+  balance: 0,
+  status: $Enums.CollectionCaseStatus.AANMANING,
 };
 
 interface IRegisterInvoiceProps {
@@ -122,11 +129,13 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
       const newInvoice = await createCollectionCase(formData, tenant?.id);
       setFormData(InitialCollectionCaseCreate);
       console.log("New invoice: ", newInvoice);
-      notifySuccess("Factura guardada exitosamente");
+      notifySuccess("Opgenomen verzameltaak");
       onSave?.();
     } catch (error) {
       console.error("Error: ", error);
-      notifyError("Ocurrió un error al registrar la factura");
+      notifyError(
+        "Er is een fout opgetreden bij het registreren van de verzameltaak"
+      );
     } finally {
       setLoading(false);
     }

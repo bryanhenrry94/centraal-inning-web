@@ -2,7 +2,7 @@
 import prisma from "@/lib/prisma";
 import CollectionService from "@/common/mail/services/collectionService";
 import { CollectionCase } from "@/lib/validations/collection";
-import { getCollectionById } from "@/app/actions/collection";
+import { getCollectionById } from "@/app/actions/collection-case";
 import { Notification } from "@/lib/validations/notification";
 import { getParameter } from "@/app/actions/parameter";
 import { NotificationType } from "@/lib/validations/notification";
@@ -16,6 +16,8 @@ import {
   getNameCountry,
 } from "@/common/utils/general";
 import { $Enums } from "@/prisma/generated/prisma";
+import { registerInvitation } from "./tenant-invitation";
+import { protocol, rootDomain } from "@/lib/utils";
 
 export const sendNotification = async (caseId: string) => {
   if (!caseId) {
@@ -115,6 +117,22 @@ export const sendAanmaning = async (
       throw new Error("El deudor no tiene email");
     }
 
+    // Si el deudor no tiene usuario, enviar invitación para registrarse
+    let invitationLink: string = "";
+
+    if (!debtor.user_id) {
+      // Registrar invitación
+      const invitation = await registerInvitation({
+        tenantId: debtor.tenant_id,
+        email: debtor.email,
+        role: "DEBTOR",
+        fullname: debtor.fullname,
+        debtor_id: debtor.id,
+      });
+
+      invitationLink = `${protocol}://${rootDomain}/invitation/${invitation.token}`;
+    }
+
     const tenant = await prisma.tenant.findUnique({
       where: { id: collection.tenant_id },
     });
@@ -161,6 +179,7 @@ export const sendAanmaning = async (
       messageBody: `Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
           Platform. U kunt de details van deze taak veilig bekijken door in te
           loggen op het CI Platform:`,
+      invitationLink: invitationLink,
     };
 
     const debtorEmail = debtor?.email;

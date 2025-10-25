@@ -21,7 +21,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { CollectionCaseView } from "@/lib/validations/collection";
 import { Payment } from "@/lib/validations/payment";
-import { getCollectionViewById } from "@/app/actions/collection";
+import { getCollectionViewById } from "@/app/actions/collection-case";
 import { notifyError, notifyInfo } from "@/lib/notifications";
 import { formatCurrency } from "@/common/utils/general";
 import { getPaymentsByInvoice } from "@/app/actions/payment";
@@ -287,10 +287,13 @@ const CollectionViewPage: React.FC = () => {
               Vordering: {formatCurrency(collection?.amount_original || 0)}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Te betalen: {formatCurrency(collection?.amount_due || 0)}
+              Te betalen:{" "}
+              {formatCurrency(
+                (collection?.fee_amount || 0) + (collection?.abb_amount || 0)
+              )}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Te ontvangen: {formatCurrency(collection?.amount_to_receive || 0)}
+              Te ontvangen: {formatCurrency(collection?.total_to_receive || 0)}
             </Typography>
             <Typography variant="body1" color="text.secondary">
               Status: {collection?.status || "N/A"}

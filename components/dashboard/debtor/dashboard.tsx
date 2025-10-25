@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { getAllCollectionCasesByUserId } from "@/app/actions/collection";
+import { getAllCollectionCases } from "@/app/actions/collection-case";
 import { CollectionCaseResponse } from "@/lib/validations/collection";
 import {
   Container,
@@ -89,10 +89,17 @@ const DashboardDebtor = () => {
 
   const fetchCollectionCases = async () => {
     try {
-      const data = await getAllCollectionCasesByUserId(
-        user?.tenant_id as string,
-        user?.id as string
-      );
+      const debtor = await getDebtorByUserId(user?.id as string);
+      if (!debtor) {
+        notifyError("No se encontró el deudor asociado al usuario");
+        return;
+      }
+
+      const params = {
+        tenant_id: session?.user?.tenant_id as string,
+        debtor_id: debtor.id,
+      };
+      const data = await getAllCollectionCases(params);
       setCollectionCases(data);
     } catch (error) {
       console.error("Error fetching collection cases:", error);
@@ -358,9 +365,7 @@ const DashboardDebtor = () => {
                     {formatDate(caseItem.due_date?.toString() || "")}
                   </TableCell>
                   <TableCell sx={{ textAlign: "right" }}>
-                    {formatCurrency(
-                      caseItem.amount_original + caseItem.amount_due
-                    )}
+                    {formatCurrency(caseItem.total_due)}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <Button
@@ -454,9 +459,7 @@ const DashboardDebtor = () => {
             onSubmit={handleAgreementSubmit}
             initialData={{
               ...collectionCaseSelected,
-              total_amount:
-                (collectionCaseSelected?.amount_original ?? 0) +
-                (collectionCaseSelected?.amount_due ?? 0),
+              total_amount: collectionCaseSelected?.total_due ?? 0,
               installments_count: 3,
               start_date: new Date(
                 new Date().getFullYear(),

@@ -11,6 +11,7 @@ datasource db {
 model Tenant {
   id                  String  @id @default(uuid())
   name                String
+  code                String  @unique
   subdomain           String  @unique
   contact_email       String
   country_code        String
@@ -35,8 +36,28 @@ model Tenant {
   users            User[]
   chat_rooms       ChatRoom[]
   agreements       CollectionCaseAgreement[]
+  invitations      TenantInvitation[]
 
   @@map("tenant")
+}
+
+model TenantInvitation {
+  id         String         @id @default(uuid())
+  tenant_id  String
+  email      String
+  fullname   String?
+  token      String         @unique
+  role       InvitationRole @default(DEBTOR)
+  debtor_id  String?
+  created_at DateTime       @default(now())
+  expires_at DateTime
+  used       Boolean        @default(false)
+  used_at    DateTime?
+  tenant     Tenant         @relation(fields: [tenant_id], references: [id])
+
+  @@index([tenant_id, email])
+  @@index([tenant_id, token])
+  @@map("tenant_invitation")
 }
 
 model User {
@@ -275,42 +296,47 @@ model BillingPayment {
 }
 
 model CollectionCase {
-  id                  String                       @id @default(cuid())
-  reference_number    String?
-  issue_date          DateTime
-  due_date            DateTime // fecha de vencimiento original
-  tenant_id           String
-  debtor_id           String
-  amount_original     Decimal                      @db.Decimal(10, 2)
-  amount_due          Decimal                      @db.Decimal(10, 2)
-  amount_to_receive   Decimal                      @db.Decimal(10, 2)
-  status              CollectionCaseStatus         @default(AANMANING)
-  notification_status String?
-  created_at          DateTime                     @default(now())
-  updated_at          DateTime                     @updatedAt
-  debtor              Debtor                       @relation(fields: [debtor_id], references: [id])
-  tenant              Tenant                       @relation(fields: [tenant_id], references: [id])
-  notifications       CollectionCaseNotification[]
-  payments            CollectionCasePayment[]
-  agreements          CollectionCaseAgreement[]
-  penalties           CollectionCasePenalty[]
-  chat_rooms          ChatRoom[]
+  id               String                       @id @default(cuid())
+  reference_number String?
+  issue_date       DateTime
+  due_date         DateTime
+  tenant_id        String
+  debtor_id        String
+  amount_original  Decimal                      @db.Decimal(10, 2)
+  fee_rate         Decimal                      @db.Decimal(5, 2)
+  fee_amount       Decimal                      @db.Decimal(10, 2)
+  abb_rate         Decimal                      @db.Decimal(5, 2)
+  abb_amount       Decimal                      @db.Decimal(10, 2)
+  total_fined      Decimal                      @default(0) @db.Decimal(10, 2) // total de multas
+  total_due        Decimal                      @default(0) @db.Decimal(10, 2) // total con impuestos y multas
+  total_to_receive Decimal                      @default(0) @db.Decimal(10, 2) // neto después de retención
+  total_paid       Decimal                      @default(0) @db.Decimal(10, 2)
+  balance          Decimal                      @default(0) @db.Decimal(10, 2)
+  status           CollectionCaseStatus         @default(AANMANING)
+  created_at       DateTime                     @default(now())
+  updated_at       DateTime                     @updatedAt
+  debtor           Debtor                       @relation(fields: [debtor_id], references: [id])
+  tenant           Tenant                       @relation(fields: [tenant_id], references: [id])
+  fines            CollectionCaseFine[]
+  payments         CollectionCasePayment[]
+  agreements       CollectionCaseAgreement[]
+  notifications    CollectionCaseNotification[]
+  chat_rooms       ChatRoom[]
 
   @@map("collection_case")
 }
 
-model CollectionCasePenalty {
+model CollectionCaseFine {
   id                 String         @id @default(cuid())
   collection_case_id String
   description        String?
   amount             Decimal        @db.Decimal(10, 2)
-  date_applied       DateTime       @default(now())
-  is_paid            Boolean        @default(false)
+  applied_at         DateTime       @default(now())
   created_at         DateTime       @default(now())
   updated_at         DateTime       @updatedAt
   collection_case    CollectionCase @relation(fields: [collection_case_id], references: [id])
 
-  @@map("collection_case_penalty")
+  @@map("collection_case_fine")
 }
 
 model CollectionCaseNotification {
@@ -524,4 +550,10 @@ enum CollectionCaseStatus {
 enum PersonType {
   INDIVIDUAL
   COMPANY
+}
+
+enum InvitationRole {
+  DEBTOR
+  AGENT
+  SHERIFF
 }

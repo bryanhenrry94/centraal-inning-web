@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Tenant = $Result.DefaultSelection<Prisma.$TenantPayload>
 /**
+ * Model TenantInvitation
+ * 
+ */
+export type TenantInvitation = $Result.DefaultSelection<Prisma.$TenantInvitationPayload>
+/**
  * Model User
  * 
  */
@@ -89,10 +94,10 @@ export type BillingPayment = $Result.DefaultSelection<Prisma.$BillingPaymentPayl
  */
 export type CollectionCase = $Result.DefaultSelection<Prisma.$CollectionCasePayload>
 /**
- * Model CollectionCasePenalty
+ * Model CollectionCaseFine
  * 
  */
-export type CollectionCasePenalty = $Result.DefaultSelection<Prisma.$CollectionCasePenaltyPayload>
+export type CollectionCaseFine = $Result.DefaultSelection<Prisma.$CollectionCaseFinePayload>
 /**
  * Model CollectionCaseNotification
  * 
@@ -236,6 +241,15 @@ export const PersonType: {
 
 export type PersonType = (typeof PersonType)[keyof typeof PersonType]
 
+
+export const InvitationRole: {
+  DEBTOR: 'DEBTOR',
+  AGENT: 'AGENT',
+  SHERIFF: 'SHERIFF'
+};
+
+export type InvitationRole = (typeof InvitationRole)[keyof typeof InvitationRole]
+
 }
 
 export type InstallmentStatus = $Enums.InstallmentStatus
@@ -277,6 +291,10 @@ export const CollectionCaseStatus: typeof $Enums.CollectionCaseStatus
 export type PersonType = $Enums.PersonType
 
 export const PersonType: typeof $Enums.PersonType
+
+export type InvitationRole = $Enums.InvitationRole
+
+export const InvitationRole: typeof $Enums.InvitationRole
 
 /**
  * ##  Prisma Client ʲˢ
@@ -405,6 +423,16 @@ export class PrismaClient<
     * ```
     */
   get tenant(): Prisma.TenantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tenantInvitation`: Exposes CRUD operations for the **TenantInvitation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TenantInvitations
+    * const tenantInvitations = await prisma.tenantInvitation.findMany()
+    * ```
+    */
+  get tenantInvitation(): Prisma.TenantInvitationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -547,14 +575,14 @@ export class PrismaClient<
   get collectionCase(): Prisma.CollectionCaseDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.collectionCasePenalty`: Exposes CRUD operations for the **CollectionCasePenalty** model.
+   * `prisma.collectionCaseFine`: Exposes CRUD operations for the **CollectionCaseFine** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more CollectionCasePenalties
-    * const collectionCasePenalties = await prisma.collectionCasePenalty.findMany()
+    * // Fetch zero or more CollectionCaseFines
+    * const collectionCaseFines = await prisma.collectionCaseFine.findMany()
     * ```
     */
-  get collectionCasePenalty(): Prisma.CollectionCasePenaltyDelegate<ExtArgs, ClientOptions>;
+  get collectionCaseFine(): Prisma.CollectionCaseFineDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.collectionCaseNotification`: Exposes CRUD operations for the **CollectionCaseNotification** model.
@@ -1076,6 +1104,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Tenant: 'Tenant',
+    TenantInvitation: 'TenantInvitation',
     User: 'User',
     Parameter: 'Parameter',
     Verdict: 'Verdict',
@@ -1090,7 +1119,7 @@ export namespace Prisma {
     BillingInvoiceDetail: 'BillingInvoiceDetail',
     BillingPayment: 'BillingPayment',
     CollectionCase: 'CollectionCase',
-    CollectionCasePenalty: 'CollectionCasePenalty',
+    CollectionCaseFine: 'CollectionCaseFine',
     CollectionCaseNotification: 'CollectionCaseNotification',
     CollectionCasePayment: 'CollectionCasePayment',
     Debtor: 'Debtor',
@@ -1117,7 +1146,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "parameter" | "verdict" | "verdictInterest" | "verdictInterestDetails" | "verdictEmbargo" | "verdictBailiffServices" | "verdictAttachment" | "interestType" | "interestDetail" | "billingInvoice" | "billingInvoiceDetail" | "billingPayment" | "collectionCase" | "collectionCasePenalty" | "collectionCaseNotification" | "collectionCasePayment" | "debtor" | "chatRoom" | "chatMessage" | "debtorIncome" | "collectionCaseAgreement" | "collectionCaseAgreementInstallment"
+      modelProps: "tenant" | "tenantInvitation" | "user" | "parameter" | "verdict" | "verdictInterest" | "verdictInterestDetails" | "verdictEmbargo" | "verdictBailiffServices" | "verdictAttachment" | "interestType" | "interestDetail" | "billingInvoice" | "billingInvoiceDetail" | "billingPayment" | "collectionCase" | "collectionCaseFine" | "collectionCaseNotification" | "collectionCasePayment" | "debtor" | "chatRoom" | "chatMessage" | "debtorIncome" | "collectionCaseAgreement" | "collectionCaseAgreementInstallment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1192,6 +1221,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TenantCountArgs<ExtArgs>
             result: $Utils.Optional<TenantCountAggregateOutputType> | number
+          }
+        }
+      }
+      TenantInvitation: {
+        payload: Prisma.$TenantInvitationPayload<ExtArgs>
+        fields: Prisma.TenantInvitationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TenantInvitationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TenantInvitationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          findFirst: {
+            args: Prisma.TenantInvitationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TenantInvitationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          findMany: {
+            args: Prisma.TenantInvitationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>[]
+          }
+          create: {
+            args: Prisma.TenantInvitationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          createMany: {
+            args: Prisma.TenantInvitationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TenantInvitationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>[]
+          }
+          delete: {
+            args: Prisma.TenantInvitationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          update: {
+            args: Prisma.TenantInvitationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          deleteMany: {
+            args: Prisma.TenantInvitationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TenantInvitationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TenantInvitationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>[]
+          }
+          upsert: {
+            args: Prisma.TenantInvitationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantInvitationPayload>
+          }
+          aggregate: {
+            args: Prisma.TenantInvitationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTenantInvitation>
+          }
+          groupBy: {
+            args: Prisma.TenantInvitationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TenantInvitationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TenantInvitationCountArgs<ExtArgs>
+            result: $Utils.Optional<TenantInvitationCountAggregateOutputType> | number
           }
         }
       }
@@ -2231,77 +2334,77 @@ export namespace Prisma {
           }
         }
       }
-      CollectionCasePenalty: {
-        payload: Prisma.$CollectionCasePenaltyPayload<ExtArgs>
-        fields: Prisma.CollectionCasePenaltyFieldRefs
+      CollectionCaseFine: {
+        payload: Prisma.$CollectionCaseFinePayload<ExtArgs>
+        fields: Prisma.CollectionCaseFineFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.CollectionCasePenaltyFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload> | null
+            args: Prisma.CollectionCaseFineFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.CollectionCasePenaltyFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           findFirst: {
-            args: Prisma.CollectionCasePenaltyFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload> | null
+            args: Prisma.CollectionCaseFineFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.CollectionCasePenaltyFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           findMany: {
-            args: Prisma.CollectionCasePenaltyFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>[]
+            args: Prisma.CollectionCaseFineFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>[]
           }
           create: {
-            args: Prisma.CollectionCasePenaltyCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           createMany: {
-            args: Prisma.CollectionCasePenaltyCreateManyArgs<ExtArgs>
+            args: Prisma.CollectionCaseFineCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.CollectionCasePenaltyCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>[]
+            args: Prisma.CollectionCaseFineCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>[]
           }
           delete: {
-            args: Prisma.CollectionCasePenaltyDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           update: {
-            args: Prisma.CollectionCasePenaltyUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           deleteMany: {
-            args: Prisma.CollectionCasePenaltyDeleteManyArgs<ExtArgs>
+            args: Prisma.CollectionCaseFineDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.CollectionCasePenaltyUpdateManyArgs<ExtArgs>
+            args: Prisma.CollectionCaseFineUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.CollectionCasePenaltyUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>[]
+            args: Prisma.CollectionCaseFineUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>[]
           }
           upsert: {
-            args: Prisma.CollectionCasePenaltyUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollectionCasePenaltyPayload>
+            args: Prisma.CollectionCaseFineUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollectionCaseFinePayload>
           }
           aggregate: {
-            args: Prisma.CollectionCasePenaltyAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCollectionCasePenalty>
+            args: Prisma.CollectionCaseFineAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCollectionCaseFine>
           }
           groupBy: {
-            args: Prisma.CollectionCasePenaltyGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CollectionCasePenaltyGroupByOutputType>[]
+            args: Prisma.CollectionCaseFineGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CollectionCaseFineGroupByOutputType>[]
           }
           count: {
-            args: Prisma.CollectionCasePenaltyCountArgs<ExtArgs>
-            result: $Utils.Optional<CollectionCasePenaltyCountAggregateOutputType> | number
+            args: Prisma.CollectionCaseFineCountArgs<ExtArgs>
+            result: $Utils.Optional<CollectionCaseFineCountAggregateOutputType> | number
           }
         }
       }
@@ -2994,6 +3097,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     tenant?: TenantOmit
+    tenantInvitation?: TenantInvitationOmit
     user?: UserOmit
     parameter?: ParameterOmit
     verdict?: VerdictOmit
@@ -3008,7 +3112,7 @@ export namespace Prisma {
     billingInvoiceDetail?: BillingInvoiceDetailOmit
     billingPayment?: BillingPaymentOmit
     collectionCase?: CollectionCaseOmit
-    collectionCasePenalty?: CollectionCasePenaltyOmit
+    collectionCaseFine?: CollectionCaseFineOmit
     collectionCaseNotification?: CollectionCaseNotificationOmit
     collectionCasePayment?: CollectionCasePaymentOmit
     debtor?: DebtorOmit
@@ -3104,6 +3208,7 @@ export namespace Prisma {
     users: number
     chat_rooms: number
     agreements: number
+    invitations: number
   }
 
   export type TenantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3114,6 +3219,7 @@ export namespace Prisma {
     users?: boolean | TenantCountOutputTypeCountUsersArgs
     chat_rooms?: boolean | TenantCountOutputTypeCountChat_roomsArgs
     agreements?: boolean | TenantCountOutputTypeCountAgreementsArgs
+    invitations?: boolean | TenantCountOutputTypeCountInvitationsArgs
   }
 
   // Custom InputTypes
@@ -3174,6 +3280,13 @@ export namespace Prisma {
    */
   export type TenantCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CollectionCaseAgreementWhereInput
+  }
+
+  /**
+   * TenantCountOutputType without action
+   */
+  export type TenantCountOutputTypeCountInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TenantInvitationWhereInput
   }
 
 
@@ -3391,18 +3504,18 @@ export namespace Prisma {
    */
 
   export type CollectionCaseCountOutputType = {
-    notifications: number
+    fines: number
     payments: number
     agreements: number
-    penalties: number
+    notifications: number
     chat_rooms: number
   }
 
   export type CollectionCaseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    notifications?: boolean | CollectionCaseCountOutputTypeCountNotificationsArgs
+    fines?: boolean | CollectionCaseCountOutputTypeCountFinesArgs
     payments?: boolean | CollectionCaseCountOutputTypeCountPaymentsArgs
     agreements?: boolean | CollectionCaseCountOutputTypeCountAgreementsArgs
-    penalties?: boolean | CollectionCaseCountOutputTypeCountPenaltiesArgs
+    notifications?: boolean | CollectionCaseCountOutputTypeCountNotificationsArgs
     chat_rooms?: boolean | CollectionCaseCountOutputTypeCountChat_roomsArgs
   }
 
@@ -3420,8 +3533,8 @@ export namespace Prisma {
   /**
    * CollectionCaseCountOutputType without action
    */
-  export type CollectionCaseCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CollectionCaseNotificationWhereInput
+  export type CollectionCaseCountOutputTypeCountFinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CollectionCaseFineWhereInput
   }
 
   /**
@@ -3441,8 +3554,8 @@ export namespace Prisma {
   /**
    * CollectionCaseCountOutputType without action
    */
-  export type CollectionCaseCountOutputTypeCountPenaltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CollectionCasePenaltyWhereInput
+  export type CollectionCaseCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CollectionCaseNotificationWhereInput
   }
 
   /**
@@ -3640,6 +3753,7 @@ export namespace Prisma {
   export type TenantMinAggregateOutputType = {
     id: string | null
     name: string | null
+    code: string | null
     subdomain: string | null
     contact_email: string | null
     country_code: string | null
@@ -3660,6 +3774,7 @@ export namespace Prisma {
   export type TenantMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    code: string | null
     subdomain: string | null
     contact_email: string | null
     country_code: string | null
@@ -3680,6 +3795,7 @@ export namespace Prisma {
   export type TenantCountAggregateOutputType = {
     id: number
     name: number
+    code: number
     subdomain: number
     contact_email: number
     country_code: number
@@ -3710,6 +3826,7 @@ export namespace Prisma {
   export type TenantMinAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     subdomain?: true
     contact_email?: true
     country_code?: true
@@ -3730,6 +3847,7 @@ export namespace Prisma {
   export type TenantMaxAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     subdomain?: true
     contact_email?: true
     country_code?: true
@@ -3750,6 +3868,7 @@ export namespace Prisma {
   export type TenantCountAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     subdomain?: true
     contact_email?: true
     country_code?: true
@@ -3857,6 +3976,7 @@ export namespace Prisma {
   export type TenantGroupByOutputType = {
     id: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -3896,6 +4016,7 @@ export namespace Prisma {
   export type TenantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    code?: boolean
     subdomain?: boolean
     contact_email?: boolean
     country_code?: boolean
@@ -3918,12 +4039,14 @@ export namespace Prisma {
     users?: boolean | Tenant$usersArgs<ExtArgs>
     chat_rooms?: boolean | Tenant$chat_roomsArgs<ExtArgs>
     agreements?: boolean | Tenant$agreementsArgs<ExtArgs>
+    invitations?: boolean | Tenant$invitationsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenant"]>
 
   export type TenantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    code?: boolean
     subdomain?: boolean
     contact_email?: boolean
     country_code?: boolean
@@ -3944,6 +4067,7 @@ export namespace Prisma {
   export type TenantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    code?: boolean
     subdomain?: boolean
     contact_email?: boolean
     country_code?: boolean
@@ -3964,6 +4088,7 @@ export namespace Prisma {
   export type TenantSelectScalar = {
     id?: boolean
     name?: boolean
+    code?: boolean
     subdomain?: boolean
     contact_email?: boolean
     country_code?: boolean
@@ -3981,7 +4106,7 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type TenantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "subdomain" | "contact_email" | "country_code" | "kvk" | "legal_name" | "address" | "city" | "logo_url" | "number_of_employees" | "phone" | "website" | "terms_accepted" | "is_active" | "created_at" | "updated_at", ExtArgs["result"]["tenant"]>
+  export type TenantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "subdomain" | "contact_email" | "country_code" | "kvk" | "legal_name" | "address" | "city" | "logo_url" | "number_of_employees" | "phone" | "website" | "terms_accepted" | "is_active" | "created_at" | "updated_at", ExtArgs["result"]["tenant"]>
   export type TenantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     billing_invoice?: boolean | Tenant$billing_invoiceArgs<ExtArgs>
     collection_cases?: boolean | Tenant$collection_casesArgs<ExtArgs>
@@ -3990,6 +4115,7 @@ export namespace Prisma {
     users?: boolean | Tenant$usersArgs<ExtArgs>
     chat_rooms?: boolean | Tenant$chat_roomsArgs<ExtArgs>
     agreements?: boolean | Tenant$agreementsArgs<ExtArgs>
+    invitations?: boolean | Tenant$invitationsArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TenantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4005,10 +4131,12 @@ export namespace Prisma {
       users: Prisma.$UserPayload<ExtArgs>[]
       chat_rooms: Prisma.$ChatRoomPayload<ExtArgs>[]
       agreements: Prisma.$CollectionCaseAgreementPayload<ExtArgs>[]
+      invitations: Prisma.$TenantInvitationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      code: string
       subdomain: string
       contact_email: string
       country_code: string
@@ -4425,6 +4553,7 @@ export namespace Prisma {
     users<T extends Tenant$usersArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chat_rooms<T extends Tenant$chat_roomsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$chat_roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agreements<T extends Tenant$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invitations<T extends Tenant$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4456,6 +4585,7 @@ export namespace Prisma {
   interface TenantFieldRefs {
     readonly id: FieldRef<"Tenant", 'String'>
     readonly name: FieldRef<"Tenant", 'String'>
+    readonly code: FieldRef<"Tenant", 'String'>
     readonly subdomain: FieldRef<"Tenant", 'String'>
     readonly contact_email: FieldRef<"Tenant", 'String'>
     readonly country_code: FieldRef<"Tenant", 'String'>
@@ -5027,6 +5157,30 @@ export namespace Prisma {
   }
 
   /**
+   * Tenant.invitations
+   */
+  export type Tenant$invitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    where?: TenantInvitationWhereInput
+    orderBy?: TenantInvitationOrderByWithRelationInput | TenantInvitationOrderByWithRelationInput[]
+    cursor?: TenantInvitationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TenantInvitationScalarFieldEnum | TenantInvitationScalarFieldEnum[]
+  }
+
+  /**
    * Tenant without action
    */
   export type TenantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5042,6 +5196,1142 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TenantInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TenantInvitation
+   */
+
+  export type AggregateTenantInvitation = {
+    _count: TenantInvitationCountAggregateOutputType | null
+    _min: TenantInvitationMinAggregateOutputType | null
+    _max: TenantInvitationMaxAggregateOutputType | null
+  }
+
+  export type TenantInvitationMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    email: string | null
+    fullname: string | null
+    token: string | null
+    role: $Enums.InvitationRole | null
+    debtor_id: string | null
+    created_at: Date | null
+    expires_at: Date | null
+    used: boolean | null
+    used_at: Date | null
+  }
+
+  export type TenantInvitationMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    email: string | null
+    fullname: string | null
+    token: string | null
+    role: $Enums.InvitationRole | null
+    debtor_id: string | null
+    created_at: Date | null
+    expires_at: Date | null
+    used: boolean | null
+    used_at: Date | null
+  }
+
+  export type TenantInvitationCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    email: number
+    fullname: number
+    token: number
+    role: number
+    debtor_id: number
+    created_at: number
+    expires_at: number
+    used: number
+    used_at: number
+    _all: number
+  }
+
+
+  export type TenantInvitationMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    email?: true
+    fullname?: true
+    token?: true
+    role?: true
+    debtor_id?: true
+    created_at?: true
+    expires_at?: true
+    used?: true
+    used_at?: true
+  }
+
+  export type TenantInvitationMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    email?: true
+    fullname?: true
+    token?: true
+    role?: true
+    debtor_id?: true
+    created_at?: true
+    expires_at?: true
+    used?: true
+    used_at?: true
+  }
+
+  export type TenantInvitationCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    email?: true
+    fullname?: true
+    token?: true
+    role?: true
+    debtor_id?: true
+    created_at?: true
+    expires_at?: true
+    used?: true
+    used_at?: true
+    _all?: true
+  }
+
+  export type TenantInvitationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TenantInvitation to aggregate.
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TenantInvitations to fetch.
+     */
+    orderBy?: TenantInvitationOrderByWithRelationInput | TenantInvitationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TenantInvitationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TenantInvitations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TenantInvitations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TenantInvitations
+    **/
+    _count?: true | TenantInvitationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TenantInvitationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TenantInvitationMaxAggregateInputType
+  }
+
+  export type GetTenantInvitationAggregateType<T extends TenantInvitationAggregateArgs> = {
+        [P in keyof T & keyof AggregateTenantInvitation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTenantInvitation[P]>
+      : GetScalarType<T[P], AggregateTenantInvitation[P]>
+  }
+
+
+
+
+  export type TenantInvitationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TenantInvitationWhereInput
+    orderBy?: TenantInvitationOrderByWithAggregationInput | TenantInvitationOrderByWithAggregationInput[]
+    by: TenantInvitationScalarFieldEnum[] | TenantInvitationScalarFieldEnum
+    having?: TenantInvitationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TenantInvitationCountAggregateInputType | true
+    _min?: TenantInvitationMinAggregateInputType
+    _max?: TenantInvitationMaxAggregateInputType
+  }
+
+  export type TenantInvitationGroupByOutputType = {
+    id: string
+    tenant_id: string
+    email: string
+    fullname: string | null
+    token: string
+    role: $Enums.InvitationRole
+    debtor_id: string | null
+    created_at: Date
+    expires_at: Date
+    used: boolean
+    used_at: Date | null
+    _count: TenantInvitationCountAggregateOutputType | null
+    _min: TenantInvitationMinAggregateOutputType | null
+    _max: TenantInvitationMaxAggregateOutputType | null
+  }
+
+  type GetTenantInvitationGroupByPayload<T extends TenantInvitationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TenantInvitationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TenantInvitationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TenantInvitationGroupByOutputType[P]>
+            : GetScalarType<T[P], TenantInvitationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TenantInvitationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    email?: boolean
+    fullname?: boolean
+    token?: boolean
+    role?: boolean
+    debtor_id?: boolean
+    created_at?: boolean
+    expires_at?: boolean
+    used?: boolean
+    used_at?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tenantInvitation"]>
+
+  export type TenantInvitationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    email?: boolean
+    fullname?: boolean
+    token?: boolean
+    role?: boolean
+    debtor_id?: boolean
+    created_at?: boolean
+    expires_at?: boolean
+    used?: boolean
+    used_at?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tenantInvitation"]>
+
+  export type TenantInvitationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    email?: boolean
+    fullname?: boolean
+    token?: boolean
+    role?: boolean
+    debtor_id?: boolean
+    created_at?: boolean
+    expires_at?: boolean
+    used?: boolean
+    used_at?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tenantInvitation"]>
+
+  export type TenantInvitationSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    email?: boolean
+    fullname?: boolean
+    token?: boolean
+    role?: boolean
+    debtor_id?: boolean
+    created_at?: boolean
+    expires_at?: boolean
+    used?: boolean
+    used_at?: boolean
+  }
+
+  export type TenantInvitationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "email" | "fullname" | "token" | "role" | "debtor_id" | "created_at" | "expires_at" | "used" | "used_at", ExtArgs["result"]["tenantInvitation"]>
+  export type TenantInvitationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+  export type TenantInvitationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+  export type TenantInvitationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+
+  export type $TenantInvitationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TenantInvitation"
+    objects: {
+      tenant: Prisma.$TenantPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      email: string
+      fullname: string | null
+      token: string
+      role: $Enums.InvitationRole
+      debtor_id: string | null
+      created_at: Date
+      expires_at: Date
+      used: boolean
+      used_at: Date | null
+    }, ExtArgs["result"]["tenantInvitation"]>
+    composites: {}
+  }
+
+  type TenantInvitationGetPayload<S extends boolean | null | undefined | TenantInvitationDefaultArgs> = $Result.GetResult<Prisma.$TenantInvitationPayload, S>
+
+  type TenantInvitationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TenantInvitationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TenantInvitationCountAggregateInputType | true
+    }
+
+  export interface TenantInvitationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TenantInvitation'], meta: { name: 'TenantInvitation' } }
+    /**
+     * Find zero or one TenantInvitation that matches the filter.
+     * @param {TenantInvitationFindUniqueArgs} args - Arguments to find a TenantInvitation
+     * @example
+     * // Get one TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TenantInvitationFindUniqueArgs>(args: SelectSubset<T, TenantInvitationFindUniqueArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TenantInvitation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TenantInvitationFindUniqueOrThrowArgs} args - Arguments to find a TenantInvitation
+     * @example
+     * // Get one TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TenantInvitationFindUniqueOrThrowArgs>(args: SelectSubset<T, TenantInvitationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TenantInvitation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationFindFirstArgs} args - Arguments to find a TenantInvitation
+     * @example
+     * // Get one TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TenantInvitationFindFirstArgs>(args?: SelectSubset<T, TenantInvitationFindFirstArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TenantInvitation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationFindFirstOrThrowArgs} args - Arguments to find a TenantInvitation
+     * @example
+     * // Get one TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TenantInvitationFindFirstOrThrowArgs>(args?: SelectSubset<T, TenantInvitationFindFirstOrThrowArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TenantInvitations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TenantInvitations
+     * const tenantInvitations = await prisma.tenantInvitation.findMany()
+     * 
+     * // Get first 10 TenantInvitations
+     * const tenantInvitations = await prisma.tenantInvitation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tenantInvitationWithIdOnly = await prisma.tenantInvitation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TenantInvitationFindManyArgs>(args?: SelectSubset<T, TenantInvitationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TenantInvitation.
+     * @param {TenantInvitationCreateArgs} args - Arguments to create a TenantInvitation.
+     * @example
+     * // Create one TenantInvitation
+     * const TenantInvitation = await prisma.tenantInvitation.create({
+     *   data: {
+     *     // ... data to create a TenantInvitation
+     *   }
+     * })
+     * 
+     */
+    create<T extends TenantInvitationCreateArgs>(args: SelectSubset<T, TenantInvitationCreateArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TenantInvitations.
+     * @param {TenantInvitationCreateManyArgs} args - Arguments to create many TenantInvitations.
+     * @example
+     * // Create many TenantInvitations
+     * const tenantInvitation = await prisma.tenantInvitation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TenantInvitationCreateManyArgs>(args?: SelectSubset<T, TenantInvitationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TenantInvitations and returns the data saved in the database.
+     * @param {TenantInvitationCreateManyAndReturnArgs} args - Arguments to create many TenantInvitations.
+     * @example
+     * // Create many TenantInvitations
+     * const tenantInvitation = await prisma.tenantInvitation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TenantInvitations and only return the `id`
+     * const tenantInvitationWithIdOnly = await prisma.tenantInvitation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TenantInvitationCreateManyAndReturnArgs>(args?: SelectSubset<T, TenantInvitationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TenantInvitation.
+     * @param {TenantInvitationDeleteArgs} args - Arguments to delete one TenantInvitation.
+     * @example
+     * // Delete one TenantInvitation
+     * const TenantInvitation = await prisma.tenantInvitation.delete({
+     *   where: {
+     *     // ... filter to delete one TenantInvitation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TenantInvitationDeleteArgs>(args: SelectSubset<T, TenantInvitationDeleteArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TenantInvitation.
+     * @param {TenantInvitationUpdateArgs} args - Arguments to update one TenantInvitation.
+     * @example
+     * // Update one TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TenantInvitationUpdateArgs>(args: SelectSubset<T, TenantInvitationUpdateArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TenantInvitations.
+     * @param {TenantInvitationDeleteManyArgs} args - Arguments to filter TenantInvitations to delete.
+     * @example
+     * // Delete a few TenantInvitations
+     * const { count } = await prisma.tenantInvitation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TenantInvitationDeleteManyArgs>(args?: SelectSubset<T, TenantInvitationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TenantInvitations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TenantInvitations
+     * const tenantInvitation = await prisma.tenantInvitation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TenantInvitationUpdateManyArgs>(args: SelectSubset<T, TenantInvitationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TenantInvitations and returns the data updated in the database.
+     * @param {TenantInvitationUpdateManyAndReturnArgs} args - Arguments to update many TenantInvitations.
+     * @example
+     * // Update many TenantInvitations
+     * const tenantInvitation = await prisma.tenantInvitation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TenantInvitations and only return the `id`
+     * const tenantInvitationWithIdOnly = await prisma.tenantInvitation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TenantInvitationUpdateManyAndReturnArgs>(args: SelectSubset<T, TenantInvitationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TenantInvitation.
+     * @param {TenantInvitationUpsertArgs} args - Arguments to update or create a TenantInvitation.
+     * @example
+     * // Update or create a TenantInvitation
+     * const tenantInvitation = await prisma.tenantInvitation.upsert({
+     *   create: {
+     *     // ... data to create a TenantInvitation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TenantInvitation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TenantInvitationUpsertArgs>(args: SelectSubset<T, TenantInvitationUpsertArgs<ExtArgs>>): Prisma__TenantInvitationClient<$Result.GetResult<Prisma.$TenantInvitationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TenantInvitations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationCountArgs} args - Arguments to filter TenantInvitations to count.
+     * @example
+     * // Count the number of TenantInvitations
+     * const count = await prisma.tenantInvitation.count({
+     *   where: {
+     *     // ... the filter for the TenantInvitations we want to count
+     *   }
+     * })
+    **/
+    count<T extends TenantInvitationCountArgs>(
+      args?: Subset<T, TenantInvitationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TenantInvitationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TenantInvitation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TenantInvitationAggregateArgs>(args: Subset<T, TenantInvitationAggregateArgs>): Prisma.PrismaPromise<GetTenantInvitationAggregateType<T>>
+
+    /**
+     * Group by TenantInvitation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TenantInvitationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TenantInvitationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TenantInvitationGroupByArgs['orderBy'] }
+        : { orderBy?: TenantInvitationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TenantInvitationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTenantInvitationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TenantInvitation model
+   */
+  readonly fields: TenantInvitationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TenantInvitation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TenantInvitationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TenantInvitation model
+   */
+  interface TenantInvitationFieldRefs {
+    readonly id: FieldRef<"TenantInvitation", 'String'>
+    readonly tenant_id: FieldRef<"TenantInvitation", 'String'>
+    readonly email: FieldRef<"TenantInvitation", 'String'>
+    readonly fullname: FieldRef<"TenantInvitation", 'String'>
+    readonly token: FieldRef<"TenantInvitation", 'String'>
+    readonly role: FieldRef<"TenantInvitation", 'InvitationRole'>
+    readonly debtor_id: FieldRef<"TenantInvitation", 'String'>
+    readonly created_at: FieldRef<"TenantInvitation", 'DateTime'>
+    readonly expires_at: FieldRef<"TenantInvitation", 'DateTime'>
+    readonly used: FieldRef<"TenantInvitation", 'Boolean'>
+    readonly used_at: FieldRef<"TenantInvitation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TenantInvitation findUnique
+   */
+  export type TenantInvitationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter, which TenantInvitation to fetch.
+     */
+    where: TenantInvitationWhereUniqueInput
+  }
+
+  /**
+   * TenantInvitation findUniqueOrThrow
+   */
+  export type TenantInvitationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter, which TenantInvitation to fetch.
+     */
+    where: TenantInvitationWhereUniqueInput
+  }
+
+  /**
+   * TenantInvitation findFirst
+   */
+  export type TenantInvitationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter, which TenantInvitation to fetch.
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TenantInvitations to fetch.
+     */
+    orderBy?: TenantInvitationOrderByWithRelationInput | TenantInvitationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TenantInvitations.
+     */
+    cursor?: TenantInvitationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TenantInvitations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TenantInvitations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TenantInvitations.
+     */
+    distinct?: TenantInvitationScalarFieldEnum | TenantInvitationScalarFieldEnum[]
+  }
+
+  /**
+   * TenantInvitation findFirstOrThrow
+   */
+  export type TenantInvitationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter, which TenantInvitation to fetch.
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TenantInvitations to fetch.
+     */
+    orderBy?: TenantInvitationOrderByWithRelationInput | TenantInvitationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TenantInvitations.
+     */
+    cursor?: TenantInvitationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TenantInvitations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TenantInvitations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TenantInvitations.
+     */
+    distinct?: TenantInvitationScalarFieldEnum | TenantInvitationScalarFieldEnum[]
+  }
+
+  /**
+   * TenantInvitation findMany
+   */
+  export type TenantInvitationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter, which TenantInvitations to fetch.
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TenantInvitations to fetch.
+     */
+    orderBy?: TenantInvitationOrderByWithRelationInput | TenantInvitationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TenantInvitations.
+     */
+    cursor?: TenantInvitationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TenantInvitations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TenantInvitations.
+     */
+    skip?: number
+    distinct?: TenantInvitationScalarFieldEnum | TenantInvitationScalarFieldEnum[]
+  }
+
+  /**
+   * TenantInvitation create
+   */
+  export type TenantInvitationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TenantInvitation.
+     */
+    data: XOR<TenantInvitationCreateInput, TenantInvitationUncheckedCreateInput>
+  }
+
+  /**
+   * TenantInvitation createMany
+   */
+  export type TenantInvitationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TenantInvitations.
+     */
+    data: TenantInvitationCreateManyInput | TenantInvitationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TenantInvitation createManyAndReturn
+   */
+  export type TenantInvitationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * The data used to create many TenantInvitations.
+     */
+    data: TenantInvitationCreateManyInput | TenantInvitationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TenantInvitation update
+   */
+  export type TenantInvitationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TenantInvitation.
+     */
+    data: XOR<TenantInvitationUpdateInput, TenantInvitationUncheckedUpdateInput>
+    /**
+     * Choose, which TenantInvitation to update.
+     */
+    where: TenantInvitationWhereUniqueInput
+  }
+
+  /**
+   * TenantInvitation updateMany
+   */
+  export type TenantInvitationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TenantInvitations.
+     */
+    data: XOR<TenantInvitationUpdateManyMutationInput, TenantInvitationUncheckedUpdateManyInput>
+    /**
+     * Filter which TenantInvitations to update
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * Limit how many TenantInvitations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TenantInvitation updateManyAndReturn
+   */
+  export type TenantInvitationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * The data used to update TenantInvitations.
+     */
+    data: XOR<TenantInvitationUpdateManyMutationInput, TenantInvitationUncheckedUpdateManyInput>
+    /**
+     * Filter which TenantInvitations to update
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * Limit how many TenantInvitations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TenantInvitation upsert
+   */
+  export type TenantInvitationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TenantInvitation to update in case it exists.
+     */
+    where: TenantInvitationWhereUniqueInput
+    /**
+     * In case the TenantInvitation found by the `where` argument doesn't exist, create a new TenantInvitation with this data.
+     */
+    create: XOR<TenantInvitationCreateInput, TenantInvitationUncheckedCreateInput>
+    /**
+     * In case the TenantInvitation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TenantInvitationUpdateInput, TenantInvitationUncheckedUpdateInput>
+  }
+
+  /**
+   * TenantInvitation delete
+   */
+  export type TenantInvitationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
+    /**
+     * Filter which TenantInvitation to delete.
+     */
+    where: TenantInvitationWhereUniqueInput
+  }
+
+  /**
+   * TenantInvitation deleteMany
+   */
+  export type TenantInvitationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TenantInvitations to delete
+     */
+    where?: TenantInvitationWhereInput
+    /**
+     * Limit how many TenantInvitations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TenantInvitation without action
+   */
+  export type TenantInvitationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantInvitation
+     */
+    select?: TenantInvitationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantInvitation
+     */
+    omit?: TenantInvitationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TenantInvitationInclude<ExtArgs> | null
   }
 
 
@@ -20634,14 +21924,28 @@ export namespace Prisma {
 
   export type CollectionCaseAvgAggregateOutputType = {
     amount_original: Decimal | null
-    amount_due: Decimal | null
-    amount_to_receive: Decimal | null
+    fee_rate: Decimal | null
+    fee_amount: Decimal | null
+    abb_rate: Decimal | null
+    abb_amount: Decimal | null
+    total_fined: Decimal | null
+    total_due: Decimal | null
+    total_to_receive: Decimal | null
+    total_paid: Decimal | null
+    balance: Decimal | null
   }
 
   export type CollectionCaseSumAggregateOutputType = {
     amount_original: Decimal | null
-    amount_due: Decimal | null
-    amount_to_receive: Decimal | null
+    fee_rate: Decimal | null
+    fee_amount: Decimal | null
+    abb_rate: Decimal | null
+    abb_amount: Decimal | null
+    total_fined: Decimal | null
+    total_due: Decimal | null
+    total_to_receive: Decimal | null
+    total_paid: Decimal | null
+    balance: Decimal | null
   }
 
   export type CollectionCaseMinAggregateOutputType = {
@@ -20652,10 +21956,16 @@ export namespace Prisma {
     tenant_id: string | null
     debtor_id: string | null
     amount_original: Decimal | null
-    amount_due: Decimal | null
-    amount_to_receive: Decimal | null
+    fee_rate: Decimal | null
+    fee_amount: Decimal | null
+    abb_rate: Decimal | null
+    abb_amount: Decimal | null
+    total_fined: Decimal | null
+    total_due: Decimal | null
+    total_to_receive: Decimal | null
+    total_paid: Decimal | null
+    balance: Decimal | null
     status: $Enums.CollectionCaseStatus | null
-    notification_status: string | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -20668,10 +21978,16 @@ export namespace Prisma {
     tenant_id: string | null
     debtor_id: string | null
     amount_original: Decimal | null
-    amount_due: Decimal | null
-    amount_to_receive: Decimal | null
+    fee_rate: Decimal | null
+    fee_amount: Decimal | null
+    abb_rate: Decimal | null
+    abb_amount: Decimal | null
+    total_fined: Decimal | null
+    total_due: Decimal | null
+    total_to_receive: Decimal | null
+    total_paid: Decimal | null
+    balance: Decimal | null
     status: $Enums.CollectionCaseStatus | null
-    notification_status: string | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -20684,10 +22000,16 @@ export namespace Prisma {
     tenant_id: number
     debtor_id: number
     amount_original: number
-    amount_due: number
-    amount_to_receive: number
+    fee_rate: number
+    fee_amount: number
+    abb_rate: number
+    abb_amount: number
+    total_fined: number
+    total_due: number
+    total_to_receive: number
+    total_paid: number
+    balance: number
     status: number
-    notification_status: number
     created_at: number
     updated_at: number
     _all: number
@@ -20696,14 +22018,28 @@ export namespace Prisma {
 
   export type CollectionCaseAvgAggregateInputType = {
     amount_original?: true
-    amount_due?: true
-    amount_to_receive?: true
+    fee_rate?: true
+    fee_amount?: true
+    abb_rate?: true
+    abb_amount?: true
+    total_fined?: true
+    total_due?: true
+    total_to_receive?: true
+    total_paid?: true
+    balance?: true
   }
 
   export type CollectionCaseSumAggregateInputType = {
     amount_original?: true
-    amount_due?: true
-    amount_to_receive?: true
+    fee_rate?: true
+    fee_amount?: true
+    abb_rate?: true
+    abb_amount?: true
+    total_fined?: true
+    total_due?: true
+    total_to_receive?: true
+    total_paid?: true
+    balance?: true
   }
 
   export type CollectionCaseMinAggregateInputType = {
@@ -20714,10 +22050,16 @@ export namespace Prisma {
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
-    amount_due?: true
-    amount_to_receive?: true
+    fee_rate?: true
+    fee_amount?: true
+    abb_rate?: true
+    abb_amount?: true
+    total_fined?: true
+    total_due?: true
+    total_to_receive?: true
+    total_paid?: true
+    balance?: true
     status?: true
-    notification_status?: true
     created_at?: true
     updated_at?: true
   }
@@ -20730,10 +22072,16 @@ export namespace Prisma {
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
-    amount_due?: true
-    amount_to_receive?: true
+    fee_rate?: true
+    fee_amount?: true
+    abb_rate?: true
+    abb_amount?: true
+    total_fined?: true
+    total_due?: true
+    total_to_receive?: true
+    total_paid?: true
+    balance?: true
     status?: true
-    notification_status?: true
     created_at?: true
     updated_at?: true
   }
@@ -20746,10 +22094,16 @@ export namespace Prisma {
     tenant_id?: true
     debtor_id?: true
     amount_original?: true
-    amount_due?: true
-    amount_to_receive?: true
+    fee_rate?: true
+    fee_amount?: true
+    abb_rate?: true
+    abb_amount?: true
+    total_fined?: true
+    total_due?: true
+    total_to_receive?: true
+    total_paid?: true
+    balance?: true
     status?: true
-    notification_status?: true
     created_at?: true
     updated_at?: true
     _all?: true
@@ -20849,10 +22203,16 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal
-    amount_due: Decimal
-    amount_to_receive: Decimal
+    fee_rate: Decimal
+    fee_amount: Decimal
+    abb_rate: Decimal
+    abb_amount: Decimal
+    total_fined: Decimal
+    total_due: Decimal
+    total_to_receive: Decimal
+    total_paid: Decimal
+    balance: Decimal
     status: $Enums.CollectionCaseStatus
-    notification_status: string | null
     created_at: Date
     updated_at: Date
     _count: CollectionCaseCountAggregateOutputType | null
@@ -20884,18 +22244,24 @@ export namespace Prisma {
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
-    amount_due?: boolean
-    amount_to_receive?: boolean
+    fee_rate?: boolean
+    fee_amount?: boolean
+    abb_rate?: boolean
+    abb_amount?: boolean
+    total_fined?: boolean
+    total_due?: boolean
+    total_to_receive?: boolean
+    total_paid?: boolean
+    balance?: boolean
     status?: boolean
-    notification_status?: boolean
     created_at?: boolean
     updated_at?: boolean
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
-    notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
+    fines?: boolean | CollectionCase$finesArgs<ExtArgs>
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
     agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
-    penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
+    notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
     chat_rooms?: boolean | CollectionCase$chat_roomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collectionCase"]>
@@ -20908,10 +22274,16 @@ export namespace Prisma {
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
-    amount_due?: boolean
-    amount_to_receive?: boolean
+    fee_rate?: boolean
+    fee_amount?: boolean
+    abb_rate?: boolean
+    abb_amount?: boolean
+    total_fined?: boolean
+    total_due?: boolean
+    total_to_receive?: boolean
+    total_paid?: boolean
+    balance?: boolean
     status?: boolean
-    notification_status?: boolean
     created_at?: boolean
     updated_at?: boolean
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
@@ -20926,10 +22298,16 @@ export namespace Prisma {
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
-    amount_due?: boolean
-    amount_to_receive?: boolean
+    fee_rate?: boolean
+    fee_amount?: boolean
+    abb_rate?: boolean
+    abb_amount?: boolean
+    total_fined?: boolean
+    total_due?: boolean
+    total_to_receive?: boolean
+    total_paid?: boolean
+    balance?: boolean
     status?: boolean
-    notification_status?: boolean
     created_at?: boolean
     updated_at?: boolean
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
@@ -20944,22 +22322,28 @@ export namespace Prisma {
     tenant_id?: boolean
     debtor_id?: boolean
     amount_original?: boolean
-    amount_due?: boolean
-    amount_to_receive?: boolean
+    fee_rate?: boolean
+    fee_amount?: boolean
+    abb_rate?: boolean
+    abb_amount?: boolean
+    total_fined?: boolean
+    total_due?: boolean
+    total_to_receive?: boolean
+    total_paid?: boolean
+    balance?: boolean
     status?: boolean
-    notification_status?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reference_number" | "issue_date" | "due_date" | "tenant_id" | "debtor_id" | "amount_original" | "amount_due" | "amount_to_receive" | "status" | "notification_status" | "created_at" | "updated_at", ExtArgs["result"]["collectionCase"]>
+  export type CollectionCaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reference_number" | "issue_date" | "due_date" | "tenant_id" | "debtor_id" | "amount_original" | "fee_rate" | "fee_amount" | "abb_rate" | "abb_amount" | "total_fined" | "total_due" | "total_to_receive" | "total_paid" | "balance" | "status" | "created_at" | "updated_at", ExtArgs["result"]["collectionCase"]>
   export type CollectionCaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     debtor?: boolean | DebtorDefaultArgs<ExtArgs>
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
-    notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
+    fines?: boolean | CollectionCase$finesArgs<ExtArgs>
     payments?: boolean | CollectionCase$paymentsArgs<ExtArgs>
     agreements?: boolean | CollectionCase$agreementsArgs<ExtArgs>
-    penalties?: boolean | CollectionCase$penaltiesArgs<ExtArgs>
+    notifications?: boolean | CollectionCase$notificationsArgs<ExtArgs>
     chat_rooms?: boolean | CollectionCase$chat_roomsArgs<ExtArgs>
     _count?: boolean | CollectionCaseCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -20977,10 +22361,10 @@ export namespace Prisma {
     objects: {
       debtor: Prisma.$DebtorPayload<ExtArgs>
       tenant: Prisma.$TenantPayload<ExtArgs>
-      notifications: Prisma.$CollectionCaseNotificationPayload<ExtArgs>[]
+      fines: Prisma.$CollectionCaseFinePayload<ExtArgs>[]
       payments: Prisma.$CollectionCasePaymentPayload<ExtArgs>[]
       agreements: Prisma.$CollectionCaseAgreementPayload<ExtArgs>[]
-      penalties: Prisma.$CollectionCasePenaltyPayload<ExtArgs>[]
+      notifications: Prisma.$CollectionCaseNotificationPayload<ExtArgs>[]
       chat_rooms: Prisma.$ChatRoomPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -20991,10 +22375,16 @@ export namespace Prisma {
       tenant_id: string
       debtor_id: string
       amount_original: Prisma.Decimal
-      amount_due: Prisma.Decimal
-      amount_to_receive: Prisma.Decimal
+      fee_rate: Prisma.Decimal
+      fee_amount: Prisma.Decimal
+      abb_rate: Prisma.Decimal
+      abb_amount: Prisma.Decimal
+      total_fined: Prisma.Decimal
+      total_due: Prisma.Decimal
+      total_to_receive: Prisma.Decimal
+      total_paid: Prisma.Decimal
+      balance: Prisma.Decimal
       status: $Enums.CollectionCaseStatus
-      notification_status: string | null
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["collectionCase"]>
@@ -21393,10 +22783,10 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     debtor<T extends DebtorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DebtorDefaultArgs<ExtArgs>>): Prisma__DebtorClient<$Result.GetResult<Prisma.$DebtorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    notifications<T extends CollectionCase$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    fines<T extends CollectionCase$finesArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$finesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends CollectionCase$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCasePaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agreements<T extends CollectionCase$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseAgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    penalties<T extends CollectionCase$penaltiesArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$penaltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends CollectionCase$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chat_rooms<T extends CollectionCase$chat_roomsArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCase$chat_roomsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -21434,10 +22824,16 @@ export namespace Prisma {
     readonly tenant_id: FieldRef<"CollectionCase", 'String'>
     readonly debtor_id: FieldRef<"CollectionCase", 'String'>
     readonly amount_original: FieldRef<"CollectionCase", 'Decimal'>
-    readonly amount_due: FieldRef<"CollectionCase", 'Decimal'>
-    readonly amount_to_receive: FieldRef<"CollectionCase", 'Decimal'>
+    readonly fee_rate: FieldRef<"CollectionCase", 'Decimal'>
+    readonly fee_amount: FieldRef<"CollectionCase", 'Decimal'>
+    readonly abb_rate: FieldRef<"CollectionCase", 'Decimal'>
+    readonly abb_amount: FieldRef<"CollectionCase", 'Decimal'>
+    readonly total_fined: FieldRef<"CollectionCase", 'Decimal'>
+    readonly total_due: FieldRef<"CollectionCase", 'Decimal'>
+    readonly total_to_receive: FieldRef<"CollectionCase", 'Decimal'>
+    readonly total_paid: FieldRef<"CollectionCase", 'Decimal'>
+    readonly balance: FieldRef<"CollectionCase", 'Decimal'>
     readonly status: FieldRef<"CollectionCase", 'CollectionCaseStatus'>
-    readonly notification_status: FieldRef<"CollectionCase", 'String'>
     readonly created_at: FieldRef<"CollectionCase", 'DateTime'>
     readonly updated_at: FieldRef<"CollectionCase", 'DateTime'>
   }
@@ -21836,27 +23232,27 @@ export namespace Prisma {
   }
 
   /**
-   * CollectionCase.notifications
+   * CollectionCase.fines
    */
-  export type CollectionCase$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCase$finesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCaseNotification
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCaseNotificationSelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCaseNotification
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCaseNotificationOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCaseNotificationInclude<ExtArgs> | null
-    where?: CollectionCaseNotificationWhereInput
-    orderBy?: CollectionCaseNotificationOrderByWithRelationInput | CollectionCaseNotificationOrderByWithRelationInput[]
-    cursor?: CollectionCaseNotificationWhereUniqueInput
+    include?: CollectionCaseFineInclude<ExtArgs> | null
+    where?: CollectionCaseFineWhereInput
+    orderBy?: CollectionCaseFineOrderByWithRelationInput | CollectionCaseFineOrderByWithRelationInput[]
+    cursor?: CollectionCaseFineWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CollectionCaseNotificationScalarFieldEnum | CollectionCaseNotificationScalarFieldEnum[]
+    distinct?: CollectionCaseFineScalarFieldEnum | CollectionCaseFineScalarFieldEnum[]
   }
 
   /**
@@ -21908,27 +23304,27 @@ export namespace Prisma {
   }
 
   /**
-   * CollectionCase.penalties
+   * CollectionCase.notifications
    */
-  export type CollectionCase$penaltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCase$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseNotification
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseNotificationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseNotification
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseNotificationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
-    where?: CollectionCasePenaltyWhereInput
-    orderBy?: CollectionCasePenaltyOrderByWithRelationInput | CollectionCasePenaltyOrderByWithRelationInput[]
-    cursor?: CollectionCasePenaltyWhereUniqueInput
+    include?: CollectionCaseNotificationInclude<ExtArgs> | null
+    where?: CollectionCaseNotificationWhereInput
+    orderBy?: CollectionCaseNotificationOrderByWithRelationInput | CollectionCaseNotificationOrderByWithRelationInput[]
+    cursor?: CollectionCaseNotificationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CollectionCasePenaltyScalarFieldEnum | CollectionCasePenaltyScalarFieldEnum[]
+    distinct?: CollectionCaseNotificationScalarFieldEnum | CollectionCaseNotificationScalarFieldEnum[]
   }
 
   /**
@@ -21975,278 +23371,267 @@ export namespace Prisma {
 
 
   /**
-   * Model CollectionCasePenalty
+   * Model CollectionCaseFine
    */
 
-  export type AggregateCollectionCasePenalty = {
-    _count: CollectionCasePenaltyCountAggregateOutputType | null
-    _avg: CollectionCasePenaltyAvgAggregateOutputType | null
-    _sum: CollectionCasePenaltySumAggregateOutputType | null
-    _min: CollectionCasePenaltyMinAggregateOutputType | null
-    _max: CollectionCasePenaltyMaxAggregateOutputType | null
+  export type AggregateCollectionCaseFine = {
+    _count: CollectionCaseFineCountAggregateOutputType | null
+    _avg: CollectionCaseFineAvgAggregateOutputType | null
+    _sum: CollectionCaseFineSumAggregateOutputType | null
+    _min: CollectionCaseFineMinAggregateOutputType | null
+    _max: CollectionCaseFineMaxAggregateOutputType | null
   }
 
-  export type CollectionCasePenaltyAvgAggregateOutputType = {
+  export type CollectionCaseFineAvgAggregateOutputType = {
     amount: Decimal | null
   }
 
-  export type CollectionCasePenaltySumAggregateOutputType = {
+  export type CollectionCaseFineSumAggregateOutputType = {
     amount: Decimal | null
   }
 
-  export type CollectionCasePenaltyMinAggregateOutputType = {
+  export type CollectionCaseFineMinAggregateOutputType = {
     id: string | null
     collection_case_id: string | null
     description: string | null
     amount: Decimal | null
-    date_applied: Date | null
-    is_paid: boolean | null
+    applied_at: Date | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type CollectionCasePenaltyMaxAggregateOutputType = {
+  export type CollectionCaseFineMaxAggregateOutputType = {
     id: string | null
     collection_case_id: string | null
     description: string | null
     amount: Decimal | null
-    date_applied: Date | null
-    is_paid: boolean | null
+    applied_at: Date | null
     created_at: Date | null
     updated_at: Date | null
   }
 
-  export type CollectionCasePenaltyCountAggregateOutputType = {
+  export type CollectionCaseFineCountAggregateOutputType = {
     id: number
     collection_case_id: number
     description: number
     amount: number
-    date_applied: number
-    is_paid: number
+    applied_at: number
     created_at: number
     updated_at: number
     _all: number
   }
 
 
-  export type CollectionCasePenaltyAvgAggregateInputType = {
+  export type CollectionCaseFineAvgAggregateInputType = {
     amount?: true
   }
 
-  export type CollectionCasePenaltySumAggregateInputType = {
+  export type CollectionCaseFineSumAggregateInputType = {
     amount?: true
   }
 
-  export type CollectionCasePenaltyMinAggregateInputType = {
+  export type CollectionCaseFineMinAggregateInputType = {
     id?: true
     collection_case_id?: true
     description?: true
     amount?: true
-    date_applied?: true
-    is_paid?: true
+    applied_at?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type CollectionCasePenaltyMaxAggregateInputType = {
+  export type CollectionCaseFineMaxAggregateInputType = {
     id?: true
     collection_case_id?: true
     description?: true
     amount?: true
-    date_applied?: true
-    is_paid?: true
+    applied_at?: true
     created_at?: true
     updated_at?: true
   }
 
-  export type CollectionCasePenaltyCountAggregateInputType = {
+  export type CollectionCaseFineCountAggregateInputType = {
     id?: true
     collection_case_id?: true
     description?: true
     amount?: true
-    date_applied?: true
-    is_paid?: true
+    applied_at?: true
     created_at?: true
     updated_at?: true
     _all?: true
   }
 
-  export type CollectionCasePenaltyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CollectionCasePenalty to aggregate.
+     * Filter which CollectionCaseFine to aggregate.
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CollectionCasePenalties to fetch.
+     * Determine the order of CollectionCaseFines to fetch.
      */
-    orderBy?: CollectionCasePenaltyOrderByWithRelationInput | CollectionCasePenaltyOrderByWithRelationInput[]
+    orderBy?: CollectionCaseFineOrderByWithRelationInput | CollectionCaseFineOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: CollectionCasePenaltyWhereUniqueInput
+    cursor?: CollectionCaseFineWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CollectionCasePenalties from the position of the cursor.
+     * Take `±n` CollectionCaseFines from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CollectionCasePenalties.
+     * Skip the first `n` CollectionCaseFines.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned CollectionCasePenalties
+     * Count returned CollectionCaseFines
     **/
-    _count?: true | CollectionCasePenaltyCountAggregateInputType
+    _count?: true | CollectionCaseFineCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: CollectionCasePenaltyAvgAggregateInputType
+    _avg?: CollectionCaseFineAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: CollectionCasePenaltySumAggregateInputType
+    _sum?: CollectionCaseFineSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: CollectionCasePenaltyMinAggregateInputType
+    _min?: CollectionCaseFineMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: CollectionCasePenaltyMaxAggregateInputType
+    _max?: CollectionCaseFineMaxAggregateInputType
   }
 
-  export type GetCollectionCasePenaltyAggregateType<T extends CollectionCasePenaltyAggregateArgs> = {
-        [P in keyof T & keyof AggregateCollectionCasePenalty]: P extends '_count' | 'count'
+  export type GetCollectionCaseFineAggregateType<T extends CollectionCaseFineAggregateArgs> = {
+        [P in keyof T & keyof AggregateCollectionCaseFine]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateCollectionCasePenalty[P]>
-      : GetScalarType<T[P], AggregateCollectionCasePenalty[P]>
+        : GetScalarType<T[P], AggregateCollectionCaseFine[P]>
+      : GetScalarType<T[P], AggregateCollectionCaseFine[P]>
   }
 
 
 
 
-  export type CollectionCasePenaltyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CollectionCasePenaltyWhereInput
-    orderBy?: CollectionCasePenaltyOrderByWithAggregationInput | CollectionCasePenaltyOrderByWithAggregationInput[]
-    by: CollectionCasePenaltyScalarFieldEnum[] | CollectionCasePenaltyScalarFieldEnum
-    having?: CollectionCasePenaltyScalarWhereWithAggregatesInput
+  export type CollectionCaseFineGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CollectionCaseFineWhereInput
+    orderBy?: CollectionCaseFineOrderByWithAggregationInput | CollectionCaseFineOrderByWithAggregationInput[]
+    by: CollectionCaseFineScalarFieldEnum[] | CollectionCaseFineScalarFieldEnum
+    having?: CollectionCaseFineScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: CollectionCasePenaltyCountAggregateInputType | true
-    _avg?: CollectionCasePenaltyAvgAggregateInputType
-    _sum?: CollectionCasePenaltySumAggregateInputType
-    _min?: CollectionCasePenaltyMinAggregateInputType
-    _max?: CollectionCasePenaltyMaxAggregateInputType
+    _count?: CollectionCaseFineCountAggregateInputType | true
+    _avg?: CollectionCaseFineAvgAggregateInputType
+    _sum?: CollectionCaseFineSumAggregateInputType
+    _min?: CollectionCaseFineMinAggregateInputType
+    _max?: CollectionCaseFineMaxAggregateInputType
   }
 
-  export type CollectionCasePenaltyGroupByOutputType = {
+  export type CollectionCaseFineGroupByOutputType = {
     id: string
     collection_case_id: string
     description: string | null
     amount: Decimal
-    date_applied: Date
-    is_paid: boolean
+    applied_at: Date
     created_at: Date
     updated_at: Date
-    _count: CollectionCasePenaltyCountAggregateOutputType | null
-    _avg: CollectionCasePenaltyAvgAggregateOutputType | null
-    _sum: CollectionCasePenaltySumAggregateOutputType | null
-    _min: CollectionCasePenaltyMinAggregateOutputType | null
-    _max: CollectionCasePenaltyMaxAggregateOutputType | null
+    _count: CollectionCaseFineCountAggregateOutputType | null
+    _avg: CollectionCaseFineAvgAggregateOutputType | null
+    _sum: CollectionCaseFineSumAggregateOutputType | null
+    _min: CollectionCaseFineMinAggregateOutputType | null
+    _max: CollectionCaseFineMaxAggregateOutputType | null
   }
 
-  type GetCollectionCasePenaltyGroupByPayload<T extends CollectionCasePenaltyGroupByArgs> = Prisma.PrismaPromise<
+  type GetCollectionCaseFineGroupByPayload<T extends CollectionCaseFineGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<CollectionCasePenaltyGroupByOutputType, T['by']> &
+      PickEnumerable<CollectionCaseFineGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof CollectionCasePenaltyGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof CollectionCaseFineGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], CollectionCasePenaltyGroupByOutputType[P]>
-            : GetScalarType<T[P], CollectionCasePenaltyGroupByOutputType[P]>
+              : GetScalarType<T[P], CollectionCaseFineGroupByOutputType[P]>
+            : GetScalarType<T[P], CollectionCaseFineGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type CollectionCasePenaltySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CollectionCaseFineSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     collection_case_id?: boolean
     description?: boolean
     amount?: boolean
-    date_applied?: boolean
-    is_paid?: boolean
+    applied_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["collectionCasePenalty"]>
+  }, ExtArgs["result"]["collectionCaseFine"]>
 
-  export type CollectionCasePenaltySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CollectionCaseFineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     collection_case_id?: boolean
     description?: boolean
     amount?: boolean
-    date_applied?: boolean
-    is_paid?: boolean
+    applied_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["collectionCasePenalty"]>
+  }, ExtArgs["result"]["collectionCaseFine"]>
 
-  export type CollectionCasePenaltySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CollectionCaseFineSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     collection_case_id?: boolean
     description?: boolean
     amount?: boolean
-    date_applied?: boolean
-    is_paid?: boolean
+    applied_at?: boolean
     created_at?: boolean
     updated_at?: boolean
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["collectionCasePenalty"]>
+  }, ExtArgs["result"]["collectionCaseFine"]>
 
-  export type CollectionCasePenaltySelectScalar = {
+  export type CollectionCaseFineSelectScalar = {
     id?: boolean
     collection_case_id?: boolean
     description?: boolean
     amount?: boolean
-    date_applied?: boolean
-    is_paid?: boolean
+    applied_at?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type CollectionCasePenaltyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collection_case_id" | "description" | "amount" | "date_applied" | "is_paid" | "created_at" | "updated_at", ExtArgs["result"]["collectionCasePenalty"]>
-  export type CollectionCasePenaltyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "collection_case_id" | "description" | "amount" | "applied_at" | "created_at" | "updated_at", ExtArgs["result"]["collectionCaseFine"]>
+  export type CollectionCaseFineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
   }
-  export type CollectionCasePenaltyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
   }
-  export type CollectionCasePenaltyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collection_case?: boolean | CollectionCaseDefaultArgs<ExtArgs>
   }
 
-  export type $CollectionCasePenaltyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CollectionCasePenalty"
+  export type $CollectionCaseFinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CollectionCaseFine"
     objects: {
       collection_case: Prisma.$CollectionCasePayload<ExtArgs>
     }
@@ -22255,140 +23640,139 @@ export namespace Prisma {
       collection_case_id: string
       description: string | null
       amount: Prisma.Decimal
-      date_applied: Date
-      is_paid: boolean
+      applied_at: Date
       created_at: Date
       updated_at: Date
-    }, ExtArgs["result"]["collectionCasePenalty"]>
+    }, ExtArgs["result"]["collectionCaseFine"]>
     composites: {}
   }
 
-  type CollectionCasePenaltyGetPayload<S extends boolean | null | undefined | CollectionCasePenaltyDefaultArgs> = $Result.GetResult<Prisma.$CollectionCasePenaltyPayload, S>
+  type CollectionCaseFineGetPayload<S extends boolean | null | undefined | CollectionCaseFineDefaultArgs> = $Result.GetResult<Prisma.$CollectionCaseFinePayload, S>
 
-  type CollectionCasePenaltyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CollectionCasePenaltyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CollectionCasePenaltyCountAggregateInputType | true
+  type CollectionCaseFineCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CollectionCaseFineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CollectionCaseFineCountAggregateInputType | true
     }
 
-  export interface CollectionCasePenaltyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CollectionCasePenalty'], meta: { name: 'CollectionCasePenalty' } }
+  export interface CollectionCaseFineDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CollectionCaseFine'], meta: { name: 'CollectionCaseFine' } }
     /**
-     * Find zero or one CollectionCasePenalty that matches the filter.
-     * @param {CollectionCasePenaltyFindUniqueArgs} args - Arguments to find a CollectionCasePenalty
+     * Find zero or one CollectionCaseFine that matches the filter.
+     * @param {CollectionCaseFineFindUniqueArgs} args - Arguments to find a CollectionCaseFine
      * @example
-     * // Get one CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.findUnique({
+     * // Get one CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends CollectionCasePenaltyFindUniqueArgs>(args: SelectSubset<T, CollectionCasePenaltyFindUniqueArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends CollectionCaseFineFindUniqueArgs>(args: SelectSubset<T, CollectionCaseFineFindUniqueArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one CollectionCasePenalty that matches the filter or throw an error with `error.code='P2025'`
+     * Find one CollectionCaseFine that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {CollectionCasePenaltyFindUniqueOrThrowArgs} args - Arguments to find a CollectionCasePenalty
+     * @param {CollectionCaseFineFindUniqueOrThrowArgs} args - Arguments to find a CollectionCaseFine
      * @example
-     * // Get one CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.findUniqueOrThrow({
+     * // Get one CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends CollectionCasePenaltyFindUniqueOrThrowArgs>(args: SelectSubset<T, CollectionCasePenaltyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends CollectionCaseFineFindUniqueOrThrowArgs>(args: SelectSubset<T, CollectionCaseFineFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CollectionCasePenalty that matches the filter.
+     * Find the first CollectionCaseFine that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyFindFirstArgs} args - Arguments to find a CollectionCasePenalty
+     * @param {CollectionCaseFineFindFirstArgs} args - Arguments to find a CollectionCaseFine
      * @example
-     * // Get one CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.findFirst({
+     * // Get one CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends CollectionCasePenaltyFindFirstArgs>(args?: SelectSubset<T, CollectionCasePenaltyFindFirstArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends CollectionCaseFineFindFirstArgs>(args?: SelectSubset<T, CollectionCaseFineFindFirstArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CollectionCasePenalty that matches the filter or
+     * Find the first CollectionCaseFine that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyFindFirstOrThrowArgs} args - Arguments to find a CollectionCasePenalty
+     * @param {CollectionCaseFineFindFirstOrThrowArgs} args - Arguments to find a CollectionCaseFine
      * @example
-     * // Get one CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.findFirstOrThrow({
+     * // Get one CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends CollectionCasePenaltyFindFirstOrThrowArgs>(args?: SelectSubset<T, CollectionCasePenaltyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends CollectionCaseFineFindFirstOrThrowArgs>(args?: SelectSubset<T, CollectionCaseFineFindFirstOrThrowArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more CollectionCasePenalties that matches the filter.
+     * Find zero or more CollectionCaseFines that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {CollectionCaseFineFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all CollectionCasePenalties
-     * const collectionCasePenalties = await prisma.collectionCasePenalty.findMany()
+     * // Get all CollectionCaseFines
+     * const collectionCaseFines = await prisma.collectionCaseFine.findMany()
      * 
-     * // Get first 10 CollectionCasePenalties
-     * const collectionCasePenalties = await prisma.collectionCasePenalty.findMany({ take: 10 })
+     * // Get first 10 CollectionCaseFines
+     * const collectionCaseFines = await prisma.collectionCaseFine.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const collectionCasePenaltyWithIdOnly = await prisma.collectionCasePenalty.findMany({ select: { id: true } })
+     * const collectionCaseFineWithIdOnly = await prisma.collectionCaseFine.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends CollectionCasePenaltyFindManyArgs>(args?: SelectSubset<T, CollectionCasePenaltyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends CollectionCaseFineFindManyArgs>(args?: SelectSubset<T, CollectionCaseFineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a CollectionCasePenalty.
-     * @param {CollectionCasePenaltyCreateArgs} args - Arguments to create a CollectionCasePenalty.
+     * Create a CollectionCaseFine.
+     * @param {CollectionCaseFineCreateArgs} args - Arguments to create a CollectionCaseFine.
      * @example
-     * // Create one CollectionCasePenalty
-     * const CollectionCasePenalty = await prisma.collectionCasePenalty.create({
+     * // Create one CollectionCaseFine
+     * const CollectionCaseFine = await prisma.collectionCaseFine.create({
      *   data: {
-     *     // ... data to create a CollectionCasePenalty
+     *     // ... data to create a CollectionCaseFine
      *   }
      * })
      * 
      */
-    create<T extends CollectionCasePenaltyCreateArgs>(args: SelectSubset<T, CollectionCasePenaltyCreateArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends CollectionCaseFineCreateArgs>(args: SelectSubset<T, CollectionCaseFineCreateArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many CollectionCasePenalties.
-     * @param {CollectionCasePenaltyCreateManyArgs} args - Arguments to create many CollectionCasePenalties.
+     * Create many CollectionCaseFines.
+     * @param {CollectionCaseFineCreateManyArgs} args - Arguments to create many CollectionCaseFines.
      * @example
-     * // Create many CollectionCasePenalties
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.createMany({
+     * // Create many CollectionCaseFines
+     * const collectionCaseFine = await prisma.collectionCaseFine.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends CollectionCasePenaltyCreateManyArgs>(args?: SelectSubset<T, CollectionCasePenaltyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends CollectionCaseFineCreateManyArgs>(args?: SelectSubset<T, CollectionCaseFineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many CollectionCasePenalties and returns the data saved in the database.
-     * @param {CollectionCasePenaltyCreateManyAndReturnArgs} args - Arguments to create many CollectionCasePenalties.
+     * Create many CollectionCaseFines and returns the data saved in the database.
+     * @param {CollectionCaseFineCreateManyAndReturnArgs} args - Arguments to create many CollectionCaseFines.
      * @example
-     * // Create many CollectionCasePenalties
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.createManyAndReturn({
+     * // Create many CollectionCaseFines
+     * const collectionCaseFine = await prisma.collectionCaseFine.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many CollectionCasePenalties and only return the `id`
-     * const collectionCasePenaltyWithIdOnly = await prisma.collectionCasePenalty.createManyAndReturn({
+     * // Create many CollectionCaseFines and only return the `id`
+     * const collectionCaseFineWithIdOnly = await prisma.collectionCaseFine.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -22398,28 +23782,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends CollectionCasePenaltyCreateManyAndReturnArgs>(args?: SelectSubset<T, CollectionCasePenaltyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends CollectionCaseFineCreateManyAndReturnArgs>(args?: SelectSubset<T, CollectionCaseFineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a CollectionCasePenalty.
-     * @param {CollectionCasePenaltyDeleteArgs} args - Arguments to delete one CollectionCasePenalty.
+     * Delete a CollectionCaseFine.
+     * @param {CollectionCaseFineDeleteArgs} args - Arguments to delete one CollectionCaseFine.
      * @example
-     * // Delete one CollectionCasePenalty
-     * const CollectionCasePenalty = await prisma.collectionCasePenalty.delete({
+     * // Delete one CollectionCaseFine
+     * const CollectionCaseFine = await prisma.collectionCaseFine.delete({
      *   where: {
-     *     // ... filter to delete one CollectionCasePenalty
+     *     // ... filter to delete one CollectionCaseFine
      *   }
      * })
      * 
      */
-    delete<T extends CollectionCasePenaltyDeleteArgs>(args: SelectSubset<T, CollectionCasePenaltyDeleteArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends CollectionCaseFineDeleteArgs>(args: SelectSubset<T, CollectionCaseFineDeleteArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one CollectionCasePenalty.
-     * @param {CollectionCasePenaltyUpdateArgs} args - Arguments to update one CollectionCasePenalty.
+     * Update one CollectionCaseFine.
+     * @param {CollectionCaseFineUpdateArgs} args - Arguments to update one CollectionCaseFine.
      * @example
-     * // Update one CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.update({
+     * // Update one CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22429,30 +23813,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends CollectionCasePenaltyUpdateArgs>(args: SelectSubset<T, CollectionCasePenaltyUpdateArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends CollectionCaseFineUpdateArgs>(args: SelectSubset<T, CollectionCaseFineUpdateArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more CollectionCasePenalties.
-     * @param {CollectionCasePenaltyDeleteManyArgs} args - Arguments to filter CollectionCasePenalties to delete.
+     * Delete zero or more CollectionCaseFines.
+     * @param {CollectionCaseFineDeleteManyArgs} args - Arguments to filter CollectionCaseFines to delete.
      * @example
-     * // Delete a few CollectionCasePenalties
-     * const { count } = await prisma.collectionCasePenalty.deleteMany({
+     * // Delete a few CollectionCaseFines
+     * const { count } = await prisma.collectionCaseFine.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends CollectionCasePenaltyDeleteManyArgs>(args?: SelectSubset<T, CollectionCasePenaltyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends CollectionCaseFineDeleteManyArgs>(args?: SelectSubset<T, CollectionCaseFineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CollectionCasePenalties.
+     * Update zero or more CollectionCaseFines.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {CollectionCaseFineUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many CollectionCasePenalties
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.updateMany({
+     * // Update many CollectionCaseFines
+     * const collectionCaseFine = await prisma.collectionCaseFine.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22462,14 +23846,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends CollectionCasePenaltyUpdateManyArgs>(args: SelectSubset<T, CollectionCasePenaltyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends CollectionCaseFineUpdateManyArgs>(args: SelectSubset<T, CollectionCaseFineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CollectionCasePenalties and returns the data updated in the database.
-     * @param {CollectionCasePenaltyUpdateManyAndReturnArgs} args - Arguments to update many CollectionCasePenalties.
+     * Update zero or more CollectionCaseFines and returns the data updated in the database.
+     * @param {CollectionCaseFineUpdateManyAndReturnArgs} args - Arguments to update many CollectionCaseFines.
      * @example
-     * // Update many CollectionCasePenalties
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.updateManyAndReturn({
+     * // Update many CollectionCaseFines
+     * const collectionCaseFine = await prisma.collectionCaseFine.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22478,8 +23862,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more CollectionCasePenalties and only return the `id`
-     * const collectionCasePenaltyWithIdOnly = await prisma.collectionCasePenalty.updateManyAndReturn({
+     * // Update zero or more CollectionCaseFines and only return the `id`
+     * const collectionCaseFineWithIdOnly = await prisma.collectionCaseFine.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -22492,56 +23876,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends CollectionCasePenaltyUpdateManyAndReturnArgs>(args: SelectSubset<T, CollectionCasePenaltyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends CollectionCaseFineUpdateManyAndReturnArgs>(args: SelectSubset<T, CollectionCaseFineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one CollectionCasePenalty.
-     * @param {CollectionCasePenaltyUpsertArgs} args - Arguments to update or create a CollectionCasePenalty.
+     * Create or update one CollectionCaseFine.
+     * @param {CollectionCaseFineUpsertArgs} args - Arguments to update or create a CollectionCaseFine.
      * @example
-     * // Update or create a CollectionCasePenalty
-     * const collectionCasePenalty = await prisma.collectionCasePenalty.upsert({
+     * // Update or create a CollectionCaseFine
+     * const collectionCaseFine = await prisma.collectionCaseFine.upsert({
      *   create: {
-     *     // ... data to create a CollectionCasePenalty
+     *     // ... data to create a CollectionCaseFine
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the CollectionCasePenalty we want to update
+     *     // ... the filter for the CollectionCaseFine we want to update
      *   }
      * })
      */
-    upsert<T extends CollectionCasePenaltyUpsertArgs>(args: SelectSubset<T, CollectionCasePenaltyUpsertArgs<ExtArgs>>): Prisma__CollectionCasePenaltyClient<$Result.GetResult<Prisma.$CollectionCasePenaltyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends CollectionCaseFineUpsertArgs>(args: SelectSubset<T, CollectionCaseFineUpsertArgs<ExtArgs>>): Prisma__CollectionCaseFineClient<$Result.GetResult<Prisma.$CollectionCaseFinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of CollectionCasePenalties.
+     * Count the number of CollectionCaseFines.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyCountArgs} args - Arguments to filter CollectionCasePenalties to count.
+     * @param {CollectionCaseFineCountArgs} args - Arguments to filter CollectionCaseFines to count.
      * @example
-     * // Count the number of CollectionCasePenalties
-     * const count = await prisma.collectionCasePenalty.count({
+     * // Count the number of CollectionCaseFines
+     * const count = await prisma.collectionCaseFine.count({
      *   where: {
-     *     // ... the filter for the CollectionCasePenalties we want to count
+     *     // ... the filter for the CollectionCaseFines we want to count
      *   }
      * })
     **/
-    count<T extends CollectionCasePenaltyCountArgs>(
-      args?: Subset<T, CollectionCasePenaltyCountArgs>,
+    count<T extends CollectionCaseFineCountArgs>(
+      args?: Subset<T, CollectionCaseFineCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], CollectionCasePenaltyCountAggregateOutputType>
+          : GetScalarType<T['select'], CollectionCaseFineCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a CollectionCasePenalty.
+     * Allows you to perform aggregations operations on a CollectionCaseFine.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {CollectionCaseFineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -22561,13 +23945,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends CollectionCasePenaltyAggregateArgs>(args: Subset<T, CollectionCasePenaltyAggregateArgs>): Prisma.PrismaPromise<GetCollectionCasePenaltyAggregateType<T>>
+    aggregate<T extends CollectionCaseFineAggregateArgs>(args: Subset<T, CollectionCaseFineAggregateArgs>): Prisma.PrismaPromise<GetCollectionCaseFineAggregateType<T>>
 
     /**
-     * Group by CollectionCasePenalty.
+     * Group by CollectionCaseFine.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollectionCasePenaltyGroupByArgs} args - Group by arguments.
+     * @param {CollectionCaseFineGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -22582,14 +23966,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends CollectionCasePenaltyGroupByArgs,
+      T extends CollectionCaseFineGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CollectionCasePenaltyGroupByArgs['orderBy'] }
-        : { orderBy?: CollectionCasePenaltyGroupByArgs['orderBy'] },
+        ? { orderBy: CollectionCaseFineGroupByArgs['orderBy'] }
+        : { orderBy?: CollectionCaseFineGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -22638,20 +24022,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, CollectionCasePenaltyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollectionCasePenaltyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, CollectionCaseFineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollectionCaseFineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the CollectionCasePenalty model
+   * Fields of the CollectionCaseFine model
    */
-  readonly fields: CollectionCasePenaltyFieldRefs;
+  readonly fields: CollectionCaseFineFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for CollectionCasePenalty.
+   * The delegate class that acts as a "Promise-like" for CollectionCaseFine.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__CollectionCasePenaltyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__CollectionCaseFineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     collection_case<T extends CollectionCaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionCaseDefaultArgs<ExtArgs>>): Prisma__CollectionCaseClient<$Result.GetResult<Prisma.$CollectionCasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -22680,428 +24064,427 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the CollectionCasePenalty model
+   * Fields of the CollectionCaseFine model
    */
-  interface CollectionCasePenaltyFieldRefs {
-    readonly id: FieldRef<"CollectionCasePenalty", 'String'>
-    readonly collection_case_id: FieldRef<"CollectionCasePenalty", 'String'>
-    readonly description: FieldRef<"CollectionCasePenalty", 'String'>
-    readonly amount: FieldRef<"CollectionCasePenalty", 'Decimal'>
-    readonly date_applied: FieldRef<"CollectionCasePenalty", 'DateTime'>
-    readonly is_paid: FieldRef<"CollectionCasePenalty", 'Boolean'>
-    readonly created_at: FieldRef<"CollectionCasePenalty", 'DateTime'>
-    readonly updated_at: FieldRef<"CollectionCasePenalty", 'DateTime'>
+  interface CollectionCaseFineFieldRefs {
+    readonly id: FieldRef<"CollectionCaseFine", 'String'>
+    readonly collection_case_id: FieldRef<"CollectionCaseFine", 'String'>
+    readonly description: FieldRef<"CollectionCaseFine", 'String'>
+    readonly amount: FieldRef<"CollectionCaseFine", 'Decimal'>
+    readonly applied_at: FieldRef<"CollectionCaseFine", 'DateTime'>
+    readonly created_at: FieldRef<"CollectionCaseFine", 'DateTime'>
+    readonly updated_at: FieldRef<"CollectionCaseFine", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * CollectionCasePenalty findUnique
+   * CollectionCaseFine findUnique
    */
-  export type CollectionCasePenaltyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter, which CollectionCasePenalty to fetch.
+     * Filter, which CollectionCaseFine to fetch.
      */
-    where: CollectionCasePenaltyWhereUniqueInput
+    where: CollectionCaseFineWhereUniqueInput
   }
 
   /**
-   * CollectionCasePenalty findUniqueOrThrow
+   * CollectionCaseFine findUniqueOrThrow
    */
-  export type CollectionCasePenaltyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter, which CollectionCasePenalty to fetch.
+     * Filter, which CollectionCaseFine to fetch.
      */
-    where: CollectionCasePenaltyWhereUniqueInput
+    where: CollectionCaseFineWhereUniqueInput
   }
 
   /**
-   * CollectionCasePenalty findFirst
+   * CollectionCaseFine findFirst
    */
-  export type CollectionCasePenaltyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter, which CollectionCasePenalty to fetch.
+     * Filter, which CollectionCaseFine to fetch.
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CollectionCasePenalties to fetch.
+     * Determine the order of CollectionCaseFines to fetch.
      */
-    orderBy?: CollectionCasePenaltyOrderByWithRelationInput | CollectionCasePenaltyOrderByWithRelationInput[]
+    orderBy?: CollectionCaseFineOrderByWithRelationInput | CollectionCaseFineOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CollectionCasePenalties.
+     * Sets the position for searching for CollectionCaseFines.
      */
-    cursor?: CollectionCasePenaltyWhereUniqueInput
+    cursor?: CollectionCaseFineWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CollectionCasePenalties from the position of the cursor.
+     * Take `±n` CollectionCaseFines from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CollectionCasePenalties.
+     * Skip the first `n` CollectionCaseFines.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CollectionCasePenalties.
+     * Filter by unique combinations of CollectionCaseFines.
      */
-    distinct?: CollectionCasePenaltyScalarFieldEnum | CollectionCasePenaltyScalarFieldEnum[]
+    distinct?: CollectionCaseFineScalarFieldEnum | CollectionCaseFineScalarFieldEnum[]
   }
 
   /**
-   * CollectionCasePenalty findFirstOrThrow
+   * CollectionCaseFine findFirstOrThrow
    */
-  export type CollectionCasePenaltyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter, which CollectionCasePenalty to fetch.
+     * Filter, which CollectionCaseFine to fetch.
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CollectionCasePenalties to fetch.
+     * Determine the order of CollectionCaseFines to fetch.
      */
-    orderBy?: CollectionCasePenaltyOrderByWithRelationInput | CollectionCasePenaltyOrderByWithRelationInput[]
+    orderBy?: CollectionCaseFineOrderByWithRelationInput | CollectionCaseFineOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CollectionCasePenalties.
+     * Sets the position for searching for CollectionCaseFines.
      */
-    cursor?: CollectionCasePenaltyWhereUniqueInput
+    cursor?: CollectionCaseFineWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CollectionCasePenalties from the position of the cursor.
+     * Take `±n` CollectionCaseFines from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CollectionCasePenalties.
+     * Skip the first `n` CollectionCaseFines.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CollectionCasePenalties.
+     * Filter by unique combinations of CollectionCaseFines.
      */
-    distinct?: CollectionCasePenaltyScalarFieldEnum | CollectionCasePenaltyScalarFieldEnum[]
+    distinct?: CollectionCaseFineScalarFieldEnum | CollectionCaseFineScalarFieldEnum[]
   }
 
   /**
-   * CollectionCasePenalty findMany
+   * CollectionCaseFine findMany
    */
-  export type CollectionCasePenaltyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter, which CollectionCasePenalties to fetch.
+     * Filter, which CollectionCaseFines to fetch.
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CollectionCasePenalties to fetch.
+     * Determine the order of CollectionCaseFines to fetch.
      */
-    orderBy?: CollectionCasePenaltyOrderByWithRelationInput | CollectionCasePenaltyOrderByWithRelationInput[]
+    orderBy?: CollectionCaseFineOrderByWithRelationInput | CollectionCaseFineOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing CollectionCasePenalties.
+     * Sets the position for listing CollectionCaseFines.
      */
-    cursor?: CollectionCasePenaltyWhereUniqueInput
+    cursor?: CollectionCaseFineWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CollectionCasePenalties from the position of the cursor.
+     * Take `±n` CollectionCaseFines from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CollectionCasePenalties.
+     * Skip the first `n` CollectionCaseFines.
      */
     skip?: number
-    distinct?: CollectionCasePenaltyScalarFieldEnum | CollectionCasePenaltyScalarFieldEnum[]
+    distinct?: CollectionCaseFineScalarFieldEnum | CollectionCaseFineScalarFieldEnum[]
   }
 
   /**
-   * CollectionCasePenalty create
+   * CollectionCaseFine create
    */
-  export type CollectionCasePenaltyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * The data needed to create a CollectionCasePenalty.
+     * The data needed to create a CollectionCaseFine.
      */
-    data: XOR<CollectionCasePenaltyCreateInput, CollectionCasePenaltyUncheckedCreateInput>
+    data: XOR<CollectionCaseFineCreateInput, CollectionCaseFineUncheckedCreateInput>
   }
 
   /**
-   * CollectionCasePenalty createMany
+   * CollectionCaseFine createMany
    */
-  export type CollectionCasePenaltyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many CollectionCasePenalties.
+     * The data used to create many CollectionCaseFines.
      */
-    data: CollectionCasePenaltyCreateManyInput | CollectionCasePenaltyCreateManyInput[]
+    data: CollectionCaseFineCreateManyInput | CollectionCaseFineCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * CollectionCasePenalty createManyAndReturn
+   * CollectionCaseFine createManyAndReturn
    */
-  export type CollectionCasePenaltyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelectCreateManyAndReturn<ExtArgs> | null
+    select?: CollectionCaseFineSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
-     * The data used to create many CollectionCasePenalties.
+     * The data used to create many CollectionCaseFines.
      */
-    data: CollectionCasePenaltyCreateManyInput | CollectionCasePenaltyCreateManyInput[]
+    data: CollectionCaseFineCreateManyInput | CollectionCaseFineCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: CollectionCaseFineIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CollectionCasePenalty update
+   * CollectionCaseFine update
    */
-  export type CollectionCasePenaltyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * The data needed to update a CollectionCasePenalty.
+     * The data needed to update a CollectionCaseFine.
      */
-    data: XOR<CollectionCasePenaltyUpdateInput, CollectionCasePenaltyUncheckedUpdateInput>
+    data: XOR<CollectionCaseFineUpdateInput, CollectionCaseFineUncheckedUpdateInput>
     /**
-     * Choose, which CollectionCasePenalty to update.
+     * Choose, which CollectionCaseFine to update.
      */
-    where: CollectionCasePenaltyWhereUniqueInput
+    where: CollectionCaseFineWhereUniqueInput
   }
 
   /**
-   * CollectionCasePenalty updateMany
+   * CollectionCaseFine updateMany
    */
-  export type CollectionCasePenaltyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update CollectionCasePenalties.
+     * The data used to update CollectionCaseFines.
      */
-    data: XOR<CollectionCasePenaltyUpdateManyMutationInput, CollectionCasePenaltyUncheckedUpdateManyInput>
+    data: XOR<CollectionCaseFineUpdateManyMutationInput, CollectionCaseFineUncheckedUpdateManyInput>
     /**
-     * Filter which CollectionCasePenalties to update
+     * Filter which CollectionCaseFines to update
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
-     * Limit how many CollectionCasePenalties to update.
+     * Limit how many CollectionCaseFines to update.
      */
     limit?: number
   }
 
   /**
-   * CollectionCasePenalty updateManyAndReturn
+   * CollectionCaseFine updateManyAndReturn
    */
-  export type CollectionCasePenaltyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelectUpdateManyAndReturn<ExtArgs> | null
+    select?: CollectionCaseFineSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
-     * The data used to update CollectionCasePenalties.
+     * The data used to update CollectionCaseFines.
      */
-    data: XOR<CollectionCasePenaltyUpdateManyMutationInput, CollectionCasePenaltyUncheckedUpdateManyInput>
+    data: XOR<CollectionCaseFineUpdateManyMutationInput, CollectionCaseFineUncheckedUpdateManyInput>
     /**
-     * Filter which CollectionCasePenalties to update
+     * Filter which CollectionCaseFines to update
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
-     * Limit how many CollectionCasePenalties to update.
+     * Limit how many CollectionCaseFines to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: CollectionCaseFineIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CollectionCasePenalty upsert
+   * CollectionCaseFine upsert
    */
-  export type CollectionCasePenaltyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * The filter to search for the CollectionCasePenalty to update in case it exists.
+     * The filter to search for the CollectionCaseFine to update in case it exists.
      */
-    where: CollectionCasePenaltyWhereUniqueInput
+    where: CollectionCaseFineWhereUniqueInput
     /**
-     * In case the CollectionCasePenalty found by the `where` argument doesn't exist, create a new CollectionCasePenalty with this data.
+     * In case the CollectionCaseFine found by the `where` argument doesn't exist, create a new CollectionCaseFine with this data.
      */
-    create: XOR<CollectionCasePenaltyCreateInput, CollectionCasePenaltyUncheckedCreateInput>
+    create: XOR<CollectionCaseFineCreateInput, CollectionCaseFineUncheckedCreateInput>
     /**
-     * In case the CollectionCasePenalty was found with the provided `where` argument, update it with this data.
+     * In case the CollectionCaseFine was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CollectionCasePenaltyUpdateInput, CollectionCasePenaltyUncheckedUpdateInput>
+    update: XOR<CollectionCaseFineUpdateInput, CollectionCaseFineUncheckedUpdateInput>
   }
 
   /**
-   * CollectionCasePenalty delete
+   * CollectionCaseFine delete
    */
-  export type CollectionCasePenaltyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
     /**
-     * Filter which CollectionCasePenalty to delete.
+     * Filter which CollectionCaseFine to delete.
      */
-    where: CollectionCasePenaltyWhereUniqueInput
+    where: CollectionCaseFineWhereUniqueInput
   }
 
   /**
-   * CollectionCasePenalty deleteMany
+   * CollectionCaseFine deleteMany
    */
-  export type CollectionCasePenaltyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CollectionCasePenalties to delete
+     * Filter which CollectionCaseFines to delete
      */
-    where?: CollectionCasePenaltyWhereInput
+    where?: CollectionCaseFineWhereInput
     /**
-     * Limit how many CollectionCasePenalties to delete.
+     * Limit how many CollectionCaseFines to delete.
      */
     limit?: number
   }
 
   /**
-   * CollectionCasePenalty without action
+   * CollectionCaseFine without action
    */
-  export type CollectionCasePenaltyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CollectionCaseFineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CollectionCasePenalty
+     * Select specific fields to fetch from the CollectionCaseFine
      */
-    select?: CollectionCasePenaltySelect<ExtArgs> | null
+    select?: CollectionCaseFineSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CollectionCasePenalty
+     * Omit specific fields from the CollectionCaseFine
      */
-    omit?: CollectionCasePenaltyOmit<ExtArgs> | null
+    omit?: CollectionCaseFineOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CollectionCasePenaltyInclude<ExtArgs> | null
+    include?: CollectionCaseFineInclude<ExtArgs> | null
   }
 
 
@@ -32561,6 +33944,7 @@ export namespace Prisma {
   export const TenantScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    code: 'code',
     subdomain: 'subdomain',
     contact_email: 'contact_email',
     country_code: 'country_code',
@@ -32579,6 +33963,23 @@ export namespace Prisma {
   };
 
   export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+  export const TenantInvitationScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    email: 'email',
+    fullname: 'fullname',
+    token: 'token',
+    role: 'role',
+    debtor_id: 'debtor_id',
+    created_at: 'created_at',
+    expires_at: 'expires_at',
+    used: 'used',
+    used_at: 'used_at'
+  };
+
+  export type TenantInvitationScalarFieldEnum = (typeof TenantInvitationScalarFieldEnum)[keyof typeof TenantInvitationScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -32804,10 +34205,16 @@ export namespace Prisma {
     tenant_id: 'tenant_id',
     debtor_id: 'debtor_id',
     amount_original: 'amount_original',
-    amount_due: 'amount_due',
-    amount_to_receive: 'amount_to_receive',
+    fee_rate: 'fee_rate',
+    fee_amount: 'fee_amount',
+    abb_rate: 'abb_rate',
+    abb_amount: 'abb_amount',
+    total_fined: 'total_fined',
+    total_due: 'total_due',
+    total_to_receive: 'total_to_receive',
+    total_paid: 'total_paid',
+    balance: 'balance',
     status: 'status',
-    notification_status: 'notification_status',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
@@ -32815,18 +34222,17 @@ export namespace Prisma {
   export type CollectionCaseScalarFieldEnum = (typeof CollectionCaseScalarFieldEnum)[keyof typeof CollectionCaseScalarFieldEnum]
 
 
-  export const CollectionCasePenaltyScalarFieldEnum: {
+  export const CollectionCaseFineScalarFieldEnum: {
     id: 'id',
     collection_case_id: 'collection_case_id',
     description: 'description',
     amount: 'amount',
-    date_applied: 'date_applied',
-    is_paid: 'is_paid',
+    applied_at: 'applied_at',
     created_at: 'created_at',
     updated_at: 'updated_at'
   };
 
-  export type CollectionCasePenaltyScalarFieldEnum = (typeof CollectionCasePenaltyScalarFieldEnum)[keyof typeof CollectionCasePenaltyScalarFieldEnum]
+  export type CollectionCaseFineScalarFieldEnum = (typeof CollectionCaseFineScalarFieldEnum)[keyof typeof CollectionCaseFineScalarFieldEnum]
 
 
   export const CollectionCaseNotificationScalarFieldEnum: {
@@ -33029,6 +34435,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'InvitationRole'
+   */
+  export type EnumInvitationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'InvitationRole[]'
+   */
+  export type ListEnumInvitationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationRole[]'>
+    
+
+
+  /**
    * Reference to a field of type 'roleEnum'
    */
   export type EnumroleEnumFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'roleEnum'>
@@ -33219,6 +34639,7 @@ export namespace Prisma {
     NOT?: TenantWhereInput | TenantWhereInput[]
     id?: StringFilter<"Tenant"> | string
     name?: StringFilter<"Tenant"> | string
+    code?: StringFilter<"Tenant"> | string
     subdomain?: StringFilter<"Tenant"> | string
     contact_email?: StringFilter<"Tenant"> | string
     country_code?: StringFilter<"Tenant"> | string
@@ -33241,11 +34662,13 @@ export namespace Prisma {
     users?: UserListRelationFilter
     chat_rooms?: ChatRoomListRelationFilter
     agreements?: CollectionCaseAgreementListRelationFilter
+    invitations?: TenantInvitationListRelationFilter
   }
 
   export type TenantOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     subdomain?: SortOrder
     contact_email?: SortOrder
     country_code?: SortOrder
@@ -33268,10 +34691,12 @@ export namespace Prisma {
     users?: UserOrderByRelationAggregateInput
     chat_rooms?: ChatRoomOrderByRelationAggregateInput
     agreements?: CollectionCaseAgreementOrderByRelationAggregateInput
+    invitations?: TenantInvitationOrderByRelationAggregateInput
   }
 
   export type TenantWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    code?: string
     subdomain?: string
     AND?: TenantWhereInput | TenantWhereInput[]
     OR?: TenantWhereInput[]
@@ -33298,11 +34723,13 @@ export namespace Prisma {
     users?: UserListRelationFilter
     chat_rooms?: ChatRoomListRelationFilter
     agreements?: CollectionCaseAgreementListRelationFilter
-  }, "id" | "subdomain">
+    invitations?: TenantInvitationListRelationFilter
+  }, "id" | "code" | "subdomain">
 
   export type TenantOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     subdomain?: SortOrder
     contact_email?: SortOrder
     country_code?: SortOrder
@@ -33331,6 +34758,7 @@ export namespace Prisma {
     NOT?: TenantScalarWhereWithAggregatesInput | TenantScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Tenant"> | string
     name?: StringWithAggregatesFilter<"Tenant"> | string
+    code?: StringWithAggregatesFilter<"Tenant"> | string
     subdomain?: StringWithAggregatesFilter<"Tenant"> | string
     contact_email?: StringWithAggregatesFilter<"Tenant"> | string
     country_code?: StringWithAggregatesFilter<"Tenant"> | string
@@ -33346,6 +34774,91 @@ export namespace Prisma {
     is_active?: BoolWithAggregatesFilter<"Tenant"> | boolean
     created_at?: DateTimeWithAggregatesFilter<"Tenant"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Tenant"> | Date | string
+  }
+
+  export type TenantInvitationWhereInput = {
+    AND?: TenantInvitationWhereInput | TenantInvitationWhereInput[]
+    OR?: TenantInvitationWhereInput[]
+    NOT?: TenantInvitationWhereInput | TenantInvitationWhereInput[]
+    id?: StringFilter<"TenantInvitation"> | string
+    tenant_id?: StringFilter<"TenantInvitation"> | string
+    email?: StringFilter<"TenantInvitation"> | string
+    fullname?: StringNullableFilter<"TenantInvitation"> | string | null
+    token?: StringFilter<"TenantInvitation"> | string
+    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
+    created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    used?: BoolFilter<"TenantInvitation"> | boolean
+    used_at?: DateTimeNullableFilter<"TenantInvitation"> | Date | string | null
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+  }
+
+  export type TenantInvitationOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    email?: SortOrder
+    fullname?: SortOrderInput | SortOrder
+    token?: SortOrder
+    role?: SortOrder
+    debtor_id?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    expires_at?: SortOrder
+    used?: SortOrder
+    used_at?: SortOrderInput | SortOrder
+    tenant?: TenantOrderByWithRelationInput
+  }
+
+  export type TenantInvitationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: TenantInvitationWhereInput | TenantInvitationWhereInput[]
+    OR?: TenantInvitationWhereInput[]
+    NOT?: TenantInvitationWhereInput | TenantInvitationWhereInput[]
+    tenant_id?: StringFilter<"TenantInvitation"> | string
+    email?: StringFilter<"TenantInvitation"> | string
+    fullname?: StringNullableFilter<"TenantInvitation"> | string | null
+    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
+    created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    used?: BoolFilter<"TenantInvitation"> | boolean
+    used_at?: DateTimeNullableFilter<"TenantInvitation"> | Date | string | null
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+  }, "id" | "token">
+
+  export type TenantInvitationOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    email?: SortOrder
+    fullname?: SortOrderInput | SortOrder
+    token?: SortOrder
+    role?: SortOrder
+    debtor_id?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    expires_at?: SortOrder
+    used?: SortOrder
+    used_at?: SortOrderInput | SortOrder
+    _count?: TenantInvitationCountOrderByAggregateInput
+    _max?: TenantInvitationMaxOrderByAggregateInput
+    _min?: TenantInvitationMinOrderByAggregateInput
+  }
+
+  export type TenantInvitationScalarWhereWithAggregatesInput = {
+    AND?: TenantInvitationScalarWhereWithAggregatesInput | TenantInvitationScalarWhereWithAggregatesInput[]
+    OR?: TenantInvitationScalarWhereWithAggregatesInput[]
+    NOT?: TenantInvitationScalarWhereWithAggregatesInput | TenantInvitationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TenantInvitation"> | string
+    tenant_id?: StringWithAggregatesFilter<"TenantInvitation"> | string
+    email?: StringWithAggregatesFilter<"TenantInvitation"> | string
+    fullname?: StringNullableWithAggregatesFilter<"TenantInvitation"> | string | null
+    token?: StringWithAggregatesFilter<"TenantInvitation"> | string
+    role?: EnumInvitationRoleWithAggregatesFilter<"TenantInvitation"> | $Enums.InvitationRole
+    debtor_id?: StringNullableWithAggregatesFilter<"TenantInvitation"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"TenantInvitation"> | Date | string
+    expires_at?: DateTimeWithAggregatesFilter<"TenantInvitation"> | Date | string
+    used?: BoolWithAggregatesFilter<"TenantInvitation"> | boolean
+    used_at?: DateTimeNullableWithAggregatesFilter<"TenantInvitation"> | Date | string | null
   }
 
   export type UserWhereInput = {
@@ -34491,18 +36004,24 @@ export namespace Prisma {
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFilter<"CollectionCase"> | $Enums.CollectionCaseStatus
-    notification_status?: StringNullableFilter<"CollectionCase"> | string | null
     created_at?: DateTimeFilter<"CollectionCase"> | Date | string
     updated_at?: DateTimeFilter<"CollectionCase"> | Date | string
     debtor?: XOR<DebtorScalarRelationFilter, DebtorWhereInput>
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
-    notifications?: CollectionCaseNotificationListRelationFilter
+    fines?: CollectionCaseFineListRelationFilter
     payments?: CollectionCasePaymentListRelationFilter
     agreements?: CollectionCaseAgreementListRelationFilter
-    penalties?: CollectionCasePenaltyListRelationFilter
+    notifications?: CollectionCaseNotificationListRelationFilter
     chat_rooms?: ChatRoomListRelationFilter
   }
 
@@ -34514,18 +36033,24 @@ export namespace Prisma {
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
     status?: SortOrder
-    notification_status?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     debtor?: DebtorOrderByWithRelationInput
     tenant?: TenantOrderByWithRelationInput
-    notifications?: CollectionCaseNotificationOrderByRelationAggregateInput
+    fines?: CollectionCaseFineOrderByRelationAggregateInput
     payments?: CollectionCasePaymentOrderByRelationAggregateInput
     agreements?: CollectionCaseAgreementOrderByRelationAggregateInput
-    penalties?: CollectionCasePenaltyOrderByRelationAggregateInput
+    notifications?: CollectionCaseNotificationOrderByRelationAggregateInput
     chat_rooms?: ChatRoomOrderByRelationAggregateInput
   }
 
@@ -34540,18 +36065,24 @@ export namespace Prisma {
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFilter<"CollectionCase"> | $Enums.CollectionCaseStatus
-    notification_status?: StringNullableFilter<"CollectionCase"> | string | null
     created_at?: DateTimeFilter<"CollectionCase"> | Date | string
     updated_at?: DateTimeFilter<"CollectionCase"> | Date | string
     debtor?: XOR<DebtorScalarRelationFilter, DebtorWhereInput>
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
-    notifications?: CollectionCaseNotificationListRelationFilter
+    fines?: CollectionCaseFineListRelationFilter
     payments?: CollectionCasePaymentListRelationFilter
     agreements?: CollectionCaseAgreementListRelationFilter
-    penalties?: CollectionCasePenaltyListRelationFilter
+    notifications?: CollectionCaseNotificationListRelationFilter
     chat_rooms?: ChatRoomListRelationFilter
   }, "id">
 
@@ -34563,10 +36094,16 @@ export namespace Prisma {
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
     status?: SortOrder
-    notification_status?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: CollectionCaseCountOrderByAggregateInput
@@ -34587,84 +36124,85 @@ export namespace Prisma {
     tenant_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     debtor_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     amount_original?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    balance?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusWithAggregatesFilter<"CollectionCase"> | $Enums.CollectionCaseStatus
-    notification_status?: StringNullableWithAggregatesFilter<"CollectionCase"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"CollectionCase"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"CollectionCase"> | Date | string
   }
 
-  export type CollectionCasePenaltyWhereInput = {
-    AND?: CollectionCasePenaltyWhereInput | CollectionCasePenaltyWhereInput[]
-    OR?: CollectionCasePenaltyWhereInput[]
-    NOT?: CollectionCasePenaltyWhereInput | CollectionCasePenaltyWhereInput[]
-    id?: StringFilter<"CollectionCasePenalty"> | string
-    collection_case_id?: StringFilter<"CollectionCasePenalty"> | string
-    description?: StringNullableFilter<"CollectionCasePenalty"> | string | null
-    amount?: DecimalFilter<"CollectionCasePenalty"> | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    is_paid?: BoolFilter<"CollectionCasePenalty"> | boolean
-    created_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    updated_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
+  export type CollectionCaseFineWhereInput = {
+    AND?: CollectionCaseFineWhereInput | CollectionCaseFineWhereInput[]
+    OR?: CollectionCaseFineWhereInput[]
+    NOT?: CollectionCaseFineWhereInput | CollectionCaseFineWhereInput[]
+    id?: StringFilter<"CollectionCaseFine"> | string
+    collection_case_id?: StringFilter<"CollectionCaseFine"> | string
+    description?: StringNullableFilter<"CollectionCaseFine"> | string | null
+    amount?: DecimalFilter<"CollectionCaseFine"> | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    created_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    updated_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
     collection_case?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
   }
 
-  export type CollectionCasePenaltyOrderByWithRelationInput = {
+  export type CollectionCaseFineOrderByWithRelationInput = {
     id?: SortOrder
     collection_case_id?: SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
-    date_applied?: SortOrder
-    is_paid?: SortOrder
+    applied_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     collection_case?: CollectionCaseOrderByWithRelationInput
   }
 
-  export type CollectionCasePenaltyWhereUniqueInput = Prisma.AtLeast<{
+  export type CollectionCaseFineWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: CollectionCasePenaltyWhereInput | CollectionCasePenaltyWhereInput[]
-    OR?: CollectionCasePenaltyWhereInput[]
-    NOT?: CollectionCasePenaltyWhereInput | CollectionCasePenaltyWhereInput[]
-    collection_case_id?: StringFilter<"CollectionCasePenalty"> | string
-    description?: StringNullableFilter<"CollectionCasePenalty"> | string | null
-    amount?: DecimalFilter<"CollectionCasePenalty"> | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    is_paid?: BoolFilter<"CollectionCasePenalty"> | boolean
-    created_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    updated_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
+    AND?: CollectionCaseFineWhereInput | CollectionCaseFineWhereInput[]
+    OR?: CollectionCaseFineWhereInput[]
+    NOT?: CollectionCaseFineWhereInput | CollectionCaseFineWhereInput[]
+    collection_case_id?: StringFilter<"CollectionCaseFine"> | string
+    description?: StringNullableFilter<"CollectionCaseFine"> | string | null
+    amount?: DecimalFilter<"CollectionCaseFine"> | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    created_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    updated_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
     collection_case?: XOR<CollectionCaseScalarRelationFilter, CollectionCaseWhereInput>
   }, "id">
 
-  export type CollectionCasePenaltyOrderByWithAggregationInput = {
+  export type CollectionCaseFineOrderByWithAggregationInput = {
     id?: SortOrder
     collection_case_id?: SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
-    date_applied?: SortOrder
-    is_paid?: SortOrder
+    applied_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    _count?: CollectionCasePenaltyCountOrderByAggregateInput
-    _avg?: CollectionCasePenaltyAvgOrderByAggregateInput
-    _max?: CollectionCasePenaltyMaxOrderByAggregateInput
-    _min?: CollectionCasePenaltyMinOrderByAggregateInput
-    _sum?: CollectionCasePenaltySumOrderByAggregateInput
+    _count?: CollectionCaseFineCountOrderByAggregateInput
+    _avg?: CollectionCaseFineAvgOrderByAggregateInput
+    _max?: CollectionCaseFineMaxOrderByAggregateInput
+    _min?: CollectionCaseFineMinOrderByAggregateInput
+    _sum?: CollectionCaseFineSumOrderByAggregateInput
   }
 
-  export type CollectionCasePenaltyScalarWhereWithAggregatesInput = {
-    AND?: CollectionCasePenaltyScalarWhereWithAggregatesInput | CollectionCasePenaltyScalarWhereWithAggregatesInput[]
-    OR?: CollectionCasePenaltyScalarWhereWithAggregatesInput[]
-    NOT?: CollectionCasePenaltyScalarWhereWithAggregatesInput | CollectionCasePenaltyScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CollectionCasePenalty"> | string
-    collection_case_id?: StringWithAggregatesFilter<"CollectionCasePenalty"> | string
-    description?: StringNullableWithAggregatesFilter<"CollectionCasePenalty"> | string | null
-    amount?: DecimalWithAggregatesFilter<"CollectionCasePenalty"> | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeWithAggregatesFilter<"CollectionCasePenalty"> | Date | string
-    is_paid?: BoolWithAggregatesFilter<"CollectionCasePenalty"> | boolean
-    created_at?: DateTimeWithAggregatesFilter<"CollectionCasePenalty"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"CollectionCasePenalty"> | Date | string
+  export type CollectionCaseFineScalarWhereWithAggregatesInput = {
+    AND?: CollectionCaseFineScalarWhereWithAggregatesInput | CollectionCaseFineScalarWhereWithAggregatesInput[]
+    OR?: CollectionCaseFineScalarWhereWithAggregatesInput[]
+    NOT?: CollectionCaseFineScalarWhereWithAggregatesInput | CollectionCaseFineScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CollectionCaseFine"> | string
+    collection_case_id?: StringWithAggregatesFilter<"CollectionCaseFine"> | string
+    description?: StringNullableWithAggregatesFilter<"CollectionCaseFine"> | string | null
+    amount?: DecimalWithAggregatesFilter<"CollectionCaseFine"> | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeWithAggregatesFilter<"CollectionCaseFine"> | Date | string
+    created_at?: DateTimeWithAggregatesFilter<"CollectionCaseFine"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"CollectionCaseFine"> | Date | string
   }
 
   export type CollectionCaseNotificationWhereInput = {
@@ -35332,6 +36870,7 @@ export namespace Prisma {
   export type TenantCreateInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -35354,11 +36893,13 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -35381,11 +36922,13 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -35408,11 +36951,13 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -35435,11 +36980,13 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateManyInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -35460,6 +37007,7 @@ export namespace Prisma {
   export type TenantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -35480,6 +37028,7 @@ export namespace Prisma {
   export type TenantUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -35495,6 +37044,103 @@ export namespace Prisma {
     is_active?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TenantInvitationCreateInput = {
+    id?: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+    tenant: TenantCreateNestedOneWithoutInvitationsInput
+  }
+
+  export type TenantInvitationUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+  }
+
+  export type TenantInvitationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tenant?: TenantUpdateOneRequiredWithoutInvitationsNestedInput
+  }
+
+  export type TenantInvitationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TenantInvitationCreateManyInput = {
+    id?: string
+    tenant_id: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+  }
+
+  export type TenantInvitationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TenantInvitationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserCreateInput = {
@@ -36760,18 +38406,24 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -36783,16 +38435,22 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -36802,18 +38460,24 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -36825,16 +38489,22 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -36846,10 +38516,16 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -36860,10 +38536,16 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36876,86 +38558,85 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyCreateInput = {
+  export type CollectionCaseFineCreateInput = {
     id?: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    applied_at?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
-    collection_case: CollectionCaseCreateNestedOneWithoutPenaltiesInput
+    collection_case: CollectionCaseCreateNestedOneWithoutFinesInput
   }
 
-  export type CollectionCasePenaltyUncheckedCreateInput = {
+  export type CollectionCaseFineUncheckedCreateInput = {
     id?: string
     collection_case_id: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    applied_at?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type CollectionCasePenaltyUpdateInput = {
+  export type CollectionCaseFineUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    collection_case?: CollectionCaseUpdateOneRequiredWithoutPenaltiesNestedInput
+    collection_case?: CollectionCaseUpdateOneRequiredWithoutFinesNestedInput
   }
 
-  export type CollectionCasePenaltyUncheckedUpdateInput = {
+  export type CollectionCaseFineUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     collection_case_id?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyCreateManyInput = {
+  export type CollectionCaseFineCreateManyInput = {
     id?: string
     collection_case_id: string
     description?: string | null
     amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    applied_at?: Date | string
     created_at?: Date | string
     updated_at?: Date | string
   }
 
-  export type CollectionCasePenaltyUpdateManyMutationInput = {
+  export type CollectionCaseFineUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyUncheckedUpdateManyInput = {
+  export type CollectionCaseFineUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     collection_case_id?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37755,6 +39436,12 @@ export namespace Prisma {
     none?: CollectionCaseAgreementWhereInput
   }
 
+  export type TenantInvitationListRelationFilter = {
+    every?: TenantInvitationWhereInput
+    some?: TenantInvitationWhereInput
+    none?: TenantInvitationWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -37788,9 +39475,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type TenantInvitationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TenantCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     subdomain?: SortOrder
     contact_email?: SortOrder
     country_code?: SortOrder
@@ -37815,6 +39507,7 @@ export namespace Prisma {
   export type TenantMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     subdomain?: SortOrder
     contact_email?: SortOrder
     country_code?: SortOrder
@@ -37835,6 +39528,7 @@ export namespace Prisma {
   export type TenantMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     subdomain?: SortOrder
     contact_email?: SortOrder
     country_code?: SortOrder
@@ -37930,16 +39624,100 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type EnumroleEnumFilter<$PrismaModel = never> = {
-    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
-    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
+  export type EnumInvitationRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvitationRoleFilter<$PrismaModel> | $Enums.InvitationRole
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type TenantScalarRelationFilter = {
     is?: TenantWhereInput
     isNot?: TenantWhereInput
+  }
+
+  export type TenantInvitationCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    email?: SortOrder
+    fullname?: SortOrder
+    token?: SortOrder
+    role?: SortOrder
+    debtor_id?: SortOrder
+    created_at?: SortOrder
+    expires_at?: SortOrder
+    used?: SortOrder
+    used_at?: SortOrder
+  }
+
+  export type TenantInvitationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    email?: SortOrder
+    fullname?: SortOrder
+    token?: SortOrder
+    role?: SortOrder
+    debtor_id?: SortOrder
+    created_at?: SortOrder
+    expires_at?: SortOrder
+    used?: SortOrder
+    used_at?: SortOrder
+  }
+
+  export type TenantInvitationMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    email?: SortOrder
+    fullname?: SortOrder
+    token?: SortOrder
+    role?: SortOrder
+    debtor_id?: SortOrder
+    created_at?: SortOrder
+    expires_at?: SortOrder
+    used?: SortOrder
+    used_at?: SortOrder
+  }
+
+  export type EnumInvitationRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvitationRoleFilter<$PrismaModel>
+    _max?: NestedEnumInvitationRoleFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumroleEnumFilter<$PrismaModel = never> = {
+    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
+    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
   }
 
   export type ChatMessageListRelationFilter = {
@@ -38935,10 +40713,10 @@ export namespace Prisma {
     not?: NestedEnumCollectionCaseStatusFilter<$PrismaModel> | $Enums.CollectionCaseStatus
   }
 
-  export type CollectionCaseNotificationListRelationFilter = {
-    every?: CollectionCaseNotificationWhereInput
-    some?: CollectionCaseNotificationWhereInput
-    none?: CollectionCaseNotificationWhereInput
+  export type CollectionCaseFineListRelationFilter = {
+    every?: CollectionCaseFineWhereInput
+    some?: CollectionCaseFineWhereInput
+    none?: CollectionCaseFineWhereInput
   }
 
   export type CollectionCasePaymentListRelationFilter = {
@@ -38947,13 +40725,13 @@ export namespace Prisma {
     none?: CollectionCasePaymentWhereInput
   }
 
-  export type CollectionCasePenaltyListRelationFilter = {
-    every?: CollectionCasePenaltyWhereInput
-    some?: CollectionCasePenaltyWhereInput
-    none?: CollectionCasePenaltyWhereInput
+  export type CollectionCaseNotificationListRelationFilter = {
+    every?: CollectionCaseNotificationWhereInput
+    some?: CollectionCaseNotificationWhereInput
+    none?: CollectionCaseNotificationWhereInput
   }
 
-  export type CollectionCaseNotificationOrderByRelationAggregateInput = {
+  export type CollectionCaseFineOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -38961,7 +40739,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type CollectionCasePenaltyOrderByRelationAggregateInput = {
+  export type CollectionCaseNotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -38973,18 +40751,31 @@ export namespace Prisma {
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
     status?: SortOrder
-    notification_status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
   export type CollectionCaseAvgOrderByAggregateInput = {
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
   }
 
   export type CollectionCaseMaxOrderByAggregateInput = {
@@ -38995,10 +40786,16 @@ export namespace Prisma {
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
     status?: SortOrder
-    notification_status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -39011,18 +40808,31 @@ export namespace Prisma {
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
     status?: SortOrder
-    notification_status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
   export type CollectionCaseSumOrderByAggregateInput = {
     amount_original?: SortOrder
-    amount_due?: SortOrder
-    amount_to_receive?: SortOrder
+    fee_rate?: SortOrder
+    fee_amount?: SortOrder
+    abb_rate?: SortOrder
+    abb_amount?: SortOrder
+    total_fined?: SortOrder
+    total_due?: SortOrder
+    total_to_receive?: SortOrder
+    total_paid?: SortOrder
+    balance?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -39056,44 +40866,41 @@ export namespace Prisma {
     isNot?: CollectionCaseWhereInput
   }
 
-  export type CollectionCasePenaltyCountOrderByAggregateInput = {
+  export type CollectionCaseFineCountOrderByAggregateInput = {
     id?: SortOrder
     collection_case_id?: SortOrder
     description?: SortOrder
     amount?: SortOrder
-    date_applied?: SortOrder
-    is_paid?: SortOrder
+    applied_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type CollectionCasePenaltyAvgOrderByAggregateInput = {
+  export type CollectionCaseFineAvgOrderByAggregateInput = {
     amount?: SortOrder
   }
 
-  export type CollectionCasePenaltyMaxOrderByAggregateInput = {
+  export type CollectionCaseFineMaxOrderByAggregateInput = {
     id?: SortOrder
     collection_case_id?: SortOrder
     description?: SortOrder
     amount?: SortOrder
-    date_applied?: SortOrder
-    is_paid?: SortOrder
+    applied_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type CollectionCasePenaltyMinOrderByAggregateInput = {
+  export type CollectionCaseFineMinOrderByAggregateInput = {
     id?: SortOrder
     collection_case_id?: SortOrder
     description?: SortOrder
     amount?: SortOrder
-    date_applied?: SortOrder
-    is_paid?: SortOrder
+    applied_at?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
   }
 
-  export type CollectionCasePenaltySumOrderByAggregateInput = {
+  export type CollectionCaseFineSumOrderByAggregateInput = {
     amount?: SortOrder
   }
 
@@ -39645,6 +41452,13 @@ export namespace Prisma {
     connect?: CollectionCaseAgreementWhereUniqueInput | CollectionCaseAgreementWhereUniqueInput[]
   }
 
+  export type TenantInvitationCreateNestedManyWithoutTenantInput = {
+    create?: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput> | TenantInvitationCreateWithoutTenantInput[] | TenantInvitationUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: TenantInvitationCreateOrConnectWithoutTenantInput | TenantInvitationCreateOrConnectWithoutTenantInput[]
+    createMany?: TenantInvitationCreateManyTenantInputEnvelope
+    connect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+  }
+
   export type BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -39692,6 +41506,13 @@ export namespace Prisma {
     connectOrCreate?: CollectionCaseAgreementCreateOrConnectWithoutTenantInput | CollectionCaseAgreementCreateOrConnectWithoutTenantInput[]
     createMany?: CollectionCaseAgreementCreateManyTenantInputEnvelope
     connect?: CollectionCaseAgreementWhereUniqueInput | CollectionCaseAgreementWhereUniqueInput[]
+  }
+
+  export type TenantInvitationUncheckedCreateNestedManyWithoutTenantInput = {
+    create?: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput> | TenantInvitationCreateWithoutTenantInput[] | TenantInvitationUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: TenantInvitationCreateOrConnectWithoutTenantInput | TenantInvitationCreateOrConnectWithoutTenantInput[]
+    createMany?: TenantInvitationCreateManyTenantInputEnvelope
+    connect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -39816,6 +41637,20 @@ export namespace Prisma {
     deleteMany?: CollectionCaseAgreementScalarWhereInput | CollectionCaseAgreementScalarWhereInput[]
   }
 
+  export type TenantInvitationUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput> | TenantInvitationCreateWithoutTenantInput[] | TenantInvitationUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: TenantInvitationCreateOrConnectWithoutTenantInput | TenantInvitationCreateOrConnectWithoutTenantInput[]
+    upsert?: TenantInvitationUpsertWithWhereUniqueWithoutTenantInput | TenantInvitationUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: TenantInvitationCreateManyTenantInputEnvelope
+    set?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    disconnect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    delete?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    connect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    update?: TenantInvitationUpdateWithWhereUniqueWithoutTenantInput | TenantInvitationUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: TenantInvitationUpdateManyWithWhereWithoutTenantInput | TenantInvitationUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: TenantInvitationScalarWhereInput | TenantInvitationScalarWhereInput[]
+  }
+
   export type BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput = {
     create?: XOR<BillingInvoiceCreateWithoutTenantInput, BillingInvoiceUncheckedCreateWithoutTenantInput> | BillingInvoiceCreateWithoutTenantInput[] | BillingInvoiceUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: BillingInvoiceCreateOrConnectWithoutTenantInput | BillingInvoiceCreateOrConnectWithoutTenantInput[]
@@ -39912,6 +41747,42 @@ export namespace Prisma {
     update?: CollectionCaseAgreementUpdateWithWhereUniqueWithoutTenantInput | CollectionCaseAgreementUpdateWithWhereUniqueWithoutTenantInput[]
     updateMany?: CollectionCaseAgreementUpdateManyWithWhereWithoutTenantInput | CollectionCaseAgreementUpdateManyWithWhereWithoutTenantInput[]
     deleteMany?: CollectionCaseAgreementScalarWhereInput | CollectionCaseAgreementScalarWhereInput[]
+  }
+
+  export type TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput> | TenantInvitationCreateWithoutTenantInput[] | TenantInvitationUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: TenantInvitationCreateOrConnectWithoutTenantInput | TenantInvitationCreateOrConnectWithoutTenantInput[]
+    upsert?: TenantInvitationUpsertWithWhereUniqueWithoutTenantInput | TenantInvitationUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: TenantInvitationCreateManyTenantInputEnvelope
+    set?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    disconnect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    delete?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    connect?: TenantInvitationWhereUniqueInput | TenantInvitationWhereUniqueInput[]
+    update?: TenantInvitationUpdateWithWhereUniqueWithoutTenantInput | TenantInvitationUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: TenantInvitationUpdateManyWithWhereWithoutTenantInput | TenantInvitationUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: TenantInvitationScalarWhereInput | TenantInvitationScalarWhereInput[]
+  }
+
+  export type TenantCreateNestedOneWithoutInvitationsInput = {
+    create?: XOR<TenantCreateWithoutInvitationsInput, TenantUncheckedCreateWithoutInvitationsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutInvitationsInput
+    connect?: TenantWhereUniqueInput
+  }
+
+  export type EnumInvitationRoleFieldUpdateOperationsInput = {
+    set?: $Enums.InvitationRole
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type TenantUpdateOneRequiredWithoutInvitationsNestedInput = {
+    create?: XOR<TenantCreateWithoutInvitationsInput, TenantUncheckedCreateWithoutInvitationsInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutInvitationsInput
+    upsert?: TenantUpsertWithoutInvitationsInput
+    connect?: TenantWhereUniqueInput
+    update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutInvitationsInput, TenantUpdateWithoutInvitationsInput>, TenantUncheckedUpdateWithoutInvitationsInput>
   }
 
   export type TenantCreateNestedOneWithoutUsersInput = {
@@ -40622,11 +42493,11 @@ export namespace Prisma {
     connect?: TenantWhereUniqueInput
   }
 
-  export type CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput = {
-    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
-    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
-    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+  export type CollectionCaseFineCreateNestedManyWithoutCollection_caseInput = {
+    create?: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput> | CollectionCaseFineCreateWithoutCollection_caseInput[] | CollectionCaseFineUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseFineCreateOrConnectWithoutCollection_caseInput | CollectionCaseFineCreateOrConnectWithoutCollection_caseInput[]
+    createMany?: CollectionCaseFineCreateManyCollection_caseInputEnvelope
+    connect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
   }
 
   export type CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput = {
@@ -40643,11 +42514,11 @@ export namespace Prisma {
     connect?: CollectionCaseAgreementWhereUniqueInput | CollectionCaseAgreementWhereUniqueInput[]
   }
 
-  export type CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput = {
-    create?: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput> | CollectionCasePenaltyCreateWithoutCollection_caseInput[] | CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput | CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput[]
-    createMany?: CollectionCasePenaltyCreateManyCollection_caseInputEnvelope
-    connect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
+  export type CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput = {
+    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
+    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
+    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
   }
 
   export type ChatRoomCreateNestedManyWithoutCollection_caseInput = {
@@ -40657,11 +42528,11 @@ export namespace Prisma {
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
-  export type CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput = {
-    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
-    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
-    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+  export type CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput = {
+    create?: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput> | CollectionCaseFineCreateWithoutCollection_caseInput[] | CollectionCaseFineUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseFineCreateOrConnectWithoutCollection_caseInput | CollectionCaseFineCreateOrConnectWithoutCollection_caseInput[]
+    createMany?: CollectionCaseFineCreateManyCollection_caseInputEnvelope
+    connect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
   }
 
   export type CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput = {
@@ -40678,11 +42549,11 @@ export namespace Prisma {
     connect?: CollectionCaseAgreementWhereUniqueInput | CollectionCaseAgreementWhereUniqueInput[]
   }
 
-  export type CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput = {
-    create?: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput> | CollectionCasePenaltyCreateWithoutCollection_caseInput[] | CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput | CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput[]
-    createMany?: CollectionCasePenaltyCreateManyCollection_caseInputEnvelope
-    connect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
+  export type CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput = {
+    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
+    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
+    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
   }
 
   export type ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput = {
@@ -40720,18 +42591,18 @@ export namespace Prisma {
     update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutCollection_casesInput, TenantUpdateWithoutCollection_casesInput>, TenantUncheckedUpdateWithoutCollection_casesInput>
   }
 
-  export type CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput = {
-    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
-    upsert?: CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput[]
-    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
-    set?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    disconnect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    delete?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    update?: CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput[]
-    updateMany?: CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput[]
-    deleteMany?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
+  export type CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput = {
+    create?: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput> | CollectionCaseFineCreateWithoutCollection_caseInput[] | CollectionCaseFineUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseFineCreateOrConnectWithoutCollection_caseInput | CollectionCaseFineCreateOrConnectWithoutCollection_caseInput[]
+    upsert?: CollectionCaseFineUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseFineUpsertWithWhereUniqueWithoutCollection_caseInput[]
+    createMany?: CollectionCaseFineCreateManyCollection_caseInputEnvelope
+    set?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    disconnect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    delete?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    connect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    update?: CollectionCaseFineUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseFineUpdateWithWhereUniqueWithoutCollection_caseInput[]
+    updateMany?: CollectionCaseFineUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseFineUpdateManyWithWhereWithoutCollection_caseInput[]
+    deleteMany?: CollectionCaseFineScalarWhereInput | CollectionCaseFineScalarWhereInput[]
   }
 
   export type CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput = {
@@ -40762,18 +42633,18 @@ export namespace Prisma {
     deleteMany?: CollectionCaseAgreementScalarWhereInput | CollectionCaseAgreementScalarWhereInput[]
   }
 
-  export type CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput = {
-    create?: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput> | CollectionCasePenaltyCreateWithoutCollection_caseInput[] | CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput | CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput[]
-    upsert?: CollectionCasePenaltyUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCasePenaltyUpsertWithWhereUniqueWithoutCollection_caseInput[]
-    createMany?: CollectionCasePenaltyCreateManyCollection_caseInputEnvelope
-    set?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    disconnect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    delete?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    connect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    update?: CollectionCasePenaltyUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCasePenaltyUpdateWithWhereUniqueWithoutCollection_caseInput[]
-    updateMany?: CollectionCasePenaltyUpdateManyWithWhereWithoutCollection_caseInput | CollectionCasePenaltyUpdateManyWithWhereWithoutCollection_caseInput[]
-    deleteMany?: CollectionCasePenaltyScalarWhereInput | CollectionCasePenaltyScalarWhereInput[]
+  export type CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput = {
+    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
+    upsert?: CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput[]
+    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
+    set?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    disconnect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    delete?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    update?: CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput[]
+    updateMany?: CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput[]
+    deleteMany?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
   }
 
   export type ChatRoomUpdateManyWithoutCollection_caseNestedInput = {
@@ -40790,18 +42661,18 @@ export namespace Prisma {
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
   }
 
-  export type CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput = {
-    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
-    upsert?: CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput[]
-    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
-    set?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    disconnect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    delete?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
-    update?: CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput[]
-    updateMany?: CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput[]
-    deleteMany?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
+  export type CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput = {
+    create?: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput> | CollectionCaseFineCreateWithoutCollection_caseInput[] | CollectionCaseFineUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseFineCreateOrConnectWithoutCollection_caseInput | CollectionCaseFineCreateOrConnectWithoutCollection_caseInput[]
+    upsert?: CollectionCaseFineUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseFineUpsertWithWhereUniqueWithoutCollection_caseInput[]
+    createMany?: CollectionCaseFineCreateManyCollection_caseInputEnvelope
+    set?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    disconnect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    delete?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    connect?: CollectionCaseFineWhereUniqueInput | CollectionCaseFineWhereUniqueInput[]
+    update?: CollectionCaseFineUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseFineUpdateWithWhereUniqueWithoutCollection_caseInput[]
+    updateMany?: CollectionCaseFineUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseFineUpdateManyWithWhereWithoutCollection_caseInput[]
+    deleteMany?: CollectionCaseFineScalarWhereInput | CollectionCaseFineScalarWhereInput[]
   }
 
   export type CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput = {
@@ -40832,18 +42703,18 @@ export namespace Prisma {
     deleteMany?: CollectionCaseAgreementScalarWhereInput | CollectionCaseAgreementScalarWhereInput[]
   }
 
-  export type CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput = {
-    create?: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput> | CollectionCasePenaltyCreateWithoutCollection_caseInput[] | CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput[]
-    connectOrCreate?: CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput | CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput[]
-    upsert?: CollectionCasePenaltyUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCasePenaltyUpsertWithWhereUniqueWithoutCollection_caseInput[]
-    createMany?: CollectionCasePenaltyCreateManyCollection_caseInputEnvelope
-    set?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    disconnect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    delete?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    connect?: CollectionCasePenaltyWhereUniqueInput | CollectionCasePenaltyWhereUniqueInput[]
-    update?: CollectionCasePenaltyUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCasePenaltyUpdateWithWhereUniqueWithoutCollection_caseInput[]
-    updateMany?: CollectionCasePenaltyUpdateManyWithWhereWithoutCollection_caseInput | CollectionCasePenaltyUpdateManyWithWhereWithoutCollection_caseInput[]
-    deleteMany?: CollectionCasePenaltyScalarWhereInput | CollectionCasePenaltyScalarWhereInput[]
+  export type CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput = {
+    create?: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput> | CollectionCaseNotificationCreateWithoutCollection_caseInput[] | CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput[]
+    connectOrCreate?: CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput | CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput[]
+    upsert?: CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput[]
+    createMany?: CollectionCaseNotificationCreateManyCollection_caseInputEnvelope
+    set?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    disconnect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    delete?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    connect?: CollectionCaseNotificationWhereUniqueInput | CollectionCaseNotificationWhereUniqueInput[]
+    update?: CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput | CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput[]
+    updateMany?: CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput | CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput[]
+    deleteMany?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
   }
 
   export type ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput = {
@@ -40860,18 +42731,18 @@ export namespace Prisma {
     deleteMany?: ChatRoomScalarWhereInput | ChatRoomScalarWhereInput[]
   }
 
-  export type CollectionCaseCreateNestedOneWithoutPenaltiesInput = {
-    create?: XOR<CollectionCaseCreateWithoutPenaltiesInput, CollectionCaseUncheckedCreateWithoutPenaltiesInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutPenaltiesInput
+  export type CollectionCaseCreateNestedOneWithoutFinesInput = {
+    create?: XOR<CollectionCaseCreateWithoutFinesInput, CollectionCaseUncheckedCreateWithoutFinesInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutFinesInput
     connect?: CollectionCaseWhereUniqueInput
   }
 
-  export type CollectionCaseUpdateOneRequiredWithoutPenaltiesNestedInput = {
-    create?: XOR<CollectionCaseCreateWithoutPenaltiesInput, CollectionCaseUncheckedCreateWithoutPenaltiesInput>
-    connectOrCreate?: CollectionCaseCreateOrConnectWithoutPenaltiesInput
-    upsert?: CollectionCaseUpsertWithoutPenaltiesInput
+  export type CollectionCaseUpdateOneRequiredWithoutFinesNestedInput = {
+    create?: XOR<CollectionCaseCreateWithoutFinesInput, CollectionCaseUncheckedCreateWithoutFinesInput>
+    connectOrCreate?: CollectionCaseCreateOrConnectWithoutFinesInput
+    upsert?: CollectionCaseUpsertWithoutFinesInput
     connect?: CollectionCaseWhereUniqueInput
-    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutPenaltiesInput, CollectionCaseUpdateWithoutPenaltiesInput>, CollectionCaseUncheckedUpdateWithoutPenaltiesInput>
+    update?: XOR<XOR<CollectionCaseUpdateToOneWithWhereWithoutFinesInput, CollectionCaseUpdateWithoutFinesInput>, CollectionCaseUncheckedUpdateWithoutFinesInput>
   }
 
   export type CollectionCaseCreateNestedOneWithoutNotificationsInput = {
@@ -41601,6 +43472,48 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumInvitationRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvitationRoleFilter<$PrismaModel> | $Enums.InvitationRole
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInvitationRoleFilter<$PrismaModel>
+    _max?: NestedEnumInvitationRoleFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumroleEnumFilter<$PrismaModel = never> = {
     equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
     in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
@@ -41930,17 +43843,23 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -41951,16 +43870,22 @@ export namespace Prisma {
     due_date: Date | string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -42184,6 +44109,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TenantInvitationCreateWithoutTenantInput = {
+    id?: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+  }
+
+  export type TenantInvitationUncheckedCreateWithoutTenantInput = {
+    id?: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+  }
+
+  export type TenantInvitationCreateOrConnectWithoutTenantInput = {
+    where: TenantInvitationWhereUniqueInput
+    create: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput>
+  }
+
+  export type TenantInvitationCreateManyTenantInputEnvelope = {
+    data: TenantInvitationCreateManyTenantInput | TenantInvitationCreateManyTenantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BillingInvoiceUpsertWithWhereUniqueWithoutTenantInput = {
     where: BillingInvoiceWhereUniqueInput
     update: XOR<BillingInvoiceUpdateWithoutTenantInput, BillingInvoiceUncheckedUpdateWithoutTenantInput>
@@ -42244,10 +44205,16 @@ export namespace Prisma {
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFilter<"CollectionCase"> | $Enums.CollectionCaseStatus
-    notification_status?: StringNullableFilter<"CollectionCase"> | string | null
     created_at?: DateTimeFilter<"CollectionCase"> | Date | string
     updated_at?: DateTimeFilter<"CollectionCase"> | Date | string
   }
@@ -42418,9 +44385,171 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"CollectionCaseAgreement"> | Date | string
   }
 
+  export type TenantInvitationUpsertWithWhereUniqueWithoutTenantInput = {
+    where: TenantInvitationWhereUniqueInput
+    update: XOR<TenantInvitationUpdateWithoutTenantInput, TenantInvitationUncheckedUpdateWithoutTenantInput>
+    create: XOR<TenantInvitationCreateWithoutTenantInput, TenantInvitationUncheckedCreateWithoutTenantInput>
+  }
+
+  export type TenantInvitationUpdateWithWhereUniqueWithoutTenantInput = {
+    where: TenantInvitationWhereUniqueInput
+    data: XOR<TenantInvitationUpdateWithoutTenantInput, TenantInvitationUncheckedUpdateWithoutTenantInput>
+  }
+
+  export type TenantInvitationUpdateManyWithWhereWithoutTenantInput = {
+    where: TenantInvitationScalarWhereInput
+    data: XOR<TenantInvitationUpdateManyMutationInput, TenantInvitationUncheckedUpdateManyWithoutTenantInput>
+  }
+
+  export type TenantInvitationScalarWhereInput = {
+    AND?: TenantInvitationScalarWhereInput | TenantInvitationScalarWhereInput[]
+    OR?: TenantInvitationScalarWhereInput[]
+    NOT?: TenantInvitationScalarWhereInput | TenantInvitationScalarWhereInput[]
+    id?: StringFilter<"TenantInvitation"> | string
+    tenant_id?: StringFilter<"TenantInvitation"> | string
+    email?: StringFilter<"TenantInvitation"> | string
+    fullname?: StringNullableFilter<"TenantInvitation"> | string | null
+    token?: StringFilter<"TenantInvitation"> | string
+    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
+    created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
+    used?: BoolFilter<"TenantInvitation"> | boolean
+    used_at?: DateTimeNullableFilter<"TenantInvitation"> | Date | string | null
+  }
+
+  export type TenantCreateWithoutInvitationsInput = {
+    id?: string
+    name: string
+    code: string
+    subdomain: string
+    contact_email: string
+    country_code: string
+    kvk?: string | null
+    legal_name?: string | null
+    address?: string | null
+    city?: string | null
+    logo_url?: string | null
+    number_of_employees?: number | null
+    phone?: string | null
+    website?: string | null
+    terms_accepted?: boolean
+    is_active?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    billing_invoice?: BillingInvoiceCreateNestedManyWithoutTenantInput
+    collection_cases?: CollectionCaseCreateNestedManyWithoutTenantInput
+    debtors?: DebtorCreateNestedManyWithoutTenantInput
+    verdicts?: VerdictCreateNestedManyWithoutTenantInput
+    users?: UserCreateNestedManyWithoutTenantInput
+    chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantUncheckedCreateWithoutInvitationsInput = {
+    id?: string
+    name: string
+    code: string
+    subdomain: string
+    contact_email: string
+    country_code: string
+    kvk?: string | null
+    legal_name?: string | null
+    address?: string | null
+    city?: string | null
+    logo_url?: string | null
+    number_of_employees?: number | null
+    phone?: string | null
+    website?: string | null
+    terms_accepted?: boolean
+    is_active?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    billing_invoice?: BillingInvoiceUncheckedCreateNestedManyWithoutTenantInput
+    collection_cases?: CollectionCaseUncheckedCreateNestedManyWithoutTenantInput
+    debtors?: DebtorUncheckedCreateNestedManyWithoutTenantInput
+    verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
+    users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantCreateOrConnectWithoutInvitationsInput = {
+    where: TenantWhereUniqueInput
+    create: XOR<TenantCreateWithoutInvitationsInput, TenantUncheckedCreateWithoutInvitationsInput>
+  }
+
+  export type TenantUpsertWithoutInvitationsInput = {
+    update: XOR<TenantUpdateWithoutInvitationsInput, TenantUncheckedUpdateWithoutInvitationsInput>
+    create: XOR<TenantCreateWithoutInvitationsInput, TenantUncheckedCreateWithoutInvitationsInput>
+    where?: TenantWhereInput
+  }
+
+  export type TenantUpdateToOneWithWhereWithoutInvitationsInput = {
+    where?: TenantWhereInput
+    data: XOR<TenantUpdateWithoutInvitationsInput, TenantUncheckedUpdateWithoutInvitationsInput>
+  }
+
+  export type TenantUpdateWithoutInvitationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    country_code?: StringFieldUpdateOperationsInput | string
+    kvk?: NullableStringFieldUpdateOperationsInput | string | null
+    legal_name?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    number_of_employees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    terms_accepted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    billing_invoice?: BillingInvoiceUpdateManyWithoutTenantNestedInput
+    collection_cases?: CollectionCaseUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUpdateManyWithoutTenantNestedInput
+    verdicts?: VerdictUpdateManyWithoutTenantNestedInput
+    users?: UserUpdateManyWithoutTenantNestedInput
+    chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+  }
+
+  export type TenantUncheckedUpdateWithoutInvitationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    subdomain?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    country_code?: StringFieldUpdateOperationsInput | string
+    kvk?: NullableStringFieldUpdateOperationsInput | string | null
+    legal_name?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    logo_url?: NullableStringFieldUpdateOperationsInput | string | null
+    number_of_employees?: NullableIntFieldUpdateOperationsInput | number | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    terms_accepted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    billing_invoice?: BillingInvoiceUncheckedUpdateManyWithoutTenantNestedInput
+    collection_cases?: CollectionCaseUncheckedUpdateManyWithoutTenantNestedInput
+    debtors?: DebtorUncheckedUpdateManyWithoutTenantNestedInput
+    verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
+    users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+  }
+
   export type TenantCreateWithoutUsersInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -42442,11 +44571,13 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutUsersInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -42468,6 +44599,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutUsersInput = {
@@ -42619,6 +44751,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -42640,11 +44773,13 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -42666,6 +44801,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type DebtorUpsertWithWhereUniqueWithoutUserInput = {
@@ -42812,6 +44948,7 @@ export namespace Prisma {
   export type TenantCreateWithoutVerdictsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -42833,11 +44970,13 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutVerdictsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -42859,6 +44998,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutVerdictsInput = {
@@ -43098,6 +45238,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutVerdictsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -43119,11 +45260,13 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutVerdictsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -43145,6 +45288,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type VerdictAttachmentUpsertWithWhereUniqueWithoutVerdictInput = {
@@ -43885,6 +46029,7 @@ export namespace Prisma {
   export type TenantCreateWithoutBilling_invoiceInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -43906,11 +46051,13 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutBilling_invoiceInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -43932,6 +46079,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutBilling_invoiceInput = {
@@ -44021,6 +46169,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutBilling_invoiceInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -44042,11 +46191,13 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutBilling_invoiceInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -44068,6 +46219,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type BillingInvoiceDetailUpsertWithWhereUniqueWithoutBilling_invoiceInput = {
@@ -44332,6 +46484,7 @@ export namespace Prisma {
   export type TenantCreateWithoutCollection_casesInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -44353,11 +46506,13 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutCollection_casesInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -44379,6 +46534,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutCollection_casesInput = {
@@ -44386,33 +46542,31 @@ export namespace Prisma {
     create: XOR<TenantCreateWithoutCollection_casesInput, TenantUncheckedCreateWithoutCollection_casesInput>
   }
 
-  export type CollectionCaseNotificationCreateWithoutCollection_caseInput = {
+  export type CollectionCaseFineCreateWithoutCollection_caseInput = {
     id?: string
-    type: $Enums.NotificationType
-    title: string
-    message: string
-    sent_at?: Date | string
-    read?: boolean
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    applied_at?: Date | string
     created_at?: Date | string
+    updated_at?: Date | string
   }
 
-  export type CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput = {
+  export type CollectionCaseFineUncheckedCreateWithoutCollection_caseInput = {
     id?: string
-    type: $Enums.NotificationType
-    title: string
-    message: string
-    sent_at?: Date | string
-    read?: boolean
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    applied_at?: Date | string
     created_at?: Date | string
+    updated_at?: Date | string
   }
 
-  export type CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput = {
-    where: CollectionCaseNotificationWhereUniqueInput
-    create: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput>
+  export type CollectionCaseFineCreateOrConnectWithoutCollection_caseInput = {
+    where: CollectionCaseFineWhereUniqueInput
+    create: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput>
   }
 
-  export type CollectionCaseNotificationCreateManyCollection_caseInputEnvelope = {
-    data: CollectionCaseNotificationCreateManyCollection_caseInput | CollectionCaseNotificationCreateManyCollection_caseInput[]
+  export type CollectionCaseFineCreateManyCollection_caseInputEnvelope = {
+    data: CollectionCaseFineCreateManyCollection_caseInput | CollectionCaseFineCreateManyCollection_caseInput[]
     skipDuplicates?: boolean
   }
 
@@ -44494,33 +46648,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CollectionCasePenaltyCreateWithoutCollection_caseInput = {
+  export type CollectionCaseNotificationCreateWithoutCollection_caseInput = {
     id?: string
-    description?: string | null
-    amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    sent_at?: Date | string
+    read?: boolean
     created_at?: Date | string
-    updated_at?: Date | string
   }
 
-  export type CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput = {
+  export type CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput = {
     id?: string
-    description?: string | null
-    amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    sent_at?: Date | string
+    read?: boolean
     created_at?: Date | string
-    updated_at?: Date | string
   }
 
-  export type CollectionCasePenaltyCreateOrConnectWithoutCollection_caseInput = {
-    where: CollectionCasePenaltyWhereUniqueInput
-    create: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput>
+  export type CollectionCaseNotificationCreateOrConnectWithoutCollection_caseInput = {
+    where: CollectionCaseNotificationWhereUniqueInput
+    create: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput>
   }
 
-  export type CollectionCasePenaltyCreateManyCollection_caseInputEnvelope = {
-    data: CollectionCasePenaltyCreateManyCollection_caseInput | CollectionCasePenaltyCreateManyCollection_caseInput[]
+  export type CollectionCaseNotificationCreateManyCollection_caseInputEnvelope = {
+    data: CollectionCaseNotificationCreateManyCollection_caseInput | CollectionCaseNotificationCreateManyCollection_caseInput[]
     skipDuplicates?: boolean
   }
 
@@ -44615,6 +46769,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutCollection_casesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -44636,11 +46791,13 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutCollection_casesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -44662,36 +46819,36 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
-  export type CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput = {
-    where: CollectionCaseNotificationWhereUniqueInput
-    update: XOR<CollectionCaseNotificationUpdateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput>
-    create: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput>
+  export type CollectionCaseFineUpsertWithWhereUniqueWithoutCollection_caseInput = {
+    where: CollectionCaseFineWhereUniqueInput
+    update: XOR<CollectionCaseFineUpdateWithoutCollection_caseInput, CollectionCaseFineUncheckedUpdateWithoutCollection_caseInput>
+    create: XOR<CollectionCaseFineCreateWithoutCollection_caseInput, CollectionCaseFineUncheckedCreateWithoutCollection_caseInput>
   }
 
-  export type CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput = {
-    where: CollectionCaseNotificationWhereUniqueInput
-    data: XOR<CollectionCaseNotificationUpdateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput>
+  export type CollectionCaseFineUpdateWithWhereUniqueWithoutCollection_caseInput = {
+    where: CollectionCaseFineWhereUniqueInput
+    data: XOR<CollectionCaseFineUpdateWithoutCollection_caseInput, CollectionCaseFineUncheckedUpdateWithoutCollection_caseInput>
   }
 
-  export type CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput = {
-    where: CollectionCaseNotificationScalarWhereInput
-    data: XOR<CollectionCaseNotificationUpdateManyMutationInput, CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseInput>
+  export type CollectionCaseFineUpdateManyWithWhereWithoutCollection_caseInput = {
+    where: CollectionCaseFineScalarWhereInput
+    data: XOR<CollectionCaseFineUpdateManyMutationInput, CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseInput>
   }
 
-  export type CollectionCaseNotificationScalarWhereInput = {
-    AND?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
-    OR?: CollectionCaseNotificationScalarWhereInput[]
-    NOT?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
-    id?: StringFilter<"CollectionCaseNotification"> | string
-    collection_case_id?: StringFilter<"CollectionCaseNotification"> | string
-    type?: EnumNotificationTypeFilter<"CollectionCaseNotification"> | $Enums.NotificationType
-    title?: StringFilter<"CollectionCaseNotification"> | string
-    message?: StringFilter<"CollectionCaseNotification"> | string
-    sent_at?: DateTimeFilter<"CollectionCaseNotification"> | Date | string
-    read?: BoolFilter<"CollectionCaseNotification"> | boolean
-    created_at?: DateTimeFilter<"CollectionCaseNotification"> | Date | string
+  export type CollectionCaseFineScalarWhereInput = {
+    AND?: CollectionCaseFineScalarWhereInput | CollectionCaseFineScalarWhereInput[]
+    OR?: CollectionCaseFineScalarWhereInput[]
+    NOT?: CollectionCaseFineScalarWhereInput | CollectionCaseFineScalarWhereInput[]
+    id?: StringFilter<"CollectionCaseFine"> | string
+    collection_case_id?: StringFilter<"CollectionCaseFine"> | string
+    description?: StringNullableFilter<"CollectionCaseFine"> | string | null
+    amount?: DecimalFilter<"CollectionCaseFine"> | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    created_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
+    updated_at?: DateTimeFilter<"CollectionCaseFine"> | Date | string
   }
 
   export type CollectionCasePaymentUpsertWithWhereUniqueWithoutCollection_caseInput = {
@@ -44741,34 +46898,34 @@ export namespace Prisma {
     data: XOR<CollectionCaseAgreementUpdateManyMutationInput, CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseInput>
   }
 
-  export type CollectionCasePenaltyUpsertWithWhereUniqueWithoutCollection_caseInput = {
-    where: CollectionCasePenaltyWhereUniqueInput
-    update: XOR<CollectionCasePenaltyUpdateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedUpdateWithoutCollection_caseInput>
-    create: XOR<CollectionCasePenaltyCreateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedCreateWithoutCollection_caseInput>
+  export type CollectionCaseNotificationUpsertWithWhereUniqueWithoutCollection_caseInput = {
+    where: CollectionCaseNotificationWhereUniqueInput
+    update: XOR<CollectionCaseNotificationUpdateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput>
+    create: XOR<CollectionCaseNotificationCreateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedCreateWithoutCollection_caseInput>
   }
 
-  export type CollectionCasePenaltyUpdateWithWhereUniqueWithoutCollection_caseInput = {
-    where: CollectionCasePenaltyWhereUniqueInput
-    data: XOR<CollectionCasePenaltyUpdateWithoutCollection_caseInput, CollectionCasePenaltyUncheckedUpdateWithoutCollection_caseInput>
+  export type CollectionCaseNotificationUpdateWithWhereUniqueWithoutCollection_caseInput = {
+    where: CollectionCaseNotificationWhereUniqueInput
+    data: XOR<CollectionCaseNotificationUpdateWithoutCollection_caseInput, CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput>
   }
 
-  export type CollectionCasePenaltyUpdateManyWithWhereWithoutCollection_caseInput = {
-    where: CollectionCasePenaltyScalarWhereInput
-    data: XOR<CollectionCasePenaltyUpdateManyMutationInput, CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseInput>
+  export type CollectionCaseNotificationUpdateManyWithWhereWithoutCollection_caseInput = {
+    where: CollectionCaseNotificationScalarWhereInput
+    data: XOR<CollectionCaseNotificationUpdateManyMutationInput, CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseInput>
   }
 
-  export type CollectionCasePenaltyScalarWhereInput = {
-    AND?: CollectionCasePenaltyScalarWhereInput | CollectionCasePenaltyScalarWhereInput[]
-    OR?: CollectionCasePenaltyScalarWhereInput[]
-    NOT?: CollectionCasePenaltyScalarWhereInput | CollectionCasePenaltyScalarWhereInput[]
-    id?: StringFilter<"CollectionCasePenalty"> | string
-    collection_case_id?: StringFilter<"CollectionCasePenalty"> | string
-    description?: StringNullableFilter<"CollectionCasePenalty"> | string | null
-    amount?: DecimalFilter<"CollectionCasePenalty"> | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    is_paid?: BoolFilter<"CollectionCasePenalty"> | boolean
-    created_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
-    updated_at?: DateTimeFilter<"CollectionCasePenalty"> | Date | string
+  export type CollectionCaseNotificationScalarWhereInput = {
+    AND?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
+    OR?: CollectionCaseNotificationScalarWhereInput[]
+    NOT?: CollectionCaseNotificationScalarWhereInput | CollectionCaseNotificationScalarWhereInput[]
+    id?: StringFilter<"CollectionCaseNotification"> | string
+    collection_case_id?: StringFilter<"CollectionCaseNotification"> | string
+    type?: EnumNotificationTypeFilter<"CollectionCaseNotification"> | $Enums.NotificationType
+    title?: StringFilter<"CollectionCaseNotification"> | string
+    message?: StringFilter<"CollectionCaseNotification"> | string
+    sent_at?: DateTimeFilter<"CollectionCaseNotification"> | Date | string
+    read?: BoolFilter<"CollectionCaseNotification"> | boolean
+    created_at?: DateTimeFilter<"CollectionCaseNotification"> | Date | string
   }
 
   export type ChatRoomUpsertWithWhereUniqueWithoutCollection_caseInput = {
@@ -44787,27 +46944,33 @@ export namespace Prisma {
     data: XOR<ChatRoomUpdateManyMutationInput, ChatRoomUncheckedUpdateManyWithoutCollection_caseInput>
   }
 
-  export type CollectionCaseCreateWithoutPenaltiesInput = {
+  export type CollectionCaseCreateWithoutFinesInput = {
     id?: string
     reference_number?: string | null
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
-  export type CollectionCaseUncheckedCreateWithoutPenaltiesInput = {
+  export type CollectionCaseUncheckedCreateWithoutFinesInput = {
     id?: string
     reference_number?: string | null
     issue_date: Date | string
@@ -44815,55 +46978,67 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
-  export type CollectionCaseCreateOrConnectWithoutPenaltiesInput = {
+  export type CollectionCaseCreateOrConnectWithoutFinesInput = {
     where: CollectionCaseWhereUniqueInput
-    create: XOR<CollectionCaseCreateWithoutPenaltiesInput, CollectionCaseUncheckedCreateWithoutPenaltiesInput>
+    create: XOR<CollectionCaseCreateWithoutFinesInput, CollectionCaseUncheckedCreateWithoutFinesInput>
   }
 
-  export type CollectionCaseUpsertWithoutPenaltiesInput = {
-    update: XOR<CollectionCaseUpdateWithoutPenaltiesInput, CollectionCaseUncheckedUpdateWithoutPenaltiesInput>
-    create: XOR<CollectionCaseCreateWithoutPenaltiesInput, CollectionCaseUncheckedCreateWithoutPenaltiesInput>
+  export type CollectionCaseUpsertWithoutFinesInput = {
+    update: XOR<CollectionCaseUpdateWithoutFinesInput, CollectionCaseUncheckedUpdateWithoutFinesInput>
+    create: XOR<CollectionCaseCreateWithoutFinesInput, CollectionCaseUncheckedCreateWithoutFinesInput>
     where?: CollectionCaseWhereInput
   }
 
-  export type CollectionCaseUpdateToOneWithWhereWithoutPenaltiesInput = {
+  export type CollectionCaseUpdateToOneWithWhereWithoutFinesInput = {
     where?: CollectionCaseWhereInput
-    data: XOR<CollectionCaseUpdateWithoutPenaltiesInput, CollectionCaseUncheckedUpdateWithoutPenaltiesInput>
+    data: XOR<CollectionCaseUpdateWithoutFinesInput, CollectionCaseUncheckedUpdateWithoutFinesInput>
   }
 
-  export type CollectionCaseUpdateWithoutPenaltiesInput = {
+  export type CollectionCaseUpdateWithoutFinesInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
-  export type CollectionCaseUncheckedUpdateWithoutPenaltiesInput = {
+  export type CollectionCaseUncheckedUpdateWithoutFinesInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44871,15 +47046,21 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -44889,17 +47070,23 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -44911,15 +47098,21 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -44945,17 +47138,23 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -44967,15 +47166,21 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -44985,17 +47190,23 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -45007,15 +47218,21 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -45112,17 +47329,23 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -45134,15 +47357,21 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -45228,17 +47457,23 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -45249,16 +47484,22 @@ export namespace Prisma {
     due_date: Date | string
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -45275,6 +47516,7 @@ export namespace Prisma {
   export type TenantCreateWithoutDebtorsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -45296,11 +47538,13 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutDebtorsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -45322,6 +47566,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutDebtorsInput = {
@@ -45514,6 +47759,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutDebtorsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -45535,11 +47781,13 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutDebtorsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -45561,6 +47809,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type UserUpsertWithoutDebtorsInput = {
@@ -45667,6 +47916,7 @@ export namespace Prisma {
   export type TenantCreateWithoutChat_roomsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -45688,11 +47938,13 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutChat_roomsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -45714,6 +47966,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutChat_roomsInput = {
@@ -45727,18 +47980,24 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
   }
 
   export type CollectionCaseUncheckedCreateWithoutChat_roomsInput = {
@@ -45749,16 +48008,22 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
     agreements?: CollectionCaseAgreementUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
   export type CollectionCaseCreateOrConnectWithoutChat_roomsInput = {
@@ -45812,6 +48077,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutChat_roomsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -45833,11 +48099,13 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutChat_roomsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -45859,6 +48127,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type CollectionCaseUpsertWithoutChat_roomsInput = {
@@ -45878,18 +48147,24 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
   }
 
   export type CollectionCaseUncheckedUpdateWithoutChat_roomsInput = {
@@ -45900,16 +48175,22 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
   export type ChatMessageUpsertWithWhereUniqueWithoutRoomInput = {
@@ -46151,6 +48432,7 @@ export namespace Prisma {
   export type TenantCreateWithoutAgreementsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -46172,11 +48454,13 @@ export namespace Prisma {
     verdicts?: VerdictCreateNestedManyWithoutTenantInput
     users?: UserCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutAgreementsInput = {
     id?: string
     name: string
+    code: string
     subdomain: string
     contact_email: string
     country_code: string
@@ -46198,6 +48482,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedCreateNestedManyWithoutTenantInput
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutTenantInput
+    invitations?: TenantInvitationUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutAgreementsInput = {
@@ -46254,17 +48539,23 @@ export namespace Prisma {
     issue_date: Date | string
     due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     debtor: DebtorCreateNestedOneWithoutCollection_casesInput
     tenant: TenantCreateNestedOneWithoutCollection_casesInput
-    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -46276,15 +48567,21 @@ export namespace Prisma {
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
-    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
+    fines?: CollectionCaseFineUncheckedCreateNestedManyWithoutCollection_caseInput
     payments?: CollectionCasePaymentUncheckedCreateNestedManyWithoutCollection_caseInput
-    penalties?: CollectionCasePenaltyUncheckedCreateNestedManyWithoutCollection_caseInput
+    notifications?: CollectionCaseNotificationUncheckedCreateNestedManyWithoutCollection_caseInput
     chat_rooms?: ChatRoomUncheckedCreateNestedManyWithoutCollection_caseInput
   }
 
@@ -46373,6 +48670,7 @@ export namespace Prisma {
   export type TenantUpdateWithoutAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -46394,11 +48692,13 @@ export namespace Prisma {
     verdicts?: VerdictUpdateManyWithoutTenantNestedInput
     users?: UserUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subdomain?: StringFieldUpdateOperationsInput | string
     contact_email?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
@@ -46420,6 +48720,7 @@ export namespace Prisma {
     verdicts?: VerdictUncheckedUpdateManyWithoutTenantNestedInput
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutTenantNestedInput
+    invitations?: TenantInvitationUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type DebtorUpsertWithoutPayment_agreementsInput = {
@@ -46488,17 +48789,23 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -46510,15 +48817,21 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -46722,10 +49035,16 @@ export namespace Prisma {
     due_date: Date | string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -46796,6 +49115,19 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
+  export type TenantInvitationCreateManyTenantInput = {
+    id?: string
+    email: string
+    fullname?: string | null
+    token: string
+    role?: $Enums.InvitationRole
+    debtor_id?: string | null
+    created_at?: Date | string
+    expires_at: Date | string
+    used?: boolean
+    used_at?: Date | string | null
+  }
+
   export type BillingInvoiceUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     invoice_number?: StringFieldUpdateOperationsInput | string
@@ -46845,17 +49177,23 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor?: DebtorUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -46866,16 +49204,22 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -46886,10 +49230,16 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47118,6 +49468,45 @@ export namespace Prisma {
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TenantInvitationUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TenantInvitationUncheckedUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TenantInvitationUncheckedUpdateManyWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullname?: NullableStringFieldUpdateOperationsInput | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    used_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DebtorCreateManyUserInput = {
@@ -47657,14 +50046,13 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCaseNotificationCreateManyCollection_caseInput = {
+  export type CollectionCaseFineCreateManyCollection_caseInput = {
     id?: string
-    type: $Enums.NotificationType
-    title: string
-    message: string
-    sent_at?: Date | string
-    read?: boolean
+    description?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    applied_at?: Date | string
     created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type CollectionCasePaymentCreateManyCollection_caseInput = {
@@ -47693,14 +50081,14 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
-  export type CollectionCasePenaltyCreateManyCollection_caseInput = {
+  export type CollectionCaseNotificationCreateManyCollection_caseInput = {
     id?: string
-    description?: string | null
-    amount: Decimal | DecimalJsLike | number | string
-    date_applied?: Date | string
-    is_paid?: boolean
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    sent_at?: Date | string
+    read?: boolean
     created_at?: Date | string
-    updated_at?: Date | string
   }
 
   export type ChatRoomCreateManyCollection_caseInput = {
@@ -47711,34 +50099,31 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
-  export type CollectionCaseNotificationUpdateWithoutCollection_caseInput = {
+  export type CollectionCaseFineUpdateWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    read?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput = {
+  export type CollectionCaseFineUncheckedUpdateWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    read?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseInput = {
+  export type CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    read?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    applied_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CollectionCasePaymentUpdateWithoutCollection_caseInput = {
@@ -47825,34 +50210,34 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyUpdateWithoutCollection_caseInput = {
+  export type CollectionCaseNotificationUpdateWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    read?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyUncheckedUpdateWithoutCollection_caseInput = {
+  export type CollectionCaseNotificationUncheckedUpdateWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    read?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseInput = {
+  export type CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date_applied?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_paid?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    read?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ChatRoomUpdateWithoutCollection_caseInput = {
@@ -47932,10 +50317,16 @@ export namespace Prisma {
     due_date: Date | string
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
-    amount_due: Decimal | DecimalJsLike | number | string
-    amount_to_receive: Decimal | DecimalJsLike | number | string
+    fee_rate: Decimal | DecimalJsLike | number | string
+    fee_amount: Decimal | DecimalJsLike | number | string
+    abb_rate: Decimal | DecimalJsLike | number | string
+    abb_amount: Decimal | DecimalJsLike | number | string
+    total_fined?: Decimal | DecimalJsLike | number | string
+    total_due?: Decimal | DecimalJsLike | number | string
+    total_to_receive?: Decimal | DecimalJsLike | number | string
+    total_paid?: Decimal | DecimalJsLike | number | string
+    balance?: Decimal | DecimalJsLike | number | string
     status?: $Enums.CollectionCaseStatus
-    notification_status?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -47985,17 +50376,23 @@ export namespace Prisma {
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutCollection_casesNestedInput
-    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -48006,16 +50403,22 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
+    fines?: CollectionCaseFineUncheckedUpdateManyWithoutCollection_caseNestedInput
     payments?: CollectionCasePaymentUncheckedUpdateManyWithoutCollection_caseNestedInput
     agreements?: CollectionCaseAgreementUncheckedUpdateManyWithoutCollection_caseNestedInput
-    penalties?: CollectionCasePenaltyUncheckedUpdateManyWithoutCollection_caseNestedInput
+    notifications?: CollectionCaseNotificationUncheckedUpdateManyWithoutCollection_caseNestedInput
     chat_rooms?: ChatRoomUncheckedUpdateManyWithoutCollection_caseNestedInput
   }
 
@@ -48026,10 +50429,16 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    abb_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_fined?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total_paid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumCollectionCaseStatusFieldUpdateOperationsInput | $Enums.CollectionCaseStatus
-    notification_status?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
