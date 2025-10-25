@@ -42,18 +42,18 @@ model Tenant {
 }
 
 model TenantInvitation {
-  id         String         @id @default(uuid())
+  id         String    @id @default(uuid())
   tenant_id  String
   email      String
   fullname   String?
-  token      String         @unique
-  role       InvitationRole @default(DEBTOR)
+  token      String    @unique
+  role       roleEnum  @default(DEBTOR)
   debtor_id  String?
-  created_at DateTime       @default(now())
+  created_at DateTime  @default(now())
   expires_at DateTime
-  used       Boolean        @default(false)
+  used       Boolean   @default(false)
   used_at    DateTime?
-  tenant     Tenant         @relation(fields: [tenant_id], references: [id])
+  tenant     Tenant    @relation(fields: [tenant_id], references: [id])
 
   @@index([tenant_id, email])
   @@index([tenant_id, token])

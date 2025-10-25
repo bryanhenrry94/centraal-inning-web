@@ -5215,7 +5215,7 @@ export namespace Prisma {
     email: string | null
     fullname: string | null
     token: string | null
-    role: $Enums.InvitationRole | null
+    role: $Enums.roleEnum | null
     debtor_id: string | null
     created_at: Date | null
     expires_at: Date | null
@@ -5229,7 +5229,7 @@ export namespace Prisma {
     email: string | null
     fullname: string | null
     token: string | null
-    role: $Enums.InvitationRole | null
+    role: $Enums.roleEnum | null
     debtor_id: string | null
     created_at: Date | null
     expires_at: Date | null
@@ -5374,7 +5374,7 @@ export namespace Prisma {
     email: string
     fullname: string | null
     token: string
-    role: $Enums.InvitationRole
+    role: $Enums.roleEnum
     debtor_id: string | null
     created_at: Date
     expires_at: Date
@@ -5480,7 +5480,7 @@ export namespace Prisma {
       email: string
       fullname: string | null
       token: string
-      role: $Enums.InvitationRole
+      role: $Enums.roleEnum
       debtor_id: string | null
       created_at: Date
       expires_at: Date
@@ -5915,7 +5915,7 @@ export namespace Prisma {
     readonly email: FieldRef<"TenantInvitation", 'String'>
     readonly fullname: FieldRef<"TenantInvitation", 'String'>
     readonly token: FieldRef<"TenantInvitation", 'String'>
-    readonly role: FieldRef<"TenantInvitation", 'InvitationRole'>
+    readonly role: FieldRef<"TenantInvitation", 'roleEnum'>
     readonly debtor_id: FieldRef<"TenantInvitation", 'String'>
     readonly created_at: FieldRef<"TenantInvitation", 'DateTime'>
     readonly expires_at: FieldRef<"TenantInvitation", 'DateTime'>
@@ -34435,20 +34435,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'InvitationRole'
-   */
-  export type EnumInvitationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'InvitationRole[]'
-   */
-  export type ListEnumInvitationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationRole[]'>
-    
-
-
-  /**
    * Reference to a field of type 'roleEnum'
    */
   export type EnumroleEnumFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'roleEnum'>
@@ -34785,7 +34771,7 @@ export namespace Prisma {
     email?: StringFilter<"TenantInvitation"> | string
     fullname?: StringNullableFilter<"TenantInvitation"> | string | null
     token?: StringFilter<"TenantInvitation"> | string
-    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    role?: EnumroleEnumFilter<"TenantInvitation"> | $Enums.roleEnum
     debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
     created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
     expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
@@ -34818,7 +34804,7 @@ export namespace Prisma {
     tenant_id?: StringFilter<"TenantInvitation"> | string
     email?: StringFilter<"TenantInvitation"> | string
     fullname?: StringNullableFilter<"TenantInvitation"> | string | null
-    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    role?: EnumroleEnumFilter<"TenantInvitation"> | $Enums.roleEnum
     debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
     created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
     expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
@@ -34853,7 +34839,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"TenantInvitation"> | string
     fullname?: StringNullableWithAggregatesFilter<"TenantInvitation"> | string | null
     token?: StringWithAggregatesFilter<"TenantInvitation"> | string
-    role?: EnumInvitationRoleWithAggregatesFilter<"TenantInvitation"> | $Enums.InvitationRole
+    role?: EnumroleEnumWithAggregatesFilter<"TenantInvitation"> | $Enums.roleEnum
     debtor_id?: StringNullableWithAggregatesFilter<"TenantInvitation"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"TenantInvitation"> | Date | string
     expires_at?: DateTimeWithAggregatesFilter<"TenantInvitation"> | Date | string
@@ -37051,7 +37037,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -37066,7 +37052,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -37079,7 +37065,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37094,7 +37080,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37108,7 +37094,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -37121,7 +37107,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37135,7 +37121,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39624,11 +39610,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type EnumInvitationRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvitationRoleFilter<$PrismaModel> | $Enums.InvitationRole
+  export type EnumroleEnumFilter<$PrismaModel = never> = {
+    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
+    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -39689,14 +39675,14 @@ export namespace Prisma {
     used_at?: SortOrder
   }
 
-  export type EnumInvitationRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRole
+  export type EnumroleEnumWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
+    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    not?: NestedEnumroleEnumWithAggregatesFilter<$PrismaModel> | $Enums.roleEnum
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumInvitationRoleFilter<$PrismaModel>
-    _max?: NestedEnumInvitationRoleFilter<$PrismaModel>
+    _min?: NestedEnumroleEnumFilter<$PrismaModel>
+    _max?: NestedEnumroleEnumFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -39711,13 +39697,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type EnumroleEnumFilter<$PrismaModel = never> = {
-    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
-    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
   }
 
   export type ChatMessageListRelationFilter = {
@@ -39767,16 +39746,6 @@ export namespace Prisma {
     is_active?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-  }
-
-  export type EnumroleEnumWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
-    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    not?: NestedEnumroleEnumWithAggregatesFilter<$PrismaModel> | $Enums.roleEnum
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumroleEnumFilter<$PrismaModel>
-    _max?: NestedEnumroleEnumFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -41769,8 +41738,8 @@ export namespace Prisma {
     connect?: TenantWhereUniqueInput
   }
 
-  export type EnumInvitationRoleFieldUpdateOperationsInput = {
-    set?: $Enums.InvitationRole
+  export type EnumroleEnumFieldUpdateOperationsInput = {
+    set?: $Enums.roleEnum
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -41831,10 +41800,6 @@ export namespace Prisma {
     connectOrCreate?: ChatMessageCreateOrConnectWithoutSenderInput | ChatMessageCreateOrConnectWithoutSenderInput[]
     createMany?: ChatMessageCreateManySenderInputEnvelope
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-  }
-
-  export type EnumroleEnumFieldUpdateOperationsInput = {
-    set?: $Enums.roleEnum
   }
 
   export type TenantUpdateOneRequiredWithoutUsersNestedInput = {
@@ -43472,11 +43437,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumInvitationRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvitationRoleFilter<$PrismaModel> | $Enums.InvitationRole
+  export type NestedEnumroleEnumFilter<$PrismaModel = never> = {
+    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
+    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -43490,14 +43455,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.InvitationRole | EnumInvitationRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InvitationRole[] | ListEnumInvitationRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumInvitationRoleWithAggregatesFilter<$PrismaModel> | $Enums.InvitationRole
+  export type NestedEnumroleEnumWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
+    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
+    not?: NestedEnumroleEnumWithAggregatesFilter<$PrismaModel> | $Enums.roleEnum
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumInvitationRoleFilter<$PrismaModel>
-    _max?: NestedEnumInvitationRoleFilter<$PrismaModel>
+    _min?: NestedEnumroleEnumFilter<$PrismaModel>
+    _max?: NestedEnumroleEnumFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -43512,23 +43477,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumroleEnumFilter<$PrismaModel = never> = {
-    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
-    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    not?: NestedEnumroleEnumFilter<$PrismaModel> | $Enums.roleEnum
-  }
-
-  export type NestedEnumroleEnumWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.roleEnum | EnumroleEnumFieldRefInput<$PrismaModel>
-    in?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    notIn?: $Enums.roleEnum[] | ListEnumroleEnumFieldRefInput<$PrismaModel>
-    not?: NestedEnumroleEnumWithAggregatesFilter<$PrismaModel> | $Enums.roleEnum
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumroleEnumFilter<$PrismaModel>
-    _max?: NestedEnumroleEnumFilter<$PrismaModel>
   }
 
   export type NestedFloatFilter<$PrismaModel = never> = {
@@ -44114,7 +44062,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -44127,7 +44075,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -44410,7 +44358,7 @@ export namespace Prisma {
     email?: StringFilter<"TenantInvitation"> | string
     fullname?: StringNullableFilter<"TenantInvitation"> | string | null
     token?: StringFilter<"TenantInvitation"> | string
-    role?: EnumInvitationRoleFilter<"TenantInvitation"> | $Enums.InvitationRole
+    role?: EnumroleEnumFilter<"TenantInvitation"> | $Enums.roleEnum
     debtor_id?: StringNullableFilter<"TenantInvitation"> | string | null
     created_at?: DateTimeFilter<"TenantInvitation"> | Date | string
     expires_at?: DateTimeFilter<"TenantInvitation"> | Date | string
@@ -49120,7 +49068,7 @@ export namespace Prisma {
     email: string
     fullname?: string | null
     token: string
-    role?: $Enums.InvitationRole
+    role?: $Enums.roleEnum
     debtor_id?: string | null
     created_at?: Date | string
     expires_at: Date | string
@@ -49475,7 +49423,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49488,7 +49436,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49501,7 +49449,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     fullname?: NullableStringFieldUpdateOperationsInput | string | null
     token?: StringFieldUpdateOperationsInput | string
-    role?: EnumInvitationRoleFieldUpdateOperationsInput | $Enums.InvitationRole
+    role?: EnumroleEnumFieldUpdateOperationsInput | $Enums.roleEnum
     debtor_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_at?: DateTimeFieldUpdateOperationsInput | Date | string

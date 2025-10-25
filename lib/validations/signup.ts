@@ -210,12 +210,3 @@ export interface iValidateSlugResponse {
   subdomain: string;
   is_valid: boolean;
 }
-
-export const DebtorSignUpSchema = z.object({
-  reference_number: z.string(),
-  email: z.string().email(),
-  fullname: z.string().min(2),
-  password: z.string().min(8),
-});
-
-export type DebtorSignUp = z.infer<typeof DebtorSignUpSchema>;

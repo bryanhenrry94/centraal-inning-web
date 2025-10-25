@@ -474,12 +474,6 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.InvitationRole = exports.$Enums.InvitationRole = {
-  DEBTOR: 'DEBTOR',
-  AGENT: 'AGENT',
-  SHERIFF: 'SHERIFF'
-};
-
 exports.roleEnum = exports.$Enums.roleEnum = {
   PLATFORM_OWNER: 'PLATFORM_OWNER',
   TENANT_ADMIN: 'TENANT_ADMIN',

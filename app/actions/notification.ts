@@ -118,9 +118,13 @@ export const sendAanmaning = async (
     }
 
     // Si el deudor no tiene usuario, enviar invitación para registrarse
-    let invitationLink: string = "";
+    let invitationLink: string = `${protocol}://${rootDomain}/`;
 
-    if (!debtor.user_id) {
+    console.log("Send_Aanmaning: ", debtor);
+
+    // Verifica si el deudor ya tiene usuario
+    if (debtor.user_id === null) {
+      console.log("Send_Aanmaning: Sending invitation link to debtor");
       // Registrar invitación
       const invitation = await registerInvitation({
         tenantId: debtor.tenant_id,
@@ -130,7 +134,9 @@ export const sendAanmaning = async (
         debtor_id: debtor.id,
       });
 
-      invitationLink = `${protocol}://${rootDomain}/invitation/${invitation.token}`;
+      if (invitation.status === true && invitation.token) {
+        invitationLink = `${protocol}://${rootDomain}/invitation/${invitation.token}`;
+      }
     }
 
     const tenant = await prisma.tenant.findUnique({
@@ -154,15 +160,6 @@ export const sendAanmaning = async (
     );
 
     const fine = 0; // This should be calculated based on the collection and the days overdue
-    const validDays = 14;
-
-    // calcula interes
-    const daysLate = collection.due_date
-      ? Math.ceil(
-          (new Date().getTime() - new Date(collection.due_date).getTime()) /
-            (1000 * 3600 * 24)
-        )
-      : 0;
 
     const subtotaal =
       collection.amount_original + calculatedCollection + calculatedABB + fine;
@@ -178,12 +175,12 @@ export const sendAanmaning = async (
       recipientName: debtor.fullname,
       messageBody: `Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
           Platform. U kunt de details van deze taak veilig bekijken door in te
-          loggen op het CI Platform:`,
+          loggen op het CI Platform: `,
       invitationLink: invitationLink,
     };
 
     const debtorEmail = debtor?.email;
-    const templatePath = "collection/Notification";
+    const templatePath = "collection/AanmaningMail";
     const subject = `Aanmaning - ${collection.reference_number}`;
 
     const island = getNameCountry(tenant?.country_code);

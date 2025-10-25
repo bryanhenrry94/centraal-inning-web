@@ -11,12 +11,7 @@ import AuthMailService from "@/common/mail/services/authService";
 import { createActivationInvoice } from "./billing-invoice";
 import { $Enums } from "@/prisma/generated/prisma";
 import { generateUniqueSubdomain } from "./tenant";
-import {
-  AuthSignUpSchema,
-  DebtorSignUp,
-  DebtorSignUpSchema,
-  ITenantSignUp,
-} from "@/lib/validations/signup";
+import { AuthSignUpSchema, ITenantSignUp } from "@/lib/validations/signup";
 import { getParameter } from "./parameter";
 import { CountryList } from "@/common/data";
 
@@ -187,77 +182,6 @@ export async function createAccount(
   }
 }
 
-export const createAccountDebtor = async (
-  payload: DebtorSignUp
-): Promise<{ status: boolean; subdomain?: string; error?: string }> => {
-  try {
-    // ✅ 1. Validar datos de entrada
-    const validatedData = DebtorSignUpSchema.parse(payload);
-
-    const collection_case = await prisma.collectionCase.findFirst({
-      where: { reference_number: validatedData.reference_number },
-    });
-    if (!collection_case) {
-      throw new Error("Invalid reference number");
-    }
-
-    // Buscar el tenant demo
-    const tenant = await prisma.tenant.findUnique({
-      where: { id: collection_case.tenant_id },
-    });
-
-    if (!tenant) {
-      throw new Error("Tenant not found");
-    }
-
-    const debtor = await prisma.debtor.findUnique({
-      where: {
-        id: collection_case.debtor_id,
-      },
-    });
-
-    if (!debtor) {
-      throw new Error("Debtor not found with the provided email");
-    }
-
-    if (debtor.user_id) {
-      throw new Error("Debtor already has an associated user account");
-    }
-
-    const password_hash = await hash(validatedData.password, 10);
-
-    // ✅ 2. Crear usuario deudor
-    const user = await prisma.user.create({
-      data: {
-        email: validatedData.email,
-        fullname: validatedData.fullname,
-        password_hash,
-        role: $Enums.roleEnum.DEBTOR,
-        tenant_id: tenant.id,
-        is_active: true,
-      },
-    });
-
-    // 3. Actualizar información del deudor si es necesario
-    await prisma.debtor.update({
-      where: { id: debtor.id },
-      data: {
-        fullname: validatedData.fullname,
-        email: validatedData.email,
-        user_id: user.id, // Asignar el user_id si es necesario
-      },
-    });
-
-    // ✅ 3. Revalidar caché si es necesario
-    revalidatePath("/auth/signup");
-
-    return { status: true, subdomain: tenant.subdomain };
-  } catch (error: any) {
-    console.error("Error creating debtor account:", error);
-    return { status: false, error: error.message };
-  }
-};
-
 const generateCode = async (country_code: string): Promise<string> => {
   const island = CountryList.find((c) => c.value === country_code);
   const prefix = island?.label.toUpperCase().slice(0, 3) || "XXX";
@@ -268,5 +192,5 @@ const generateCode = async (country_code: string): Promise<string> => {
   });
 
   const new_sequence = last_sequence + 1;
-  return `CI${prefix}-${new_sequence.toString().padStart(3, "0")}`;
+  return `CI${prefix}${new_sequence.toString().padStart(3, "0")}`;
 };
