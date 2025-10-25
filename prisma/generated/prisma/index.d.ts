@@ -20844,8 +20844,8 @@ export namespace Prisma {
   export type CollectionCaseGroupByOutputType = {
     id: string
     reference_number: string | null
-    issue_date: Date | null
-    due_date: Date | null
+    issue_date: Date
+    due_date: Date
     tenant_id: string
     debtor_id: string
     amount_original: Decimal
@@ -20986,8 +20986,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       reference_number: string | null
-      issue_date: Date | null
-      due_date: Date | null
+      issue_date: Date
+      due_date: Date
       tenant_id: string
       debtor_id: string
       amount_original: Prisma.Decimal
@@ -34486,8 +34486,8 @@ export namespace Prisma {
     NOT?: CollectionCaseWhereInput | CollectionCaseWhereInput[]
     id?: StringFilter<"CollectionCase"> | string
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
-    issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    issue_date?: DateTimeFilter<"CollectionCase"> | Date | string
+    due_date?: DateTimeFilter<"CollectionCase"> | Date | string
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -34509,8 +34509,8 @@ export namespace Prisma {
   export type CollectionCaseOrderByWithRelationInput = {
     id?: SortOrder
     reference_number?: SortOrderInput | SortOrder
-    issue_date?: SortOrderInput | SortOrder
-    due_date?: SortOrderInput | SortOrder
+    issue_date?: SortOrder
+    due_date?: SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -34535,8 +34535,8 @@ export namespace Prisma {
     OR?: CollectionCaseWhereInput[]
     NOT?: CollectionCaseWhereInput | CollectionCaseWhereInput[]
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
-    issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    issue_date?: DateTimeFilter<"CollectionCase"> | Date | string
+    due_date?: DateTimeFilter<"CollectionCase"> | Date | string
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -34558,8 +34558,8 @@ export namespace Prisma {
   export type CollectionCaseOrderByWithAggregationInput = {
     id?: SortOrder
     reference_number?: SortOrderInput | SortOrder
-    issue_date?: SortOrderInput | SortOrder
-    due_date?: SortOrderInput | SortOrder
+    issue_date?: SortOrder
+    due_date?: SortOrder
     tenant_id?: SortOrder
     debtor_id?: SortOrder
     amount_original?: SortOrder
@@ -34582,8 +34582,8 @@ export namespace Prisma {
     NOT?: CollectionCaseScalarWhereWithAggregatesInput | CollectionCaseScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"CollectionCase"> | string
     reference_number?: StringNullableWithAggregatesFilter<"CollectionCase"> | string | null
-    issue_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
-    due_date?: DateTimeNullableWithAggregatesFilter<"CollectionCase"> | Date | string | null
+    issue_date?: DateTimeWithAggregatesFilter<"CollectionCase"> | Date | string
+    due_date?: DateTimeWithAggregatesFilter<"CollectionCase"> | Date | string
     tenant_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     debtor_id?: StringWithAggregatesFilter<"CollectionCase"> | string
     amount_original?: DecimalWithAggregatesFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -36757,8 +36757,8 @@ export namespace Prisma {
   export type CollectionCaseCreateInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -36778,8 +36778,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -36799,8 +36799,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36820,8 +36820,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36841,8 +36841,8 @@ export namespace Prisma {
   export type CollectionCaseCreateManyInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -36857,8 +36857,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -36871,8 +36871,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -38917,17 +38917,6 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -39034,20 +39023,6 @@ export namespace Prisma {
     amount_original?: SortOrder
     amount_due?: SortOrder
     amount_to_receive?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -40717,10 +40692,6 @@ export namespace Prisma {
     connect?: ChatRoomWhereUniqueInput | ChatRoomWhereUniqueInput[]
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type DecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string
     increment?: Decimal | DecimalJsLike | number | string
@@ -41767,17 +41738,6 @@ export namespace Prisma {
     _max?: NestedEnumCalculationTypeEnumFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -41794,20 +41754,6 @@ export namespace Prisma {
     in?: $Enums.CollectionCaseStatus[] | ListEnumCollectionCaseStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.CollectionCaseStatus[] | ListEnumCollectionCaseStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumCollectionCaseStatusFilter<$PrismaModel> | $Enums.CollectionCaseStatus
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -41981,8 +41927,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutTenantInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -42001,8 +41947,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutTenantInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -42293,8 +42239,8 @@ export namespace Prisma {
     NOT?: CollectionCaseScalarWhereInput | CollectionCaseScalarWhereInput[]
     id?: StringFilter<"CollectionCase"> | string
     reference_number?: StringNullableFilter<"CollectionCase"> | string | null
-    issue_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
-    due_date?: DateTimeNullableFilter<"CollectionCase"> | Date | string | null
+    issue_date?: DateTimeFilter<"CollectionCase"> | Date | string
+    due_date?: DateTimeFilter<"CollectionCase"> | Date | string
     tenant_id?: StringFilter<"CollectionCase"> | string
     debtor_id?: StringFilter<"CollectionCase"> | string
     amount_original?: DecimalFilter<"CollectionCase"> | Decimal | DecimalJsLike | number | string
@@ -44844,8 +44790,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutPenaltiesInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -44864,8 +44810,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutPenaltiesInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -44900,8 +44846,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutPenaltiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -44920,8 +44866,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutPenaltiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -44940,8 +44886,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutNotificationsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -44960,8 +44906,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutNotificationsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -44996,8 +44942,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45016,8 +44962,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45036,8 +44982,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutPaymentsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45056,8 +45002,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutPaymentsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -45163,8 +45109,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45183,8 +45129,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45279,8 +45225,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutDebtorInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45299,8 +45245,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutDebtorInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -45778,8 +45724,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutChat_roomsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -45798,8 +45744,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutChat_roomsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -45929,8 +45875,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutChat_roomsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45949,8 +45895,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutChat_roomsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46305,8 +46251,8 @@ export namespace Prisma {
   export type CollectionCaseCreateWithoutAgreementsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
     amount_to_receive: Decimal | DecimalJsLike | number | string
@@ -46325,8 +46271,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedCreateWithoutAgreementsInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
@@ -46539,8 +46485,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46559,8 +46505,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutAgreementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46772,8 +46718,8 @@ export namespace Prisma {
   export type CollectionCaseCreateManyTenantInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     debtor_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -46896,8 +46842,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46916,8 +46862,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46936,8 +46882,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateManyWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     debtor_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47982,8 +47928,8 @@ export namespace Prisma {
   export type CollectionCaseCreateManyDebtorInput = {
     id?: string
     reference_number?: string | null
-    issue_date?: Date | string | null
-    due_date?: Date | string | null
+    issue_date: Date | string
+    due_date: Date | string
     tenant_id: string
     amount_original: Decimal | DecimalJsLike | number | string
     amount_due: Decimal | DecimalJsLike | number | string
@@ -48036,8 +47982,8 @@ export namespace Prisma {
   export type CollectionCaseUpdateWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_to_receive?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48056,8 +48002,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -48076,8 +48022,8 @@ export namespace Prisma {
   export type CollectionCaseUncheckedUpdateManyWithoutDebtorInput = {
     id?: StringFieldUpdateOperationsInput | string
     reference_number?: NullableStringFieldUpdateOperationsInput | string | null
-    issue_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    due_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     amount_original?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     amount_due?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string

@@ -262,3 +262,19 @@ export const getInstallmentsByAgreement = async (agreement_id: string) => {
     updated_at: installment.updated_at ?? undefined,
   }));
 };
+
+export const hasAgreement = async (collectionId: string): Promise<boolean> => {
+  try {
+    const agreement = await prisma.collectionCaseAgreement.findFirst({
+      where: {
+        collection_case_id: collectionId,
+        status: $Enums.AgreementStatus.ACCEPTED,
+      },
+    });
+
+    if (agreement) return true;
+    else return false;
+  } catch (e) {
+    return false;
+  }
+};

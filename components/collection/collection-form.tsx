@@ -143,6 +143,7 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               size="small"
               variant="outlined"
               type={"text"}
+              placeholder="Bijv. REF-2025-001"
               value={formData.reference_number}
               onChange={(e) =>
                 setFormData({
@@ -227,9 +228,7 @@ const RegisterInvoice: React.FC<IRegisterInvoiceProps> = ({ onSave }) => {
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  issue_date: e.target.value
-                    ? new Date(e.target.value)
-                    : undefined,
+                  issue_date: new Date(e.target.value),
                 });
               }}
             />

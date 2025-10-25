@@ -277,8 +277,8 @@ model BillingPayment {
 model CollectionCase {
   id                  String                       @id @default(cuid())
   reference_number    String?
-  issue_date          DateTime?
-  due_date            DateTime? // fecha de vencimiento original
+  issue_date          DateTime
+  due_date            DateTime // fecha de vencimiento original
   tenant_id           String
   debtor_id           String
   amount_original     Decimal                      @db.Decimal(10, 2)

@@ -4,7 +4,6 @@ import {
   IconButton,
   Modal,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -14,10 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
-import MoreIcon from "@mui/icons-material/More";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
 import {

@@ -17,21 +17,19 @@ import {
 } from "@/common/utils/general";
 import { $Enums } from "@/prisma/generated/prisma";
 
-export const sendNotification = async (colleccionCaseId: string) => {
-  if (!colleccionCaseId) {
-    throw new Error("Notification colleccionCaseId is required");
+export const sendNotification = async (caseId: string) => {
+  if (!caseId) {
+    throw new Error("Notification caseId is required");
   }
 
   // Check if the notification.collectionCase exists
-  const collection = await getCollectionById(colleccionCaseId);
+  const collection = await getCollectionById(caseId);
   if (!collection) {
     throw new Error("Collection not found");
   }
 
   // Get the last notification for the collection case
-  const notification = await getLastNotificationByCollectionCase(
-    colleccionCaseId
-  );
+  const notification = await getLastNotificationByCollectionCase(caseId);
 
   const notificationType = notification ? notification.type : "";
 
@@ -60,18 +58,18 @@ export const sendNotification = async (colleccionCaseId: string) => {
 };
 
 export const createNotification = async (
-  colleccionCaseId: string,
+  caseId: string,
   type: NotificationType,
   title: string,
   message: string
 ): Promise<Notification> => {
-  if (!colleccionCaseId) {
-    throw new Error("Notification colleccionCaseId is required");
+  if (!caseId) {
+    throw new Error("Notification caseId is required");
   }
 
   const notification = await prisma.collectionCaseNotification.create({
     data: {
-      collection_case_id: colleccionCaseId,
+      collection_case_id: caseId,
       type,
       sent_at: new Date(),
       title,

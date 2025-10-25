@@ -10,8 +10,8 @@ export const CollectionCaseSchema = z.object({
   amount_due: z.number(),
   amount_to_receive: z.number(),
   reference_number: z.string().optional(),
-  issue_date: z.date().optional(),
-  due_date: z.date().optional(),
+  issue_date: z.date(),
+  due_date: z.date(),
   status: z
     .enum([
       $Enums.CollectionCaseStatus.AANMANING,

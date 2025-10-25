@@ -242,28 +242,24 @@ export const createCollectionCase = async (
   const amount_to_receive = amount_original - amount_due;
 
   // Calcular fechas de recordatorio
-  const day_term = getNotificationDays(
+  const day_term = await getNotificationDays(
     parsedData.status as $Enums.CollectionCaseStatus,
     debtor.person_type
   );
-  const issueDate = parsedData.issue_date
-    ? new Date(parsedData.issue_date)
-    : undefined;
-  const due_date =
-    issueDate instanceof Date
-      ? new Date(
-          issueDate.getTime() + (Number(day_term) || 0) * 24 * 60 * 60 * 1000
-        )
-      : undefined;
+
+  const daysToAdd =
+    typeof day_term === "number" && !isNaN(day_term) ? day_term : 0;
+
+  const due_date = new Date(
+    parsedData.issue_date.getTime() + daysToAdd * 24 * 60 * 60 * 1000
+  );
 
   // Crear el caso de cobranza
   const newCollectionCase = await prisma.collectionCase.create({
     data: {
       debtor_id: parsedData.debtor_id || "",
       reference_number: parsedData.reference_number || "",
-      issue_date: parsedData.issue_date
-        ? new Date(parsedData.issue_date)
-        : undefined,
+      issue_date: parsedData.issue_date,
       due_date: due_date,
       amount_original: amount_original,
       amount_due: amount_due,
@@ -339,4 +335,18 @@ export const getNextCollectionStatus = async (
     default:
       return null;
   }
+};
+
+export const updateCollectionStatus = async (
+  id: string,
+  status: $Enums.CollectionCaseStatus
+) => {
+  await prisma.collectionCase.update({
+    where: {
+      id: id,
+    },
+    data: {
+      status: status,
+    },
+  });
 };

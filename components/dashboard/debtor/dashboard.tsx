@@ -43,7 +43,9 @@ import { notifyError, notifyInfo } from "@/lib/notifications";
 import TabPanel from "@/components/ui/tab-panel";
 import AgreementForm from "@/components/agreements/agreement-form";
 import { getDebtorByUserId } from "@/app/actions/debtor";
-import { $Enums } from "@/prisma/generated/prisma";
+import { $Enums, CollectionCaseNotification } from "@/prisma/generated/prisma";
+import ModalNotifications from "@/components/notification/modal-notifications";
+import { getAllNotificationsByCollectionCase } from "@/app/actions/notification";
 
 const DashboardDebtor = () => {
   const { data: session } = useSession();
@@ -60,14 +62,29 @@ const DashboardDebtor = () => {
   const [collectionCases, setCollectionCases] = useState<
     CollectionCaseResponse[]
   >([]);
+  const [notifications, setNotifications] = useState<
+    CollectionCaseNotification[]
+  >([]);
   const [openModalAgreement, setOpenModalAgreement] = React.useState(false);
+  const [openModalNotifications, setOpenModalNotifications] =
+    React.useState(false);
+
+  const handleOpenModalNotifications = async (caseId: string) => {
+    await fetchNotifications(caseId);
+
+    setOpenModalNotifications(true);
+  };
+  const handleCloseModalNotifications = () => setOpenModalNotifications(false);
 
   useEffect(() => {
     fetchCollectionCases();
     fetchPaymentAgreements();
   }, []);
 
-  const handleOpenModalAgreement = () => setOpenModalAgreement(true);
+  const handleOpenModalAgreement = () => {
+    setOpenModalAgreement(true);
+  };
+
   const handleCloseModalAgreement = () => setOpenModalAgreement(false);
 
   const fetchCollectionCases = async () => {
@@ -101,6 +118,16 @@ const DashboardDebtor = () => {
       notifyError("Error al cargar los acuerdos de pago");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchNotifications = async (caseId: string) => {
+    try {
+      const data: CollectionCaseNotification[] =
+        await getAllNotificationsByCollectionCase(caseId);
+      setNotifications(data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
     }
   };
 
@@ -322,8 +349,7 @@ const DashboardDebtor = () => {
                     {caseItem.reference_number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    Aanmanning
-                    {/* <CollectionStatusChip status={"AANMANNING"} /> */}
+                    {caseItem.status}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {formatDate(caseItem.issue_date?.toString() || "")}
@@ -351,7 +377,11 @@ const DashboardDebtor = () => {
                   <TableCell>
                     <Stack direction="row" spacing={1} justifyContent="center">
                       <IconButton>
-                        <VisibilityIcon />
+                        <VisibilityIcon
+                          onClick={() => {
+                            handleOpenModalNotifications(caseItem.id);
+                          }}
+                        />
                       </IconButton>
                     </Stack>
                   </TableCell>
@@ -439,6 +469,12 @@ const DashboardDebtor = () => {
           />
         </Paper>
       </Modal>
+
+      <ModalNotifications
+        open={openModalNotifications}
+        onClose={handleCloseModalNotifications}
+        notifications={notifications}
+      />
     </Container>
   );
 };
