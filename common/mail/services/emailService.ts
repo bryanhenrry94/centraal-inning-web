@@ -1,6 +1,5 @@
 import { createTransporter } from "@/common/mail/config/nodemailer";
 import { EmailOptions } from "@/common/mail/types/emailTypes";
-import renderTemplate from "@/common/utils/templateRenderer";
 
 class EmailService {
   static async sendWelcomeEmail(to: string, name: string): Promise<void> {

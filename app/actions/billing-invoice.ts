@@ -194,8 +194,6 @@ export const generateInvoicePDF = async (id: string): Promise<Buffer> => {
 
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath:
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", // Update this path if Chrome is installed elsewhere
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
