@@ -13,9 +13,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendWelcomeEmail(to: string, userFirstname: string) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: [to],
-      subject: "Welcome to Centraal Inning",
+      subject: "Welcome to Portal CI",
       react: <WelcomeEmail userFirstname={userFirstname} />,
     });
 
@@ -69,7 +69,7 @@ export const sendInvoiceEmail = async (
     const paymentLink = `https://portalci.net/pay-invoice/${billing.id}`;
 
     await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: to,
       subject: `FACTUUR - ${billing.invoice_number}`,
       react: (
@@ -81,7 +81,7 @@ export const sendInvoiceEmail = async (
       attachments: attachments,
     });
 
-    console.log("notificaCentraal Inningn de debtor enviada al correo: ", to);
+    console.log("notificaPortal CIn de debtor enviada al correo: ", to);
     return true;
   } catch (error) {
     console.error("Error sending mail notification:", error);
@@ -98,7 +98,7 @@ export const sendAanmaningEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: (
@@ -129,7 +129,7 @@ export const sendSommatieEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,
@@ -155,7 +155,7 @@ export const sendIngebrekestellingMail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,
@@ -181,7 +181,7 @@ export const sendBlokkadeMail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      from: `Portal CI <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,
