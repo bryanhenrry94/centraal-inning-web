@@ -9,11 +9,6 @@ import {
 } from "@/lib/validations/debtor";
 import { getUserByEmail } from "@/app/actions/user";
 import { roleEnum } from "@/prisma/generated/prisma";
-import puppeteer from "puppeteer";
-import renderTemplate from "@/common/utils/templateRenderer";
-import { getParameter } from "./parameter";
-import FinancialService from "@/common/mail/services/financialService";
-import path from "path";
 
 export const getAllDebtorsByTenantId = async (
   tenant_id: string
@@ -313,37 +308,6 @@ export const sendFinancialSummaryEmail = async (
         currentYear: new Date().getFullYear(),
       };
 
-      const pdfBuffer = await generateFinancialReportPDF(debtor_id);
-
-      if (pdfBuffer) {
-        // Guardar el PDF en una ruta temporal
-        const tempDir = path.join(process.cwd(), "tmp");
-        const fs = await import("fs/promises");
-        await fs.mkdir(tempDir, { recursive: true });
-        const tempFilePath = path.join(
-          tempDir,
-          `financieel_overzicht_${debtor_id}.pdf`
-        );
-        await fs.writeFile(tempFilePath, pdfBuffer);
-
-        // Configurar el adjunto usando el archivo temporal
-        const attachmentConfig = {
-          filename: `financieel_overzicht_${debtor_id}.pdf`,
-          pdfTemplatePath: tempFilePath,
-        };
-
-        if (attachmentConfig.pdfTemplatePath) {
-          await FinancialService.sendEmail(
-            debtorEmail,
-            subject,
-            dataMail,
-            attachmentConfig
-          );
-        }
-      } else {
-        await FinancialService.sendEmail(debtorEmail, subject, dataMail);
-      }
-
       console.log("notificacion de debtor enviada al correo: ", debtorEmail);
       return true;
     }
@@ -353,35 +317,4 @@ export const sendFinancialSummaryEmail = async (
     console.error("Error sending mail notification:", error);
     return false;
   }
-};
-
-export const generateFinancialReportPDF = async (
-  id: string
-): Promise<Buffer> => {
-  const parameter = await getParameter();
-  if (!parameter) {
-    throw new Error("No se encontró el parámetro");
-  }
-
-  const data = {
-    // aqui van los datos del reporte financiero
-  };
-
-  const html = renderTemplate("financial/financial-summary", {
-    ...data,
-    company_name: "Dazzsoft",
-  });
-
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: "networkidle0" });
-
-  const pdfBuffer = await page.pdf({ format: "A4" });
-
-  await browser.close();
-
-  return Buffer.from(pdfBuffer);
 };

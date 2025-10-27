@@ -1,4 +1,3 @@
-import { CountryList } from "@/common/data";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

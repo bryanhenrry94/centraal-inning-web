@@ -1,15 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
-import CollectionService from "@/common/mail/services/collectionService";
 import { CollectionCase } from "@/lib/validations/collection";
 import { getCollectionById } from "@/app/actions/collection-case";
 import { Notification } from "@/lib/validations/notification";
 import { getParameter } from "@/app/actions/parameter";
 import { NotificationType } from "@/lib/validations/notification";
 
-import renderTemplate from "@/common/utils/templateRenderer";
-import path from "path";
-import puppeteer from "puppeteer";
 import {
   formatCurrency,
   formatDate,
@@ -18,6 +14,13 @@ import {
 import { $Enums } from "@/prisma/generated/prisma";
 import { registerInvitation } from "./tenant-invitation";
 import { protocol, rootDomain } from "@/lib/utils";
+// import { htmlToPdfBuffer, loadHtmlTemplate } from "@/lib/generatePdf";
+import {
+  sendAanmaningEmail,
+  sendBlokkadeMail,
+  sendIngebrekestellingMail,
+  sendSommatieEmail,
+} from "./email";
 
 export const sendNotification = async (caseId: string) => {
   if (!caseId) {
@@ -170,17 +173,7 @@ export const sendAanmaning = async (
     // Total Amount
     const total_amount = parseFloat((subtotaal + interestAmount).toFixed(2));
 
-    // Create the notification object
-    const params = {
-      recipientName: debtor.fullname,
-      messageBody: `Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
-          Platform. U kunt de details van deze taak veilig bekijken door in te
-          loggen op het CI Platform: `,
-      invitationLink: invitationLink,
-    };
-
     const debtorEmail = debtor?.email;
-    const templatePath = "collection/AanmaningMail";
     const subject = `Aanmaning - ${collection.reference_number}`;
 
     const island = getNameCountry(tenant?.country_code);
@@ -200,45 +193,38 @@ export const sendAanmaning = async (
       total_amount: formatCurrency(total_amount),
       tenantName: tenant?.name || "Company Name",
     };
-    const pdfBuffer = await generatePDF("collection/Aanmaning", dataReport);
-    if (!pdfBuffer) {
-      throw new Error("Failed to generate PDF");
-    }
 
-    // Guardar el PDF en una ruta temporal
-    const tempDir = path.join(process.cwd(), "tmp");
-    const fs = await import("fs/promises");
-    await fs.mkdir(tempDir, { recursive: true });
+    // Renderiza el HTML con los datos
+    // const result = await loadHtmlTemplate("collection/Aanmaning", dataReport);
 
-    const tempFilePath = path.join(
-      tempDir,
-      `Aanmanning_${collection.reference_number}.pdf`
+    // // Generar PDF en memoria
+    // const pdfBuffer = await htmlToPdfBuffer(result);
+
+    // if (!pdfBuffer) {
+    //   throw new Error("Failed to generate PDF");
+    // }
+
+    // const attachments = [
+    //   {
+    //     filename: `Aanmanning_${collection.reference_number}.pdf`,
+    //     content: pdfBuffer.toString("base64"),
+    //   },
+    // ];
+
+    // await sendAanmaningEmail(
+    //   debtorEmail,
+    //   debtor.fullname,
+    //   invitationLink,
+    //   subject,
+    //   attachments
+    // );
+
+    await createNotification(
+      collection.id,
+      NotificationType.AANMANING,
+      "Eerste incassoaankondiging",
+      "De eerste incassoaankondiging is verzonden."
     );
-    await fs.writeFile(tempFilePath, pdfBuffer);
-
-    // Configurar el adjunto usando el archivo temporal
-    const attachmentConfig = {
-      filename: `Aanmanning_${collection.reference_number}.pdf`,
-      pdfTemplatePath: tempFilePath,
-    };
-
-    if (debtorEmail) {
-      // Send the first notification (AANMANING)
-      await CollectionService.sendEmail(
-        debtorEmail,
-        templatePath,
-        subject,
-        params,
-        attachmentConfig
-      );
-
-      await createNotification(
-        collection.id,
-        NotificationType.AANMANING,
-        "Eerste incassoaankondiging",
-        "De eerste incassoaankondiging is verzonden."
-      );
-    }
 
     return "Aanmaning sent successfully";
   } catch (error) {
@@ -280,15 +266,7 @@ export const sendSommatie = async (
       throw new Error("Collection not found");
     }
 
-    const params = {
-      recipientName: debtor.fullname,
-      messageBody: `Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
-          Platform. U kunt de details van deze taak veilig bekijken door in te
-          loggen op het CI Platform: `,
-    };
-
     const debtorEmail = debtor?.email;
-    const templatePath = "collection/Notification";
     const subject = `Sommatie - ${collection.reference_number}`;
 
     const island = getNameCountry(tenant?.country_code);
@@ -313,35 +291,24 @@ export const sendSommatie = async (
       total_amount: total_amount,
       tenantName: tenant?.name || "Company Name",
     };
-    const pdfBuffer = await generatePDF("collection/Sommatie", dataReport);
-    if (!pdfBuffer) {
-      throw new Error("Failed to generate PDF");
-    }
 
-    // Guardar el PDF en una ruta temporal
-    const tempDir = path.join(process.cwd(), "tmp");
-    const fs = await import("fs/promises");
-    await fs.mkdir(tempDir, { recursive: true });
+    // // Renderiza el HTML con los datos
+    // const result = await loadHtmlTemplate("collection/Sommatie", dataReport);
 
-    const tempFilePath = path.join(
-      tempDir,
-      `Sommatie_${collection.reference_number}.pdf`
-    );
-    await fs.writeFile(tempFilePath, pdfBuffer);
+    // // Generar PDF en memoria
+    // const pdfBuffer = await htmlToPdfBuffer(result);
+    // if (!pdfBuffer) {
+    //   throw new Error("Failed to generate PDF");
+    // }
 
-    // Configurar el adjunto usando el archivo temporal
-    const attachmentConfig = {
-      filename: `Aanmanning_${collection.reference_number}.pdf`,
-      pdfTemplatePath: tempFilePath,
-    };
+    // const attachments = [
+    //   {
+    //     filename: `Sommatie_${collection.reference_number}.pdf`,
+    //     content: pdfBuffer.toString("base64"),
+    //   },
+    // ];
 
-    await CollectionService.sendEmail(
-      debtorEmail,
-      templatePath,
-      subject,
-      params,
-      attachmentConfig
-    );
+    // await sendSommatieEmail(debtorEmail, debtor.fullname, subject, attachments);
 
     await createNotification(
       collection.id,
@@ -390,15 +357,7 @@ export const sendIngebrekestelling = async (
       throw new Error("Collection not found");
     }
 
-    const params = {
-      recipientName: debtor.fullname,
-      messageBody: `Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
-          Platform. U kunt de details van deze taak veilig bekijken door in te
-          loggen op het CI Platform: `,
-    };
-
     const debtorEmail = debtor?.email;
-    const templatePath = "collection/Notification";
     const subject = `Ingebrekestelling - ${collection.reference_number}`;
 
     const island = getNameCountry(tenant?.country_code);
@@ -441,38 +400,32 @@ export const sendIngebrekestelling = async (
       accountNumber: parameter.bank_account,
       tenantName: tenant?.name || "Company Name",
     };
-    const pdfBuffer = await generatePDF(
-      "collection/Ingebrekestelling",
-      dataReport
-    );
-    if (!pdfBuffer) {
-      throw new Error("Failed to generate PDF");
-    }
 
-    // Guardar el PDF en una ruta temporal
-    const tempDir = path.join(process.cwd(), "tmp");
-    const fs = await import("fs/promises");
-    await fs.mkdir(tempDir, { recursive: true });
+    // // Renderiza el HTML con los datos
+    // const result = await loadHtmlTemplate(
+    //   "collection/Ingebrekestelling",
+    //   dataReport
+    // );
 
-    const tempFilePath = path.join(
-      tempDir,
-      `Ingebrekestelling_${collection.reference_number}.pdf`
-    );
-    await fs.writeFile(tempFilePath, pdfBuffer);
+    // // Generar PDF en memoria
+    // const pdfBuffer = await htmlToPdfBuffer(result);
+    // if (!pdfBuffer) {
+    //   throw new Error("Failed to generate PDF");
+    // }
 
-    // Configurar el adjunto usando el archivo temporal
-    const attachmentConfig = {
-      filename: `Ingebrekestelling_${collection.reference_number}.pdf`,
-      pdfTemplatePath: tempFilePath,
-    };
+    // const attachments = [
+    //   {
+    //     filename: `Ingebrekestelling_${collection.reference_number}.pdf`,
+    //     content: pdfBuffer.toString("base64"),
+    //   },
+    // ];
 
-    await CollectionService.sendEmail(
-      debtorEmail,
-      templatePath,
-      subject,
-      params,
-      attachmentConfig
-    );
+    // await sendIngebrekestellingMail(
+    //   debtorEmail,
+    //   debtor.fullname,
+    //   subject,
+    //   attachments
+    // );
 
     await createNotification(
       collection.id,
@@ -545,38 +498,26 @@ export const sendBlokkade = async (
       accountNumber: parameter.bank_account,
     };
 
-    const pdfBuffer = await generatePDF(
-      "collection/FinancieleBlokkade",
-      dataReport
-    );
-    if (!pdfBuffer) {
-      throw new Error("Failed to generate PDF");
-    }
+    // // Renderiza el HTML con los datos
+    // const result = await loadHtmlTemplate(
+    //   "collection/Ingebrekestelling",
+    //   dataReport
+    // );
 
-    // Guardar el PDF en una ruta temporal
-    const tempDir = path.join(process.cwd(), "tmp");
-    const fs = await import("fs/promises");
-    await fs.mkdir(tempDir, { recursive: true });
+    // // Generar PDF en memoria
+    // const pdfBuffer = await htmlToPdfBuffer(result);
+    // if (!pdfBuffer) {
+    //   throw new Error("Failed to generate PDF");
+    // }
 
-    const tempFilePath = path.join(
-      tempDir,
-      `FinancieleBlokkade_${collection.reference_number}.pdf`
-    );
-    await fs.writeFile(tempFilePath, pdfBuffer);
+    // const attachments = [
+    //   {
+    //     filename: `FinancieleBlokkade_${collection.reference_number}.pdf`,
+    //     content: pdfBuffer.toString("base64"),
+    //   },
+    // ];
 
-    // Configurar el adjunto usando el archivo temporal
-    const attachmentConfig = {
-      filename: `FinancieleBlokkade_${collection.reference_number}.pdf`,
-      pdfTemplatePath: tempFilePath,
-    };
-
-    await CollectionService.sendEmail(
-      debtorEmail,
-      templatePath,
-      subject,
-      params,
-      attachmentConfig
-    );
+    // await sendBlokkadeMail(debtorEmail, debtor.fullname, subject, attachments);
 
     await createNotification(
       collection.id,
@@ -589,46 +530,6 @@ export const sendBlokkade = async (
   } catch (error) {
     console.error("Error sending FinancieleBlokkade:", error);
     throw new Error("Failed to send FinancieleBlokkade");
-  }
-};
-
-export const sendBetalingsbewijs = async (
-  debtorName: string,
-  paymentMethod: string,
-  paymentAmount: number,
-  reference_number: string,
-  email: string,
-  invoice_number: string
-): Promise<string> => {
-  try {
-    // Create the notification object
-    const notification = {
-      payment_date: new Date().toISOString(),
-      debtorName,
-      paymentMethod,
-      paymentAmount,
-      reference_number,
-    };
-    console.log("notification", notification);
-
-    const debtorEmail = email;
-    const templatePath = "collection/Betalingsbewijs";
-    const subject = `Betalingsbewijs - ${invoice_number}`;
-
-    if (debtorEmail) {
-      console.log("debtorEmail", debtorEmail);
-      await CollectionService.sendEmail(
-        debtorEmail,
-        templatePath,
-        subject,
-        notification
-      );
-    }
-
-    return Promise.resolve("Betalingsbewijs sent successfully");
-  } catch (error) {
-    console.error("Error sending Betalingsbewijs:", error);
-    throw new Error("Failed to send Betalingsbewijs");
   }
 };
 
@@ -712,27 +613,4 @@ export const getAllNotificationsByCollectionCase = async (
     ...n,
     type: n.type as Notification["type"],
   }));
-};
-
-export const generatePDF = async (
-  report: string,
-  data: any
-): Promise<Buffer> => {
-  const html = renderTemplate(report, {
-    ...data,
-    company_name: "Dazzsoft",
-  });
-
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: "networkidle0" });
-
-  const pdfBuffer = await page.pdf({ format: "A4" });
-
-  await browser.close();
-
-  return Buffer.from(pdfBuffer);
 };

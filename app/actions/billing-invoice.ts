@@ -1,10 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-import InvoiceService from "@/common/mail/services/invoiceService";
-import renderTemplate from "@/common/utils/templateRenderer";
 import { addDays } from "date-fns";
-import path from "path";
-import puppeteer from "puppeteer";
 import {
   BillingInvoiceBase,
   BillingInvoiceCreate,
@@ -12,6 +8,8 @@ import {
 } from "@/lib/validations/billing-invoice";
 import { getParameter } from "@/app/actions/parameter";
 import { getNameCountry } from "@/common/utils/general";
+
+// import { htmlToPdfBuffer, loadHtmlTemplate } from "@/lib/generatePdf";
 
 interface ActivationInvoiceInput {
   tenant_id: string;
@@ -69,7 +67,7 @@ export const createActivationInvoice = async (
   });
 
   // Enviar correo con la factura al email de contacto del tenant
-  await sendInvoiceEmail(invoice.id);
+  await sendInvoice(invoice.id);
 
   return invoice;
 };
@@ -115,7 +113,7 @@ export const createCollectionInvoice = async (
   });
 
   // Enviar correo con la factura al email de contacto del tenant
-  await sendInvoiceEmail(invoice.id);
+  await sendInvoice(invoice.id);
 
   return invoice;
 };
@@ -143,7 +141,7 @@ export const generateInvoiceNumber = async (): Promise<string> => {
   return formattedNumber;
 };
 
-export const generateInvoicePDF = async (id: string): Promise<Buffer> => {
+export const getDataInvoicePDF = async (id: string) => {
   const invoice = await prisma.billingInvoice.findUnique({
     where: { id },
     include: { tenant: true, details: true },
@@ -187,26 +185,10 @@ export const generateInvoicePDF = async (id: string): Promise<Buffer> => {
       .toFixed(2),
   };
 
-  const html = renderTemplate("invoice/invoice", {
-    ...data,
-    company_name: "Dazzsoft",
-  });
-
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: "networkidle0" });
-
-  const pdfBuffer = await page.pdf({ format: "A4" });
-
-  await browser.close();
-
-  return Buffer.from(pdfBuffer);
+  return data;
 };
 
-export const sendInvoiceEmail = async (id: string): Promise<boolean> => {
+export const sendInvoice = async (id: string): Promise<boolean> => {
   try {
     const createdInvoice = await prisma.billingInvoice.findUnique({
       where: { id },
@@ -215,53 +197,48 @@ export const sendInvoiceEmail = async (id: string): Promise<boolean> => {
 
     if (!createdInvoice) return false;
 
-    if (createdInvoice.tenant?.contact_email) {
-      const debtorEmail = createdInvoice.tenant.contact_email;
-      const subject = `FACTUUR - ${createdInvoice.invoice_number}`;
-
-      const dataMail = {
-        recipientName: createdInvoice.tenant.name || "Customer",
-        currentYear: new Date().getFullYear(),
-        messageBody:
-          "Er is een nieuwe factuur geregistreerd in het Centraal Incasso Platform (CI). U kunt de gegevens veilig bekijken door in te loggen op het CI-platform:",
-      };
-
-      const pdfBuffer = await generateInvoicePDF(id);
-
-      if (pdfBuffer) {
-        // Guardar el PDF en una ruta temporal
-        const tempDir = path.join(process.cwd(), "tmp");
-        const fs = await import("fs/promises");
-        await fs.mkdir(tempDir, { recursive: true });
-        const tempFilePath = path.join(
-          tempDir,
-          `invoice_${createdInvoice.id}.pdf`
-        );
-        await fs.writeFile(tempFilePath, pdfBuffer);
-
-        // Configurar el adjunto usando el archivo temporal
-        const attachmentConfig = {
-          filename: `invoice_${createdInvoice.id}.pdf`,
-          pdfTemplatePath: tempFilePath,
-        };
-
-        if (attachmentConfig.pdfTemplatePath) {
-          await InvoiceService.sendEmail(
-            debtorEmail,
-            subject,
-            dataMail,
-            attachmentConfig
-          );
-        }
-      } else {
-        await InvoiceService.sendEmail(debtorEmail, subject, dataMail);
-      }
-
-      console.log("notificacion de debtor enviada al correo: ", debtorEmail);
-      return true;
+    if (!createdInvoice.tenant?.contact_email) {
+      console.error("No contact email found for tenant");
+      return false;
     }
 
-    return false;
+    const mail_customer = createdInvoice.tenant.contact_email;
+
+    // // Generar el PDF de la factura
+    // const dataReport = await getDataInvoicePDF(id);
+
+    // // 3️⃣ Renderiza el HTML con los datos
+    // const result = await loadHtmlTemplate("invoice/invoice.html", dataReport);
+
+    // console.log("Generated HTML for invoice:", result);
+    // // 4️⃣ Generar PDF en memoria
+    // const pdfBuffer = await htmlToPdfBuffer(result);
+
+    // if (!pdfBuffer) {
+    //   console.error("Failed to generate PDF buffer");
+    //   return false;
+    // }
+
+    // console.log("Generated PDF buffer for invoice:", pdfBuffer);
+
+    // const attachments = [
+    //   {
+    //     content: pdfBuffer.toString("base64"),
+    //     filename: `invoice_${createdInvoice.invoice_number}.pdf`,
+    //   },
+    // ];
+
+    // console.log("Sending invoice email to:", mail_customer);
+    // console.log("With attachments:", attachments);
+
+    // await sendInvoiceEmail(
+    //   mail_customer,
+    //   createdInvoice.tenant.name,
+    //   "https://centraalinning.com",
+    //   attachments
+    // );
+    console.log("notificacion de debtor enviada al correo: ", mail_customer);
+    return true;
   } catch (error) {
     console.error("Error sending mail notification:", error);
     return false;

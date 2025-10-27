@@ -1,6 +1,5 @@
 "use client";
 import React, { Suspense, useEffect } from "react";
-import ActionToolbar from "@/components/ui/breadcrums";
 import { useRouter } from "next/navigation";
 
 import {
@@ -31,15 +30,11 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import AddIcon from "@mui/icons-material/Add";
 // libs
-import { notifyInfo } from "@/lib/notifications";
 import { AlertService } from "@/lib/alerts";
 import { formatCurrency } from "@/common/utils/general";
 // hooks and services
 import { useTenant } from "@/hooks/useTenant";
-import {
-  getAllInvoices,
-  sendInvoiceEmail,
-} from "@/app/actions/billing-invoice";
+import { getAllInvoices } from "@/app/actions/billing-invoice";
 import {
   BillingInvoiceBase,
   BillingInvoiceResponse,
@@ -222,14 +217,6 @@ const InvoicesPage: React.FC = () => {
 
   const handleRefresh = () => {
     fetchData();
-  };
-
-  const handleNotification = () => {
-    if (selectedRow === null) return;
-    if (!selectedRow.id) return;
-
-    sendInvoiceEmail(selectedRow?.id);
-    notifyInfo("Notificatie-e-mail verzonden");
   };
 
   return (
@@ -475,18 +462,6 @@ const InvoicesPage: React.FC = () => {
                         disabled={invoice.status !== "unpaid"}
                       >
                         Aprobar
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          handleNotification();
-                          handleClose();
-                        }}
-                        disabled={
-                          invoice.status != "paid" &&
-                          invoice.status !== "overdue"
-                        }
-                      >
-                        Reenviar Notificación
                       </MenuItem>
                       <MenuItem
                         onClick={() => {

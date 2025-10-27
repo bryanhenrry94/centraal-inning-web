@@ -8,13 +8,11 @@ import {
 import { VerdictInterestDetailCreate } from "@/lib/validations/verdict-interest-details";
 import { InterestDetail } from "@/lib/validations/interest-type";
 import { getInterestTypeById } from "@/app/actions/interest-type";
-import VerdictService from "@/common/mail/services/verdictService";
 import { notifyError } from "@/lib/notifications";
 import { protocol, rootDomain } from "@/lib/utils";
-import { generatePDF } from "@/common/utils/pdfGenerator";
 import path from "path";
 import fs from "fs/promises";
-import renderTemplate from "@/common/utils/templateRenderer";
+// import renderTemplate from "@/common/utils/templateRenderer";
 import { formatCurrency } from "@/common/utils/general";
 import { VerdictAttachment } from "@/lib/validations/verdict-attachments";
 import { $Enums } from "@/prisma/generated/prisma";
@@ -604,40 +602,11 @@ export const handleSendMailNotificationDebtor = async (
         bankAccountNumber: "114.588.06",
       };
 
-      // 1, Generar HTML desde plantilla
-      const htmlAttachment = renderTemplate(
-        "verdict/VerdictDebtor",
-        dataAttachment
-      );
-
-      const result = await GenerateReportApprovalFromHTML(
-        createdVerdict.tenant.subdomain,
-        htmlAttachment
-      );
-
-      if (result.success && result.file_path) {
-        const absolutePath = path.join(
-          process.cwd(),
-          "public",
-          result.file_path
-        );
-
-        const attachmentConfig = {
-          filename: `vonnis_${createdVerdict.id}.pdf`,
-          pdfTemplatePath: absolutePath,
-        };
-
-        if (attachmentConfig.pdfTemplatePath) {
-          await VerdictService.sendEmail(
-            debtorEmail,
-            subject,
-            dataMail,
-            attachmentConfig
-          );
-        }
-      } else {
-        await VerdictService.sendEmail(debtorEmail, subject, dataMail);
-      }
+      // // 1, Generar HTML desde plantilla
+      // const htmlAttachment = renderTemplate(
+      //   "verdict/VerdictDebtor",
+      //   dataAttachment
+      // );
 
       console.log("notificacion de debtor enviada al correo: ", debtorEmail);
       return true;
@@ -686,40 +655,11 @@ export const handleSendMailNotificationCreditor = async (
         total_amount: formatCurrency(400),
       };
 
-      // 1, Generar HTML desde plantilla
-      const htmlAttachment = renderTemplate(
-        "verdict/VerdictCreditor",
-        dataAttachment
-      );
-
-      const result = await GenerateReportApprovalFromHTML(
-        createdVerdict.tenant.subdomain,
-        htmlAttachment
-      );
-
-      if (result.success && result.file_path) {
-        const absolutePath = path.join(
-          process.cwd(),
-          "public",
-          result.file_path
-        );
-
-        const attachmentConfig = {
-          filename: `vonnis_${createdVerdict.id}.pdf`,
-          pdfTemplatePath: absolutePath,
-        };
-
-        if (attachmentConfig.pdfTemplatePath) {
-          await VerdictService.sendEmail(
-            debtorEmail,
-            subject,
-            dataMail,
-            attachmentConfig
-          );
-        }
-      } else {
-        await VerdictService.sendEmail(debtorEmail, subject, dataMail);
-      }
+      // // 1, Generar HTML desde plantilla
+      // const htmlAttachment = renderTemplate(
+      //   "verdict/VerdictCreditor",
+      //   dataAttachment
+      // );
 
       console.log("notificacion de debtor enviada al correo: ", debtorEmail);
       return true;
@@ -757,45 +697,11 @@ export const handleSendMailNotificationBailiff = async (
       dateVerdict: createdVerdict.sentence_date.toISOString().split("T")[0],
     };
 
-    // 1, Generar HTML desde plantilla
-    const htmlAttachment = renderTemplate(
-      "verdict/VerdictApproval",
-      dataAttachment
-    );
-
-    const result = await GenerateReportApprovalFromHTML(
-      createdVerdict.tenant.subdomain,
-      htmlAttachment
-    );
-
-    const bailiffMail = createdVerdict.bailiff?.email;
-    const subject = "Nieuwe vonnis voor u beschikbaar";
-
-    const dataMail = {
-      recipientName: createdVerdict.bailiff?.fullname || "Deurwaarder",
-      currentYear: new Date().getFullYear(),
-      messageBody:
-        "Er is een nieuw vonnis voor u beschikbaar. Log in op het CI-platform om de details te bekijken:",
-    };
-
-    if (result.success && result.file_path) {
-      const absolutePath = path.join(process.cwd(), "public", result.file_path);
-      console.log("Generated PDF path:", absolutePath);
-
-      const attachmentConfig = {
-        filename: `vonnis_${createdVerdict.id}.pdf`,
-        pdfTemplatePath: absolutePath,
-      };
-
-      if (attachmentConfig.pdfTemplatePath) {
-        await VerdictService.sendEmail(
-          bailiffMail,
-          subject,
-          dataMail,
-          attachmentConfig
-        );
-      }
-    }
+    // // 1, Generar HTML desde plantilla
+    // const htmlAttachment = renderTemplate(
+    //   "verdict/VerdictApproval",
+    //   dataAttachment
+    // );
 
     return false;
   } catch (error) {
@@ -881,33 +787,6 @@ export const requestVerdictApproval = async (id: string): Promise<boolean> => {
     return response ? true : false;
   } catch (error) {
     return false;
-  }
-};
-
-export const GenerateReportApprovalFromHTML = async (
-  slug: string,
-  html: string
-): Promise<{ success: boolean; file_path?: string }> => {
-  const filename = "bailiff_report.pdf";
-
-  // Definir paths de forma clara
-  const publicPath = path.join("uploads", slug, "verdict");
-  const absolutePath = path.resolve(process.cwd(), "public", publicPath);
-  const pdfPath = path.join(absolutePath, filename);
-  const file_path = path.join("/", publicPath, filename); // para guardar en DB (URL relativa)
-
-  try {
-    // Crear carpeta y generar PDF en paralelo
-    await fs.mkdir(absolutePath, { recursive: true });
-    await generatePDF(html, pdfPath);
-
-    return {
-      success: true,
-      file_path: file_path,
-    };
-  } catch (error) {
-    console.error("Error al generar reporte:", error);
-    return { success: false };
   }
 };
 

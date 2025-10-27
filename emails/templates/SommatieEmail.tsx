@@ -1,7 +1,5 @@
-import { protocol, rootDomain } from "@/lib/utils";
 import {
   Body,
-  Button,
   Container,
   Head,
   Hr,
@@ -11,38 +9,37 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { Link } from "@react-email/components";
 
-interface WelcomeEmailProps {
-  userFirstname: string;
+interface SommatieEmailProps {
+  userName: string;
 }
 
-const baseUrl = rootDomain ? `${protocol}://${rootDomain}` : "http://localhost:3000";
-
-export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
+export const SommatieEmail = ({ userName }: SommatieEmailProps) => (
   <Html>
     <Head />
     <Body style={main}>
       <Preview>
-        Intelligentieplatform voor efficiënt en gecentraliseerd
-        incassomanagement.
+        Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
+        Platform. U kunt de details van deze taak veilig bekijken door in te
+        loggen op het CI Platform:
       </Preview>
       <Container style={container}>
         <Img
-          src={`${baseUrl}/static/LogoCIO.png`}
+          src={"https://faktia.lat/static/LogoCIO.png"}
           width="170"
           height="50"
           alt="CI"
           style={logo}
         />
-        <Text style={paragraph}>Hallo {userFirstname},</Text>
+        <Text style={paragraph}>Beste {userName},</Text>
         <Text style={paragraph}>
-          Welkom bij CI, uw intelligentieplatform voor efficiënt en
-          gecentraliseerd incassomanagement.
+          Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
+          Platform. U kunt de details van deze taak veilig bekijken door in te
+          loggen op het CI Platform:
         </Text>
         <Section style={btnContainer}>
-          <Button style={button} href="https://faktia.lat">
-            Beginnen
-          </Button>
+          <Link href="https://www.centraalinning.com/">Stap in</Link>;
         </Section>
         <Text style={paragraph}>
           Met vriendelijke groet,
@@ -59,11 +56,11 @@ export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
   </Html>
 );
 
-WelcomeEmail.PreviewProps = {
-  userFirstname: "Alan",
-} as WelcomeEmailProps;
+SommatieEmail.PreviewProps = {
+  userName: "Alan",
+} as SommatieEmailProps;
 
-export default WelcomeEmail;
+export default SommatieEmail;
 
 const main = {
   backgroundColor: "#ffffff",

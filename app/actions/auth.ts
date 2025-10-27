@@ -7,7 +7,6 @@ import {
   LoginFormData,
   loginSchema,
 } from "@/lib/validations/auth";
-import AuthMailService from "@/common/mail/services/authService";
 import { createActivationInvoice } from "./billing-invoice";
 import { $Enums } from "@/prisma/generated/prisma";
 import { generateUniqueSubdomain } from "./tenant";
@@ -160,22 +159,14 @@ export async function createAccount(
     }
 
     // ✅ 3. Crear factura de activación (fuera de la transacción)
-    // await createActivationInvoice({
-    //   tenant_id: result.tenant.id,
-    //   island: validatedData.company.country,
-    //   address: validatedData.company.address,
-    //   amount: pricePlan,
-    // });
+    await createActivationInvoice({
+      tenant_id: result.tenant.id,
+      island: validatedData.company.country,
+      address: validatedData.company.address,
+      amount: pricePlan,
+    });
 
-    // ✅ 4. Enviar correo de bienvenida (no bloqueante)
-    // await AuthMailService.sendWelcomeEmail(
-    //   result.user.email,
-    //   result.user.fullname || ""
-    // ).catch((err) => console.error("Email error:", err));
-
-    await sendWelcomeEmail(result.user.email, result.user.fullname || "").catch(
-      (err) => console.error("Resend Email error:", err)
-    );
+    await sendWelcomeEmail(result.user.email, result.user.fullname || "");
 
     // ✅ 5. Revalidar caché si es necesario
     revalidatePath("/auth/signup");

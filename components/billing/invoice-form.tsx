@@ -48,7 +48,6 @@ import {
   getInvoiceById,
   getNextInvoiceNumber,
   updateInvoice,
-  generateInvoicePDF,
 } from "@/app/actions/billing-invoice";
 import { getAllTenants } from "@/app/actions/tenant";
 // libs
@@ -360,29 +359,6 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
     );
   };
 
-  const handlePrintInvoice = async () => {
-    if (!id) {
-      notifyError("U kunt een niet-opgeslagen factuur niet afdrukken.");
-      return;
-    }
-
-    const invoicePDF = await generateInvoicePDF(id);
-    // Convert Buffer to Uint8Array for Blob
-    const blob = new Blob([new Uint8Array(invoicePDF)], {
-      type: "application/pdf",
-    });
-    const url = window.URL.createObjectURL(blob);
-
-    // Create a temporary anchor to trigger download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `factura_${id}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  };
-
   return (
     <Box>
       <Box
@@ -396,16 +372,6 @@ const InvoiceFormPage: React.FC<InvoiceFormPageProps> = ({ id }) => {
         <Typography variant="h5" component="h3">
           FACTUUR
         </Typography>
-        {modeEdit && (
-          <Button
-            onClick={handlePrintInvoice}
-            size="large"
-            startIcon={<Print />}
-            sx={{ textTransform: "none", marginLeft: "auto" }}
-          >
-            Afdrukken
-          </Button>
-        )}
       </Box>
 
       <FormProvider {...methods}>
