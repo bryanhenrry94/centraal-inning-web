@@ -9,6 +9,7 @@ import {
 import { getParameter } from "@/app/actions/parameter";
 import { getNameCountry } from "@/common/utils/general";
 import { sendInvoiceEmail } from "./email";
+import { InvoicePDFProps } from "@/pdfs/templates/InvoicePDF";
 
 interface ActivationInvoiceInput {
   tenant_id: string;
@@ -160,7 +161,9 @@ export const generateInvoiceNumber = async (): Promise<string> => {
   return formattedNumber;
 };
 
-export const getDataInvoicePDF = async (id: string) => {
+export const getDataInvoicePDF = async (
+  id: string
+): Promise<InvoicePDFProps> => {
   const invoice = await prisma.billingInvoice.findUnique({
     where: { id },
     include: { tenant: true, details: true },

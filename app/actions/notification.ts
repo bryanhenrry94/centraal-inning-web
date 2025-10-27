@@ -6,21 +6,15 @@ import { Notification } from "@/lib/validations/notification";
 import { getParameter } from "@/app/actions/parameter";
 import { NotificationType } from "@/lib/validations/notification";
 
-import {
-  formatCurrency,
-  formatDate,
-  getNameCountry,
-} from "@/common/utils/general";
-import { $Enums } from "@/prisma/generated/prisma";
 import { registerInvitation } from "./tenant-invitation";
 import { protocol, rootDomain } from "@/lib/utils";
-// import { htmlToPdfBuffer, loadHtmlTemplate } from "@/lib/generatePdf";
 import {
   sendAanmaningEmail,
   sendBlokkadeMail,
   sendIngebrekestellingMail,
   sendSommatieEmail,
 } from "./email";
+import { $Enums } from "@/prisma/generated/prisma";
 
 export const sendNotification = async (caseId: string) => {
   if (!caseId) {
@@ -34,31 +28,18 @@ export const sendNotification = async (caseId: string) => {
   }
 
   // Get the last notification for the collection case
-  const notification = await getLastNotificationByCollectionCase(caseId);
-
-  const notificationType = notification ? notification.type : "";
-
-  switch (notificationType) {
-    case "AANMANING":
-      return await sendSommatie(collection);
-    case "SOMMATIE":
-      return await sendIngebrekestelling(collection);
-    case "INGEBREKESTELLING":
-      // if (collection.debtor_id) {
-      //   const contribution: ICreateDebtorContribution = {
-      //     debtor_id: collection.debtor_id,
-      //     isPublic: false,
-      //     notes: null,
-      //   };
-
-      //   await createContribution(tenant_id, contribution);
-      // }
-
-      return await sendBlokkade(collection);
-    case "BLOKKADE":
-      throw new Error("No further notifications can be sent");
-    default:
+  switch (collection.status) {
+    case $Enums.CollectionCaseStatus.AANMANING:
+      console.log("Sending Aanmaning...");
       return await sendAanmaning(collection);
+    case $Enums.CollectionCaseStatus.SOMMATIE:
+      return await sendSommatie(collection);
+    case $Enums.CollectionCaseStatus.INGEBREKESTELLING:
+      return await sendIngebrekestelling(collection);
+    case $Enums.CollectionCaseStatus.BLOKKADE:
+      return await sendBlokkade(collection);
+    default:
+      return;
   }
 };
 
@@ -96,17 +77,16 @@ export const sendAanmaning = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
+    console.log(
+      "Send_Aanmaning: Starting process for collection ID:",
+      collection.id
+    );
     // valida el tenant
     if (!collection.tenant_id) {
       throw new Error("Tenant ID not found");
     }
 
-    // Obtiene params de cobranza
-    const parameter = await getParameter();
-    if (!parameter) {
-      throw new Error("No se encontró el parámetro");
-    }
-
+    console.log("Send_Aanmaning: Tenant ID found:", collection.tenant_id);
     // Obtiene datos del deudor
     const debtor = await prisma.debtor.findUnique({
       where: { id: collection.debtor_id },
@@ -114,6 +94,8 @@ export const sendAanmaning = async (
     if (!debtor) {
       throw new Error("No se encontró el deudor");
     }
+
+    console.log("Send_Aanmaning: Debtor found:", debtor);
 
     // Si el deudor no tiene email, no envía la notificación
     if (!debtor.email) {
@@ -149,82 +131,26 @@ export const sendAanmaning = async (
       throw new Error("No se encontró el tenant");
     }
 
-    // Porcentajes de cobranza y abb
-    const collectionPercentage = parameter.collection_fee_rate || 15;
-    const abbPercentage = parameter.abb_rate || 6;
-
-    // Calculate additional fees
-    const calculatedCollection = parseFloat(
-      ((collection.amount_original * collectionPercentage) / 100).toFixed(2)
-    );
-    // Calculate ABB
-    const calculatedABB = parseFloat(
-      ((calculatedCollection * abbPercentage) / 100).toFixed(2)
+    console.log(
+      "Send_Aanmaning: Sending Aanmaning email to debtor at",
+      debtor.email
     );
 
-    const fine = 0; // This should be calculated based on the collection and the days overdue
+    if (debtor?.email) {
+      console.log("Send_Aanmaning: Preparing to send email to", debtor.email);
+      await sendAanmaningEmail(debtor?.email, collection.id, invitationLink);
 
-    const subtotaal =
-      collection.amount_original + calculatedCollection + calculatedABB + fine;
-
-    // Interest 5% of total amount
-    const interestAmount = parseFloat(((subtotaal * 5) / 100).toFixed(2));
-
-    // Total Amount
-    const total_amount = parseFloat((subtotaal + interestAmount).toFixed(2));
-
-    const debtorEmail = debtor?.email;
-    const subject = `Aanmaning - ${collection.reference_number}`;
-
-    const island = getNameCountry(tenant?.country_code);
-
-    // Data for PDF generation
-    const dataReport = {
-      date: formatDate(new Date().toString()),
-      debtorName: debtor?.fullname || "",
-      debtorAddress: debtor?.address || "",
-      island: island,
-      reference_number: collection.reference_number,
-      bankName: parameter.bank_name,
-      accountNumber: parameter.bank_account,
-      amount_original: formatCurrency(collection.amount_original),
-      extraCosts: formatCurrency(calculatedCollection),
-      calculatedABB: formatCurrency(calculatedABB),
-      total_amount: formatCurrency(total_amount),
-      tenantName: tenant?.name || "Company Name",
-    };
-
-    // Renderiza el HTML con los datos
-    // const result = await loadHtmlTemplate("collection/Aanmaning", dataReport);
-
-    // // Generar PDF en memoria
-    // const pdfBuffer = await htmlToPdfBuffer(result);
-
-    // if (!pdfBuffer) {
-    //   throw new Error("Failed to generate PDF");
-    // }
-
-    // const attachments = [
-    //   {
-    //     filename: `Aanmanning_${collection.reference_number}.pdf`,
-    //     content: pdfBuffer.toString("base64"),
-    //   },
-    // ];
-
-    // await sendAanmaningEmail(
-    //   debtorEmail,
-    //   debtor.fullname,
-    //   invitationLink,
-    //   subject,
-    //   attachments
-    // );
-
-    await createNotification(
-      collection.id,
-      NotificationType.AANMANING,
-      "Eerste incassoaankondiging",
-      "De eerste incassoaankondiging is verzonden."
-    );
+      await createNotification(
+        collection.id,
+        NotificationType.AANMANING,
+        "Eerste incassoaankondiging",
+        "De eerste incassoaankondiging is verzonden."
+      );
+      console.log(
+        "Send_Aanmaning: Aanmaning email sent successfully to",
+        debtor.email
+      );
+    }
 
     return "Aanmaning sent successfully";
   } catch (error) {
@@ -237,12 +163,6 @@ export const sendSommatie = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    // Obtiene params de cobranza
-    const parameter = await getParameter();
-    if (!parameter) {
-      throw new Error("No se encontró el parámetro");
-    }
-
     const debtor = await prisma.debtor.findUnique({
       where: { id: collection.debtor_id },
     });
@@ -250,72 +170,15 @@ export const sendSommatie = async (
       throw new Error("No se encontró el deudor");
     }
 
-    // Si el deudor no tiene email, no envía la notificación
-    if (!debtor.email) {
-      throw new Error("El deudor no tiene email");
+    if (debtor?.email) {
+      await sendSommatieEmail(debtor?.email, collection.id);
+      await createNotification(
+        collection.id,
+        NotificationType.SOMMATIE,
+        "Tweede incassobericht",
+        "De tweede incassoaankondiging is verzonden."
+      );
     }
-
-    const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenant_id },
-    });
-    if (!tenant) {
-      throw new Error("No se encontró el tenant");
-    }
-
-    if (!collection) {
-      throw new Error("Collection not found");
-    }
-
-    const debtorEmail = debtor?.email;
-    const subject = `Sommatie - ${collection.reference_number}`;
-
-    const island = getNameCountry(tenant?.country_code);
-
-    const extraCosts = collection.amount_original * 0.15;
-    const calculatedABB = extraCosts * 0.06;
-    const total_amount =
-      collection.amount_original + extraCosts + calculatedABB;
-
-    // Data for PDF generation
-    const dataReport = {
-      date: formatDate(new Date().toString()),
-      debtorName: debtor?.fullname || "",
-      debtorAddress: debtor?.address || "",
-      island: island,
-      reference_number: collection.reference_number,
-      bankName: parameter.bank_account,
-      accountNumber: parameter.bank_account,
-      amount_original: collection.amount_original,
-      extraCosts: extraCosts,
-      calculatedABB: calculatedABB,
-      total_amount: total_amount,
-      tenantName: tenant?.name || "Company Name",
-    };
-
-    // // Renderiza el HTML con los datos
-    // const result = await loadHtmlTemplate("collection/Sommatie", dataReport);
-
-    // // Generar PDF en memoria
-    // const pdfBuffer = await htmlToPdfBuffer(result);
-    // if (!pdfBuffer) {
-    //   throw new Error("Failed to generate PDF");
-    // }
-
-    // const attachments = [
-    //   {
-    //     filename: `Sommatie_${collection.reference_number}.pdf`,
-    //     content: pdfBuffer.toString("base64"),
-    //   },
-    // ];
-
-    // await sendSommatieEmail(debtorEmail, debtor.fullname, subject, attachments);
-
-    await createNotification(
-      collection.id,
-      NotificationType.SOMMATIE,
-      "Tweede incassobericht",
-      "De tweede incassoaankondiging is verzonden."
-    );
 
     return "Sommatie sent successfully";
   } catch (error) {
@@ -328,12 +191,6 @@ export const sendIngebrekestelling = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    // Obtiene params de cobranza
-    const parameter = await getParameter();
-    if (!parameter) {
-      throw new Error("No se encontró el parámetro");
-    }
-
     const debtor = await prisma.debtor.findUnique({
       where: { id: collection.debtor_id },
     });
@@ -346,93 +203,16 @@ export const sendIngebrekestelling = async (
       throw new Error("El deudor no tiene email");
     }
 
-    const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenant_id },
-    });
-    if (!tenant) {
-      throw new Error("No se encontró el tenant");
+    if (debtor?.email) {
+      await sendIngebrekestellingMail(debtor?.email, collection.id);
+
+      await createNotification(
+        collection.id,
+        NotificationType.INGEBREKESTELLING,
+        "Derde incassoaankondiging",
+        "De derde incassoaankondiging is verzonden."
+      );
     }
-
-    if (!collection) {
-      throw new Error("Collection not found");
-    }
-
-    const debtorEmail = debtor?.email;
-    const subject = `Ingebrekestelling - ${collection.reference_number}`;
-
-    const island = getNameCountry(tenant?.country_code);
-
-    const firstReminderDate = await prisma.collectionCaseNotification.findFirst(
-      {
-        where: {
-          collection_case_id: collection.id,
-          type: "AANMANING",
-        },
-      }
-    );
-
-    console.log("firstReminderDate", firstReminderDate);
-    if (!firstReminderDate) {
-      throw new Error("First reminder date not found");
-    }
-
-    const secondReminderDate =
-      await prisma.collectionCaseNotification.findFirst({
-        where: {
-          collection_case_id: collection.id,
-          type: "SOMMATIE",
-        },
-      });
-
-    console.log("secondReminderDate", secondReminderDate);
-    if (!secondReminderDate) {
-      throw new Error("Second reminder date not found");
-    }
-
-    // Data for PDF generation
-    const dataReport = {
-      date: formatDate(new Date().toString()),
-      debtorName: debtor?.fullname || "",
-      debtorAddress: debtor?.address || "",
-      island: island,
-      firstReminderDate: formatDate(firstReminderDate.sent_at.toString()),
-      secondReminderDate: formatDate(secondReminderDate?.sent_at.toString()),
-      accountNumber: parameter.bank_account,
-      tenantName: tenant?.name || "Company Name",
-    };
-
-    // // Renderiza el HTML con los datos
-    // const result = await loadHtmlTemplate(
-    //   "collection/Ingebrekestelling",
-    //   dataReport
-    // );
-
-    // // Generar PDF en memoria
-    // const pdfBuffer = await htmlToPdfBuffer(result);
-    // if (!pdfBuffer) {
-    //   throw new Error("Failed to generate PDF");
-    // }
-
-    // const attachments = [
-    //   {
-    //     filename: `Ingebrekestelling_${collection.reference_number}.pdf`,
-    //     content: pdfBuffer.toString("base64"),
-    //   },
-    // ];
-
-    // await sendIngebrekestellingMail(
-    //   debtorEmail,
-    //   debtor.fullname,
-    //   subject,
-    //   attachments
-    // );
-
-    await createNotification(
-      collection.id,
-      NotificationType.INGEBREKESTELLING,
-      "Derde incassoaankondiging",
-      "De derde incassoaankondiging is verzonden."
-    );
 
     return "Ingebrekestelling sent successfully";
   } catch (error) {
@@ -445,12 +225,6 @@ export const sendBlokkade = async (
   collection: CollectionCase
 ): Promise<string> => {
   try {
-    // Obtiene params de cobranza
-    const parameter = await getParameter();
-    if (!parameter) {
-      throw new Error("No se encontró el parámetro");
-    }
-
     const debtor = await prisma.debtor.findUnique({
       where: { id: collection.debtor_id },
     });
@@ -463,68 +237,16 @@ export const sendBlokkade = async (
       throw new Error("El deudor no tiene email");
     }
 
-    const tenant = await prisma.tenant.findUnique({
-      where: { id: collection.tenant_id },
-    });
-    if (!tenant) {
-      throw new Error("No se encontró el tenant");
+    if (debtor?.email) {
+      await sendBlokkadeMail(debtor?.email, collection.id);
+
+      await createNotification(
+        collection.id,
+        NotificationType.BLOKKADE,
+        "Notificatie van financiële blokkade",
+        "De notificatie van financiële blokkade is verzonden."
+      );
     }
-
-    if (!collection) {
-      throw new Error("Collection not found");
-    }
-
-    const params = {
-      recipientName: debtor.fullname,
-      messageBody: `Er is een blokkeringsverzoek geregistreerd op het Centraal Collectieplatform (CI). U kunt de gegevens veilig bekijken door in te loggen op het CI-platform: `,
-    };
-
-    const debtorEmail = debtor?.email;
-    const templatePath = "collection/Notification";
-    const subject = "Financiele Blokkade Notification";
-
-    const island = getNameCountry(tenant?.country_code);
-
-    // Data for PDF generation
-    const dataReport = {
-      date: formatDate(new Date().toString()),
-      debtorName: debtor?.fullname || "",
-      debtorAddress: debtor?.address || "",
-      island: island,
-      total_amount: 0,
-      amountRegister: 0,
-      total: 0,
-      bankName: parameter.bank_account,
-      accountNumber: parameter.bank_account,
-    };
-
-    // // Renderiza el HTML con los datos
-    // const result = await loadHtmlTemplate(
-    //   "collection/Ingebrekestelling",
-    //   dataReport
-    // );
-
-    // // Generar PDF en memoria
-    // const pdfBuffer = await htmlToPdfBuffer(result);
-    // if (!pdfBuffer) {
-    //   throw new Error("Failed to generate PDF");
-    // }
-
-    // const attachments = [
-    //   {
-    //     filename: `FinancieleBlokkade_${collection.reference_number}.pdf`,
-    //     content: pdfBuffer.toString("base64"),
-    //   },
-    // ];
-
-    // await sendBlokkadeMail(debtorEmail, debtor.fullname, subject, attachments);
-
-    await createNotification(
-      collection.id,
-      NotificationType.BLOKKADE,
-      "Notificatie van financiële blokkade",
-      "De notificatie van financiële blokkade is verzonden."
-    );
 
     return "Financiele Blokkade sent successfully";
   } catch (error) {

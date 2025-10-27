@@ -8,7 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 
-interface InvoiceItem {
+export interface InvoiceItem {
   item_description: string;
   item_quantity: number;
   item_unit_price: number;
@@ -16,7 +16,7 @@ interface InvoiceItem {
   item_subtotal: number;
 }
 
-interface InvoicePDFProps {
+export interface InvoicePDFProps {
   invoice_number: string;
   issue_date: string;
   customer_name: string;

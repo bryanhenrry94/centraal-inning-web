@@ -121,7 +121,7 @@ const Header = () => {
               display: { xs: "none", md: "block" },
             }}
           >
-            CIO-SYSTEEM
+            PORTAL CI
           </Typography>
           <Box>
             <UserAvatar />
