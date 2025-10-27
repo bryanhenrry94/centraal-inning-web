@@ -9,6 +9,7 @@ import {
   Preview,
   Section,
   Text,
+  Link,
 } from "@react-email/components";
 
 interface WelcomeEmailProps {
@@ -25,7 +26,7 @@ export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
       </Preview>
       <Container style={container}>
         <Img
-          src={"https://faktia.lat/static/LogoCIO.png"}
+          src={"https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"}
           width="170"
           height="50"
           alt="CI"
@@ -37,9 +38,9 @@ export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
           gecentraliseerd incassomanagement.
         </Text>
         <Section style={btnContainer}>
-          <Button style={button} href="https://faktia.lat">
-            Beginnen
-          </Button>
+          <Text>
+            <Link href="https://portalci.net/">www.portalci.net</Link>
+          </Text>
         </Section>
         <Text style={paragraph}>
           Met vriendelijke groet,
@@ -84,17 +85,6 @@ const paragraph = {
 
 const btnContainer = {
   textAlign: "center" as const,
-};
-
-const button = {
-  backgroundColor: "#FB902C",
-  borderRadius: "3px",
-  color: "#fff",
-  fontSize: "16px",
-  textDecoration: "none",
-  textAlign: "center" as const,
-  display: "block",
-  padding: "12px",
 };
 
 const hr = {

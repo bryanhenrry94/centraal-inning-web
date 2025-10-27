@@ -8,8 +8,7 @@ import {
 } from "@/lib/validations/billing-invoice";
 import { getParameter } from "@/app/actions/parameter";
 import { getNameCountry } from "@/common/utils/general";
-
-// import { htmlToPdfBuffer, loadHtmlTemplate } from "@/lib/generatePdf";
+import { sendInvoiceEmail } from "./email";
 
 interface ActivationInvoiceInput {
   tenant_id: string;
@@ -21,6 +20,14 @@ interface ActivationInvoiceInput {
 export const createActivationInvoice = async (
   params: ActivationInvoiceInput
 ) => {
+  const tenant = await prisma.tenant.findUnique({
+    where: { id: params.tenant_id },
+  });
+
+  if (!tenant) {
+    throw new Error("No contact email found for tenant");
+  }
+
   // Definir valores base
   const issue_date = new Date();
   const due_date = addDays(issue_date, 7);
@@ -67,7 +74,9 @@ export const createActivationInvoice = async (
   });
 
   // Enviar correo con la factura al email de contacto del tenant
-  await sendInvoice(invoice.id);
+  if (tenant.contact_email) {
+    await sendInvoiceEmail(tenant.contact_email, invoice.id);
+  }
 
   return invoice;
 };
@@ -75,6 +84,14 @@ export const createActivationInvoice = async (
 export const createCollectionInvoice = async (
   params: ActivationInvoiceInput
 ) => {
+  const tenant = await prisma.tenant.findUnique({
+    where: { id: params.tenant_id },
+  });
+
+  if (!tenant) {
+    throw new Error("No contact email found for tenant");
+  }
+
   // Definir valores base
   const issue_date = new Date();
   const due_date = addDays(issue_date, 7);
@@ -113,7 +130,9 @@ export const createCollectionInvoice = async (
   });
 
   // Enviar correo con la factura al email de contacto del tenant
-  await sendInvoice(invoice.id);
+  if (tenant.contact_email) {
+    await sendInvoiceEmail(tenant.contact_email, invoice.id);
+  }
 
   return invoice;
 };
@@ -161,88 +180,33 @@ export const getDataInvoicePDF = async (id: string) => {
   const data = {
     invoice_number: invoice.invoice_number,
     issue_date: invoice.issue_date.toISOString().split("T")[0],
-    customerName: invoice.tenant.name,
-    customerAddress: invoice.tenant.address || "N/A",
-    customerIsland: island || "N/A",
+    customer_name: invoice.tenant.name,
+    customer_address: invoice.tenant.address || "N/A",
+    customer_island: island || "N/A",
     description: invoice.description,
     bank_name: parameter.bank_name || "MCB",
     bank_account: parameter.bank_account || "418.825.10",
     details: invoice.details.map((detail) => ({
       item_description: detail.item_description,
       item_quantity: detail.item_quantity,
-      item_unit_price: detail.item_unit_price.toFixed(2),
-      item_tax_rate: detail.item_tax_rate.toFixed(2),
-      item_subtotal: detail.item_total_with_tax.toFixed(2),
+      item_unit_price: Number(detail.item_unit_price.toFixed(2)),
+      item_tax_rate: Number(detail.item_tax_rate.toFixed(2)),
+      item_subtotal: Number(detail.item_total_with_tax.toFixed(2)),
     })),
-    subtotal: invoice.details
-      .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
-      .toFixed(2),
-    tax: invoice.details
-      .reduce((acc, detail) => acc + detail.item_tax_amount, 0)
-      .toFixed(2),
-    total: invoice.details
-      .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
-      .toFixed(2),
+    // subtotal: invoice.details
+    //   .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
+    //   .toFixed(2),
+    // tax: invoice.details
+    //   .reduce((acc, detail) => acc + detail.item_tax_amount, 0)
+    //   .toFixed(2),
+    total: Number(
+      invoice.details
+        .reduce((acc, detail) => acc + detail.item_total_with_tax, 0)
+        .toFixed(2)
+    ),
   };
 
   return data;
-};
-
-export const sendInvoice = async (id: string): Promise<boolean> => {
-  try {
-    const createdInvoice = await prisma.billingInvoice.findUnique({
-      where: { id },
-      include: { tenant: true },
-    });
-
-    if (!createdInvoice) return false;
-
-    if (!createdInvoice.tenant?.contact_email) {
-      console.error("No contact email found for tenant");
-      return false;
-    }
-
-    const mail_customer = createdInvoice.tenant.contact_email;
-
-    // // Generar el PDF de la factura
-    // const dataReport = await getDataInvoicePDF(id);
-
-    // // 3️⃣ Renderiza el HTML con los datos
-    // const result = await loadHtmlTemplate("invoice/invoice.html", dataReport);
-
-    // console.log("Generated HTML for invoice:", result);
-    // // 4️⃣ Generar PDF en memoria
-    // const pdfBuffer = await htmlToPdfBuffer(result);
-
-    // if (!pdfBuffer) {
-    //   console.error("Failed to generate PDF buffer");
-    //   return false;
-    // }
-
-    // console.log("Generated PDF buffer for invoice:", pdfBuffer);
-
-    // const attachments = [
-    //   {
-    //     content: pdfBuffer.toString("base64"),
-    //     filename: `invoice_${createdInvoice.invoice_number}.pdf`,
-    //   },
-    // ];
-
-    // console.log("Sending invoice email to:", mail_customer);
-    // console.log("With attachments:", attachments);
-
-    // await sendInvoiceEmail(
-    //   mail_customer,
-    //   createdInvoice.tenant.name,
-    //   "https://centraalinning.com",
-    //   attachments
-    // );
-    console.log("notificacion de debtor enviada al correo: ", mail_customer);
-    return true;
-  } catch (error) {
-    console.error("Error sending mail notification:", error);
-    return false;
-  }
 };
 
 export const getAllInvoices = async (): Promise<BillingInvoiceResponse[]> => {

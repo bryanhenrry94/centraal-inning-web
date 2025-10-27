@@ -12,24 +12,24 @@ import {
 } from "@react-email/components";
 
 interface InvoiceEmailProps {
-  userName: string;
+  name: string;
   paymentLink?: string;
 }
 
-export const InvoiceEmail = ({ userName, paymentLink }: InvoiceEmailProps) => (
+export const InvoiceEmail = ({ name, paymentLink }: InvoiceEmailProps) => (
   <Html>
     <Head />
     <Body style={main}>
       <Preview>Klik hier om uw factuur te betalen</Preview>
       <Container style={container}>
         <Img
-          src={"https://faktia.lat/static/LogoCIO.png"}
+          src={"https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"}
           width="170"
-          height="50"
+          height="100"
           alt="CI"
           style={logo}
         />
-        <Text style={paragraph}>Hallo {userName},</Text>
+        <Text style={paragraph}>Hallo {name},</Text>
         <Text style={paragraph}>Klik hier om uw factuur te betalen</Text>
         <Section style={btnContainer}>
           <Button style={button} href={paymentLink}>
@@ -52,7 +52,7 @@ export const InvoiceEmail = ({ userName, paymentLink }: InvoiceEmailProps) => (
 );
 
 InvoiceEmail.PreviewProps = {
-  userName: "Alan",
+  name: "Alan",
 } as InvoiceEmailProps;
 
 export default InvoiceEmail;

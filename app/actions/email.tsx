@@ -3,17 +3,19 @@ import { Resend } from "resend";
 import InvoiceEmail from "@/emails/templates/InvoiceEmail";
 import AanmanningEmail from "@/emails/templates/AanmanningEmail";
 import SommatieMail from "@/emails/templates/SommatieEmail";
-import ReactPDF from "@react-pdf/renderer";
 import { InvoicePDF } from "@/pdfs/templates/InvoicePDF";
+import { getDataInvoicePDF } from "./billing-invoice";
+import { generatePdfBase64 } from "@/lib/pdf";
+import prisma from "@/lib/prisma";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendWelcomeEmail(to: string, userFirstname: string) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
       to: [to],
-      subject: "Welcome to CIO Platform",
+      subject: "Welcome to Centraal Inning",
       react: <WelcomeEmail userFirstname={userFirstname} />,
     });
 
@@ -28,62 +30,65 @@ export async function sendWelcomeEmail(to: string, userFirstname: string) {
   }
 }
 
-export async function sendInvoiceEmail(
+export const sendInvoiceEmail = async (
   to: string,
-  userName: string,
-  paymentLink: string,
-  attachments?: any[]
-) {
+  invoice_id: string
+): Promise<boolean> => {
   try {
-    const pdfData = {
-      name: "Bryan",
-      amount: 500,
-    };
-
-    const pdfBuffer = await ReactPDF.renderToStream(
-      <InvoicePDF {...pdfData} />
-    );
-
-    const buffer = await streamToBuffer(pdfBuffer);
-    // return buffer.toString("base64");
-
-    const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
-      to: [to],
-      subject: "Your Invoice from CIO Platform",
-      react: <InvoiceEmail userName={userName} paymentLink={paymentLink} />,
-      attachments: [
-        {
-          filename: "invoice.pdf",
-          content: buffer.toString("base64"),
-        },
-      ],
-    });
-
-    if (error) {
-      return Response.json({ error }, { status: 500 });
+    if (!to) {
+      console.error("Recipient email is required");
+      return false;
     }
 
-    return Response.json(data);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return Response.json({ error }, { status: 500 });
-  }
-}
+    if (!invoice_id) {
+      console.error("Invoice ID is required");
+      return false;
+    }
 
-/**
- * Convierte un NodeJS.ReadableStream en un Buffer
- * @param stream - Stream de NodeJS
- * @returns Promise<Buffer>
- */
-async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
-  const chunks: Uint8Array[] = [];
-  for await (const chunk of stream) {
-    // TypeScript reconoce chunk como Buffer | string
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+    const billing = await prisma.billingInvoice.findUnique({
+      where: { id: invoice_id },
+      include: { tenant: true },
+    });
+
+    if (!billing) {
+      console.error("Invoice not found for ID:", invoice_id);
+      return false;
+    }
+
+    // Generar el PDF de la factura
+    const params = await getDataInvoicePDF(invoice_id);
+    const pdfBase64 = await generatePdfBase64(<InvoicePDF {...params} />);
+
+    const attachments = [
+      {
+        filename: `invoice.pdf`,
+        content: pdfBase64,
+      },
+    ];
+
+    const paymentLink = `https://portalci.net/pay-invoice/${billing.id}`;
+
+    await resend.emails.send({
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
+      to: to,
+      subject: `FACTUUR - ${billing.invoice_number}`,
+      react: (
+        <InvoiceEmail
+          name={billing.tenant.name || "Customer"}
+          paymentLink={paymentLink}
+        />
+      ),
+      attachments: attachments,
+    });
+
+    console.log("notificaCentraal Inningn de debtor enviada al correo: ", to);
+    return true;
+  } catch (error) {
+    console.error("Error sending mail notification:", error);
+    return false;
   }
-  return Buffer.concat(chunks);
-}
+};
+
 export const sendAanmaningEmail = async (
   to: string,
   recipientName: string,
@@ -93,7 +98,7 @@ export const sendAanmaningEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: (
@@ -124,7 +129,7 @@ export const sendSommatieEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,
@@ -150,7 +155,7 @@ export const sendIngebrekestellingMail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,
@@ -176,7 +181,7 @@ export const sendBlokkadeMail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: `CIO <${process.env.EMAIL_FROM}>`,
+      from: `Centraal Inning <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: subject,
       react: <SommatieMail userName={recipientName} />,

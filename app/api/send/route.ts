@@ -1,8 +1,18 @@
-import { NextResponse } from "next/server";
-import { resend } from "@/lib/email";
-import { TestEmail } from "@/emails/templates/TestEmail";
-import { render } from "@react-email/components";
 import React from "react";
+import { NextResponse } from "next/server";
+import { TestEmail } from "@/emails/templates/TestEmail";
+import { sendInvoiceEmail } from "@/app/actions/email";
+import { render } from "@react-email/components";
+import { resend } from "@/lib/email";
+
+export async function GET() {
+  const result = await sendInvoiceEmail(
+    "bryanhenrry94@gmail.com",
+    "c1f459d9-a2d6-4254-a8eb-a98c53b02f13"
+  );
+
+  return NextResponse.json({ message: "Send Email API is running", result });
+}
 
 export async function POST(req: Request) {
   try {
