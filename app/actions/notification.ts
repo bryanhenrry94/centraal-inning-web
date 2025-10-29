@@ -281,21 +281,19 @@ export const getNotificationDays = async (
 };
 
 export const getLastNotificationDate = async (
-  collection: CollectionCase,
-  type: "AANMANING" | "SOMMATIE" | "INGEBREKESTELLING"
+  caseId: string,
+  type: $Enums.CollectionCaseStatus
 ): Promise<Date> => {
   // Fetch the notification collection record based on collection and type
   const notificationRecord = await prisma.collectionCaseNotification.findFirst({
     where: {
-      collection_case_id: collection.id,
+      collection_case_id: caseId,
       type: type, // Replace with the appropriate type if needed
     },
     orderBy: {
       sent_at: "desc", // Get the most recent notification
     },
   });
-
-  console.log("notificationRecord", notificationRecord);
 
   if (!notificationRecord) {
     throw new Error(`Notification of type ${type} not found`);

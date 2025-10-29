@@ -26,7 +26,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { useSession } from "next-auth/react";
 import { formatCurrency, formatDate } from "@/common/utils/general";
-import CollectionStatusChip from "@/components/ui/collection-status-chip";
 import AgreementTable from "@/components/agreements/agreement-table";
 import {
   PaymentAgreement,

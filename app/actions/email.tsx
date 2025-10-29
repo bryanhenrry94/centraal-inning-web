@@ -19,11 +19,25 @@ import BlokkadePDF, { BlokkadePDFProps } from "@/pdfs/templates/BlokkadePDF";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const getEmailByEnv = async (to: string) => {
+  const isDev = process.env.NODE_ENV === "development";
+  const devRedirect = process.env.DEV_EMAIL_REDIRECT;
+
+  if (isDev && devRedirect) {
+    console.log(`🔸 [DEV MODE] Redirecting email to: ${devRedirect}`);
+    return [devRedirect];
+  }
+
+  return [to];
+};
+
 export async function sendWelcomeEmail(to: string, fullname: string) {
   try {
+    const recipient = await getEmailByEnv(to);
+
     const { data, error } = await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: [to],
+      to: recipient,
       subject: `Welkom bij ${process.env.NEXT_PUBLIC_APP_NAME || "Centraal Inning"}`,
       react: (
         <WelcomeEmail
@@ -85,9 +99,11 @@ export const sendInvoiceEmail = async (
 
     const paymentLink = `https://portalci.net/pay-invoice/${billing.id}`;
 
+    const recipient = await getEmailByEnv(to);
+
     await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: to,
+      to: recipient,
       subject: `FACTUUR - ${billing.invoice_number}`,
       react: (
         <InvoiceEmail
@@ -159,9 +175,11 @@ export const sendAanmaningEmail = async (
       },
     ];
 
+    const recipient = await getEmailByEnv(to);
+
     const { data, error } = await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: [to],
+      to: recipient,
       subject: `Aanmaning - ${collection.reference_number}`,
       react: (
         <AanmanningEmail
@@ -223,9 +241,11 @@ export const sendSommatieEmail = async (to: string, caseId: string) => {
       },
     ];
 
+    const recipient = await getEmailByEnv(to);
+
     const { data, error } = await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: [to],
+      to: recipient,
       subject: `Sommatie - ${collection.reference_number}`,
       react: (
         <SommatieMail
@@ -316,9 +336,11 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
       },
     ];
 
+    const recipient = await getEmailByEnv(to);
+
     const { data, error } = await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: [to],
+      to: recipient,
       subject: `Ingebrekestelling - ${collection.reference_number}`,
       react: (
         <IngebrekestellingEmail
@@ -380,9 +402,11 @@ export const sendBlokkadeMail = async (to: string, caseId: string) => {
       },
     ];
 
+    const recipient = await getEmailByEnv(to);
+
     const { data, error } = await resend.emails.send({
       from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
-      to: [to],
+      to: recipient,
       subject: `Blokkade - ${collection.reference_number}`,
       react: (
         <BlokkadeEmail

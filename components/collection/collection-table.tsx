@@ -201,6 +201,18 @@ const CollectionTable = () => {
                 }}
                 align="center"
               >
+                Reactietermijn
+              </TableCell>
+              <TableCell
+                sx={{
+                  minWidth: 50,
+                  backgroundColor: "secondary.main",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  border: "1px solid #bdbdbd",
+                }}
+                align="center"
+              >
                 Debiteurnaam
               </TableCell>
               <TableCell
@@ -274,6 +286,9 @@ const CollectionTable = () => {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {invoice.reference_number}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {formatDate(invoice.due_date?.toString() || "")}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {invoice.debtor?.fullname}

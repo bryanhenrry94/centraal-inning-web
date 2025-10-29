@@ -149,7 +149,7 @@ const PaymentAgreementsPage = () => {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Box sx={{ m: 4 }}>
       <Box
         sx={{
           width: "100%",
@@ -191,7 +191,7 @@ const PaymentAgreementsPage = () => {
           />
         </Box>
       </TabPanel>
-    </Container>
+    </Box>
   );
 };
 export default PaymentAgreementsPage;

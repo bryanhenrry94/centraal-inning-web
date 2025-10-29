@@ -200,7 +200,7 @@ export const AgreementTableApprove = ({
                   {new Date(agreement.start_date).toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">
-                  
+                  {new Date(agreement.end_date).toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">
                   <IconButton>
