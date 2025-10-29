@@ -25,7 +25,7 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { useSession } from "next-auth/react";
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import AgreementTable from "@/components/agreements/agreement-table";
 import {
   PaymentAgreement,

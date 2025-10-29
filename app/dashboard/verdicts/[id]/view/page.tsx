@@ -36,12 +36,13 @@ import { VerdictEmbargo } from "@/lib/validations/verdict-embargo";
 import { IVerdictInterest } from "@/lib/validations/verdict-interest";
 import { InterestType } from "@/lib/validations/interest-type";
 
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import { getAllInterestTypes } from "@/app/actions/interest-type";
-import { Catalogo, embargoTipos } from "@/common/data";
+import { embargoTipos } from "@/constants/embargo";
 import { AlertService } from "@/lib/alerts";
 import { notifyInfo } from "@/lib/notifications";
 import { useRouter } from "next/navigation";
+import { Catalogo } from "@/types/catalogo";
 
 const CustomInterestRow: React.FC<{
   item: IVerdictInterest;

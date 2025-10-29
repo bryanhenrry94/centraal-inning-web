@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 import { Box, Paper, Typography } from "@mui/material";
 import { useFormContext, useWatch } from "react-hook-form";
 
@@ -55,8 +55,10 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
     ) ?? 0;
 
   const totalBailiffAmount =
-    bailiff_services?.reduce((sum, item) => sum + (item?.service_cost ?? 0), 0) ??
-    0;
+    bailiff_services?.reduce(
+      (sum, item) => sum + (item?.service_cost ?? 0),
+      0
+    ) ?? 0;
 
   return (
     <Box
@@ -145,7 +147,9 @@ const VerdictTotals: React.FC<VerdictTotalsProps> = () => {
             >
               <Typography>Overige Proceskosten:</Typography>
               <Typography fontWeight="600">
-                {procesal_cost ? formatCurrency(Number(procesal_cost)) : "$0.00"}
+                {procesal_cost
+                  ? formatCurrency(Number(procesal_cost))
+                  : "$0.00"}
               </Typography>
             </Box>
             <Box

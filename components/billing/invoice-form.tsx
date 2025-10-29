@@ -25,7 +25,7 @@ import { Delete as DeleteIcon, Print } from "@mui/icons-material";
 // context
 import { useTenant } from "@/hooks/useTenant";
 // utils
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 // react-hook-form
 import {
   Controller,

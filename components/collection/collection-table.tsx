@@ -26,7 +26,7 @@ import RefresIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
 import CollectionForm from "./collection-form";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import { getAllCollectionCases } from "@/app/actions/collection-case";
 import { notifyError } from "@/lib/notifications";
 

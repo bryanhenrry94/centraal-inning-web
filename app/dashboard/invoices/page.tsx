@@ -31,7 +31,7 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import AddIcon from "@mui/icons-material/Add";
 // libs
 import { AlertService } from "@/lib/alerts";
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 // hooks and services
 import { useTenant } from "@/hooks/useTenant";
 import { getAllInvoices } from "@/app/actions/billing-invoice";

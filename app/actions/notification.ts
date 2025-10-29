@@ -7,7 +7,7 @@ import { getParameter } from "@/app/actions/parameter";
 import { NotificationType } from "@/lib/validations/notification";
 
 import { registerInvitation } from "./tenant-invitation";
-import { protocol, rootDomain } from "@/lib/utils";
+import { protocol, rootDomain } from "@/lib/config";
 import {
   sendAanmaningEmail,
   sendBlokkadeMail,

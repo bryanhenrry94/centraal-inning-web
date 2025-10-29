@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import {
   Box,
   IconButton,

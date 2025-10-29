@@ -39,7 +39,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import AddIcon from "@mui/icons-material/Add";
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 import { useTenant } from "@/hooks/useTenant";
 
 interface TablePaginationActionsProps {

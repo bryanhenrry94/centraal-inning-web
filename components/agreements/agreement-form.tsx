@@ -4,7 +4,7 @@ import {
   PaymentAgreement,
   PaymentAgreementCreate,
 } from "@/lib/validations/payment-agreement";
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 
 interface AgreementFormProps {
   initialData?: Partial<PaymentAgreement>;

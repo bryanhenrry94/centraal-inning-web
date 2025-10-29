@@ -21,7 +21,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { embargoTipos } from "@/common/data";
+import { embargoTipos } from "@/constants/embargo";
 import { VerdictEmbargo } from "@/lib/validations/verdict-embargo";
 import { User } from "@/lib/validations/user";
 import { getUsersByRole } from "@/app/actions/user";

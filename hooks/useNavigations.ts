@@ -1,5 +1,5 @@
 "use client";
-import { protocol, rootDomain } from "@/lib/utils";
+import { protocol, rootDomain } from "@/lib/config";
 import { useRouter } from "next/navigation";
 
 const useClientRouter = () => {

@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { AlertService } from "@/lib/alerts";
-import { embargoTipos } from "@/common/data";
+import { embargoTipos } from "@/constants/embargo";
 import {
   VerdictEmbargo,
   VerdictEmbargoCreate,

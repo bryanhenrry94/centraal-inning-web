@@ -12,7 +12,7 @@ import { $Enums } from "@/prisma/generated/prisma";
 import { generateUniqueSubdomain } from "./tenant";
 import { AuthSignUpSchema, ITenantSignUp } from "@/lib/validations/signup";
 import { getParameter } from "./parameter";
-import { CountryList } from "@/common/data";
+import { CountryList } from "@/constants/country";
 import { sendWelcomeEmail } from "./email";
 
 export const signInWithPassword = async (

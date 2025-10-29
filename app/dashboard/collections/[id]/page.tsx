@@ -23,7 +23,7 @@ import { CollectionCaseView } from "@/lib/validations/collection";
 import { Payment } from "@/lib/validations/payment";
 import { getCollectionViewById } from "@/app/actions/collection-case";
 import { notifyError, notifyInfo } from "@/lib/notifications";
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 import { getPaymentsByInvoice } from "@/app/actions/payment";
 import PaymentForm from "@/components/payment/payment-form";
 import {

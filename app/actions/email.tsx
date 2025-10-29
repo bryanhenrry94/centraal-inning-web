@@ -1,21 +1,23 @@
-import { WelcomeEmail } from "@/emails/templates/WelcomeEmail";
+import { WelcomeEmail } from "@/templates/emails/WelcomeEmail";
 import { Resend } from "resend";
-import InvoiceEmail from "@/emails/templates/InvoiceEmail";
-import AanmanningEmail from "@/emails/templates/AanmanningEmail";
-import SommatieMail from "@/emails/templates/SommatieEmail";
-import { InvoicePDF } from "@/pdfs/templates/InvoicePDF";
+import InvoiceEmail from "@/templates/emails/InvoiceEmail";
+import AanmanningEmail from "@/templates/emails/AanmanningEmail";
+import SommatieMail from "@/templates/emails/SommatieEmail";
+import { InvoicePDF } from "@/templates/pdfs/InvoicePDF";
 import { getDataInvoicePDF } from "./billing-invoice";
 import { generatePdfBase64 } from "@/lib/pdf";
 import prisma from "@/lib/prisma";
-import AanmaningPDF, { AanmaningPDFProps } from "@/pdfs/templates/AanmaningPDF";
-import { formatDate, getNameCountry } from "@/common/utils/general";
+import AanmaningPDF, { AanmaningPDFProps } from "@/templates/pdfs/AanmaningPDF";
+import { formatDate } from "@/utils/formatters";
 import { getParameter } from "./parameter";
-import SommatiePDF, { SommatiePDFProps } from "@/pdfs/templates/SommatiePDF";
+import SommatiePDF, { SommatiePDFProps } from "@/templates/pdfs/SommatiePDF";
 import IngebrekestellingPDF, {
   IngebrekestellingProps,
-} from "@/pdfs/templates/IngebrekestellingPDF";
-import { BlokkadeEmail, IngebrekestellingEmail } from "@/emails";
-import BlokkadePDF, { BlokkadePDFProps } from "@/pdfs/templates/BlokkadePDF";
+} from "@/templates/pdfs/IngebrekestellingPDF";
+import { BlokkadeEmail } from "@/templates/emails/BlokkadeEmail";
+import { IngebrekestellingEmail } from "@/templates/emails/IngebrekestellingEmail";
+import BlokkadePDF, { BlokkadePDFProps } from "@/templates/pdfs/BlokkadePDF";
+import { getNameCountry } from "@/utils/location";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

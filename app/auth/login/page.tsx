@@ -6,7 +6,7 @@ import { LoginFormData } from "@/lib/validations/auth";
 import useClientRouter from "@/hooks/useNavigations";
 import { notifyError } from "@/lib/notifications";
 import { useRouter } from "next/navigation";
-import { getSubdomain } from "@/common/utils/general";
+import { getSubdomain } from "@/lib/domain";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {

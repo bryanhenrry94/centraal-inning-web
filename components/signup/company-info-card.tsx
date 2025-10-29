@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Slider, Typography, TextField, MenuItem } from "@mui/material";
 import { ITenantSignUp } from "@/lib/validations/signup";
-import { CountryList } from "@/common/data";
+import { CountryList } from "@/constants/country";
 
 interface AccountInfoCardProps {
   initial: ITenantSignUp;

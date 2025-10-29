@@ -7,9 +7,9 @@ import {
   BillingInvoiceResponse,
 } from "@/lib/validations/billing-invoice";
 import { getParameter } from "@/app/actions/parameter";
-import { getNameCountry } from "@/common/utils/general";
+import { getNameCountry } from "@/utils/location";
 import { sendInvoiceEmail } from "./email";
-import { InvoicePDFProps } from "@/pdfs/templates/InvoicePDF";
+import { InvoicePDFProps } from "@/templates/pdfs/InvoicePDF";
 
 interface ActivationInvoiceInput {
   tenant_id: string;

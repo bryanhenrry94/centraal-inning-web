@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 // mui
-import {
-  Box,
-  Button,
-  Chip,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import PersonIcon from "@mui/icons-material/Person";
@@ -16,7 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { getCollectionViewById } from "@/app/actions/collection-case";
 import { CollectionCaseView } from "@/lib/validations/collection";
 import { PaymentAgreement } from "@/lib/validations/payment-agreement";
-import { formatCurrency, formatDate } from "@/common/utils/general";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import PaymentAgreementStatusChip from "../ui/payment-agreement-status-chip";
 import { $Enums } from "@/prisma/generated/prisma";
 
@@ -106,7 +98,8 @@ const PendingRequestCard: React.FC<PendingRequestCardProps> = ({
       </Grid>
 
       <Typography variant="body1">
-        Fecha primer pago: {formatDate(collectionCaseAgreement.start_date.toString())}
+        Fecha primer pago:{" "}
+        {formatDate(collectionCaseAgreement.start_date.toString())}
       </Typography>
       {collectionCaseAgreement.status === "PENDING" && (
         <Box sx={{ width: "100%", mt: 2 }}>

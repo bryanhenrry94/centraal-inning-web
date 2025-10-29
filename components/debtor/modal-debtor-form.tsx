@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import InputHookForm from "@/components/ui/InputHookForm";
 import SelectHookForm from "@/components/ui/SelectHookForm";
-import { personTypeOptions } from "@/common/data/identificationTypes";
+import { personTypeOptions } from "@/constants/identification";
 import {
   createDebtor,
   getDebtorById,

@@ -1,10 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
-import { InvoicePDF } from "@/pdfs/templates/InvoicePDF";
-import AanmaningPDF from "@/pdfs/templates/AanmaningPDF";
-import SommatiePDF from "@/pdfs/templates/SommatiePDF";
-import IngebrekestellingPDF from "@/pdfs/templates/IngebrekestellingPDF";
-import BlokkadePDF from "@/pdfs/templates/BlokkadePDF";
+import { InvoicePDF } from "@/templates/pdfs/InvoicePDF";
+import AanmaningPDF from "@/templates/pdfs/AanmaningPDF";
+import SommatiePDF from "@/templates/pdfs/SommatiePDF";
+import IngebrekestellingPDF from "@/templates/pdfs/IngebrekestellingPDF";
+import BlokkadePDF from "@/templates/pdfs/BlokkadePDF";
 
 const PDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),

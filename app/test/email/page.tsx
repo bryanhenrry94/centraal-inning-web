@@ -4,7 +4,7 @@ import {
   InvoiceEmail,
   SommatieEmail,
   WelcomeEmail,
-} from "@/emails";
+} from "@/templates/emails";
 import { render } from "@react-email/render";
 
 export default async function Page() {

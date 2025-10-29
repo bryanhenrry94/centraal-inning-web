@@ -20,8 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 
 // components
-import { formatCurrency } from "@/common/utils/general";
-import PaymentAgreementStatusChip from "@/components/ui/payment-agreement-status-chip";
+import { formatCurrency } from "@/utils/formatters";
 import {
   PaymentAgreement,
   PaymentAgreementResponse,

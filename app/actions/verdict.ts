@@ -9,11 +9,10 @@ import { VerdictInterestDetailCreate } from "@/lib/validations/verdict-interest-
 import { InterestDetail } from "@/lib/validations/interest-type";
 import { getInterestTypeById } from "@/app/actions/interest-type";
 import { notifyError } from "@/lib/notifications";
-import { protocol, rootDomain } from "@/lib/utils";
+import { protocol, rootDomain } from "@/lib/config";
 import path from "path";
 import fs from "fs/promises";
-// import renderTemplate from "@/common/utils/templateRenderer";
-import { formatCurrency } from "@/common/utils/general";
+import { formatCurrency } from "@/utils/formatters";
 import { VerdictAttachment } from "@/lib/validations/verdict-attachments";
 import { $Enums } from "@/prisma/generated/prisma";
 
