@@ -1,8 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { processCollectionCaseWorkflow } from "@/lib/jobs/process_collection_case_workflow";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const token = req.nextUrl.searchParams.get("token");
+
+    if (token !== process.env.CRON_SECRET_TOKEN) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const notifResult = await processCollectionCaseWorkflow();
 
     return NextResponse.json({

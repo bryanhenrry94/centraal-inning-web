@@ -1,15 +1,13 @@
-import { WelcomeEmail } from "@/templates/emails/WelcomeEmail";
+import prisma from "@/lib/prisma";
 import { Resend } from "resend";
+
+// Templates
+import { WelcomeEmail } from "@/templates/emails/WelcomeEmail";
 import InvoiceEmail from "@/templates/emails/InvoiceEmail";
 import AanmanningEmail from "@/templates/emails/AanmanningEmail";
 import SommatieMail from "@/templates/emails/SommatieEmail";
 import { InvoicePDF } from "@/templates/pdfs/InvoicePDF";
-import { getDataInvoicePDF } from "./billing-invoice";
-import { generatePdfBase64 } from "@/lib/pdf";
-import prisma from "@/lib/prisma";
 import AanmaningPDF, { AanmaningPDFProps } from "@/templates/pdfs/AanmaningPDF";
-import { formatDate } from "@/utils/formatters";
-import { getParameter } from "./parameter";
 import SommatiePDF, { SommatiePDFProps } from "@/templates/pdfs/SommatiePDF";
 import IngebrekestellingPDF, {
   IngebrekestellingProps,
@@ -17,6 +15,13 @@ import IngebrekestellingPDF, {
 import { BlokkadeEmail } from "@/templates/emails/BlokkadeEmail";
 import { IngebrekestellingEmail } from "@/templates/emails/IngebrekestellingEmail";
 import BlokkadePDF, { BlokkadePDFProps } from "@/templates/pdfs/BlokkadePDF";
+// Server actions
+import { getDataInvoicePDF } from "./billing-invoice";
+import { getParameter } from "./parameter";
+// Libs
+import { generatePdfBase64 } from "@/lib/pdf";
+// Utils
+import { formatDate } from "@/utils/formatters";
 import { getNameCountry } from "@/utils/location";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -117,10 +122,7 @@ export const sendInvoiceEmail = async (
       attachments: attachments,
     });
 
-    console.log(
-      "${process.env.EMAIL_SENDER_NAME} - Invoice enviada al correo: ",
-      to
-    );
+    console.log("Invoice enviada al correo: ", to);
     return true;
   } catch (error) {
     console.error("Error sending mail notification:", error);
@@ -297,7 +299,7 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
       }
     );
 
-    console.log("firstReminderDate", firstReminderDate);
+    // console.log("firstReminderDate", firstReminderDate);
     if (!firstReminderDate) {
       throw new Error("First reminder date not found");
     }
@@ -310,7 +312,7 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
         },
       });
 
-    console.log("secondReminderDate", secondReminderDate);
+    // console.log("secondReminderDate", secondReminderDate);
     if (!secondReminderDate) {
       throw new Error("Second reminder date not found");
     }

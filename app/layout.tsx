@@ -4,6 +4,7 @@ import "./globals.css";
 import AppTheme from "@/theme/ThemeProvider";
 import { ToastContainer } from "react-toastify";
 import { SessionAuthProvider } from "@/providers/sessionAuthProvider";
+import "@/lib/initServer"; // inicializa el scheduler
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

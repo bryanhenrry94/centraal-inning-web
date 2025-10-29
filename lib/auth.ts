@@ -36,15 +36,12 @@ export const authOptions: AuthOptions = {
         try {
           // llama logica para validar las credenciales
           const response = await signInWithPassword(params);
-          console.log("Datos signInWithPassword:", response);
 
           // Si la autenticación es exitosa, devuelve el usuario
           if (response && response.success === true) {
             if (!response.data) {
               return null;
             }
-
-            console.log("Usuario autorizado:", response.data);
 
             // Ensure all expected properties exist, even if undefined
             return {
