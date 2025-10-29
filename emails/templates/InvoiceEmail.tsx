@@ -3,48 +3,42 @@ import {
   Button,
   Container,
   Head,
-  Hr,
   Html,
   Img,
-  Preview,
   Section,
   Text,
 } from "@react-email/components";
 
 interface InvoiceEmailProps {
-  name: string;
+  logoUrl: string;
+  fullname: string;
   paymentLink?: string;
 }
 
-export const InvoiceEmail = ({ name, paymentLink }: InvoiceEmailProps) => (
+export const InvoiceEmail = ({
+  logoUrl,
+  fullname,
+  paymentLink,
+}: InvoiceEmailProps) => (
   <Html>
     <Head />
     <Body style={main}>
-      <Preview>Klik hier om uw factuur te betalen</Preview>
       <Container style={container}>
-        <Img
-          src={"https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"}
-          width="170"
-          height="100"
-          alt="CI"
-          style={logo}
-        />
-        <Text style={paragraph}>Hallo {name},</Text>
+        <Img src={logoUrl} width="120" height="50" alt="Plaid" style={logo} />
+        <Text style={paragraph}>
+          Beste <strong>{fullname}</strong>,
+        </Text>
+        <br />
         <Text style={paragraph}>Klik hier om uw factuur te betalen</Text>
         <Section style={btnContainer}>
           <Button style={button} href={paymentLink}>
             Betaal hier
           </Button>
         </Section>
-        <Text style={paragraph}>
-          Met vriendelijke groet,
-          <br />
-          Het CI-team
-        </Text>
-        <Hr style={hr} />
         <Text style={footer}>
           Dit bericht is automatisch gegenereerd door het Centraal
           Incassoplatform (CI).
+          <br />© CENTRAAL INNING
         </Text>
       </Container>
     </Body>
@@ -52,33 +46,52 @@ export const InvoiceEmail = ({ name, paymentLink }: InvoiceEmailProps) => (
 );
 
 InvoiceEmail.PreviewProps = {
-  name: "Alan",
+  logoUrl: "/static/logo.png",
+  fullname: "Alan",
+  paymentLink: "https://example.com/pay-invoice/12345",
 } as InvoiceEmailProps;
 
 export default InvoiceEmail;
 
 const main = {
   backgroundColor: "#ffffff",
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+  fontFamily: "HelveticaNeue,Helvetica,Arial,sans-serif",
+  display: "flex",
+  flexDirection: "column" as const,
+  alignItems: "center" as const,
+  justifyContent: "center" as const,
+  padding: "20px 0",
 };
 
 const container = {
-  margin: "0 auto",
-  padding: "20px 0 48px",
+  backgroundColor: "#ffffff",
+  border: "1px solid #eee",
+  borderRadius: "5px",
+  boxShadow: "0 5px 10px rgba(20,50,70,.2)",
+  maxWidth: "600px",
 };
 
 const logo = {
-  margin: "0 auto",
+  padding: "0 40px",
+  marginTop: "20px",
+  marginBottom: "20px",
 };
 
 const paragraph = {
-  fontSize: "16px",
-  lineHeight: "26px",
+  color: "#444",
+  fontSize: "15px",
+  fontFamily: "HelveticaNeue,Helvetica,Arial,sans-serif",
+  letterSpacing: "0",
+  lineHeight: "23px",
+  padding: "0 40px",
+  margin: "0",
+  textAlign: "justify" as const,
 };
 
 const btnContainer = {
   textAlign: "center" as const,
+  padding: "20px 40px",
+  marginTop: "20px",
 };
 
 const button = {
@@ -89,15 +102,17 @@ const button = {
   textDecoration: "none",
   textAlign: "center" as const,
   display: "block",
-  padding: "12px",
-};
-
-const hr = {
-  borderColor: "#cccccc",
-  margin: "20px 0",
+  padding: "12px 20px",
+  width: "200px",
+  margin: "0 auto",
 };
 
 const footer = {
   color: "#8898aa",
   fontSize: "12px",
+  textAlign: "center" as const,
+  marginTop: "30px",
+  paddingTop: "15px",
+  borderTop: "1px solid #e5e7eb",
+  padding: "15px 40px 20px",
 };

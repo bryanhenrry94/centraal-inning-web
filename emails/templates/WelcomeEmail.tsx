@@ -1,56 +1,141 @@
 import {
   Body,
-  Button,
   Container,
   Head,
-  Hr,
   Html,
   Img,
   Preview,
-  Section,
   Text,
-  Link,
+  Section,
+  Button,
 } from "@react-email/components";
 
 interface WelcomeEmailProps {
-  userFirstname: string;
+  logoUrl: string;
+  fullname: string;
+  appUrl: string;
 }
 
-export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
+const styles = {
+  main: {
+    backgroundColor: "#ffffff",
+    fontFamily: "HelveticaNeue,Helvetica,Arial,sans-serif",
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    padding: "20px 0",
+  },
+  container: {
+    backgroundColor: "#ffffff",
+    border: "1px solid #eee",
+    borderRadius: "5px",
+    boxShadow: "0 5px 10px rgba(20,50,70,.2)",
+    maxWidth: "600px",
+  },
+  logo: {
+    margin: "0 auto 30px",
+    display: "block",
+    marginTop: "20px",
+  },
+  header: {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#333333",
+    marginBottom: "20px",
+    textAlign: "center" as const,
+  },
+  paragraph: {
+    color: "#444",
+    fontSize: "15px",
+    fontFamily: "HelveticaNeue,Helvetica,Arial,sans-serif",
+    letterSpacing: "0",
+    lineHeight: "23px",
+    padding: "0 40px",
+    margin: "0",
+    textAlign: "justify" as const,
+  },
+  highlight: {
+    color: "#FB902C",
+    fontWeight: "600",
+  },
+  btnContainer: {
+    textAlign: "center" as const,
+    padding: "20px 40px",
+    marginTop: "20px",
+  },
+  button: {
+    backgroundColor: "#FB902C",
+    borderRadius: "3px",
+    color: "#fff",
+    fontSize: "16px",
+    textDecoration: "none",
+    textAlign: "center" as const,
+    display: "block",
+    padding: "12px 20px",
+    width: "200px",
+    margin: "0 auto",
+  },
+  footer: {
+    color: "#8898aa",
+    fontSize: "12px",
+    textAlign: "center" as const,
+    marginTop: "30px",
+    paddingTop: "15px",
+    borderTop: "1px solid #e5e7eb",
+    padding: "15px 40px 20px",
+  },
+};
+
+export const WelcomeEmail = ({
+  logoUrl,
+  fullname,
+  appUrl,
+}: WelcomeEmailProps) => (
   <Html>
     <Head />
-    <Body style={main}>
-      <Preview>
-        Intelligentieplatform voor efficiënt en gecentraliseerd
-        incassomanagement.
-      </Preview>
-      <Container style={container}>
+    <Body style={styles.main}>
+      <Preview>Welkom bij Centraal Inning</Preview>
+      <Container style={styles.container}>
         <Img
-          src={"https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"}
-          width="170"
+          src={logoUrl}
+          width="120"
           height="50"
-          alt="CI"
-          style={logo}
+          alt="Centraal Inning"
+          style={styles.logo}
         />
-        <Text style={paragraph}>Hallo {userFirstname},</Text>
-        <Text style={paragraph}>
-          Welkom bij CI, uw intelligentieplatform voor efficiënt en
-          gecentraliseerd incassomanagement.
+
+        <Text style={styles.header}>Welkom bij Centraal Inning</Text>
+
+        <Text style={styles.paragraph}>
+          Beste <strong>{fullname}</strong>,
         </Text>
-        <Section style={btnContainer}>
-          <Text>
-            <Link href="https://portalci.net/">www.portalci.net</Link>
-          </Text>
+
+        <Text style={styles.paragraph}>
+          Uw account bij <span style={styles.highlight}>Centraal Inning</span>{" "}
+          is succesvol aangemaakt. U heeft nu toegang tot ons platform voor
+          efficiënt incassomanagement.
+        </Text>
+
+        <Text style={styles.paragraph}>
+          • <strong>Automatisch incassobeheer</strong>
+          <br />• <strong>Veilige betalingen</strong>
+          <br />• <strong>Realtime inzicht</strong>
+        </Text>
+        <Text style={styles.paragraph}>
+          Alle communicatie verloopt via ons beveiligde platform. U ontvangt
+          notificaties over belangrijke updates.
+        </Text>
+        <Section style={styles.btnContainer}>
+          <Button style={styles.button} href={appUrl}>
+            Ga naar de site
+          </Button>
         </Section>
-        <Text style={paragraph}>
-          Met vriendelijke groet,
-          <br />
-          Het CI-team
-        </Text>
-        <Hr style={hr} />
-        <Text style={footer}>
+
+        <Text style={styles.footer}>
           Dit bericht is automatisch gegenereerd door het Centraal
           Incassoplatform (CI).
+          <br />© CENTRAAL INNING
         </Text>
       </Container>
     </Body>
@@ -58,41 +143,9 @@ export const WelcomeEmail = ({ userFirstname }: WelcomeEmailProps) => (
 );
 
 WelcomeEmail.PreviewProps = {
-  userFirstname: "Alan",
+  logoUrl: "/static/logo.png",
+  fullname: "Alan",
+  appUrl: "https://www.centraalinning.com",
 } as WelcomeEmailProps;
 
 export default WelcomeEmail;
-
-const main = {
-  backgroundColor: "#ffffff",
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
-
-const container = {
-  margin: "0 auto",
-  padding: "20px 0 48px",
-};
-
-const logo = {
-  margin: "0 auto",
-};
-
-const paragraph = {
-  fontSize: "16px",
-  lineHeight: "26px",
-};
-
-const btnContainer = {
-  textAlign: "center" as const,
-};
-
-const hr = {
-  borderColor: "#cccccc",
-  margin: "20px 0",
-};
-
-const footer = {
-  color: "#8898aa",
-  fontSize: "12px",
-};

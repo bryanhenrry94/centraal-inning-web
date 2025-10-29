@@ -43,11 +43,11 @@ export const DashboardAdmin = () => {
     <Container
       maxWidth="sm"
       sx={{
-        minHeight: "calc(100vh - 150px)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        height: "100%",
         p: 0,
       }}
     >
@@ -127,7 +127,11 @@ export const DashboardAdmin = () => {
             p: 4,
           }}
         >
-          <PaymentCard items={items} onSuccess={handlePaymentSuccess} loading={loading} />
+          <PaymentCard
+            items={items}
+            onSuccess={handlePaymentSuccess}
+            loading={loading}
+          />
         </Box>
       </Modal>
     </Container>

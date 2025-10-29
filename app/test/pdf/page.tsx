@@ -1,6 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
 import { InvoicePDF } from "@/pdfs/templates/InvoicePDF";
+import AanmaningPDF from "@/pdfs/templates/AanmaningPDF";
+import SommatiePDF from "@/pdfs/templates/SommatiePDF";
+import IngebrekestellingPDF from "@/pdfs/templates/IngebrekestellingPDF";
+import BlokkadePDF from "@/pdfs/templates/BlokkadePDF";
 
 const PDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
@@ -10,8 +14,9 @@ const PDFViewer = dynamic(
   }
 );
 
-export default function Page() {
+const InvoiceComponent = () => {
   const params = {
+    logoUrl: "/static/logo.png",
     invoice_number: "INV-1001",
     issue_date: "2024-06-15",
     customer_name: "John Doe",
@@ -37,9 +42,75 @@ export default function Page() {
     bank_name: "Bank of Examples",
     bank_account: "1234567890",
   };
+  return <InvoicePDF {...params} />;
+};
+
+const AanmanningComponent = () => {
+  const params = {
+    logoUrl: "/static/logo.png",
+    date: "2024-06-20",
+    debtorName: "Jane Smith",
+    debtorAddress: "456 Elm St, Springfield",
+    island: "Islandia",
+    reference_number: "REF-2024-001",
+    total_amount: "250.00",
+    bankName: "Bank of Examples",
+    accountNumber: "1234567890",
+    amount_original: "200.00",
+    extraCosts: "30.00",
+    calculatedABB: "20.00",
+    tenantName: "Tenant A",
+  };
+  return <AanmaningPDF {...params} />;
+};
+
+const SommatieComponent = () => {
+  const params = {
+    logoUrl: "/static/logo.png",
+    date: "2024-06-25",
+    debtorName: "Alice Johnson",
+    debtorAddress: "789 Oak St, Springfield",
+    island: "Islandia",
+    invoice_number: "INV-1002",
+    invoiceAmount: "300.00",
+  };
+  return <SommatiePDF {...params} />;
+};
+
+const IngebrekestellingComponent = () => {
+  const params = {
+    logoUrl: "/static/logo.png",
+    date: "2024-06-30",
+    debtorName: "Bob Brown",
+    debtorAddress: "321 Pine St, Springfield",
+    island: "Islandia",
+    firstReminderDate: "2024-07-15",
+    secondReminderDate: "2024-07-30",
+    accountNumber: "1234567890",
+    tenantName: "Tenant B",
+  };
+  return <IngebrekestellingPDF {...params} />;
+};
+
+const BlokkadeComponent = () => {
+  const params = {
+    logoUrl: "/static/logo.png",
+    debtorName: "Charlie Green",
+    debtorAddress: "654 Cedar St, Springfield",
+    island: "Islandia",
+    total_amount: "400.00",
+    amountRegister: "350.00",
+    total: "450.00",
+    bankName: "Bank of Examples",
+    accountNumber: "1234567890",
+  };
+  return <BlokkadePDF {...params} />;
+};
+
+export default function PdfPage() {
   return (
     <PDFViewer width="100%" height="1000">
-      <InvoicePDF {...params} />
+      <BlokkadeComponent />
     </PDFViewer>
   );
 }

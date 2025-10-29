@@ -6,7 +6,6 @@ import {
   View,
   StyleSheet,
   Image,
-  Font,
 } from "@react-pdf/renderer";
 
 // Define styles
@@ -30,29 +29,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 200,
-    height: 125,
-    marginLeft: -20,
-    marginTop: -15,
+    width: 100,
+    height: 60,
   },
   meta: {
     textAlign: "right",
     fontSize: 16,
-    marginTop: -30,
+    alignItems: "flex-end",
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
   },
   billTo: {
-    marginTop: 36,
-    marginBottom: 42,
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 1.4,
     maxWidth: 400,
   },
@@ -60,28 +56,29 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   paragraph: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 1.4,
     textAlign: "justify",
     marginBottom: 15,
   },
   table: {
     marginVertical: 20,
+    width: "50%",
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 0,
   },
   tableCell: {
-    fontSize: 16,
-    padding: 5,
-    flex: 1,
+    fontSize: 12,
+    padding: 2,
+    width: "70%",
   },
   tableCellRight: {
-    fontSize: 16,
-    padding: 5,
+    fontSize: 12,
+    padding: 2,
     textAlign: "right",
-    flex: 1,
+    width: "30%",
   },
   totalRow: {
     borderTopWidth: 2,
@@ -89,8 +86,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signature: {
-    fontSize: 16,
-    marginTop: 40,
+    fontSize: 12,
+    marginTop: 20,
   },
   footer: {
     position: "absolute",
@@ -98,12 +95,13 @@ const styles = StyleSheet.create({
     left: 35,
     right: 35,
     textAlign: "center",
-    fontSize: 14,
+    fontSize: 10,
     color: "#555",
   },
 });
 
 export interface AanmaningPDFProps {
+  logoUrl: string;
   date: string;
   debtorName: string;
   debtorAddress: string;
@@ -119,6 +117,7 @@ export interface AanmaningPDFProps {
 }
 
 const AanmaningPDF: React.FC<AanmaningPDFProps> = ({
+  logoUrl,
   date,
   debtorName,
   debtorAddress,
@@ -137,14 +136,11 @@ const AanmaningPDF: React.FC<AanmaningPDFProps> = ({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.brand}>
-          <Image
-            style={styles.logo}
-            src="https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"
-          />
+          <Image style={styles.logo} src={logoUrl} />
         </View>
         <View style={styles.meta}>
           <Text style={styles.title}>Aanmaning</Text>
-          <Text>Verzenddatum: {date}</Text>
+          <Text style={{ fontSize: 12 }}>Verzenddatum: {date}</Text>
         </View>
       </View>
 

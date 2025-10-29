@@ -23,24 +23,28 @@ const menus: MenuItem[] = [
     label: "Dashboard",
     href: "/dashboard",
     icon: <DashboardIcon fontSize="small" />,
-    role: [$Enums.roleEnum.TENANT_ADMIN, $Enums.roleEnum.PLATFORM_OWNER, $Enums.roleEnum.DEBTOR],
+    role: [
+      $Enums.roleEnum.TENANT_ADMIN,
+      $Enums.roleEnum.PLATFORM_OWNER,
+      $Enums.roleEnum.DEBTOR,
+    ],
   },
   {
-    label: "Verzameltaken",
+    label: "Buitengerechtelijk",
     href: "/dashboard/collections",
     icon: <ReceiptOutlinedIcon fontSize="small" />,
+    role: [$Enums.roleEnum.TENANT_ADMIN],
+  },
+  {
+    label: "Gerechtelijk Vonnis",
+    href: "/dashboard/verdicts",
+    icon: <GavelIcon fontSize="small" />,
     role: [$Enums.roleEnum.TENANT_ADMIN],
   },
   {
     label: "Betalingsregeling",
     href: "/dashboard/payment-agreements",
     icon: <HandshakeIcon fontSize="small" />,
-    role: [$Enums.roleEnum.TENANT_ADMIN],
-  },
-  {
-    label: "Vonnis",
-    href: "/dashboard/verdicts",
-    icon: <GavelIcon fontSize="small" />,
     role: [$Enums.roleEnum.TENANT_ADMIN],
   },
   {

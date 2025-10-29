@@ -8,7 +8,115 @@ import {
   Image,
 } from "@react-pdf/renderer";
 
-export interface IngebrekestellingData {
+// Define styles
+const styles = StyleSheet.create({
+  page: {
+    fontFamily: "Helvetica",
+    fontSize: 14,
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35,
+    color: "#222",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: 16,
+  },
+  brand: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logo: {
+    width: 100,
+    height: 60,
+  },
+  meta: {
+    textAlign: "right",
+    fontSize: 16,
+    alignItems: "flex-end",
+  },
+  metaTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  billTo: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  client: {
+    fontSize: 12,
+    lineHeight: 1.4,
+    maxWidth: 400,
+  },
+  content: {
+    marginTop: 40,
+  },
+  paragraph: {
+    fontSize: 12,
+    lineHeight: 1.4,
+    textAlign: "justify",
+    marginBottom: 10,
+  },
+  table: {
+    marginVertical: 20,
+    width: "50%",
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 0,
+  },
+  tableCell: {
+    fontSize: 12,
+    padding: 2,
+    width: "70%",
+  },
+  tableCellRight: {
+    fontSize: 12,
+    padding: 2,
+    textAlign: "right",
+    width: "30%",
+  },
+  totalRow: {
+    borderTopWidth: 2,
+    borderTopColor: "#161515",
+    marginTop: 10,
+  },
+  signature: {
+    fontSize: 12,
+    marginTop: 20,
+  },
+  attention: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  listItem: {
+    fontSize: 12,
+    marginBottom: 8,
+    paddingLeft: 10,
+  },
+  closing: {
+    marginTop: 40,
+    fontSize: 12,
+  },
+  footer: {
+    position: "absolute",
+    bottom: 30,
+    left: 35,
+    right: 35,
+    textAlign: "center",
+    fontSize: 10,
+    color: "#555",
+  },
+});
+
+export interface IngebrekestellingProps {
+  logoUrl: string;
   date: string;
   debtorName: string;
   debtorAddress: string;
@@ -19,122 +127,52 @@ export interface IngebrekestellingData {
   tenantName: string;
 }
 
-const styles = StyleSheet.create({
-  page: {
-    fontFamily: "Helvetica",
-    fontSize: 12,
-    color: "#222",
-    padding: 18,
-    backgroundColor: "#fff",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  brand: {
-    flexDirection: "row",
-    gap: 16,
-    alignItems: "center",
-  },
-  logo: {
-    width: 200,
-    height: 125,
-    marginLeft: -55,
-    marginTop: -40,
-  },
-  meta: {
-    textAlign: "right",
-    fontSize: 16,
-    lineHeight: 1.3,
-    marginTop: -60,
-  },
-  metaTitle: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  billTo: {
-    marginTop: 36,
-    marginBottom: 42,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 20,
-  },
-  client: {
-    fontSize: 14,
-    lineHeight: 1.4,
-    maxWidth: 400,
-  },
-  content: {
-    marginTop: 80,
-  },
-  paragraph: {
-    textAlign: "justify",
-    fontSize: 14,
-    marginBottom: 12,
-    lineHeight: 1.4,
-  },
-  signature: {
-    fontSize: 16,
-    marginTop: 40,
-  },
-  footer: {
-    marginTop: 26,
-    fontSize: 16,
-    color: "#555",
-    textAlign: "center",
-    paddingTop: 8,
-    position: "absolute",
-    bottom: 30,
-    left: 18,
-    right: 18,
-  },
-});
-
-interface IngebrekestellingProps {
-  data: IngebrekestellingData;
-}
-
-const IngebrekestellingPDF: React.FC<IngebrekestellingProps> = ({ data }) => {
+const IngebrekestellingPDF: React.FC<IngebrekestellingProps> = ({
+  logoUrl,
+  date,
+  debtorName,
+  debtorAddress,
+  island,
+  firstReminderDate,
+  secondReminderDate,
+  accountNumber,
+  tenantName,
+}) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.brand}>
-            <Image
-              style={styles.logo}
-              src="https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"
-            />
+            <Image style={styles.logo} src={logoUrl} />
           </View>
           <View style={styles.meta}>
             <Text style={styles.metaTitle}>Ingebrekestelling</Text>
-            <Text>Verzenddatum: {data.date}</Text>
+            <Text style={{ fontSize: 12 }}>Verzenddatum: {date}</Text>
           </View>
         </View>
 
         <View style={styles.billTo}>
           <View style={styles.client}>
             <Text>
-              <Text style={{ fontWeight: "bold" }}>Aan:</Text> {data.debtorName}
+              <Text style={{ fontWeight: "bold" }}>Aan:</Text> {debtorName}
             </Text>
-            <Text>{data.debtorAddress}</Text>
-            <Text>{data.island}</Text>
+            <Text>{debtorAddress}</Text>
+            <Text>{island}</Text>
           </View>
         </View>
 
         <View style={styles.content}>
           <Text style={styles.paragraph}>
-            Op {data.firstReminderDate} en {data.secondReminderDate} hebben wij
-            u aangemaand om uw openstaande factuur te voldoen. Tot op heden is
+            Op {firstReminderDate} en {secondReminderDate} hebben wij u
+            aangemaand om uw openstaande factuur te voldoen. Tot op heden is
             geen volledige betaling ontvangen.
           </Text>
 
           <Text style={styles.paragraph}>
             Bij deze stellen wij u formeel in gebreke en sommeren wij u tot
             onmiddellijke betaling van het openstaande bedrag op
-            MCB-rekeningnummer {data.accountNumber}, onder vermelding van uw
-            naam, bedrijfsnaam of factuurnummer.
+            MCB-rekeningnummer {accountNumber}, onder vermelding van uw naam,
+            bedrijfsnaam of factuurnummer.
           </Text>
 
           <Text style={styles.paragraph}>
@@ -145,7 +183,7 @@ const IngebrekestellingPDF: React.FC<IngebrekestellingProps> = ({ data }) => {
           <Text style={styles.paragraph}>Met vriendelijke groet,</Text>
 
           <View style={styles.signature}>
-            <Text>{data.tenantName}</Text>
+            <Text>{tenantName}</Text>
             <Text>Schuldeiser</Text>
           </View>
         </View>

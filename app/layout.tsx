@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portal CI",
+  title: process.env.NEXT_PUBLIC_APP_NAME || "Centraal Inning",
   description: "Created by DAZZSOFT S.A.S.",
 };
 

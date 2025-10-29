@@ -9,6 +9,7 @@ import {
 } from "@react-pdf/renderer";
 
 export interface BlokkadePDFProps {
+  logoUrl: string;
   debtorName: string;
   debtorAddress: string;
   island: string;
@@ -19,68 +20,107 @@ export interface BlokkadePDFProps {
   accountNumber: string;
 }
 
+// Define styles
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
-    fontSize: 12,
+    fontSize: 14,
     paddingTop: 35,
     paddingBottom: 65,
     paddingHorizontal: 35,
-    backgroundColor: "#fff",
+    color: "#222",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
+    alignItems: "flex-start",
+    marginBottom: 16,
   },
   brand: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
   },
   logo: {
-    width: 200,
-    height: 125,
-    marginLeft: -20,
-    marginTop: -15,
+    width: 100,
+    height: 60,
   },
   meta: {
     textAlign: "right",
     fontSize: 16,
-    marginTop: -30,
+    alignItems: "flex-end",
   },
   metaTitle: {
+    fontSize: 16,
     fontWeight: "bold",
-    fontSize: 18,
+    marginBottom: 5,
   },
   billTo: {
-    marginTop: 50,
-    marginBottom: 40,
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 1.4,
-    maxWidth: 200,
-  },
-  summary: {
-    fontSize: 14,
-    lineHeight: 1.4,
-    maxWidth: 200,
+    maxWidth: 400,
   },
   content: {
     marginTop: 40,
   },
   paragraph: {
+    fontSize: 12,
+    lineHeight: 1.4,
     textAlign: "justify",
-    fontSize: 14,
-    lineHeight: 1.5,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   strongText: {
     fontWeight: "bold",
+  },
+  summary: {
+    marginTop: 10,
+  },
+  table: {
+    marginVertical: 20,
+    width: "50%",
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 0,
+  },
+  tableCell: {
+    fontSize: 12,
+    padding: 2,
+    width: "70%",
+  },
+  tableCellRight: {
+    fontSize: 12,
+    padding: 2,
+    textAlign: "right",
+    width: "30%",
+  },
+  totalRow: {
+    borderTopWidth: 2,
+    borderTopColor: "#161515",
+    marginTop: 10,
+  },
+  signature: {
+    fontSize: 12,
+    marginTop: 20,
+  },
+  attention: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  listItem: {
+    fontSize: 12,
+    marginBottom: 8,
+    paddingLeft: 10,
+  },
+  closing: {
+    marginTop: 40,
+    fontSize: 12,
   },
   footer: {
     position: "absolute",
@@ -88,12 +128,13 @@ const styles = StyleSheet.create({
     left: 35,
     right: 35,
     textAlign: "center",
-    fontSize: 12,
+    fontSize: 10,
     color: "#555",
   },
 });
 
 const BlokkadePDF: React.FC<BlokkadePDFProps> = ({
+  logoUrl,
   debtorName,
   debtorAddress,
   island,
@@ -108,10 +149,7 @@ const BlokkadePDF: React.FC<BlokkadePDFProps> = ({
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.brand}>
-            <Image
-              style={styles.logo}
-              src="https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"
-            />
+            <Image style={styles.logo} src={logoUrl} />
           </View>
           <View style={styles.meta}>
             <Text style={styles.metaTitle}>Financiële{"\n"}Blokkade</Text>

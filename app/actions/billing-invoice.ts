@@ -181,6 +181,7 @@ export const getDataInvoicePDF = async (
   const island = getNameCountry(invoice.tenant.country_code);
 
   const data = {
+    logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
     invoice_number: invoice.invoice_number,
     issue_date: invoice.issue_date.toISOString().split("T")[0],
     customer_name: invoice.tenant.name,

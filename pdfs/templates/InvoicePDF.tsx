@@ -17,6 +17,7 @@ export interface InvoiceItem {
 }
 
 export interface InvoicePDFProps {
+  logoUrl: string;
   invoice_number: string;
   issue_date: string;
   customer_name: string;
@@ -46,13 +47,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 150,
-    height: 94,
+    width: 100,
+    height: 60,
   },
   meta: {
     textAlign: "right",
     fontSize: 12,
     lineHeight: 1.3,
+    alignItems: "flex-end",
+    minWidth: 200,
   },
   metaTitle: {
     fontWeight: "bold",
@@ -131,6 +134,7 @@ const styles = StyleSheet.create({
 });
 
 export const InvoicePDF: React.FC<InvoicePDFProps> = ({
+  logoUrl,
   invoice_number,
   issue_date,
   customer_name,
@@ -146,10 +150,7 @@ export const InvoicePDF: React.FC<InvoicePDFProps> = ({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.brand}>
-          <Image
-            style={styles.logo}
-            src={"https://dazzsoft.com/wp-content/uploads/2025/09/LogoCIO.png"}
-          />
+          <Image style={styles.logo} src={logoUrl} />
         </View>
         <View style={styles.meta}>
           <Text style={styles.metaTitle}>FACTUUR</Text>

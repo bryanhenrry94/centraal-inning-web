@@ -12,20 +12,28 @@ import { formatDate, getNameCountry } from "@/common/utils/general";
 import { getParameter } from "./parameter";
 import SommatiePDF, { SommatiePDFProps } from "@/pdfs/templates/SommatiePDF";
 import IngebrekestellingPDF, {
-  IngebrekestellingData,
+  IngebrekestellingProps,
 } from "@/pdfs/templates/IngebrekestellingPDF";
 import { BlokkadeEmail, IngebrekestellingEmail } from "@/emails";
 import BlokkadePDF, { BlokkadePDFProps } from "@/pdfs/templates/BlokkadePDF";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendWelcomeEmail(to: string, userFirstname: string) {
+export async function sendWelcomeEmail(to: string, fullname: string) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: [to],
-      subject: "Welcome to Portal CI",
-      react: <WelcomeEmail userFirstname={userFirstname} />,
+      subject: `Welkom bij ${process.env.NEXT_PUBLIC_APP_NAME || "Centraal Inning"}`,
+      react: (
+        <WelcomeEmail
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={fullname}
+          appUrl={
+            process.env.NEXT_PUBLIC_APP_URL || "https://www.centraalinning.com"
+          }
+        />
+      ),
     });
 
     if (error) {
@@ -78,19 +86,23 @@ export const sendInvoiceEmail = async (
     const paymentLink = `https://portalci.net/pay-invoice/${billing.id}`;
 
     await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: to,
       subject: `FACTUUR - ${billing.invoice_number}`,
       react: (
         <InvoiceEmail
-          name={billing.tenant.name || "Customer"}
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={billing.tenant.name || "Customer"}
           paymentLink={paymentLink}
         />
       ),
       attachments: attachments,
     });
 
-    console.log("Portal CI - Invoice enviada al correo: ", to);
+    console.log(
+      "${process.env.EMAIL_SENDER_NAME} - Invoice enviada al correo: ",
+      to
+    );
     return true;
   } catch (error) {
     console.error("Error sending mail notification:", error);
@@ -123,6 +135,7 @@ export const sendAanmaningEmail = async (
     const island = getNameCountry(collection.tenant.country_code);
 
     const params: AanmaningPDFProps = {
+      logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
       date: formatDate(collection.issue_date.toString()),
       debtorName: collection.debtor.fullname || "Debtor",
       debtorAddress: collection.debtor.address || "",
@@ -147,14 +160,15 @@ export const sendAanmaningEmail = async (
     ];
 
     const { data, error } = await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: `Aanmaning - ${collection.reference_number}`,
       react: (
         <AanmanningEmail
-          userName={collection.debtor.fullname || "Debtor"}
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={collection.debtor.fullname || "Debtor"}
           invitationLink={
-            invitationLink ? invitationLink : "https://portalci.net"
+            invitationLink ? invitationLink : "https://centraalinning.com/"
           }
         />
       ),
@@ -165,7 +179,10 @@ export const sendAanmaningEmail = async (
       return Response.json({ error }, { status: 500 });
     }
 
-    console.log("Send_Aanmaning: Aanmaning email sent successfully to XXX:", to);
+    console.log(
+      "Send_Aanmaning: Aanmaning email sent successfully to XXX:",
+      to
+    );
 
     return Response.json(data);
   } catch (error) {
@@ -188,6 +205,7 @@ export const sendSommatieEmail = async (to: string, caseId: string) => {
     const island = getNameCountry(collection.tenant.country_code);
 
     const params: SommatiePDFProps = {
+      logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
       date: formatDate(collection.issue_date.toString()),
       debtorName: collection.debtor.fullname || "Debtor",
       debtorAddress: collection.debtor.address || "",
@@ -206,10 +224,15 @@ export const sendSommatieEmail = async (to: string, caseId: string) => {
     ];
 
     const { data, error } = await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: `Sommatie - ${collection.reference_number}`,
-      react: <SommatieMail userName={collection.debtor.fullname || "Debtor"} />,
+      react: (
+        <SommatieMail
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={collection.debtor.fullname || "Debtor"}
+        />
+      ),
       attachments: attachments,
     });
 
@@ -270,7 +293,8 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
       throw new Error("Second reminder date not found");
     }
 
-    const params: IngebrekestellingData = {
+    const params: IngebrekestellingProps = {
+      logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
       date: formatDate(collection.issue_date.toString()),
       debtorName: collection.debtor.fullname || "Debtor",
       debtorAddress: collection.debtor.address || "",
@@ -282,7 +306,7 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
     };
 
     const pdfBase64 = await generatePdfBase64(
-      <IngebrekestellingPDF data={{ ...params }} />
+      <IngebrekestellingPDF {...params} />
     );
 
     const attachments = [
@@ -293,12 +317,13 @@ export const sendIngebrekestellingMail = async (to: string, caseId: string) => {
     ];
 
     const { data, error } = await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: `Ingebrekestelling - ${collection.reference_number}`,
       react: (
         <IngebrekestellingEmail
-          userName={collection.debtor.fullname || "Debtor"}
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={collection.debtor.fullname || "Debtor"}
         />
       ),
       attachments: attachments,
@@ -335,6 +360,7 @@ export const sendBlokkadeMail = async (to: string, caseId: string) => {
     const island = getNameCountry(collection.tenant.country_code);
 
     const params: BlokkadePDFProps = {
+      logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
       debtorName: collection.debtor.fullname || "Debtor",
       debtorAddress: collection.debtor.address || "",
       island: island || "Bonaire",
@@ -355,11 +381,14 @@ export const sendBlokkadeMail = async (to: string, caseId: string) => {
     ];
 
     const { data, error } = await resend.emails.send({
-      from: `Portal CI <${process.env.EMAIL_FROM}>`,
+      from: `${process.env.EMAIL_SENDER_NAME} <${process.env.EMAIL_FROM}>`,
       to: [to],
       subject: `Blokkade - ${collection.reference_number}`,
       react: (
-        <BlokkadeEmail userName={collection.debtor.fullname || "Debtor"} />
+        <BlokkadeEmail
+          logoUrl={process.env.NEXT_PUBLIC_LOGO_URL || ""}
+          fullname={collection.debtor.fullname || "Debtor"}
+        />
       ),
       attachments: attachments,
     });
