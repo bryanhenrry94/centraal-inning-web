@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Document,
@@ -32,15 +31,18 @@ export interface InvoicePDFProps {
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
     fontFamily: "Helvetica",
-    fontSize: 10,
+    fontSize: 11,
+    paddingLeft: 60,
+    paddingTop: 50,
+    paddingBottom: 60,
+    paddingRight: 60,
     color: "#222",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: 16,
   },
   brand: {
@@ -53,26 +55,23 @@ const styles = StyleSheet.create({
   },
   meta: {
     textAlign: "right",
-    fontSize: 12,
-    lineHeight: 1.3,
+    fontSize: 11,
     alignItems: "flex-end",
-    minWidth: 200,
   },
-  metaTitle: {
+  title: {
+    fontSize: 14,
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 4,
+    marginBottom: 5,
   },
   billTo: {
-    marginTop: 36,
-    marginBottom: 42,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
-    maxWidth: 200,
+    maxWidth: 400,
   },
   table: {
     marginTop: 32,
@@ -88,32 +87,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "#efefef",
-    padding: 8,
+    padding: 4,
   },
   tableCell: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 11,
   },
   tableCellCenter: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 11,
     textAlign: "center",
   },
   tableCellRight: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 11,
     textAlign: "right",
   },
   description: {
     flex: 2,
-    fontSize: 10,
+    fontSize: 11,
   },
   totals: {
-    marginTop: 32,
+    marginTop: 22,
     alignItems: "flex-end",
   },
   totalsBox: {
-    width: 200,
+    width: 150,
   },
   totalRow: {
     flexDirection: "row",
@@ -124,13 +123,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   footer: {
-    marginTop: 32,
-    fontSize: 10,
+    position: "absolute",
+    bottom: 30,
+    left: 35,
+    right: 35,
+    textAlign: "center",
+    fontSize: 11,
     color: "#555",
-    borderTopWidth: 1,
-    borderTopColor: "#eee",
-    paddingTop: 8,
-    textAlign: "justify",
   },
 });
 
@@ -154,19 +153,13 @@ export const InvoicePDF: React.FC<InvoicePDFProps> = ({
           <Image style={styles.logo} src={logoUrl} />
         </View>
         <View style={styles.meta}>
-          <Text style={styles.metaTitle}>FACTUUR</Text>
-          <Text>
-            Factuurnummer:{" "}
-            <Text style={{ fontWeight: "bold" }}>{invoice_number}</Text>
-          </Text>
-          <Text>
-            Factuurdatum:{" "}
-            <Text style={{ fontWeight: "bold" }}>{issue_date}</Text>
-          </Text>
+          <Text style={styles.title}>FACTUUR</Text>
+          <Text style={{ fontSize: 11 }}>Factuurnummer: {invoice_number}</Text>
+          <Text style={{ fontSize: 11 }}>Factuurdatum: {issue_date}</Text>
         </View>
       </View>
 
-      {/* Bill To */}
+      {/* Bill To Section */}
       <View style={styles.billTo}>
         <View style={styles.client}>
           <Text style={{ fontWeight: "bold" }}>Aan:</Text>

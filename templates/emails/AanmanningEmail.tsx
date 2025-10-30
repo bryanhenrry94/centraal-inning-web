@@ -29,9 +29,9 @@ export const AanmanningEmail = ({
         </Text>
         <br />
         <Text style={paragraph}>
-          Er is een nieuwe incassotaak geregistreerd op het Central Inning (CI)
-          Platform. U kunt de details van deze taak veilig bekijken door in te
-          loggen op het CI Platform:{" "}
+          Een nieuwe incassotaak is op uw naam geregistreerd binnen het Centraal
+          Inning (CI) Platform. U kunt de details van deze taak veilig bekijken
+          door in te loggen op het CI Platform:{" "}
           <Link href={invitationLink}>Centraal Inning</Link>
         </Text>
 

@@ -87,7 +87,7 @@ export default function LoginPage() {
           <Typography variant="h5" fontWeight={700} mb={0.5}>
             Login
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" textAlign={"left"} sx={{ mb: 2 }}>
             Toegang met uw zakelijke e-mailadres
           </Typography>
         </Box>

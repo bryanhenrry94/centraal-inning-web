@@ -67,7 +67,7 @@ async function main() {
     update: {},
     create: {
       id: "28112419-5c53-47c5-b109-a29d02c1bb5d",
-      email: "bryanhenrry94@gmail.com",
+      email: "bryan.navarrete@dazzsoft.com",
       password_hash: password_hash,
       fullname: "Bryan Henrry",
       phone: "+59998765432",
@@ -76,6 +76,482 @@ async function main() {
       is_active: true,
     },
   });
+
+  // 1. Interés legal para comerciales
+  await prisma.interestType.upsert({
+    where: { id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888" },
+    update: {},
+    create: {
+      id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+      name: "Juridisch belang voor reclames",
+      calculation_type: "VARIABLE",
+    },
+  });
+
+  // 2. Interés legal para consumidores
+  await prisma.interestType.upsert({
+    where: { id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2" },
+    update: {},
+    create: {
+      id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+      name: "Juridisch belang voor consumenten",
+      calculation_type: "VARIABLE",
+    },
+  });
+
+  // 3. Interés fijo
+  await prisma.interestType.upsert({
+    where: { id: "e2166b85-8a30-4e62-8dfb-304b585c7029" },
+    update: {},
+    create: {
+      id: "e2166b85-8a30-4e62-8dfb-304b585c7029",
+      name: "Vaste rente",
+      calculation_type: "FIXED",
+    },
+  });
+
+  // Limpiar detalles de interés existentes para evitar duplicados
+  await prisma.interestDetail.deleteMany({
+    where: {
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+  });
+
+  await prisma.interestDetail.deleteMany({
+    where: {
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+  });
+
+  await prisma.interestDetail.deleteMany({
+    where: {
+      interest_type_id: "e2166b85-8a30-4e62-8dfb-304b585c7029",
+    },
+  });
+
+  const interest_details = [
+    {
+      date: "01-07-2025",
+      rate: 10.15,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2025",
+      rate: 11.15,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2024",
+      rate: 12.25,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2024",
+      rate: 12.5,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2023",
+      rate: 12.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2023",
+      rate: 10.5,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2022",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2022",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2021",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2021",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2020",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2020",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2019",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2019",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2018",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2018",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2017",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2017",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2016",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2016",
+      rate: 8.05,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2015",
+      rate: 8.05,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2015",
+      rate: 8.05,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2014",
+      rate: 8.15,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2014",
+      rate: 8.25,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2013",
+      rate: 8.5,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "16-03-2013",
+      rate: 8.75,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2013",
+      rate: 7.75,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2012",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2012",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2011",
+      rate: 8.25,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2011",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2010",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2010",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2009",
+      rate: 8.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2009",
+      rate: 9.5,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2008",
+      rate: 11.07,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2008",
+      rate: 11.2,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2007",
+      rate: 11.07,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2007",
+      rate: 10.58,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2006",
+      rate: 9.83,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2006",
+      rate: 9.25,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2005",
+      rate: 9.05,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2005",
+      rate: 9.09,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2004",
+      rate: 9.01,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2004",
+      rate: 9.02,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-07-2003",
+      rate: 9.1,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2003",
+      rate: 9.85,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-12-2002",
+      rate: 10.35,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "08-08-2002",
+      rate: 7.0,
+      interest_type_id: "2dead16c-b00e-4546-8cd0-e08ffd1c4888",
+    },
+    {
+      date: "01-01-2025",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2024",
+      rate: 7,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-2023",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2023",
+      rate: 4,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2015",
+      rate: 2,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-2012",
+      rate: 3,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-2011",
+      rate: 4,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2010",
+      rate: 3,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-2009",
+      rate: 4,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2007",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-02-2004",
+      rate: 4,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-08-2003",
+      rate: 5,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2002",
+      rate: 7,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2001",
+      rate: 8,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-2000",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1999",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1998",
+      rate: 6,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-1996",
+      rate: 5,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1996",
+      rate: 7,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1995",
+      rate: 8,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1994",
+      rate: 9,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-1993",
+      rate: 10,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1992",
+      rate: 12,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-07-1990",
+      rate: 11,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1990",
+      rate: 10,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-04-1987",
+      rate: 8,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1983",
+      rate: 9,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-04-1980",
+      rate: 12,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1979",
+      rate: 10,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-04-1976",
+      rate: 8,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-05-1974",
+      rate: 10,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-11-1972",
+      rate: 8,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-03-1971",
+      rate: 9,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+    {
+      date: "01-01-1934",
+      rate: 5,
+      interest_type_id: "ad33a415-e6e8-4b1f-8639-13768d5f38d2",
+    },
+  ];
+
+  for (const detail of interest_details) {
+    await prisma.interestDetail.create({
+      data: detail,
+    });
+  }
 
   console.log("✅ Seed ejecutado correctamente");
 }

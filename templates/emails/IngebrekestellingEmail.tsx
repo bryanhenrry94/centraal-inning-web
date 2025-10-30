@@ -27,9 +27,8 @@ export const IngebrekestellingEmail = ({
         </Text>
         <br />
         <Text style={paragraph}>
-          Er is een blokkeringsverzoek geregistreerd op het Centraal
-          Collectieplatform (CI). U kunt de gegevens veilig bekijken door in te
-          loggen op het CI-platform:{" "}
+          U bent officieel ingebreke gesteld. (CI). U kunt de gegevens veilig
+          bekijken door in te loggen op het CI-platform:{" "}
           <Link href="https://www.centraalinning.com/">Centraal Inning</Link>
         </Text>
 

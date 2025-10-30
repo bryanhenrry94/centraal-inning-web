@@ -395,7 +395,7 @@ export const updateVerdict = async (
 };
 
 export const calculateInterestDetail = async (
-  interest_type: number,
+  interest_type: string,
   base_amount: number,
   calculated_interest: number,
   calculation_start: Date,
@@ -406,7 +406,7 @@ export const calculateInterestDetail = async (
 
     // Validar los parámetros de entrada
     if (
-      interest_type === 0 ||
+      interest_type === "" ||
       base_amount === 0 ||
       !calculation_start ||
       !calculation_end

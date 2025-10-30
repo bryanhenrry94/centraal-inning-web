@@ -65,7 +65,7 @@ export default function Home() {
         <Box mb={3} textAlign="center">
           <LogoComponent />
         </Box>
-        <Typography variant="body2" textAlign={"left"}>
+        <Typography variant="body2" textAlign={"left"} sx={{ mb: 2 }}>
           Toegang met uw zakelijke e-mailadres
         </Typography>
 

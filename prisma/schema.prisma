@@ -149,7 +149,7 @@ model Verdict {
 
 model VerdictInterest {
   id                  String                   @id @default(uuid())
-  interest_type       Int
+  interest_type       String
   base_amount         Float
   calculated_interest Float?
   calculation_start   DateTime
@@ -227,7 +227,7 @@ model VerdictAttachment {
 }
 
 model InterestType {
-  id               Int                 @id @default(autoincrement())
+  id               String              @id @default(uuid())
   name             String
   calculation_type CalculationTypeEnum
   details          InterestDetail[]
@@ -236,10 +236,10 @@ model InterestType {
 }
 
 model InterestDetail {
-  id               Int          @id @default(autoincrement())
+  id               String       @id @default(uuid())
   date             String
   rate             Float
-  interest_type_id Int
+  interest_type_id String
   interest_type    InterestType @relation(fields: [interest_type_id], references: [id])
 
   @@map("interest_detail")

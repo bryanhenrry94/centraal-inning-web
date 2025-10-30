@@ -10314,14 +10314,12 @@ export namespace Prisma {
   }
 
   export type VerdictInterestAvgAggregateOutputType = {
-    interest_type: number | null
     base_amount: number | null
     calculated_interest: number | null
     total_interest: number | null
   }
 
   export type VerdictInterestSumAggregateOutputType = {
-    interest_type: number | null
     base_amount: number | null
     calculated_interest: number | null
     total_interest: number | null
@@ -10329,7 +10327,7 @@ export namespace Prisma {
 
   export type VerdictInterestMinAggregateOutputType = {
     id: string | null
-    interest_type: number | null
+    interest_type: string | null
     base_amount: number | null
     calculated_interest: number | null
     calculation_start: Date | null
@@ -10342,7 +10340,7 @@ export namespace Prisma {
 
   export type VerdictInterestMaxAggregateOutputType = {
     id: string | null
-    interest_type: number | null
+    interest_type: string | null
     base_amount: number | null
     calculated_interest: number | null
     calculation_start: Date | null
@@ -10369,14 +10367,12 @@ export namespace Prisma {
 
 
   export type VerdictInterestAvgAggregateInputType = {
-    interest_type?: true
     base_amount?: true
     calculated_interest?: true
     total_interest?: true
   }
 
   export type VerdictInterestSumAggregateInputType = {
-    interest_type?: true
     base_amount?: true
     calculated_interest?: true
     total_interest?: true
@@ -10510,7 +10506,7 @@ export namespace Prisma {
 
   export type VerdictInterestGroupByOutputType = {
     id: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest: number | null
     calculation_start: Date
@@ -10618,7 +10614,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      interest_type: number
+      interest_type: string
       base_amount: number
       calculated_interest: number | null
       calculation_start: Date
@@ -11053,7 +11049,7 @@ export namespace Prisma {
    */
   interface VerdictInterestFieldRefs {
     readonly id: FieldRef<"VerdictInterest", 'String'>
-    readonly interest_type: FieldRef<"VerdictInterest", 'Int'>
+    readonly interest_type: FieldRef<"VerdictInterest", 'String'>
     readonly base_amount: FieldRef<"VerdictInterest", 'Float'>
     readonly calculated_interest: FieldRef<"VerdictInterest", 'Float'>
     readonly calculation_start: FieldRef<"VerdictInterest", 'DateTime'>
@@ -16151,28 +16147,18 @@ export namespace Prisma {
 
   export type AggregateInterestType = {
     _count: InterestTypeCountAggregateOutputType | null
-    _avg: InterestTypeAvgAggregateOutputType | null
-    _sum: InterestTypeSumAggregateOutputType | null
     _min: InterestTypeMinAggregateOutputType | null
     _max: InterestTypeMaxAggregateOutputType | null
   }
 
-  export type InterestTypeAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type InterestTypeSumAggregateOutputType = {
-    id: number | null
-  }
-
   export type InterestTypeMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     name: string | null
     calculation_type: $Enums.CalculationTypeEnum | null
   }
 
   export type InterestTypeMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     name: string | null
     calculation_type: $Enums.CalculationTypeEnum | null
   }
@@ -16184,14 +16170,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type InterestTypeAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type InterestTypeSumAggregateInputType = {
-    id?: true
-  }
 
   export type InterestTypeMinAggregateInputType = {
     id?: true
@@ -16250,18 +16228,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: InterestTypeAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: InterestTypeSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: InterestTypeMinAggregateInputType
@@ -16292,19 +16258,15 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: InterestTypeCountAggregateInputType | true
-    _avg?: InterestTypeAvgAggregateInputType
-    _sum?: InterestTypeSumAggregateInputType
     _min?: InterestTypeMinAggregateInputType
     _max?: InterestTypeMaxAggregateInputType
   }
 
   export type InterestTypeGroupByOutputType = {
-    id: number
+    id: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
     _count: InterestTypeCountAggregateOutputType | null
-    _avg: InterestTypeAvgAggregateOutputType | null
-    _sum: InterestTypeSumAggregateOutputType | null
     _min: InterestTypeMinAggregateOutputType | null
     _max: InterestTypeMaxAggregateOutputType | null
   }
@@ -16363,7 +16325,7 @@ export namespace Prisma {
       details: Prisma.$InterestDetailPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       name: string
       calculation_type: $Enums.CalculationTypeEnum
     }, ExtArgs["result"]["interestType"]>
@@ -16790,7 +16752,7 @@ export namespace Prisma {
    * Fields of the InterestType model
    */
   interface InterestTypeFieldRefs {
-    readonly id: FieldRef<"InterestType", 'Int'>
+    readonly id: FieldRef<"InterestType", 'String'>
     readonly name: FieldRef<"InterestType", 'String'>
     readonly calculation_type: FieldRef<"InterestType", 'CalculationTypeEnum'>
   }
@@ -17236,29 +17198,25 @@ export namespace Prisma {
   }
 
   export type InterestDetailAvgAggregateOutputType = {
-    id: number | null
     rate: number | null
-    interest_type_id: number | null
   }
 
   export type InterestDetailSumAggregateOutputType = {
-    id: number | null
     rate: number | null
-    interest_type_id: number | null
   }
 
   export type InterestDetailMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     date: string | null
     rate: number | null
-    interest_type_id: number | null
+    interest_type_id: string | null
   }
 
   export type InterestDetailMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     date: string | null
     rate: number | null
-    interest_type_id: number | null
+    interest_type_id: string | null
   }
 
   export type InterestDetailCountAggregateOutputType = {
@@ -17271,15 +17229,11 @@ export namespace Prisma {
 
 
   export type InterestDetailAvgAggregateInputType = {
-    id?: true
     rate?: true
-    interest_type_id?: true
   }
 
   export type InterestDetailSumAggregateInputType = {
-    id?: true
     rate?: true
-    interest_type_id?: true
   }
 
   export type InterestDetailMinAggregateInputType = {
@@ -17391,10 +17345,10 @@ export namespace Prisma {
   }
 
   export type InterestDetailGroupByOutputType = {
-    id: number
+    id: string
     date: string
     rate: number
-    interest_type_id: number
+    interest_type_id: string
     _count: InterestDetailCountAggregateOutputType | null
     _avg: InterestDetailAvgAggregateOutputType | null
     _sum: InterestDetailSumAggregateOutputType | null
@@ -17464,10 +17418,10 @@ export namespace Prisma {
       interest_type: Prisma.$InterestTypePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       date: string
       rate: number
-      interest_type_id: number
+      interest_type_id: string
     }, ExtArgs["result"]["interestDetail"]>
     composites: {}
   }
@@ -17892,10 +17846,10 @@ export namespace Prisma {
    * Fields of the InterestDetail model
    */
   interface InterestDetailFieldRefs {
-    readonly id: FieldRef<"InterestDetail", 'Int'>
+    readonly id: FieldRef<"InterestDetail", 'String'>
     readonly date: FieldRef<"InterestDetail", 'String'>
     readonly rate: FieldRef<"InterestDetail", 'Float'>
-    readonly interest_type_id: FieldRef<"InterestDetail", 'Int'>
+    readonly interest_type_id: FieldRef<"InterestDetail", 'String'>
   }
     
 
@@ -35225,7 +35179,7 @@ export namespace Prisma {
     OR?: VerdictInterestWhereInput[]
     NOT?: VerdictInterestWhereInput | VerdictInterestWhereInput[]
     id?: StringFilter<"VerdictInterest"> | string
-    interest_type?: IntFilter<"VerdictInterest"> | number
+    interest_type?: StringFilter<"VerdictInterest"> | string
     base_amount?: FloatFilter<"VerdictInterest"> | number
     calculated_interest?: FloatNullableFilter<"VerdictInterest"> | number | null
     calculation_start?: DateTimeFilter<"VerdictInterest"> | Date | string
@@ -35258,7 +35212,7 @@ export namespace Prisma {
     AND?: VerdictInterestWhereInput | VerdictInterestWhereInput[]
     OR?: VerdictInterestWhereInput[]
     NOT?: VerdictInterestWhereInput | VerdictInterestWhereInput[]
-    interest_type?: IntFilter<"VerdictInterest"> | number
+    interest_type?: StringFilter<"VerdictInterest"> | string
     base_amount?: FloatFilter<"VerdictInterest"> | number
     calculated_interest?: FloatNullableFilter<"VerdictInterest"> | number | null
     calculation_start?: DateTimeFilter<"VerdictInterest"> | Date | string
@@ -35294,7 +35248,7 @@ export namespace Prisma {
     OR?: VerdictInterestScalarWhereWithAggregatesInput[]
     NOT?: VerdictInterestScalarWhereWithAggregatesInput | VerdictInterestScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VerdictInterest"> | string
-    interest_type?: IntWithAggregatesFilter<"VerdictInterest"> | number
+    interest_type?: StringWithAggregatesFilter<"VerdictInterest"> | string
     base_amount?: FloatWithAggregatesFilter<"VerdictInterest"> | number
     calculated_interest?: FloatNullableWithAggregatesFilter<"VerdictInterest"> | number | null
     calculation_start?: DateTimeWithAggregatesFilter<"VerdictInterest"> | Date | string
@@ -35627,7 +35581,7 @@ export namespace Prisma {
     AND?: InterestTypeWhereInput | InterestTypeWhereInput[]
     OR?: InterestTypeWhereInput[]
     NOT?: InterestTypeWhereInput | InterestTypeWhereInput[]
-    id?: IntFilter<"InterestType"> | number
+    id?: StringFilter<"InterestType"> | string
     name?: StringFilter<"InterestType"> | string
     calculation_type?: EnumCalculationTypeEnumFilter<"InterestType"> | $Enums.CalculationTypeEnum
     details?: InterestDetailListRelationFilter
@@ -35641,7 +35595,7 @@ export namespace Prisma {
   }
 
   export type InterestTypeWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     AND?: InterestTypeWhereInput | InterestTypeWhereInput[]
     OR?: InterestTypeWhereInput[]
     NOT?: InterestTypeWhereInput | InterestTypeWhereInput[]
@@ -35655,17 +35609,15 @@ export namespace Prisma {
     name?: SortOrder
     calculation_type?: SortOrder
     _count?: InterestTypeCountOrderByAggregateInput
-    _avg?: InterestTypeAvgOrderByAggregateInput
     _max?: InterestTypeMaxOrderByAggregateInput
     _min?: InterestTypeMinOrderByAggregateInput
-    _sum?: InterestTypeSumOrderByAggregateInput
   }
 
   export type InterestTypeScalarWhereWithAggregatesInput = {
     AND?: InterestTypeScalarWhereWithAggregatesInput | InterestTypeScalarWhereWithAggregatesInput[]
     OR?: InterestTypeScalarWhereWithAggregatesInput[]
     NOT?: InterestTypeScalarWhereWithAggregatesInput | InterestTypeScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"InterestType"> | number
+    id?: StringWithAggregatesFilter<"InterestType"> | string
     name?: StringWithAggregatesFilter<"InterestType"> | string
     calculation_type?: EnumCalculationTypeEnumWithAggregatesFilter<"InterestType"> | $Enums.CalculationTypeEnum
   }
@@ -35674,10 +35626,10 @@ export namespace Prisma {
     AND?: InterestDetailWhereInput | InterestDetailWhereInput[]
     OR?: InterestDetailWhereInput[]
     NOT?: InterestDetailWhereInput | InterestDetailWhereInput[]
-    id?: IntFilter<"InterestDetail"> | number
+    id?: StringFilter<"InterestDetail"> | string
     date?: StringFilter<"InterestDetail"> | string
     rate?: FloatFilter<"InterestDetail"> | number
-    interest_type_id?: IntFilter<"InterestDetail"> | number
+    interest_type_id?: StringFilter<"InterestDetail"> | string
     interest_type?: XOR<InterestTypeScalarRelationFilter, InterestTypeWhereInput>
   }
 
@@ -35690,13 +35642,13 @@ export namespace Prisma {
   }
 
   export type InterestDetailWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     AND?: InterestDetailWhereInput | InterestDetailWhereInput[]
     OR?: InterestDetailWhereInput[]
     NOT?: InterestDetailWhereInput | InterestDetailWhereInput[]
     date?: StringFilter<"InterestDetail"> | string
     rate?: FloatFilter<"InterestDetail"> | number
-    interest_type_id?: IntFilter<"InterestDetail"> | number
+    interest_type_id?: StringFilter<"InterestDetail"> | string
     interest_type?: XOR<InterestTypeScalarRelationFilter, InterestTypeWhereInput>
   }, "id">
 
@@ -35716,10 +35668,10 @@ export namespace Prisma {
     AND?: InterestDetailScalarWhereWithAggregatesInput | InterestDetailScalarWhereWithAggregatesInput[]
     OR?: InterestDetailScalarWhereWithAggregatesInput[]
     NOT?: InterestDetailScalarWhereWithAggregatesInput | InterestDetailScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"InterestDetail"> | number
+    id?: StringWithAggregatesFilter<"InterestDetail"> | string
     date?: StringWithAggregatesFilter<"InterestDetail"> | string
     rate?: FloatWithAggregatesFilter<"InterestDetail"> | number
-    interest_type_id?: IntWithAggregatesFilter<"InterestDetail"> | number
+    interest_type_id?: StringWithAggregatesFilter<"InterestDetail"> | string
   }
 
   export type BillingInvoiceWhereInput = {
@@ -37575,7 +37527,7 @@ export namespace Prisma {
 
   export type VerdictInterestCreateInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -37589,7 +37541,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedCreateInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -37603,7 +37555,7 @@ export namespace Prisma {
 
   export type VerdictInterestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37617,7 +37569,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37631,7 +37583,7 @@ export namespace Prisma {
 
   export type VerdictInterestCreateManyInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -37644,7 +37596,7 @@ export namespace Prisma {
 
   export type VerdictInterestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37656,7 +37608,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38014,91 +37966,97 @@ export namespace Prisma {
   }
 
   export type InterestTypeCreateInput = {
+    id?: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
     details?: InterestDetailCreateNestedManyWithoutInterest_typeInput
   }
 
   export type InterestTypeUncheckedCreateInput = {
-    id?: number
+    id?: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
     details?: InterestDetailUncheckedCreateNestedManyWithoutInterest_typeInput
   }
 
   export type InterestTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
     details?: InterestDetailUpdateManyWithoutInterest_typeNestedInput
   }
 
   export type InterestTypeUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
     details?: InterestDetailUncheckedUpdateManyWithoutInterest_typeNestedInput
   }
 
   export type InterestTypeCreateManyInput = {
-    id?: number
+    id?: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
   }
 
   export type InterestTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
   }
 
   export type InterestTypeUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
   }
 
   export type InterestDetailCreateInput = {
+    id?: string
     date: string
     rate: number
     interest_type: InterestTypeCreateNestedOneWithoutDetailsInput
   }
 
   export type InterestDetailUncheckedCreateInput = {
-    id?: number
+    id?: string
     date: string
     rate: number
-    interest_type_id: number
+    interest_type_id: string
   }
 
   export type InterestDetailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
     interest_type?: InterestTypeUpdateOneRequiredWithoutDetailsNestedInput
   }
 
   export type InterestDetailUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
-    interest_type_id?: IntFieldUpdateOperationsInput | number
+    interest_type_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type InterestDetailCreateManyInput = {
-    id?: number
+    id?: string
     date: string
     rate: number
-    interest_type_id: number
+    interest_type_id: string
   }
 
   export type InterestDetailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
   }
 
   export type InterestDetailUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
-    interest_type_id?: IntFieldUpdateOperationsInput | number
+    interest_type_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type BillingInvoiceCreateInput = {
@@ -40124,7 +40082,6 @@ export namespace Prisma {
   }
 
   export type VerdictInterestAvgOrderByAggregateInput = {
-    interest_type?: SortOrder
     base_amount?: SortOrder
     calculated_interest?: SortOrder
     total_interest?: SortOrder
@@ -40157,7 +40114,6 @@ export namespace Prisma {
   }
 
   export type VerdictInterestSumOrderByAggregateInput = {
-    interest_type?: SortOrder
     base_amount?: SortOrder
     calculated_interest?: SortOrder
     total_interest?: SortOrder
@@ -40417,10 +40373,6 @@ export namespace Prisma {
     calculation_type?: SortOrder
   }
 
-  export type InterestTypeAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type InterestTypeMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -40431,10 +40383,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     calculation_type?: SortOrder
-  }
-
-  export type InterestTypeSumOrderByAggregateInput = {
-    id?: SortOrder
   }
 
   export type EnumCalculationTypeEnumWithAggregatesFilter<$PrismaModel = never> = {
@@ -40460,9 +40408,7 @@ export namespace Prisma {
   }
 
   export type InterestDetailAvgOrderByAggregateInput = {
-    id?: SortOrder
     rate?: SortOrder
-    interest_type_id?: SortOrder
   }
 
   export type InterestDetailMaxOrderByAggregateInput = {
@@ -40480,9 +40426,7 @@ export namespace Prisma {
   }
 
   export type InterestDetailSumOrderByAggregateInput = {
-    id?: SortOrder
     rate?: SortOrder
-    interest_type_id?: SortOrder
   }
 
   export type BillingInvoiceDetailListRelationFilter = {
@@ -45048,7 +44992,7 @@ export namespace Prisma {
 
   export type VerdictInterestCreateWithoutVerdictInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -45061,7 +45005,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedCreateWithoutVerdictInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -45351,7 +45295,7 @@ export namespace Prisma {
     OR?: VerdictInterestScalarWhereInput[]
     NOT?: VerdictInterestScalarWhereInput | VerdictInterestScalarWhereInput[]
     id?: StringFilter<"VerdictInterest"> | string
-    interest_type?: IntFilter<"VerdictInterest"> | number
+    interest_type?: StringFilter<"VerdictInterest"> | string
     base_amount?: FloatFilter<"VerdictInterest"> | number
     calculated_interest?: FloatNullableFilter<"VerdictInterest"> | number | null
     calculation_start?: DateTimeFilter<"VerdictInterest"> | Date | string
@@ -45535,7 +45479,7 @@ export namespace Prisma {
 
   export type VerdictInterestCreateWithoutDetailsInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -45548,7 +45492,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedCreateWithoutDetailsInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -45577,7 +45521,7 @@ export namespace Prisma {
 
   export type VerdictInterestUpdateWithoutDetailsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45590,7 +45534,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedUpdateWithoutDetailsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45890,12 +45834,13 @@ export namespace Prisma {
   }
 
   export type InterestDetailCreateWithoutInterest_typeInput = {
+    id?: string
     date: string
     rate: number
   }
 
   export type InterestDetailUncheckedCreateWithoutInterest_typeInput = {
-    id?: number
+    id?: string
     date: string
     rate: number
   }
@@ -45930,19 +45875,20 @@ export namespace Prisma {
     AND?: InterestDetailScalarWhereInput | InterestDetailScalarWhereInput[]
     OR?: InterestDetailScalarWhereInput[]
     NOT?: InterestDetailScalarWhereInput | InterestDetailScalarWhereInput[]
-    id?: IntFilter<"InterestDetail"> | number
+    id?: StringFilter<"InterestDetail"> | string
     date?: StringFilter<"InterestDetail"> | string
     rate?: FloatFilter<"InterestDetail"> | number
-    interest_type_id?: IntFilter<"InterestDetail"> | number
+    interest_type_id?: StringFilter<"InterestDetail"> | string
   }
 
   export type InterestTypeCreateWithoutDetailsInput = {
+    id?: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
   }
 
   export type InterestTypeUncheckedCreateWithoutDetailsInput = {
-    id?: number
+    id?: string
     name: string
     calculation_type: $Enums.CalculationTypeEnum
   }
@@ -45964,12 +45910,13 @@ export namespace Prisma {
   }
 
   export type InterestTypeUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
   }
 
   export type InterestTypeUncheckedUpdateWithoutDetailsInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     calculation_type?: EnumCalculationTypeEnumFieldUpdateOperationsInput | $Enums.CalculationTypeEnum
   }
@@ -49674,7 +49621,7 @@ export namespace Prisma {
 
   export type VerdictInterestCreateManyVerdictInput = {
     id?: string
-    interest_type: number
+    interest_type: string
     base_amount: number
     calculated_interest?: number | null
     calculation_start: Date | string
@@ -49779,7 +49726,7 @@ export namespace Prisma {
 
   export type VerdictInterestUpdateWithoutVerdictInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49792,7 +49739,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedUpdateWithoutVerdictInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49805,7 +49752,7 @@ export namespace Prisma {
 
   export type VerdictInterestUncheckedUpdateManyWithoutVerdictInput = {
     id?: StringFieldUpdateOperationsInput | string
-    interest_type?: IntFieldUpdateOperationsInput | number
+    interest_type?: StringFieldUpdateOperationsInput | string
     base_amount?: FloatFieldUpdateOperationsInput | number
     calculated_interest?: NullableFloatFieldUpdateOperationsInput | number | null
     calculation_start?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49876,24 +49823,25 @@ export namespace Prisma {
   }
 
   export type InterestDetailCreateManyInterest_typeInput = {
-    id?: number
+    id?: string
     date: string
     rate: number
   }
 
   export type InterestDetailUpdateWithoutInterest_typeInput = {
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
   }
 
   export type InterestDetailUncheckedUpdateWithoutInterest_typeInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
   }
 
   export type InterestDetailUncheckedUpdateManyWithoutInterest_typeInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     date?: StringFieldUpdateOperationsInput | string
     rate?: FloatFieldUpdateOperationsInput | number
   }

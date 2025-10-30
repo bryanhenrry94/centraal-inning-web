@@ -109,7 +109,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
 
     return (
       <>
-        {interesTipos.find((tipo) => tipo.id === Number(item.interest_type))
+        {interesTipos.find((tipo) => tipo.id === item.interest_type)
           ?.calculation_type === "FIXED" ? (
           <Controller
             name={`verdictInterest.${index}.calculated_interest`}
@@ -428,7 +428,7 @@ const InteresSection: React.FC<InteresSectionProps> = () => {
                   size="small"
                   onClick={() =>
                     append({
-                      interest_type: 1,
+                      interest_type: "",
                       base_amount: 0,
                       calculated_interest: 0,
                       calculation_start: new Date(),

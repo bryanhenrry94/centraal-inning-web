@@ -3,7 +3,7 @@ import { VerdictInterestDetailCreateSchema } from "./verdict-interest-details";
 
 export const VerdictInterestBaseSchema = z.object({
   id: z.string().uuid({ message: "El id debe ser un UUID válido" }),
-  interest_type: z.number().int("El tipo de interés debe ser un número entero"),
+  interest_type: z.string("El tipo de interés debe ser un número entero"),
   base_amount: z.coerce
     .number()
     .nonnegative({ message: "El monto base debe ser un número positivo" }),

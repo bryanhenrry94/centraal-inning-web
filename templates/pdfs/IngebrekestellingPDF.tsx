@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Document,
@@ -13,10 +12,11 @@ import {
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
-    fontSize: 14,
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
+    fontSize: 11,
+    paddingLeft: 60,
+    paddingTop: 50,
+    paddingBottom: 60,
+    paddingRight: 60,
     color: "#222",
   },
   header: {
@@ -35,21 +35,21 @@ const styles = StyleSheet.create({
   },
   meta: {
     textAlign: "right",
-    fontSize: 16,
+    fontSize: 11,
     alignItems: "flex-end",
   },
-  metaTitle: {
-    fontSize: 16,
+  title: {
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
   },
   billTo: {
-    marginTop: 10,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     maxWidth: 400,
   },
@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   paragraph: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     textAlign: "justify",
-    marginBottom: 10,
+    marginBottom: 15,
   },
   table: {
     marginVertical: 20,
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   tableCell: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     width: "70%",
   },
   tableCellRight: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     textAlign: "right",
     width: "30%",
@@ -87,23 +87,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signature: {
-    fontSize: 12,
+    fontSize: 11,
     marginTop: 20,
   },
   attention: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
   },
   listItem: {
-    fontSize: 12,
+    fontSize: 11,
     marginBottom: 8,
     paddingLeft: 10,
   },
   closing: {
     marginTop: 40,
-    fontSize: 12,
+    fontSize: 11,
   },
   footer: {
     position: "absolute",
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     left: 35,
     right: 35,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 11,
     color: "#555",
   },
 });
@@ -147,16 +147,16 @@ const IngebrekestellingPDF: React.FC<IngebrekestellingProps> = ({
             <Image style={styles.logo} src={logoUrl} />
           </View>
           <View style={styles.meta}>
-            <Text style={styles.metaTitle}>Ingebrekestelling</Text>
-            <Text style={{ fontSize: 12 }}>Verzenddatum: {date}</Text>
+            <Text style={styles.title}>Ingebrekestelling</Text>
+            <Text style={{ fontSize: 11 }}>Verzenddatum: {date}</Text>
           </View>
         </View>
 
+        {/* Bill To Section */}
         <View style={styles.billTo}>
           <View style={styles.client}>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>Aan:</Text> {debtorName}
-            </Text>
+            <Text style={{ fontWeight: "bold" }}>Aan:</Text>
+            <Text>{debtorName}</Text>
             <Text>{debtorAddress}</Text>
             <Text>{island}</Text>
           </View>

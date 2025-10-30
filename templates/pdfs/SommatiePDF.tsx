@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Document,
@@ -21,9 +20,10 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
     fontSize: 14,
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
+    paddingLeft: 60,
+    paddingTop: 50,
+    paddingBottom: 60,
+    paddingRight: 60,
     color: "#222",
   },
   header: {
@@ -42,21 +42,21 @@ const styles = StyleSheet.create({
   },
   meta: {
     textAlign: "right",
-    fontSize: 16,
+    fontSize: 11,
     alignItems: "flex-end",
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
   },
   billTo: {
-    marginTop: 10,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     maxWidth: 400,
   },
@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   paragraph: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     textAlign: "justify",
-    marginBottom: 10,
+    marginBottom: 15,
   },
   table: {
     marginVertical: 20,
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   tableCell: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     width: "70%",
   },
   tableCellRight: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     textAlign: "right",
     width: "30%",
@@ -94,23 +94,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signature: {
-    fontSize: 12,
+    fontSize: 11,
     marginTop: 20,
   },
   attention: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
   },
   listItem: {
-    fontSize: 12,
+    fontSize: 11,
     marginBottom: 8,
     paddingLeft: 10,
   },
   closing: {
     marginTop: 40,
-    fontSize: 12,
+    fontSize: 11,
   },
   footer: {
     position: "absolute",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     left: 35,
     right: 35,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 11,
     color: "#555",
   },
 });
@@ -150,7 +150,7 @@ const SommatiePDF: React.FC<SommatiePDFProps> = ({
         </View>
         <View style={styles.meta}>
           <Text style={styles.title}>Sommatie tot Ingebrekestelling</Text>
-          <Text style={{ fontSize: 12 }}>Verzenddatum: {date}</Text>
+          <Text>Verzenddatum: {date}</Text>
         </View>
       </View>
 
@@ -167,25 +167,22 @@ const SommatiePDF: React.FC<SommatiePDFProps> = ({
         <Text style={styles.paragraph}>
           Op 9 oktober 2024 ontving u een eerste aanmaning inzake factuurnummer{" "}
           {invoice_number} (USD {invoiceAmount}). Tot op heden hebben wij geen
-          betaling of betalingsregeling van u ontvangen.
+          betaling of betalingsregeling van u ontvangen. 
         </Text>
 
         <Text style={styles.paragraph}>
-          Wij sommeren u hierbij om het volledige bedrag binnen twee (2) dagen
-          na dagtekening van deze sommatie over te maken naar MCB-rekeningnummer
-          418.825.10, onder vermelding van uw naam, bedrijfsnaam of
-          factuurnummer.
+          Wij sommeren u hierbij
+          om het volledige bedrag binnen twee (2) dagen na dagtekening van deze
+          sommatie over te maken naar MCB-rekeningnummer 418.825.10, onder
+          vermelding van uw naam, bedrijfsnaam of factuurnummer.
         </Text>
 
         <Text style={styles.paragraph}>
           Voor betaling, het treffen van een regeling of contact met de
           schuldeiser kunt u zich registreren of inloggen via:
-          www.centraalinning.com
-        </Text>
-
-        <Text style={styles.paragraph}>
-          Indien u niet binnen de gestelde termijn betaalt of een regeling
-          treft, wordt u hiermee formeel in gebreke gesteld.
+          www.centraalinning.com. Indien u niet binnen de gestelde termijn
+          betaalt of een regeling treft, wordt u hiermee formeel in gebreke
+          gesteld.
         </Text>
 
         <Text style={styles.attention}>Let op:</Text>
@@ -212,11 +209,9 @@ const SommatiePDF: React.FC<SommatiePDFProps> = ({
           overheidsinstanties, zijn verplicht mee te werken aan deze maatregel.
         </Text>
 
-        <Text style={styles.paragraph}>
-          Alle kosten die hieruit voortvloeien, komen volledig voor uw rekening.
-        </Text>
-
-        <Text style={styles.paragraph}>
+        <Text style={{ ...styles.paragraph, marginTop: 10 }}>
+          Alle kosten die hieruit voortvloeien, komen volledig voor uw rekening.{" "}
+          <br />
           Wij adviseren u dringend deze kwestie tijdig op te lossen om verdere
           maatregelen te voorkomen.
         </Text>

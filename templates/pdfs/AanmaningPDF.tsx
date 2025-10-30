@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Document,
@@ -14,9 +13,10 @@ const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
     fontSize: 14,
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
+    paddingLeft: 60,
+    paddingTop: 50,
+    paddingBottom: 60,
+    paddingRight: 60,
     color: "#222",
   },
   header: {
@@ -35,21 +35,21 @@ const styles = StyleSheet.create({
   },
   meta: {
     textAlign: "right",
-    fontSize: 16,
+    fontSize: 11,
     alignItems: "flex-end",
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
   },
   billTo: {
-    marginTop: 10,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   client: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     maxWidth: 400,
   },
@@ -57,37 +57,37 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   paragraph: {
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.4,
     textAlign: "justify",
     marginBottom: 15,
   },
   table: {
     marginVertical: 20,
-    width: "50%",
+    width: "35%",
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 0,
   },
   tableCell: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     width: "70%",
   },
   tableCellRight: {
-    fontSize: 12,
+    fontSize: 11,
     padding: 2,
     textAlign: "right",
     width: "30%",
   },
   totalRow: {
-    borderTopWidth: 2,
-    borderTopColor: "#161515",
+    // borderTopWidth: 2,
+    // borderTopColor: "#161515",
     marginTop: 10,
   },
   signature: {
-    fontSize: 12,
+    fontSize: 11,
     marginTop: 20,
   },
   footer: {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     left: 35,
     right: 35,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 11,
     color: "#555",
   },
 });
@@ -141,7 +141,7 @@ const AanmaningPDF: React.FC<AanmaningPDFProps> = ({
         </View>
         <View style={styles.meta}>
           <Text style={styles.title}>Aanmaning</Text>
-          <Text style={{ fontSize: 12 }}>Verzenddatum: {date}</Text>
+          <Text style={{ fontSize: 11 }}>Verzenddatum: {date}</Text>
         </View>
       </View>
 
@@ -174,19 +174,26 @@ const AanmaningPDF: React.FC<AanmaningPDFProps> = ({
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Hoofdsom</Text>
-            <Text style={styles.tableCellRight}>{amount_original}</Text>
+            <Text style={styles.tableCellRight}>${amount_original}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Incassokosten 15%</Text>
-            <Text style={styles.tableCellRight}>{extraCosts}</Text>
+            <Text style={styles.tableCellRight}>${extraCosts}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>ABB 6%</Text>
-            <Text style={styles.tableCellRight}>{calculatedABB}</Text>
+            <Text style={styles.tableCellRight}>${calculatedABB}</Text>
           </View>
           <View style={[styles.tableRow, styles.totalRow]}>
             <Text style={styles.tableCell}>Totaalbedrag</Text>
-            <Text style={styles.tableCellRight}>{total_amount}</Text>
+            <Text
+              style={[
+                styles.tableCellRight,
+                { borderTopWidth: 2, borderTopColor: "#161515" },
+              ]}
+            >
+              ${total_amount}
+            </Text>
           </View>
         </View>
 
@@ -213,8 +220,8 @@ const AanmaningPDF: React.FC<AanmaningPDFProps> = ({
         <Text style={styles.paragraph}>Met vriendelijke groet,</Text>
 
         <View style={styles.signature}>
-          <Text>{tenantName}</Text>
-          <Text>Schuldeiser</Text>
+          <Text style={{ fontSize: 11 }}>{tenantName}</Text>
+          <Text style={{ fontSize: 11 }}>Schuldeiser</Text>
         </View>
       </View>
 

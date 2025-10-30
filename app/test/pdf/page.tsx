@@ -18,10 +18,10 @@ const InvoiceComponent = () => {
   const params = {
     logoUrl: "/static/logo.png",
     invoice_number: "INV-1001",
-    issue_date: "2024-06-15",
-    customer_name: "John Doe",
-    customer_address: "123 Main St, Springfield",
-    customer_island: "Islandia",
+    issue_date: "29/10/2025",
+    customer_name: "Bryan Navarrete",
+    customer_address: "Guayaquil, Ecuador",
+    customer_island: "Bonaire",
     details: [
       {
         item_description: "Product A",
@@ -39,7 +39,7 @@ const InvoiceComponent = () => {
       },
     ],
     total: 230,
-    bank_name: "Bank of Examples",
+    bank_name: "MCB",
     bank_account: "1234567890",
   };
   return <InvoicePDF {...params} />;
@@ -48,18 +48,18 @@ const InvoiceComponent = () => {
 const AanmanningComponent = () => {
   const params = {
     logoUrl: "/static/logo.png",
-    date: "2024-06-20",
-    debtorName: "Jane Smith",
-    debtorAddress: "456 Elm St, Springfield",
-    island: "Islandia",
-    reference_number: "REF-2024-001",
+    date: "19/10/2025",
+    debtorName: "Bryan Navarrete",
+    debtorAddress: "Guayaquil, Ecuador",
+    island: "Bonaire",
+    reference_number: "INV0001",
     total_amount: "250.00",
-    bankName: "Bank of Examples",
+    bankName: "MCB",
     accountNumber: "1234567890",
     amount_original: "200.00",
     extraCosts: "30.00",
     calculatedABB: "20.00",
-    tenantName: "Tenant A",
+    tenantName: "DAZZSOFT S.A.S.",
   };
   return <AanmaningPDF {...params} />;
 };
@@ -67,11 +67,11 @@ const AanmanningComponent = () => {
 const SommatieComponent = () => {
   const params = {
     logoUrl: "/static/logo.png",
-    date: "2024-06-25",
-    debtorName: "Alice Johnson",
-    debtorAddress: "789 Oak St, Springfield",
-    island: "Islandia",
-    invoice_number: "INV-1002",
+    date: "29/10/2025",
+    debtorName: "Bryan Navarrete",
+    debtorAddress: "Guayaquil, Ecuador",
+    island: "Bonaire",
+    invoice_number: "INV0001",
     invoiceAmount: "300.00",
   };
   return <SommatiePDF {...params} />;
@@ -80,14 +80,14 @@ const SommatieComponent = () => {
 const IngebrekestellingComponent = () => {
   const params = {
     logoUrl: "/static/logo.png",
-    date: "2024-06-30",
-    debtorName: "Bob Brown",
-    debtorAddress: "321 Pine St, Springfield",
-    island: "Islandia",
-    firstReminderDate: "2024-07-15",
-    secondReminderDate: "2024-07-30",
+    date: "29/10/2025",
+    debtorName: "Bryan Navarrete",
+    debtorAddress: "Guayaquil, Ecuador",
+    island: "Bonaire",
+    firstReminderDate: "10/10/2025",
+    secondReminderDate: "30/10/2025",
     accountNumber: "1234567890",
-    tenantName: "Tenant B",
+    tenantName: "DAZZSOFT S.A.S.",
   };
   return <IngebrekestellingPDF {...params} />;
 };
@@ -95,13 +95,14 @@ const IngebrekestellingComponent = () => {
 const BlokkadeComponent = () => {
   const params = {
     logoUrl: "/static/logo.png",
-    debtorName: "Charlie Green",
-    debtorAddress: "654 Cedar St, Springfield",
-    island: "Islandia",
+    date: "29/10/2025",
+    debtorName: "Bryan Navarrete",
+    debtorAddress: "Guayaquil, Ecuador",
+    island: "Bonaire",
     total_amount: "400.00",
     amountRegister: "350.00",
     total: "450.00",
-    bankName: "Bank of Examples",
+    bankName: "MCB",
     accountNumber: "1234567890",
   };
   return <BlokkadePDF {...params} />;
@@ -110,7 +111,7 @@ const BlokkadeComponent = () => {
 export default function PdfPage() {
   return (
     <PDFViewer width="100%" height="1000">
-      <BlokkadeComponent />
+      <InvoiceComponent />
     </PDFViewer>
   );
 }

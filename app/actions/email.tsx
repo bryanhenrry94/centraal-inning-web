@@ -387,6 +387,7 @@ export const sendBlokkadeMail = async (to: string, caseId: string) => {
 
     const params: BlokkadePDFProps = {
       logoUrl: process.env.NEXT_PUBLIC_LOGO_URL || "",
+      date: formatDate(collection.issue_date.toString()),
       debtorName: collection.debtor.fullname || "Debtor",
       debtorAddress: collection.debtor.address || "",
       island: island || "Bonaire",

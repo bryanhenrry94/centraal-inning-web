@@ -15,7 +15,7 @@ export async function getAllInterestTypes(): Promise<{
 }
 
 export async function getInterestTypeById(
-  id: number
+  id: string
 ): Promise<InterestType | null> {
   const data = await prisma.interestType.findUnique({
     where: { id },
@@ -31,7 +31,7 @@ export async function createInterestType(data: any) {
 }
 
 // Update
-export async function updateInterestType(id: number, data: any) {
+export async function updateInterestType(id: string, data: any) {
   return await prisma.interestType.update({
     where: { id },
     data,
@@ -39,6 +39,6 @@ export async function updateInterestType(id: number, data: any) {
 }
 
 // Delete
-export async function deleteInterestType(id: number) {
+export async function deleteInterestType(id: string) {
   return await prisma.interestType.delete({ where: { id } });
 }
